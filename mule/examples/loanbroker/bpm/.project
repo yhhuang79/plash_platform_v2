@@ -1,0 +1,16 @@
+<projectDescription>
+  <name>mule-example-loanbroker-bpm</name>
+  <comment>The Loan Broker example application is based on the example presented in the Enterprise Integration Patterns book. This chapter of the book is available online so you can see a detailed description of the application here (http://www.eaipatterns.com/ComposedMessagingWS.html). NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
+  <projects>
+    <project>mule-example-loanbroker-common</project>
+    <project>mule-example-loanbroker-common-tests</project>
+  </projects>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>

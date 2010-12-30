@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE hibernate-mapping 
+ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+ "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="tw.edu.sinica.iis.ants.DB.T_Routing" table="routing">
+
+		<id column="id" name="id" type="java.lang.Integer">
+			<generator class="sequence">
+				<param name="sequence">routing_id_seq</param>
+			</generator>
+		</id>
+		<property name="asl_id" column="asl_id" />
+		<property name="step" column="step" />
+		<property name="service_id" column="service_id" />
+
+	</class>
+
+</hibernate-mapping>

@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesource.org/schema/mule/core/2.2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:spring="http://www.springframework.org/schema/beans"
+	xmlns:http="http://www.mulesource.org/schema/mule/http/2.2" xmlns:vm="http://www.mulesource.org/schema/mule/vm/2.2"
+	xmlns:stdio="http://www.mulesource.org/schema/mule/stdio/2.2"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:jms="http://www.mulesource.org/schema/mule/jms/2.2"
+	xmlns:scripting="http://www.mulesource.org/schema/mule/scripting/2.2"
+	xsi:schemaLocation="
+			http://www.mulesource.org/schema/mule/scripting/2.2	http://www.mulesource.org/schema/mule/scripting/2.2/mule-scripting.xsd
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+            http://www.mulesource.org/schema/mule/core/2.2 http://www.mulesource.org/schema/mule/core/2.2/mule.xsd
+            http://www.mulesource.org/schema/mule/http/2.2 http://www.mulesource.org/schema/mule/http/2.2/mule-http.xsd
+            http://www.mulesource.org/schema/mule/vm/2.2 http://www.mulesource.org/schema/mule/vm/2.2/mule-vm.xsd
+            http://www.mulesource.org/schema/mule/stdio/2.2 http://www.mulesource.org/schema/mule/stdio/2.2/mule-stdio.xsd
+            http://www.mulesource.org/schema/mule/jms/2.2 http://www.mulesource.org/schema/mule/jms/2.2/mule-jms.xsd">
+
+
+	<description></description>
+	<spring:beans>
+		<spring:import resource="spring_plash.xml" />
+	</spring:beans>
+	<spring:bean id="LoginComponent"
+		class="tw.edu.sinica.iis.ants.components.LoginComponent">
+		<spring:property name="sessionFactory" ref="SocialSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="FriendListComponent"
+		class="tw.edu.sinica.iis.ants.components.FriendListComponent">
+		<spring:property name="sessionFactory" ref="SocialSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="PeopleLocationsComponent"
+		class="tw.edu.sinica.iis.ants.components.PeopleLocationsComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="NearestComponent"
+		class="tw.edu.sinica.iis.ants.components.NearestComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="TestComponent"
+		class="tw.edu.sinica.iis.ants.components.TestComponent">
+		<spring:property name="sessionFactory" ref="SocialSessionFactory"></spring:property>
+	</spring:bean>
+
+
+
+	<jms:activemq-connector name="jmsCon"
+		specification="1.1" brokerURL="tcp://localhost:61616">
+		<spring:property name="disableTemporaryReplyToDestinations"
+			value="true" />
+	</jms:activemq-connector>
+
+	<jms:endpoint name="plashWaitingQueue" queue="plash.watingQueue"
+		connector-ref="jmsCon" />
+	<jms:endpoint name="plashLoginQueue" queue="plash.login"
+		connector-ref="jmsCon" />
+	<jms:endpoint name="plashFriendListQueue" queue="plash.friend.list"
+		connector-ref="jmsCon" />
+	<jms:endpoint name="plashPeopleLocationsQueue" queue="plash.people.locations"
+		connector-ref="jmsCon" />
+	<jms:endpoint name="plashNearestQueue" queue="plash.nearest"
+		connector-ref="jmsCon" />
+	<jms:endpoint name="plashResponseQueue" queue="plash.response"
+		connector-ref="jmsCon" />
+	<jms:endpoint name="plashLogQueue" queue="plash.log"
+		connector-ref="jmsCon" />
+
+
+	<custom-transformer name="ExceptionToString"
+		class="tw.edu.sinica.iis.ants.ExceptionToString" />
+
+
+
+	<!--
+		<custom-transformer name="HttpParams"
+		class="org.mule.transport.http.transformers.HttpRequestBodyToParamMap"
+		/>
+	-->
+	<custom-transformer name="HttpParams"
+		class="tw.edu.sinica.iis.ants.PlashHTTPTransformer" />
+	<message-properties-transformer name="HttpResponse">
+		<add-message-property key="Content-Type" value="text/html" />
+		<add-message-property key="http.status" value="303" />
+	</message-properties-transformer>
+
+	<custom-transformer class="tw.edu.sinica.iis.ants.ResponseTransform"
+		name="rt" />
+
+	<http:endpoint name="plashHttpInboundEndpoint" host="localhost"
+		port="11111" path="in" synchronous="true" />
+		
+	<http:endpoint name="plashTestHttpInboundEndpoint" host="localhost"
+		port="12345" path="in" synchronous="true" />
+
+	<!--
+		<scripting:transformer name="xTransformer"> <scripting:script
+		engine="groovy"> <![CDATA[ payload + "x" ]]> </scripting:script>
+		</scripting:transformer>
+	-->
+
+	<byte-array-to-string-transformer
+		name="byteArrayToString" />
+
+
+	<model name="PLASH">
+
+
+		<service name="TestHttpInput">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashTestHttpInboundEndpoint" />
+			</inbound>
+			<component class="tw.edu.sinica.iis.ants.components.TestComponent" />
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashResponseQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashResponseQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="rt" />
+					</transformers>
+				</inbound-endpoint>
+				<collection-async-reply-router />
+			</async-reply>
+		</service>
+
+
+		<service name="HttpInput">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashHttpInboundEndpoint" />
+			</inbound>
+			<component class="tw.edu.sinica.iis.ants.components.RequestPreProcess" />
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashWaitingQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashResponseQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="rt" />
+					</transformers>
+				</inbound-endpoint>
+				<collection-async-reply-router />
+			</async-reply>
+		</service>
+
+		<service name="RouteService">
+			<inbound>
+				<inbound-endpoint ref="plashWaitingQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+					</transformers>
+					<!--
+						<property key="Content-Type"
+						value="application/x-www-form-urlencoded" />
+					-->
+
+				</inbound-endpoint>
+			</inbound>
+			<!--
+				<component
+				class="tw.edu.sinica.iis.ants.components.RoutingComponent" />
+			-->
+			<outbound>
+
+				<custom-outbound-router class="tw.edu.sinica.iis.ants.MyRouter">
+					<!--
+						<http:outbound-endpoint host="plash.iis.sinica.edu.tw" port="1111"
+						path="out" name="s1.outbound.http.2" synchronous="true" />
+					-->
+					<outbound-endpoint ref="plashLoginQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+					<outbound-endpoint ref="plashFriendListQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+					<outbound-endpoint ref="plashPeopleLocationsQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+					<outbound-endpoint ref="plashNearestQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+					<outbound-endpoint ref="plashResponseQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+					<outbound-endpoint ref="plashLogQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+						<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+					
+				</custom-outbound-router>
+			</outbound>
+			<!--
+				<async-reply> <inbound-endpoint ref="plashNearestQueue" />
+				<custom-async-reply-router
+				class="tw.edu.sinica.iis.ants.FarmResponseAggregator"/>
+
+				</async-reply>
+			-->
+
+		</service>
+
+
+
+		<service name="LoginService">
+			<inbound>
+				<inbound-endpoint ref="plashLoginQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+					</transformers>
+				</inbound-endpoint>
+			</inbound>
+			<!--
+				<component class="tw.edu.sinica.iis.ants.components.LoginComponent">
+				</component>
+			-->
+			<component>
+				<spring-object bean="LoginComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashWaitingQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+		</service>
+
+
+
+		<service name="FriendListService">
+			<inbound>
+				<inbound-endpoint ref="plashFriendListQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+					</transformers>
+				</inbound-endpoint>
+			</inbound>
+			<!--
+				<component
+				class="tw.edu.sinica.iis.ants.components.FriendListComponent">
+				</component>
+			-->
+			<component>
+				<spring-object bean="FriendListComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashWaitingQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+		</service>
+
+
+		<service name="PeopleLocationsService">
+			<inbound>
+				<inbound-endpoint ref="plashPeopleLocationsQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+					</transformers>
+				</inbound-endpoint>
+			</inbound>
+			<!--
+				<component
+				class="tw.edu.sinica.iis.ants.components.PeopleLocationsComponent">
+				</component>
+			-->
+			<component>
+				<spring-object bean="PeopleLocationsComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashWaitingQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+		</service>
+
+
+		<service name="NearestService">
+			<inbound>
+				<inbound-endpoint ref="plashNearestQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+					</transformers>
+				</inbound-endpoint>
+			</inbound>
+			<!--
+				<component
+				class="tw.edu.sinica.iis.ants.components.NearestComponent">
+				</component>
+			-->
+			<component>
+				<spring-object bean="NearestComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashWaitingQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+		</service>
+		<!--
+
+
+			<outbound> <custom-outbound-router
+			class="tw.edu.sinica.iis.ants.MyRouter"> <outbound-endpoint
+			ref="jmsEndpoint1"> <transformers>
+			<jms:object-to-jmsmessage-transformer /> </transformers>
+			</outbound-endpoint> <outbound-endpoint ref="jmsEndpoint2">
+			<transformers> <jms:object-to-jmsmessage-transformer />
+			</transformers> </outbound-endpoint> </custom-outbound-router>
+			</outbound> <service name="ShowingResult"> <inbound>
+			<jms:inbound-endpoint name="out_jmsEndpoint2_2" queue="plash.input2"
+			connector-ref="jmsCon2"> <transformers>
+			<jms:jmsmessage-to-object-transformer /> </transformers>
+			</jms:inbound-endpoint> </inbound> </service>
+		-->
+
+		<service name="UserErrorHandler">
+			<inbound>
+				<vm:inbound-endpoint path="userErrorHandler"
+					responseTransformer-refs="ExceptionToString" synchronous="true" />
+			</inbound>
+		</service>
+
+		<service name="SystemErrorHandler">
+			<inbound>
+				<vm:inbound-endpoint path="systemErrorHandler"
+					synchronous="true" />
+			</inbound>
+
+			<outbound>
+				<pass-through-router>
+					<stdio:outbound-endpoint system="ERR" />
+				</pass-through-router>
+			</outbound>
+		</service>
+
+	</model>
+
+</mule>

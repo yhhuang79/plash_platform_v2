@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE hibernate-mapping 
+ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+ "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="tw.edu.sinica.iis.ants.DB.T_FriendList" table="friend_list">
+
+		<id column="cid" name="cid" type="java.lang.Integer">
+			<generator class="sequence">
+				<param name="sequence">friend_list_cid_seq</param>
+			</generator>
+		</id>
+		<property name="useraid" column="useraid" />
+		<property name="userbid" column="userbid" />
+	</class>
+
+</hibernate-mapping>
