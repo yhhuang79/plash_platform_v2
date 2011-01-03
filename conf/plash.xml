@@ -108,8 +108,10 @@
 			<inbound>
 				<inbound-endpoint transformer-refs="HttpParams"
 					responseTransformer-refs="byteArrayToString" ref="plashTestHttpInboundEndpoint" />
-			</inbound>
-			<component class="tw.edu.sinica.iis.ants.components.TestComponent" />
+			</inbound>			
+			<component>
+				<spring-object bean="TestComponent"></spring-object>
+			</component>
 			<outbound>
 				<pass-through-router>
 					<outbound-endpoint ref="plashResponseQueue">
