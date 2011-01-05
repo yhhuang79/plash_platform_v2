@@ -2,8 +2,8 @@ package tw.edu.sinica.iis.ants.DB;
 
 public class T_FriendList {
 	private int cid;
-	private int useraid;
-	private int userbid;
+	private Integer useraid;
+	private Integer userbid;
 	
 	public T_FriendList(){
 	
@@ -21,7 +21,7 @@ public class T_FriendList {
 		return useraid;
 	}
 
-	public void setUseraid(int useraid) {
+	public void setUseraid(Integer useraid) {
 		this.useraid = useraid;
 	}
 
@@ -29,7 +29,7 @@ public class T_FriendList {
 		return userbid;
 	}
 
-	public void setUserbid(int userbid) {
+	public void setUserbid(Integer userbid) {
 		this.userbid = userbid;
 	}
 	
