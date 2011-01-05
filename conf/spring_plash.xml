@@ -140,6 +140,8 @@
 				<value>T_Routing.hbm.xml</value>
 				<value>T_Service.hbm.xml</value>
 				<value>T_FriendRequest.hbm.xml</value>
+				<value>T_AppName.hbm.xml</value>
+				<value>T_AppUser.hbm.xml</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -163,6 +165,8 @@
 				<value>T_Routing.hbm.xml</value>
 				<value>T_Service.hbm.xml</value>
 				<value>T_FriendRequest.hbm.xml</value>
+				<value>T_AppName.hbm.xml</value>
+				<value>T_AppUser.hbm.xml</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
