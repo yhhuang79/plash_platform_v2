@@ -2,11 +2,11 @@ package tw.edu.sinica.iis.ants.DB;
 
 public class T_FriendRequest {
 	private int fid;
-	private int useraid;
-	private int userbid;
+	private Integer useraid;
+	private Integer userbid;
 	private String friendemail;
 	private String passcode;
-	private boolean confirmed;
+	private Boolean confirmed;
 	
 	public T_FriendRequest(){
 		
@@ -24,7 +24,7 @@ public class T_FriendRequest {
 		return useraid;
 	}
 
-	public void setUseraid(int useraid) {
+	public void setUseraid(Integer useraid) {
 		this.useraid = useraid;
 	}
 
@@ -32,7 +32,7 @@ public class T_FriendRequest {
 		return userbid;
 	}
 
-	public void setUserbid(int userbid) {
+	public void setUserbid(Integer userbid) {
 		this.userbid = userbid;
 	}
 
@@ -56,7 +56,7 @@ public class T_FriendRequest {
 		return confirmed;
 	}
 
-	public void setConfirmed(boolean confirmed) {
+	public void setConfirmed(Boolean confirmed) {
 		this.confirmed = confirmed;
 	}
 	
