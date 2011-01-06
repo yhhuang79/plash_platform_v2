@@ -28,7 +28,7 @@
 		class="tw.edu.sinica.iis.ants.components.FriendListComponent">
 		<spring:property name="sessionFactory" ref="SocialSessionFactory"></spring:property>
 	</spring:bean>
-	<spring:bean id="FriendListComponent"
+	<spring:bean id="ActivateComponent"
 		class="tw.edu.sinica.iis.ants.components.ActivateComponent">
 		<spring:property name="sessionFactory" ref="SocialSessionFactory"></spring:property>
 	</spring:bean>
