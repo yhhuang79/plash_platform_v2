@@ -36,17 +36,27 @@ public class LoginComponent {
 		System.out.println("Login Start:\t"+ Calendar.getInstance().getTimeInMillis());
 
 		Session session = sessionFactory.openSession(); 
-
 		Criteria criteria = session.createCriteria(T_Login.class);
-		criteria.add(Restrictions.eq("username", map.remove("username").toString()));
+		criteria.add(Restrictions.eq("username", map.get("username").toString()));
 		criteria.add(Restrictions.eq("password", map.remove("password").toString()));
 		Iterator users = criteria.list().iterator(); 
 		if(users.hasNext()) {
 			T_Login user = (T_Login) users.next(); 
-			map.put("sid", user.getSid()); 
+			
+			if (user.isConfirmed()) {
+				map.put("sid", user.getSid());
+				String message = "Successful Login:" + user.getSid();
+				map.put("message", message);
+			}
+			else {
+				map.put("sid", "fail");
+				map.put("message", "Inactivate");
+			}
+
 		}
 		else{
-			map.put("sid", "fail");	        	
+			map.put("sid", "fail");
+			map.put("message", "Login Fail");
 		}
  
 		session.close();

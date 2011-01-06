@@ -44,6 +44,7 @@ public class FriendListComponent {
 		Session session = sessionFactory.openSession(); 
 
 		Criteria criteria = session.createCriteria(T_FriendList.class);
+		
 		criteria.add(Restrictions.or(Restrictions.eq("useraid", Integer.parseInt(map.get("sid").toString())),Restrictions.eq("userbid", Integer.parseInt(map.get("sid").toString()))));
 		//criteria.add(Restrictions.eq("password", map.remove("password").toString()));
 		List friend_list = new ArrayList();
