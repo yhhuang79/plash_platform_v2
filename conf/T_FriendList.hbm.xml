@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-	<class name="tw.edu.sinica.iis.ants.DB.T_FriendList" table="friend_list">
+	<class name="tw.edu.sinica.iis.ants.DB.T_FriendList" table="socialcore.friend_list">
 
 		<id column="cid" name="cid" type="java.lang.Integer">
 			<generator class="sequence">
