@@ -7,12 +7,12 @@ import com.vividsolutions.jts.geom.Geometry;
 
 public class T_UserPointLocationTime {
 	private int id;
-	private int userid;
+	private Integer userid;
 	private Timestamp timestamp;
 	private Geometry gps;
 	private Timestamp server_timestamp;
-	private int trip_id;
-	private int label;
+	private Integer trip_id;
+	private Integer label;
 	
 	public T_UserPointLocationTime(){
 	
@@ -30,7 +30,7 @@ public class T_UserPointLocationTime {
 		return userid;
 	}
 
-	public void setUserid(int userid) {
+	public void setUserid(Integer userid) {
 		this.userid = userid;
 	}
 
@@ -62,7 +62,7 @@ public class T_UserPointLocationTime {
 		return trip_id;
 	}
 
-	public void setTrip_id(int tripId) {
+	public void setTrip_id(Integer tripId) {
 		trip_id = tripId;
 	}
 
@@ -70,7 +70,7 @@ public class T_UserPointLocationTime {
 		return label;
 	}
 
-	public void setLabel(int label) {
+	public void setLabel(Integer label) {
 		this.label = label;
 	}
 	
