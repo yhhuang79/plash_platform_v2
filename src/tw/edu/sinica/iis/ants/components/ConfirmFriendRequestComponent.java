@@ -23,46 +23,6 @@ import tw.edu.sinica.iis.ants.sendMail;
 
 public class ConfirmFriendRequestComponent {
 
-	public static String getRandomString(int length) {
-
-		// final String charset =
-		// "!0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		final String charset = "0123456789";
-		Random rand = new Random(System.currentTimeMillis());
-
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < length; i++) {
-			int pos = rand.nextInt(charset.length());
-			sb.append(charset.charAt(pos));
-		}
-		try {
-			// if you generate more than 1 time, you must
-			// put the process to sleep for awhile
-			// otherwise it will return the same random string
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		return sb.toString();
-	}
-
-	public static boolean isValidEmailAddress(String emailAddress) {
-		String expression = "^[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-		CharSequence inputStr = emailAddress;
-		Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-		Matcher matcher = pattern.matcher(inputStr);
-		return matcher.matches();
-	}
-
-	public static boolean isValidUsername(String username) {
-		String expression = "^[A-Za-z0-9_]{6,20}$";
-		CharSequence inputStr = username;
-		Pattern pattern = Pattern.compile(expression);
-		Matcher matcher = pattern.matcher(inputStr);
-		return matcher.matches();
-	}
-
 	private SessionFactory sessionFactory;
 
 	public SessionFactory getSessionFactory() {
