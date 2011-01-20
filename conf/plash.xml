@@ -5,6 +5,7 @@
 	xmlns:stdio="http://www.mulesource.org/schema/mule/stdio/2.2"
 	xmlns:util="http://www.springframework.org/schema/util" xmlns:jms="http://www.mulesource.org/schema/mule/jms/2.2"
 	xmlns:scripting="http://www.mulesource.org/schema/mule/scripting/2.2"
+	xmlns:https="http://www.mulesource.org/schema/mule/https/2.2"
 	xsi:schemaLocation="
 			http://www.mulesource.org/schema/mule/scripting/2.2	http://www.mulesource.org/schema/mule/scripting/2.2/mule-scripting.xsd
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
@@ -13,7 +14,8 @@
             http://www.mulesource.org/schema/mule/http/2.2 http://www.mulesource.org/schema/mule/http/2.2/mule-http.xsd
             http://www.mulesource.org/schema/mule/vm/2.2 http://www.mulesource.org/schema/mule/vm/2.2/mule-vm.xsd
             http://www.mulesource.org/schema/mule/stdio/2.2 http://www.mulesource.org/schema/mule/stdio/2.2/mule-stdio.xsd
-            http://www.mulesource.org/schema/mule/jms/2.2 http://www.mulesource.org/schema/mule/jms/2.2/mule-jms.xsd">
+            http://www.mulesource.org/schema/mule/jms/2.2 http://www.mulesource.org/schema/mule/jms/2.2/mule-jms.xsd
+            http://www.mulesource.org/schema/mule/https/2.2 http://www.mulesource.org/schema/mule/https/2.2/mule-https.xsd">
 
 
 	<description></description>
@@ -45,8 +47,18 @@
 		class="tw.edu.sinica.iis.ants.components.TestComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
-
-
+	<!-- 
+		Step 1: Make a spring bean for your customized component
+		
+		Please put your customized component in the "tw.edu.sinica.iis.ants.components" package, 
+		and replace the "id" attribute, which is XXXXXCompoent, with your customized component name 
+	-->
+	<!--
+	<spring:bean id="XXXXXComponent"
+		class="tw.edu.sinica.iis.ants.components.XXXXXComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	-->
 
 	<jms:activemq-connector name="jmsCon"
 		specification="1.1" brokerURL="tcp://localhost:61616">
@@ -71,17 +83,19 @@
 	<jms:endpoint name="plashLogQueue" queue="plash.log"
 		connector-ref="jmsCon" />
 
+	<!-- 
+		Step 2: Create a response queue for your component
+		
+		Please replace the "name" attribute with one you like, which is plashXXXXXResponseQueue in this example, to be the reference for latter use.
+		Please replace the "queue" attribute with one you like, which is plash.test.responseXXXXX in this example, for the actual name in ActiveMQ.
+	-->
+	<jms:endpoint name="plashXXXXXResponseQueue" queue="plash.test.responseXXXXX"
+		connector-ref="jmsCon" />
 
 	<custom-transformer name="ExceptionToString"
 		class="tw.edu.sinica.iis.ants.ExceptionToString" />
 
 
-
-	<!--
-		<custom-transformer name="HttpParams"
-		class="org.mule.transport.http.transformers.HttpRequestBodyToParamMap"
-		/>
-	-->
 	<custom-transformer name="HttpParams"
 		class="tw.edu.sinica.iis.ants.PlashHTTPTransformer" />
 	<message-properties-transformer name="HttpResponse">
@@ -92,29 +106,86 @@
 	<custom-transformer class="tw.edu.sinica.iis.ants.ResponseTransform"
 		name="rt" />
 
-	<http:endpoint name="plashHttpInboundEndpoint" host="localhost"
-		port="1111" path="in" synchronous="true" />
+	<https:connector name="httpsConnector">
+		<https:tls-key-store path="file:/home/kennywu/tmpKey/keystore" keyPassword="password" storePassword="password"/>
+	</https:connector>
+	<https:endpoint name="plashHttpsInboundEndpoint" host="localhost"
+		port="11111" path="in" synchronous="true" connector-ref="httpsConnector" />
+	<https:endpoint name="plashTestHttpsInboundEndpoint" host="localhost"
+		port="12345" path="in" synchronous="true" connector-ref="httpsConnector" />
+	<!-- 
+		Step 3: Create a HTTPS endpoint for your component
 		
-	<http:endpoint name="plashTestHttpInboundEndpoint" host="localhost"
-		port="1234" path="in" synchronous="true" />
-
-	<!--
-		<scripting:transformer name="xTransformer"> <scripting:script
-		engine="groovy"> <![CDATA[ payload + "x" ]]> </scripting:script>
-		</scripting:transformer>
+		Please replace the "name" attribute with one you like, which is OOOOOOO in this example, to be the reference for the latter use.
+		Please replace the "port" attribute with one you like, which can be the same with other HTTPS endpoint but the system default port (ie. 22, 80, 8080, etc.).
+		Please replace the "path" attribute with one you like.
+		
+		After all steps are setup, you can access your component through the following link:
+		
+		https://localhost:{port}/{path}?{Parameters}
+		
+		which will be
+		
+		https://localhost:12345/PPPPPPP?parameter1=value1&parameter2=value2&... 
+		
+		for the following example.
 	-->
-
-	<byte-array-to-string-transformer
-		name="byteArrayToString" />
+	<!--
+	<https:endpoint name="OOOOOOO" host="localhost"
+		port="12345" path="PPPPPPP" synchronous="true" connector-ref="httpsConnector" />
+	-->
+		
+	<byte-array-to-string-transformer name="byteArrayToString" />
+	<custom-transformer class="tw.edu.sinica.iis.ants.CustomByteArrayToString"
+		name="bt" />
 
 
 	<model name="PLASH">
-
-
+		<!-- 
+			Step 4: Combine all the things: Create a service for your component
+			
+			Please replace the "name" attribute in the "service" tag, which is XXXXXService in this example, to be the name of the service.
+			Please replace the "ref" attribute in the "spring-object", which is OOOOOOO in this example. This should be exactly the same with the "name" in "https:endpoint" you set in step 3.
+			Please replace the "bean" attribute in the "inbound-endpoint", which is XXXXXComponent in this example. This should be exactly the same with the "id" in "spring:bean" you set in step 1.
+			Please replace the "ref" attribute in the "outbound-endpoint", which is plashXXXXXResponseQueue in this example. This should be exactly the same with the "name" in "jms:endpoint" you set in step 2.
+			Please replace the "ref" attribute in the "inbound-endpoint", which is plashXXXXXResponseQueue in this example. This should be exactly the same with the "name" in "jms:endpoint" you set in step 2.
+			
+			Finally, run the mule and you could start to test it!
+		-->
+		<!--
+		<service name="XXXXXService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="OOOOOOO" />
+			</inbound>			
+			<component>
+				<spring-object bean="XXXXXComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashXXXXXResponseQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashXXXXXResponseQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="rt" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		-->
+		
 		<service name="TestHttpInput">
 			<inbound>
 				<inbound-endpoint transformer-refs="HttpParams"
-					responseTransformer-refs="byteArrayToString" ref="plashTestHttpInboundEndpoint" />
+					responseTransformer-refs="byteArrayToString" ref="plashTestHttpsInboundEndpoint" />
 			</inbound>			
 			<component>
 				<spring-object bean="TestComponent"></spring-object>
@@ -135,7 +206,7 @@
 						<transformer ref="rt" />
 					</transformers>
 				</inbound-endpoint>
-				<collection-async-reply-router />
+				<single-async-reply-router/>				
 			</async-reply>
 		</service>
 
@@ -143,7 +214,7 @@
 		<service name="HttpInput">
 			<inbound>
 				<inbound-endpoint transformer-refs="HttpParams"
-					responseTransformer-refs="byteArrayToString" ref="plashHttpInboundEndpoint" />
+					responseTransformer-refs="byteArrayToString" ref="plashHttpsInboundEndpoint" />
 			</inbound>
 			<component class="tw.edu.sinica.iis.ants.components.RequestPreProcess" />
 			<outbound>
@@ -162,34 +233,22 @@
 						<transformer ref="rt" />
 					</transformers>
 				</inbound-endpoint>
-				<collection-async-reply-router />
+				<single-async-reply-router/>				
+				<!--<collection-async-reply-router />-->
 			</async-reply>
 		</service>
-
+		
+		
 		<service name="RouteService">
 			<inbound>
 				<inbound-endpoint ref="plashWaitingQueue">
 					<transformers>
 						<jms:jmsmessage-to-object-transformer />
 					</transformers>
-					<!--
-						<property key="Content-Type"
-						value="application/x-www-form-urlencoded" />
-					-->
-
 				</inbound-endpoint>
 			</inbound>
-			<!--
-				<component
-				class="tw.edu.sinica.iis.ants.components.RoutingComponent" />
-			-->
 			<outbound>
-
 				<custom-outbound-router class="tw.edu.sinica.iis.ants.MyRouter">
-					<!--
-						<http:outbound-endpoint host="plash.iis.sinica.edu.tw" port="1111"
-						path="out" name="s1.outbound.http.2" synchronous="true" />
-					-->
 					<outbound-endpoint ref="plashLoginQueue">
 						<transformers>
 							<jms:object-to-jmsmessage-transformer />
@@ -220,21 +279,10 @@
 							<jms:object-to-jmsmessage-transformer />
 						</transformers>
 					</outbound-endpoint>
-						<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-					
+					<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>					
 				</custom-outbound-router>
 			</outbound>
-			<!--
-				<async-reply> <inbound-endpoint ref="plashNearestQueue" />
-				<custom-async-reply-router
-				class="tw.edu.sinica.iis.ants.FarmResponseAggregator"/>
-
-				</async-reply>
-			-->
-
 		</service>
-
-
 
 		<service name="LoginService">
 			<inbound>
@@ -244,10 +292,6 @@
 					</transformers>
 				</inbound-endpoint>
 			</inbound>
-			<!--
-				<component class="tw.edu.sinica.iis.ants.components.LoginComponent">
-				</component>
-			-->
 			<component>
 				<spring-object bean="LoginComponent"></spring-object>
 			</component>
@@ -262,8 +306,6 @@
 			</outbound>
 		</service>
 
-
-
 		<service name="FriendListService">
 			<inbound>
 				<inbound-endpoint ref="plashFriendListQueue">
@@ -272,11 +314,6 @@
 					</transformers>
 				</inbound-endpoint>
 			</inbound>
-			<!--
-				<component
-				class="tw.edu.sinica.iis.ants.components.FriendListComponent">
-				</component>
-			-->
 			<component>
 				<spring-object bean="FriendListComponent"></spring-object>
 			</component>
@@ -291,7 +328,6 @@
 			</outbound>
 		</service>
 
-
 		<service name="PeopleLocationsService">
 			<inbound>
 				<inbound-endpoint ref="plashPeopleLocationsQueue">
@@ -300,11 +336,6 @@
 					</transformers>
 				</inbound-endpoint>
 			</inbound>
-			<!--
-				<component
-				class="tw.edu.sinica.iis.ants.components.PeopleLocationsComponent">
-				</component>
-			-->
 			<component>
 				<spring-object bean="PeopleLocationsComponent"></spring-object>
 			</component>
@@ -328,11 +359,6 @@
 					</transformers>
 				</inbound-endpoint>
 			</inbound>
-			<!--
-				<component
-				class="tw.edu.sinica.iis.ants.components.NearestComponent">
-				</component>
-			-->
 			<component>
 				<spring-object bean="NearestComponent"></spring-object>
 			</component>
@@ -346,23 +372,7 @@
 				</pass-through-router>
 			</outbound>
 		</service>
-		<!--
-
-
-			<outbound> <custom-outbound-router
-			class="tw.edu.sinica.iis.ants.MyRouter"> <outbound-endpoint
-			ref="jmsEndpoint1"> <transformers>
-			<jms:object-to-jmsmessage-transformer /> </transformers>
-			</outbound-endpoint> <outbound-endpoint ref="jmsEndpoint2">
-			<transformers> <jms:object-to-jmsmessage-transformer />
-			</transformers> </outbound-endpoint> </custom-outbound-router>
-			</outbound> <service name="ShowingResult"> <inbound>
-			<jms:inbound-endpoint name="out_jmsEndpoint2_2" queue="plash.input2"
-			connector-ref="jmsCon2"> <transformers>
-			<jms:jmsmessage-to-object-transformer /> </transformers>
-			</jms:inbound-endpoint> </inbound> </service>
-		-->
-
+		
 		<service name="UserErrorHandler">
 			<inbound>
 				<vm:inbound-endpoint path="userErrorHandler"
