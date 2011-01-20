@@ -11,6 +11,8 @@
 package tw.edu.sinica.iis.ants;
 
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.mule.api.transformer.TransformerException;
 import org.mule.transformer.AbstractTransformer;
 import org.mule.util.IOUtils;
@@ -20,7 +22,10 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+
 
 public class ResponseTransform extends AbstractTransformer
 {
@@ -29,19 +34,45 @@ public class ResponseTransform extends AbstractTransformer
     {
         super();
         this.registerSourceType(Map.class);
-        this.setReturnClass(Map.class);
+        this.setReturnClass(String.class);
     }
 
     public Object doTransform(Object src, String encoding) throws TransformerException
     {
     	Map map = (Map)src;
     	map.put("timeto", Calendar.getInstance().getTimeInMillis());    
-    	//System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
 		Logger logger = Logger.getLogger("tw.edu.plash");     
 		//logger.debug(map.get("timefrom1") + "\t" + map.get("timeto"));
 		logger.debug(((Long)map.get("timeto") - Long.parseLong((String)map.get("timefrom1"))));
+		
+		Iterator i = map.keySet().iterator();
+		
 
-    	return map;
+		//map = checkMap(map);
+		
+		JSONObject j = new JSONObject(map);
+		
+		return j.toString();
+    	//return map;
+    }
+    
+    public static Map checkMap(Map m){
+    	Iterator i = m.keySet().iterator();
+    	while(i.hasNext()){
+    		String key = i.next().toString();
+    		if(m.get(key) instanceof List){
+    			m.put(key, makeListIntoJSONArray((List)m.get(key)));
+    		}
+    		if(m.get(key) instanceof Map){
+    			m.put(key, checkMap((Map)m.get(key)));
+    		}
+    	}
+    	return m;
+    }
+    
+    public static JSONArray makeListIntoJSONArray(List l){
+		return new JSONArray(l);
+    	
     }
 }

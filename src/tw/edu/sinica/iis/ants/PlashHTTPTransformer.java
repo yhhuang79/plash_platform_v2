@@ -15,7 +15,6 @@ public class PlashHTTPTransformer extends HttpRequestBodyToParamMap {
 	public Object transform(MuleMessage message, String encoding)
 			throws TransformerException {
 		
-		
 		System.out.println("HTTP Transformer Start:\t"+ Calendar.getInstance().getTimeInMillis());
 		//System.out.println(message.getPayload().toString());
 		String url = message.getPayload().toString() + "&timefrom1="+Calendar.getInstance().getTimeInMillis();
