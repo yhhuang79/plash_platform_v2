@@ -42,10 +42,18 @@ public class ActivateComponent {
         String passcode = null;
         String deviceType = null;
         
-        username = map.get("username").toString();
-        password = map.remove("password").toString();
-        passcode = map.remove("passcode").toString();
-        deviceType = map.get("deviceType").toString();
+        if (map.containsKey("username")) {
+        	username = map.get("username").toString();
+        }
+        if (map.containsKey("password")){
+        	password = map.remove("password").toString();
+        }
+        if (map.containsKey("passcode")){
+        	passcode = map.remove("passcode").toString();
+        }
+        if (map.containsKey("deviceType")){
+        	deviceType = map.get("deviceType").toString();
+        }
         
         if (!username.isEmpty() && !password.isEmpty() && !passcode.isEmpty()){
         	
