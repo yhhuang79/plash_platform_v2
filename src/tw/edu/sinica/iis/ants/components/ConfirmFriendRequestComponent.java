@@ -147,7 +147,7 @@ public class ConfirmFriendRequestComponent {
     			if(users.hasNext()) {
     				T_Login user = (T_Login) users.next(); 
     				useraemail = user.getEmail();
-    			}String host = "http://plash.iis.sinica.edu.tw/plash/";
+    			}
 				
 				String host = "http://plash.iis.sinica.edu.tw/plash/";
 				String action = "*.action";
