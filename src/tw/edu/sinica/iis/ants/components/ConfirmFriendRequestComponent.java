@@ -68,8 +68,12 @@ public class ConfirmFriendRequestComponent {
         if (map.containsKey("friendname")){
         	friendname = map.get("friendname").toString();
         }
-        deviceType = "browser";
-     
+        if (map.containsKey("deviceType")){
+        	deviceType = map.get("deviceType").toString();
+        }else{
+        	deviceType = "browser";
+        }
+        	
         // Check if friend request is existed
 		Criteria criteria = session.createCriteria(T_FriendRequest.class);
 		criteria.add(Restrictions.eq("fid", fid));
@@ -143,7 +147,7 @@ public class ConfirmFriendRequestComponent {
     			if(users.hasNext()) {
     				T_Login user = (T_Login) users.next(); 
     				useraemail = user.getEmail();
-    			}
+    			}String host = "http://plash.iis.sinica.edu.tw/plash/";
 				
 				String host = "http://plash.iis.sinica.edu.tw/plash/";
 				String action = "*.action";
