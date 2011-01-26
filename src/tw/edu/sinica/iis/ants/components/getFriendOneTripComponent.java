@@ -43,7 +43,7 @@ public class getFriendOneTripComponent {
          * return last position the friend shared to a certain user of a certain trip
          * 
          * @author Yu-Hsiang Huang 
-         * @version 1.0, 01/13/2010
+         * @version 1.1, 01/26/2010
          * @param     userid, friendid, tripid
          * @return    trip information
          * @see       connpost.java
@@ -84,14 +84,12 @@ public class getFriendOneTripComponent {
 			String returnResult = "<trace>";
 			
 			if(flist.hasNext()) {
-				returnResult += "2";
-				Criteria criteria2 = session.createCriteria(T_FriendAuth.class);
-				criteria2.add(Restrictions.eq("userAID", userid));
-				criteria2.add(Restrictions.eq("userBID", friendid));
-				criteria2.add(Restrictions.eq("tripID", tripid));				
-				Iterator falist = criteria2.list().iterator();
+				criteria = session.createCriteria(T_FriendAuth.class);
+				criteria.add(Restrictions.eq("userAID", userid));
+				criteria.add(Restrictions.eq("userBID", friendid));
+				criteria.add(Restrictions.eq("tripID", tripid));				
+				Iterator falist = criteria.list().iterator();
 				if(falist.hasNext()) {
-					returnResult += "3";
 					criteria = session.createCriteria(T_UserPointLocationTime.class);
 
 					criteria.add(Restrictions.eq("userid", friendid));
