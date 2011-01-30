@@ -36,7 +36,7 @@ import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
 
 public class inputGpsLocationComponent {
 
-    private SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;
 
     public SessionFactory getSessionFactory() {
         return sessionFactory;
@@ -55,31 +55,30 @@ public class inputGpsLocationComponent {
         System.out.println("inputGpsLocationComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
         // Please Implement Your Programming Logic From Here
         /**
-         * input gps location
+         * @goal      input gps location
          * @author    Angus Fuming Huang
          * @version   1.0, 01/23/2011
-         * @param     userid, trip_id , lng, lat, timestamp
+         * @param     userid, trip_id, gps, timestamp
          * @return    message 
          * @see       connpost.java
+         * @example   http://localhost:1234/in?userid=1&trip_id=500&timestamp=2011-11-11 11:11:11.111
+         * 
+         * @trouble   輸入參數中的gps需再確認 ; label的控制需再確認
          */
         
         Session session = sessionFactory.openSession();
         Integer userid = null;
         Integer trip_id = null;
-        Double lng = null;
-        Double lat = null;
+        //Geometry gps = null;
         Timestamp timestamp = null;
-        Timestamp serverTimestamp = null;
         
         if (map.containsKey("userid"))    {userid = Integer.parseInt(map.get("userid").toString());}
         if (map.containsKey("trip_id"))   {trip_id = Integer.parseInt(map.get("trip_id").toString());}
-        if (map.containsKey("lng"))       {lng = Double.parseDouble(map.get("lng").toString());}
-        if (map.containsKey("lat"))       {lat = Double.parseDouble(map.get("lat").toString());}
+        //if (map.containsKey("gps"))       {gps = map.get("gps");}
         if (map.containsKey("timestamp")) {timestamp = Timestamp.valueOf(map.get("timestamp").toString());}
         
-        
-        
-        if (userid.equals("")||trip_id.equals("")||lng.equals("")||lat.equals("")||timestamp.equals("")) { 
+        //if (userid.equals("")||trip_id.equals("")||timestamp.equals("")||gps.equals("")) {  //完整的判斷式
+        if (userid.equals("")||trip_id.equals("")||timestamp.equals("")) {  //簡化的判斷式
 			map.put("message", "required information is empty and can not input the GPS location");
 		} else {   
 				int label = 0; //let old version can work as well, 0 means no mentioned
@@ -98,9 +97,8 @@ public class inputGpsLocationComponent {
 				//將timestamp存入資料庫
 				user.setTimestamp(timestamp);
 				
-				//將lng+lat合併成gps，並將gps存入資料庫
-				//user.setGps("POINT("+lng/1000000.0+" "+lat/1000000.0+")");
-				//????????????????????????????????????????????????????????????GPS資料格式需再確認  
+				//將 gps 存入資料庫
+				//user.setGps(gps);
 				
 				//取得server_timestamp，並將其存入資料庫
 				user.setServer_timestamp(new Timestamp(new Date().getTime()));
@@ -120,6 +118,7 @@ public class inputGpsLocationComponent {
         System.out.println("inputGpsLocationComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
         return map;
 	} //close Object greet
+    
 }  //close class inputGpsLocationComponent
 
 
