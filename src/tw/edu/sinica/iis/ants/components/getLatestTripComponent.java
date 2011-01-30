@@ -38,7 +38,7 @@ import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
 
 public class getLatestTripComponent {
 
-    private SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;
 
     public SessionFactory getSessionFactory() {
         return sessionFactory;
@@ -53,15 +53,17 @@ public class getLatestTripComponent {
     }
 
     public Object greet(Map map) {
+    	
         System.out.println("getLatestTripComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
         // Please Implement Your Programming Logic From Here
         /**
-         * get location of the latest trip
+         * @goal      get location of the latest trip
          * @author    Angus Fuming Huang
          * @version   1.0, 01/22/2011
-         * @param     userid, trip_id 
-         * @return    labels_LatestTrip 
+         * @param     userid, trip_id
+         * @return    latestTrip (id + label + gps)
          * @see       connpost.java
+         * @example   http://localhost:1234/in?userid=1&trip_id=494
          */
         Session session = sessionFactory.openSession();
         Integer userid = null;
@@ -73,34 +75,27 @@ public class getLatestTripComponent {
         if (userid.equals("") || trip_id.equals("")) {
 			map.put("message", "userid or trip_id is empty and can not get the latest trip");
 		} else {   
-			    int latestTripId = 0;
+			    String latestTrip = null;
 			    
 			    //建立Hibernate的查詢物件，並將session指定到T_UserPointLocationTime.class
 			    Criteria criteria = session.createCriteria(T_UserPointLocationTime.class); 
 			    
-			    //取出符合使用者userid的資料紀錄
+			    //取出符合userid+trip_id的資料紀錄
 			    criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("userid").toString()))); 
-			
-			    //將trip_id最大的那筆紀錄取出
-			    criteria.setProjection(Projections.max("trip_id"));
+			    criteria.add(Restrictions.eq("trip_id", Integer.parseInt(map.get("trip_id").toString())));  
+			    
+			    //將 id 由大到小排序，以便取出 id 為最大的那筆紀錄
+			    criteria.addOrder(Order.desc("id"));
 			  
-			    //將查詢結果存在latestTrip
-			    Iterator latestTrip = criteria.list().iterator();
+			    //將查詢結果存在tripids
+			    Iterator tripids = criteria.list().iterator();
 			    
-			    //宣告一個HashMap型態的變數labels_LatestTrip, 用來存放trip詳細資料
-			    Map labels_LatestTrip = new HashMap();
+			    //將最後結果之id,label,gps存到latestTrip變數
+			    T_UserPointLocationTime latestTripId = (T_UserPointLocationTime) tripids.next();
+			    latestTrip = "id=" + latestTripId.getId() + ";Label=" + latestTripId.getLabel()+ ";GPS=" + latestTripId.getGps();
 			    
-			    // ?????????????????????????????????????????????????????????????????這邊的資料有待釐清
-			    while(latestTrip.hasNext()) {
-				      Object [] oneResult = (Object []) latestTrip.next();
-				      int id = (Integer) oneResult[2];
-				      String gps = oneResult[0].toString();
-				      String lng = gps.substring(gps.indexOf('(')+1, gps.indexOf(' '));
-				      String lat = gps.substring(gps.indexOf(' ')+1, gps.indexOf(')'));	
-				      labels_LatestTrip.put(id+"", lat+";"+lng);
-			     }
-			 //將結果存到 map 裡面的 labels_LatestTrip 項目
-			 map.put("labels_LatestTrip", labels_LatestTrip); 
+			    //將結果存到 map 裡面的 latestTrip 項目
+			    map.put("latestTrip", latestTrip); 
 		   }
         
         session.close();
@@ -108,6 +103,7 @@ public class getLatestTripComponent {
         System.out.println("getLatestTripComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
         return map;
     } //close Object greet
+    
 } //close class getLatestTripComponent
 
 
