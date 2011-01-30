@@ -38,7 +38,7 @@ import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
 
 public class makeNewTripIdComponent {
 
-    private SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;
 
     public SessionFactory getSessionFactory() {
         return sessionFactory;
@@ -53,15 +53,17 @@ public class makeNewTripIdComponent {
     }
 
     public Object greet(Map map) {
+    	
         System.out.println("makeNewTripIdComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
         // Please Implement Your Programming Logic From Here
         /**
-         * make trip id increase and return the value
+         * @goal      make trip id increase and return the value
          * @author    Angus Fuming Huang
          * @version   1.0, 01/24/2011
          * @param     userid 
          * @return    newTripId
          * @see       connpost.java
+         * @example   http://localhost:1234/in?userid=1
          */
         Session session = sessionFactory.openSession();
         Integer userid = null;
@@ -80,8 +82,9 @@ public class makeNewTripIdComponent {
 				//取出符合使用者userid的資料紀錄
 				criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("userid").toString()))); 
 				
-				//將trip_id最大的那筆紀錄取出
-				criteria.setProjection(Projections.max("trip_id"));
+			    //將trip_id由大到小排序，以便取出trip_id為最大的那筆紀錄
+			    criteria.addOrder(Order.desc("trip_id"));
+			    //criteria.setProjection(Projections.max("trip_id"));
 				
 				//將查詢結果存在tripids
 				Iterator tripids = criteria.list().iterator();
@@ -101,6 +104,7 @@ public class makeNewTripIdComponent {
         System.out.println("makeNewTripIdComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
         return map;
 	} //close Object greet
+    
 } //close class makeNewTripIdComponent
 
 
