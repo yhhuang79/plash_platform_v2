@@ -9,7 +9,7 @@
 
 		<id column="sid" name="sid" type="java.lang.Integer">
 			<generator class="sequence">
-				<param name="sequence">login_sid_seq</param>
+				<param name="sequence">socialcore.login_sid_seq</param>
 			</generator>
 		</id>
 		<property name="username" column="username" />
