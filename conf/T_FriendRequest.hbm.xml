@@ -9,7 +9,7 @@
 
 		<id column="fid" name="fid" type="java.lang.Integer">
 			<generator class="sequence">
-				<param name="sequence">friend_request_fid_seq</param>
+				<param name="sequence">socialcore.friend_request_fid_seq</param>
 			</generator>
 		</id>
 		<property name="useraid" column="useraid" />
