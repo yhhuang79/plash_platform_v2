@@ -1,36 +1,20 @@
 package tw.edu.sinica.iis.ants.components;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.sql.Statement;
 
 import java.util.*;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
-
-import tw.edu.sinica.iis.ants.DB.T_FriendList;
-import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
 import tw.edu.sinica.iis.ants.DB.T_FriendAuth;
 
 /**
- * TBA
+ * Get a list of trips belonging to a user and a friend of him/her
  * 
  * @author	Yi-Chun Teng 
  * @version 
- * @param   userid,friendid
- * @return  map containing a list of trip IDs. empty list if no ID found
+ * @param   a map that contains the following keys userid,friendid
+ * @return  a map containing a list of trip IDs. empty list if no ID found
  * @example	http://localhost:1234/in?userid=7&friendid=1       
  * @note	Follow the algorithm implemented in the original server
  */
@@ -56,8 +40,6 @@ public class getAuthTripComponent {
         System.out.println("getAuthTripComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
 
 
-
-
         Session session = sessionFactory.openSession(); 
         Criteria criteria = session.createCriteria(T_FriendAuth.class);
         
@@ -69,6 +51,11 @@ public class getAuthTripComponent {
 			map.put("getAuthTrip",false); //result flag, flag name to be unified, para_failed as appeared in excel file
 			//map.put("error detail" , e.toString()); //perhaps put error detail?
 	        System.out.println("getAuthTripComponent failure end1:\t"+ Calendar.getInstance().getTimeInMillis());
+			return map;
+		} catch (NumberFormatException e) { //invalid arguments 
+			map.put("getAuthTrip",false); //result flag, flag name to be unified, para_failed as appeared in excel file
+			//map.put("error detail" , e.toString()); //perhaps put error detail?
+	        System.out.println("getAuthTripComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
 			return map;
 		}//end try catch
 		
