@@ -13,7 +13,7 @@ import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * Get a list of trips belonging to a user and a friend of him/her
+ * Get a list of trip info belonging to a user and a friend of him/her
  * 
  * @author	Yi-Chun Teng 
  * @version 
@@ -82,21 +82,16 @@ public class getAuthTripLatLngComponent {
 			criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("friendid").toString())));
 			criteria.addOrder(Order.asc("timestamp"));
 			tripList = criteria.list().iterator();
-			//while (tripList.hasNext()) {
-			if (tripList.hasNext()) { //only 1st entry, test purpose
+			while (tripList.hasNext()) {			
 				resultEntry= (T_UserPointLocationTime)tripList.next();
 				resultEntryMap = new HashMap();
 				resultEntryMap.put("tripID", resultEntry.getTrip_id());				
-				resultEntryMap.put("timestamp", resultEntry.getTimestamp());
+				resultEntryMap.put("timestamp", resultEntry.getTimestamp().toString());
 				resultEntryMap.put("lng",((Geometry)resultEntry.getGps()).getCoordinate().x*1000000);				
 				resultEntryMap.put("lat",((Geometry)resultEntry.getGps()).getCoordinate().y*1000000);
-				/*
-				System.out.println(resultEntry.getGps());
-				System.out.println("x: " + ((Geometry)resultEntry.getGps()).getCoordinate().x);
-				System.out.println("y: " + ((Geometry)resultEntry.getGps()).getCoordinate().y); //*/
 				
 				resultList.add(resultEntryMap);
-			}//end while		//*/			
+			}//end while
 		}//end while
         map.put("getAuthTripLatLng", resultList);
         
