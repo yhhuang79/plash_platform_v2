@@ -4,6 +4,7 @@ package tw.edu.sinica.iis.ants.components;
 import java.util.*;
 
 import org.hibernate.*;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import tw.edu.sinica.iis.ants.DB.T_FriendAuth;
@@ -42,10 +43,12 @@ public class getAuthTripComponent {
 
         Session session = sessionFactory.openSession(); 
         Criteria criteria = session.createCriteria(T_FriendAuth.class);
+
         
 		try {			
 			criteria.add(Restrictions.eq("userAID", Integer.parseInt(map.get("friendid").toString())));
-			criteria.add(Restrictions.eq("userBID", Integer.parseInt(map.get("userid").toString())));	
+			criteria.add(Restrictions.eq("userBID", Integer.parseInt(map.get("userid").toString())));
+			criteria.setProjection(Projections.property("tripID"));
    			
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
 			map.put("getAuthTrip",false); //result flag, flag name to be unified, para_failed as appeared in excel file
@@ -58,15 +61,9 @@ public class getAuthTripComponent {
 	        System.out.println("getAuthTripComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
 			return map;
 		}//end try catch
-		
-		Iterator fls = criteria.list().iterator();
-		List resultList = new ArrayList();
 
-		while(fls.hasNext()) {
-			resultList.add(((T_FriendAuth)fls.next()).getTripID());			
-		}//end while
-        map.put("getAuthTrip", resultList);
-        
+		map.put("getAuthTrip", criteria.list());
+		       
         System.out.println("getAuthTripComponent successful end:\t"+ Calendar.getInstance().getTimeInMillis());
         return map;
 
