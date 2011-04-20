@@ -24,7 +24,7 @@ import org.hibernate.criterion.Restrictions;
 import tw.edu.sinica.iis.ants.DB.T_FriendList;
 import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
 
-public class PeopleLocationsComponent {
+public class getAllFriendLocationComponent {
 
     private SessionFactory sessionFactory;
 
@@ -36,7 +36,7 @@ public class PeopleLocationsComponent {
 		this.sessionFactory = sessionFactory;
 	}
 	
-	public PeopleLocationsComponent() {
+	public getAllFriendLocationComponent() {
 
 	}
 

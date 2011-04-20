@@ -37,7 +37,7 @@ import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
 
 
 
-public class getCurrentTripIdComponent {
+public class getTripIdComponent {
 
 	  private SessionFactory sessionFactory;
 
@@ -49,7 +49,7 @@ public class getCurrentTripIdComponent {
 	        this.sessionFactory = sessionFactory;
 	    }
 
-	    public getCurrentTripIdComponent() {
+	    public getTripIdComponent() {
 
 	    }
 

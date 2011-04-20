@@ -36,7 +36,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
 
 
-public class makeNewTripIdComponent {
+public class getNewTripIdComponent {
 
 	private SessionFactory sessionFactory;
 
@@ -48,7 +48,7 @@ public class makeNewTripIdComponent {
         this.sessionFactory = sessionFactory;
     }
 
-    public makeNewTripIdComponent() {
+    public getNewTripIdComponent() {
 
     }
 

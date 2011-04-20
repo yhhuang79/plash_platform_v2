@@ -22,7 +22,7 @@ import org.hibernate.criterion.Restrictions;
 import tw.edu.sinica.iis.ants.DB.T_FriendList;
 import tw.edu.sinica.iis.ants.DB.T_Login;
 
-public class FriendListComponent {
+public class getFriendListComponent {
 
     private SessionFactory sessionFactory;
 
@@ -34,7 +34,7 @@ public class FriendListComponent {
 		this.sessionFactory = sessionFactory;
 	}
 	
-	public FriendListComponent() {
+	public getFriendListComponent() {
 
 	}
 
