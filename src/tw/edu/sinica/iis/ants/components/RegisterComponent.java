@@ -76,7 +76,12 @@ public class RegisterComponent {
 		String message;
 	 
 		//Entered passwords do not match
-	    if (!password.equals(password2)){
+	    if (username==null || password==null||password2==null){
+	    	message = "Username empty";
+			return message;
+	    }
+		
+		else if (!password.equals(password2)){
 	    		message = "Password unmatch";
 			   	return message;
 	    }
