@@ -125,9 +125,9 @@ public class FriendRequestComponent {
 			map.put("message", "E-mail invalid");
 		}
 		// Validate friendname field
-		else if (!isValidUsername(friendname)) {
-			map.put("message", "Friend's name invalid");
-		} 
+//		else if (!isValidUsername(friendname)) {
+//			map.put("message", "Friend's name invalid");
+//		} 
 		// -------------------------------------------------------------------//
 		// Pass all the format checks
 		
