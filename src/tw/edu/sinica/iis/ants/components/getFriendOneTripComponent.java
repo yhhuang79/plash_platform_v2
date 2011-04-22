@@ -31,23 +31,25 @@ public class getFriendOneTripComponent {
 
     }
 
+    /**
+     * getFriendOneTripComponent.java
+     * 
+     * return last position the friend shared to a certain user of a certain trip
+     * 
+     * @author Yu-Hsiang Huang 
+     * @version 1.1, 01/26/2010
+     * @param     userid 
+     * @param     friendid
+     * @param     tripid
+     * @return    trip information
+     * @see       connpost.java
+     */
     public Object greet(Map map) {
         System.out.println("getFriendOneTrip Start:\t"+ Calendar.getInstance().getTimeInMillis());
         /*
          * Please Implement Your Programming Logic From Here 
          */
         
-        /**
-         * getFriendOneTripComponent.java
-         * 
-         * return last position the friend shared to a certain user of a certain trip
-         * 
-         * @author Yu-Hsiang Huang 
-         * @version 1.1, 01/26/2010
-         * @param     userid, friendid, tripid
-         * @return    trip information
-         * @see       connpost.java
-         */
 
         Session session = sessionFactory.openSession(); 
         Criteria criteria = session.createCriteria(T_FriendList.class);
