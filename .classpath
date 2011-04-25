@@ -20,5 +20,5 @@
 	<classpathentry kind="lib" path="hibernate-spatial-postgis-1.0.jar"/>
 	<classpathentry kind="lib" path="postgis-2.0.0SVN.jar"/>
 	<classpathentry kind="lib" path="c3p0-0.9.1.2.jar"/>
-	<classpathentry kind="output" path="app/PLASH_Platform_Test_Combine/classes"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>
