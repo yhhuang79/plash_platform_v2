@@ -82,7 +82,7 @@ public class getAuthTripLatLngComponent {
 			criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("friendid").toString())));
 			criteria.addOrder(Order.asc("timestamp"));
 			tripList = criteria.list().iterator();
-			while (tripList.hasNext()) {			
+			if (tripList.hasNext()) {			
 				resultEntry= (T_UserPointLocationTime)tripList.next();
 				resultEntryMap = new HashMap();
 				resultEntryMap.put("tripID", resultEntry.getTrip_id());				
