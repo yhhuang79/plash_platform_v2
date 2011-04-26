@@ -44,19 +44,30 @@ public class getFriendListComponent {
 		Session session = sessionFactory.openSession(); 
 
 		Criteria criteria = session.createCriteria(T_FriendList.class);
+		Criteria criteriaOfFriendName;
 		
 		criteria.add(Restrictions.or(Restrictions.eq("useraid", Integer.parseInt(map.get("sid").toString())),Restrictions.eq("userbid", Integer.parseInt(map.get("sid").toString()))));
 		//criteria.add(Restrictions.eq("password", map.remove("password").toString()));
-		List friend_list = new ArrayList();
+		List friend_list = new ArrayList<Map>();
 		Iterator fls = criteria.list().iterator(); 
+		Map oneFriend;
 		while(fls.hasNext()) {
-			T_FriendList fl = (T_FriendList) fls.next(); 
+			T_FriendList fl = (T_FriendList) fls.next();
+			oneFriend = new HashMap();
+			criteriaOfFriendName = session.createCriteria(T_Login.class);
 			if(fl.getUseraid() == Integer.parseInt(map.get("sid").toString())){
-				friend_list.add(fl.getUserbid());
+				oneFriend.put("id", fl.getUserbid());
+				criteriaOfFriendName.add(Restrictions.eq("sid", fl.getUserbid()));
+				oneFriend.put("name", ((T_Login)criteria.list().get(0)).getUsername());
+				oneFriend.put("image", "http://developer.android.com/assets/images/icon_download.jpg");
 			}
 			else{
-				friend_list.add(fl.getUseraid());				
+				oneFriend.put("id", fl.getUseraid());	
+				criteriaOfFriendName.add(Restrictions.eq("sid", fl.getUseraid()));
+				oneFriend.put("name", ((T_Login)criteria.list().get(0)).getUsername());
+				oneFriend.put("image", "http://developer.android.com/assets/images/icon_download.jpg");	
 			}	
+			friend_list.add(oneFriend);
 		}
 		session.close();
 		map.put("friend_list", friend_list);
