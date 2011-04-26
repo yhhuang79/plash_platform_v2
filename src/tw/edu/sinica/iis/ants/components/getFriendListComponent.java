@@ -58,13 +58,13 @@ public class getFriendListComponent {
 			if(fl.getUseraid() == Integer.parseInt(map.get("sid").toString())){
 				oneFriend.put("id", fl.getUserbid());
 				criteriaOfFriendName.add(Restrictions.eq("sid", fl.getUserbid()));
-				oneFriend.put("name", ((T_Login)criteria.list().get(0)).getUsername());
+				oneFriend.put("name", ((T_Login)criteriaOfFriendName.list().get(0)).getUsername());
 				oneFriend.put("image", "http://developer.android.com/assets/images/icon_download.jpg");
 			}
 			else{
 				oneFriend.put("id", fl.getUseraid());	
 				criteriaOfFriendName.add(Restrictions.eq("sid", fl.getUseraid()));
-				oneFriend.put("name", ((T_Login)criteria.list().get(0)).getUsername());
+				oneFriend.put("name", ((T_Login)criteriaOfFriendName.list().get(0)).getUsername());
 				oneFriend.put("image", "http://developer.android.com/assets/images/icon_download.jpg");	
 			}	
 			friend_list.add(oneFriend);
