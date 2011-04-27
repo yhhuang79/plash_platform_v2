@@ -78,26 +78,26 @@ public class getTripIdComponent {
 			} else {   
 				Integer currentTripId = null;
 				    
-				    //建立Hibernate的查詢物件，並將session指定到T_UserPointLocationTime.class
+				    //build the Hibernate query object and assign the session to the T_UserPointLocationTime.class
 				    Criteria criteria = session.createCriteria(T_UserPointLocationTime.class); 
 				    
-	 			    //取出符合使用者userid的資料
+	 			    //get the record matching the <userid>
 				    criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("userid").toString())));
 				    
-				    //將trip_id由大到小排序，以便取出trip_id為最大的那筆紀錄
+				    //sort the <trip_id> from big to small, to get the record having the biggest <trip_id>
 				    criteria.addOrder(Order.desc("trip_id"));
 				    //criteria.setProjection(Projections.max("trip_id"));
 				    
-					//將查詢結果存在tripids
+					//store the query results into the <tripids>
 					Iterator tripids = criteria.list().iterator();
 					
-					//將 tripids 資料的值存到以 T_UserPointLocationTime 為類別的 tripid 物件中
+					//store the value of <tripids> into the <tripid> object belonging to the T_UserPointLocationTime class
 					T_UserPointLocationTime tripid = (T_UserPointLocationTime) tripids.next();
 					
-					//利用 tripid 的 getTrip_id()方法來取出 trip_id 值
+					//get the value of <trip_id> by using the getTrip_id() method of tripid
 					currentTripId = tripid.getTrip_id();
 					
-					//將結果存到 map 裡面的 newTripId 項目
+					//store the result into the <newTripId> item of the map
 					map.put("currentTripId", currentTripId);  
 				}
 	        
