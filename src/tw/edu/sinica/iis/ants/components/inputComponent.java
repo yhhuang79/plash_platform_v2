@@ -75,19 +75,18 @@ public class inputComponent {
 				if(map.get("label") != null)
 				    label = Integer.parseInt(map.get(label).toString());
 				
-				//id值不存入，由資料庫主動遞增                                                                                            
 				
-				//將userid存入資料庫
+				//store the <userid> into the database
 				T_UserPointLocationTime user = new T_UserPointLocationTime();
 				user.setUserid(userid);
 				
-				//將trip_id存入資料庫
+				//store the <trip_id> into the database
 				user.setTrip_id(trip_id);
 				
-				//將timestamp存入資料庫
+				//store the <timestamp> into the database
 				user.setTimestamp(timestamp);
 				
-				//將 gps 存入資料庫
+				//store the <gps> into the database
 				// Add by Yu-Hsiang Huang
 				WKTReader fromText = new WKTReader();
 	            Geometry gps = null;
@@ -101,10 +100,10 @@ public class inputComponent {
 				user.setGps(gps);	
 				// end
 				
-				//取得server_timestamp，並將其存入資料庫
+				//get the value of <server_timestamp>, and store it into the database
 				user.setServer_timestamp(new Timestamp(new Date().getTime()));
 				
-				//將label存入資料庫
+				//store the <label> into the database
 				user.setLabel(label);
 								
 				Transaction tx = session.beginTransaction();
