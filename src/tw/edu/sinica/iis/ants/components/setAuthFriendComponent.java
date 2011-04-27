@@ -60,21 +60,27 @@ public class setAuthFriendComponent {
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
 			map.put("setAuthTrip",false); //result flag, flag name to be unified, para_failed as appeared in excel file
 			//map.put("error detail" , e.toString()); //perhaps put error detail?
-	        System.out.println("setAuthFriendComponent failure end1:\t"+ Calendar.getInstance().getTimeInMillis());
+	        map.put("message", "Authenticate failed!");
+			System.out.println("setAuthFriendComponent failure end1:\t"+ Calendar.getInstance().getTimeInMillis());
 			return map;
 		} catch (NumberFormatException e) { //invalid arguments 
 			map.put("setAuthTrip",false); //result flag, flag name to be unified, para_failed as appeared in excel file
 			//map.put("error detail" , e.toString()); //perhaps put error detail?
-	        System.out.println("setAuthFriendComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
+			map.put("message", "Authenticate failed!");
+			System.out.println("setAuthFriendComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
 			return map;
 		}//end try catch
 		
 		if (criteria.list().iterator().hasNext()) { //element exists
 			map.put("setAuthTrip",false); //result flag, flag name to be unified
-	        System.out.println("setAuthFriendComponent failure end3:\t"+ Calendar.getInstance().getTimeInMillis());
+	        //need to pass an information
+			map.put("message", "duplicate");
+			//Danny: 4/26 work until here
+			System.out.println("setAuthFriendComponent failure end3:\t"+ Calendar.getInstance().getTimeInMillis());
 			return map;			
 		} else {
 			T_FriendAuth entry = new T_FriendAuth();
+			
 			entry.setUserAID(Integer.parseInt(map.get("userid").toString()));
 			entry.setUserBID(Integer.parseInt(map.get("friendid").toString()));
 			entry.setTripID(Integer.parseInt(map.get("tripid").toString()));						
@@ -84,7 +90,8 @@ public class setAuthFriendComponent {
 			//put code for sending e-mail here
 			//Suggestion: the process of sending e-mail should be initiated by router rather than this component
 			
-			map.put("setAuthFriend", true);	        
+			map.put("setAuthFriend", true);
+			map.put("message", "success");
 	        System.out.println("setAuthFriendComponent successful end:\t"+ Calendar.getInstance().getTimeInMillis());
 	        return map;			
 		}//end if
