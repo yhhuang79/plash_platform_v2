@@ -82,7 +82,7 @@ public class getLatestTripComponent {
 			    
 			    //get the record matching the <userid> & <trip_id>
 			    criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("userid").toString()))); 
-			    criteria.add(Restrictions.eq("trip_id", Integer.parseInt(map.get("trip_id").toString())));  
+			    criteria.add(Restrictions.eq("tripid", Integer.parseInt(map.get("tripid").toString())));  
 			    
 			    //sort the <id> from big to small, to get the record having the biggest <id>
 			    criteria.addOrder(Order.desc("id"));
