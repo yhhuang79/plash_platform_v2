@@ -77,24 +77,24 @@ public class getLatestTripComponent {
 		} else {   
 			    String latestTrip = null;
 			    
-			    //建立Hibernate的查詢物件，並將session指定到T_UserPointLocationTime.class
+			    //build the Hibernate query object and assign the session to the T_UserPointLocationTime.class
 			    Criteria criteria = session.createCriteria(T_UserPointLocationTime.class); 
 			    
-			    //取出符合userid+trip_id的資料紀錄
+			    //get the record matching the <userid> & <trip_id>
 			    criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("userid").toString()))); 
 			    criteria.add(Restrictions.eq("trip_id", Integer.parseInt(map.get("trip_id").toString())));  
 			    
-			    //將 id 由大到小排序，以便取出 id 為最大的那筆紀錄
+			    //sort the <id> from big to small, to get the record having the biggest <id>
 			    criteria.addOrder(Order.desc("id"));
 			  
-			    //將查詢結果存在tripids
+			    //store the query results into the <tripids>
 			    Iterator tripids = criteria.list().iterator();
 			    
-			    //將最後結果之id,label,gps存到latestTrip變數
+			    //store the <id>,<label>,<gps> of the final query result into the <latestTrip> variable
 			    T_UserPointLocationTime latestTripId = (T_UserPointLocationTime) tripids.next();
 			    latestTrip = "id=" + latestTripId.getId() + ";Label=" + latestTripId.getLabel()+ ";GPS=" + latestTripId.getGps();
 			    
-			    //將結果存到 map 裡面的 latestTrip 項目
+			    //store the result into the <latestTrip> item of the map
 			    map.put("latestTrip", latestTrip); 
 		   }
         
