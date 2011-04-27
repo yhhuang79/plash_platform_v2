@@ -63,16 +63,16 @@ public class getLatestTripComponent {
          * @param     userid, trip_id
          * @return    latestTrip (id + label + gps)
          * @see       connpost.java
-         * @example   http://localhost:1234/in?userid=1&trip_id=494
+         * @example   http://localhost:1234/in?userid=1&tripid=494
          */
         Session session = sessionFactory.openSession();
         Integer userid = null;
-        Integer trip_id = null;
+        Integer tripid = null;
         
         if (map.containsKey("userid")) {userid = Integer.parseInt(map.get("userid").toString());}
-        if (map.containsKey("trip_id")) {trip_id = Integer.parseInt(map.get("trip_id").toString());}
+        if (map.containsKey("tripid")) {tripid = Integer.parseInt(map.get("tripid").toString());}
                 
-        if (userid.equals("") || trip_id.equals("")) {
+        if (userid.equals("") || tripid.equals("")) {
 			map.put("message", "userid or trip_id is empty and can not get the latest trip");
 		} else {   
 			    String latestTrip = null;
@@ -116,7 +116,7 @@ public class getLatestTripComponent {
 				    	resultEntryMap.put("label", latestTripId.getLabel());
 				    }
 				    else {
-				    	resultEntryMap.put("label", -1);
+				    	resultEntryMap.put("label", "");
 				    }
 				    
 				    resultList.add(resultEntryMap);
