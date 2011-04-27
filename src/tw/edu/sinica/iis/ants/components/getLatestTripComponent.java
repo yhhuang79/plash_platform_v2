@@ -60,29 +60,29 @@ public class getLatestTripComponent {
          * @goal      get location of the latest trip
          * @author    Angus Fuming Huang
          * @version   1.0, 01/22/2011
-         * @param     userid, tripid
+         * @param     userid, trip_id
          * @return    latestTrip (id + label + gps)
          * @see       connpost.java
-         * @example   http://localhost:1234/in?userid=1&tripid=494
+         * @example   http://localhost:1234/in?userid=1&trip_id=494
          */
         Session session = sessionFactory.openSession();
         Integer userid = null;
-        Integer tripid = null;
+        Integer trip_id = null;
         
         if (map.containsKey("userid")) {userid = Integer.parseInt(map.get("userid").toString());}
-        if (map.containsKey("tripid")) {tripid = Integer.parseInt(map.get("tripid").toString());}
+        if (map.containsKey("trip_id")) {trip_id = Integer.parseInt(map.get("trip_id").toString());}
                 
-        if (userid.equals("") || tripid.equals("")) {
-			map.put("message", "userid or tripid is empty and can not get the latest trip");
+        if (userid.equals("") || trip_id.equals("")) {
+			map.put("message", "userid or trip_id is empty and can not get the latest trip");
 		} else {   
 			    String latestTrip = null;
 			    
 			    //build the Hibernate query object and assign the session to the T_UserPointLocationTime.class
 			    Criteria criteria = session.createCriteria(T_UserPointLocationTime.class); 
 			    
-			    //get the record matching the <userid> & <tripid>
+			    //get the record matching the <userid> & <trip_id>
 			    criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("userid").toString()))); 
-			    criteria.add(Restrictions.eq("tripid", Integer.parseInt(map.get("tripid").toString())));  
+			    criteria.add(Restrictions.eq("trip_id", Integer.parseInt(map.get("trip_id").toString())));  
 			    
 			    //sort the <id> from big to small, to get the record having the biggest <id>
 			    criteria.addOrder(Order.desc("id"));
@@ -116,7 +116,7 @@ public class getLatestTripComponent {
 				    	resultEntryMap.put("label", latestTripId.getLabel());
 				    }
 				    else {
-				    	resultEntryMap.put("label", "");
+				    	resultEntryMap.put("label", -1);
 				    }
 				    
 				    resultList.add(resultEntryMap);
