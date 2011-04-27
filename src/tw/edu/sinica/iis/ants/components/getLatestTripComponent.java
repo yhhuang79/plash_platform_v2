@@ -54,8 +54,6 @@ public class getLatestTripComponent {
 
     public Object greet(Map map) {
     	
-    	
-    	
         System.out.println("getLatestTripComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
         // Please Implement Your Programming Logic From Here
         /**
@@ -92,15 +90,52 @@ public class getLatestTripComponent {
 			    //store the query results into the <tripids>
 			    Iterator tripids = criteria.list().iterator();
 			    
-			    //store the <id>,<label>,<gps> of the final query result into the <latestTrip> variable
-			    T_UserPointLocationTime latestTripId = (T_UserPointLocationTime) tripids.next();
-			    latestTrip = "id=" + latestTripId.getId() + ";Label=" + latestTripId.getLabel()+ ";GPS=" + latestTripId.getGps();
+			    //Danny: Incorrect result, it only get the latest GPS point not trip (list of points).  
+//			    T_UserPointLocationTime latestTripId = (T_UserPointLocationTime) tripids.next();
+//			    /store the <id>,<label>,<gps> of the final query result into the <latestTrip> variable
+//			    latestTrip += "id=" + latestTripId.getId() + ";Label=" + latestTripId.getLabel()+ ";GPS=" + latestTripId.getGps();
+//			    
+//			    //store the query results into the <tripids>
+//			    map.put("latestTrip", latestTrip);
+			    
+			    //--------------------------------------------------//
+			    //Danny
+			    List<Map> resultList = new ArrayList();
+			    Map resultEntryMap;
+				while (tripids.hasNext()){
+			    	
+			    	
+				    T_UserPointLocationTime latestTripId = (T_UserPointLocationTime) tripids.next();
+				    resultEntryMap = new HashMap();
+				    resultEntryMap.put("id", latestTripId.getId());
+				    resultEntryMap.put("lng", ((Geometry)latestTripId.getGps()).getCoordinate().x*1000000);
+				    resultEntryMap.put("lat", ((Geometry)latestTripId.getGps()).getCoordinate().y*1000000);
+				    
+				    if (Integer.toString(latestTripId.getLabel())!=null){
+				    	resultEntryMap.put("label", latestTripId.getLabel());
+				    }
+				    else {
+				    	resultEntryMap.put("label", -1);
+				    }
+				    
+				    resultList.add(resultEntryMap);
+				}
+				
+			    
+//			    if (tripList.hasNext()) {			
+//					resultEntry= (T_UserPointLocationTime)tripList.next();
+//					resultEntryMap = new HashMap();
+//					resultEntryMap.put("tripID", resultEntry.getTrip_id());				
+//					resultEntryMap.put("timestamp", resultEntry.getTimestamp().toString());
+//					resultEntryMap.put("lng",((Geometry)resultEntry.getGps()).getCoordinate().x*1000000);				
+//					resultEntryMap.put("lat",((Geometry)resultEntry.getGps()).getCoordinate().y*1000000);
+//					
+//					resultList.add(resultEntryMap);
+//				}//end while
 			    
 			    //store the result into the <latestTrip> item of the map
-			    map.put("latestTrip", latestTrip); 
+			    map.put("latestTrip", resultList); 
 		   }
-        //jhjhjkhjk
-        
         
         session.close();
         //End of Programming Logic Implementation
