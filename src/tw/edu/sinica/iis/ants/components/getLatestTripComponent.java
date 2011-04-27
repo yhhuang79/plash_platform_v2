@@ -112,23 +112,25 @@ public class getLatestTripComponent {
 				    resultEntryMap.put("id", latestTripId.getId());
 				    resultEntryMap.put("lng", ((Geometry)latestTripId.getGps()).getCoordinate().x*1000000);
 				    resultEntryMap.put("lat", ((Geometry)latestTripId.getGps()).getCoordinate().y*1000000);
+				    resultEntryMap.put("label", latestTripId.getLabel());
 				    
 				    //Test if latestTripId.getLabel() is null
-				    Integer s = null;
-				    
-				    System.out.println(latestTripId.getLabel());
-				    try {
-				    	 s = Integer.valueOf(latestTripId.getLabel());
-				    }
-				    catch (NumberFormatException  e){
-				    	
-				    }
-				    if (s !=null){
-				    	resultEntryMap.put("label", latestTripId.getLabel());
-				    }
-				    else {
-				    	resultEntryMap.put("label", -1);
-				    }
+//				    Integer s = null;
+//				    
+//				    
+//				    System.out.println(latestTripId.getLabel());
+//				    try {
+//				    	 s = Integer.valueOf(latestTripId.getLabel());
+//				    }
+//				    catch (NumberFormatException  e){
+//				    	
+//				    }
+//				    if (s !=null){
+//				    	resultEntryMap.put("label", latestTripId.getLabel());
+//				    }
+//				    else {
+//				    	resultEntryMap.put("label", -1);
+//				    }
 				    //End Test if latestTripId.getLabel() is null
 				    
 				    resultList.add(resultEntryMap);
