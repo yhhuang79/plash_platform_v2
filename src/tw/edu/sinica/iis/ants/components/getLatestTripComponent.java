@@ -98,6 +98,7 @@ public class getLatestTripComponent {
 //			    //store the query results into the <tripids>
 //			    map.put("latestTrip", latestTrip);
 			    
+			    
 			    //--------------------------------------------------//
 			    //Danny
 			    
@@ -112,27 +113,25 @@ public class getLatestTripComponent {
 				    resultEntryMap.put("lng", ((Geometry)latestTripId.getGps()).getCoordinate().x*1000000);
 				    resultEntryMap.put("lat", ((Geometry)latestTripId.getGps()).getCoordinate().y*1000000);
 				    
-				    if (Integer.toString(latestTripId.getLabel())!=null){
+				    //Test if latestTripId.getLabel() is null
+				    Integer s = null;
+				    try {
+				    	 s = Integer.valueOf(latestTripId.getLabel());
+				    }
+				    catch (NumberFormatException  e){
+				    	
+				    }
+				    if (s !=null){
 				    	resultEntryMap.put("label", latestTripId.getLabel());
 				    }
 				    else {
 				    	resultEntryMap.put("label", -1);
 				    }
+				    //End Test if latestTripId.getLabel() is null
 				    
 				    resultList.add(resultEntryMap);
 				}
 				
-			    
-//			    if (tripList.hasNext()) {			
-//					resultEntry= (T_UserPointLocationTime)tripList.next();
-//					resultEntryMap = new HashMap();
-//					resultEntryMap.put("tripID", resultEntry.getTrip_id());				
-//					resultEntryMap.put("timestamp", resultEntry.getTimestamp().toString());
-//					resultEntryMap.put("lng",((Geometry)resultEntry.getGps()).getCoordinate().x*1000000);				
-//					resultEntryMap.put("lat",((Geometry)resultEntry.getGps()).getCoordinate().y*1000000);
-//					
-//					resultList.add(resultEntryMap);
-//				}//end while
 			    
 			    //store the result into the <latestTrip> item of the map
 			    map.put("latestTrip", resultList); 
