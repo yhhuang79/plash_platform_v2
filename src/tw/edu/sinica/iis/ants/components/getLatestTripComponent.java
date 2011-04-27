@@ -115,6 +115,8 @@ public class getLatestTripComponent {
 				    
 				    //Test if latestTripId.getLabel() is null
 				    Integer s = null;
+				    
+				    System.out.println(latestTripId.getLabel());
 				    try {
 				    	 s = Integer.valueOf(latestTripId.getLabel());
 				    }
