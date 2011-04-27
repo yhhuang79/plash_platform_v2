@@ -60,7 +60,7 @@ public class getLatestTripComponent {
          * @goal      get location of the latest trip
          * @author    Angus Fuming Huang
          * @version   1.0, 01/22/2011
-         * @param     userid, trip_id
+         * @param     userid, tripid
          * @return    latestTrip (id + label + gps)
          * @see       connpost.java
          * @example   http://localhost:1234/in?userid=1&tripid=494
@@ -73,14 +73,14 @@ public class getLatestTripComponent {
         if (map.containsKey("tripid")) {tripid = Integer.parseInt(map.get("tripid").toString());}
                 
         if (userid.equals("") || tripid.equals("")) {
-			map.put("message", "userid or trip_id is empty and can not get the latest trip");
+			map.put("message", "userid or tripid is empty and can not get the latest trip");
 		} else {   
 			    String latestTrip = null;
 			    
 			    //build the Hibernate query object and assign the session to the T_UserPointLocationTime.class
 			    Criteria criteria = session.createCriteria(T_UserPointLocationTime.class); 
 			    
-			    //get the record matching the <userid> & <trip_id>
+			    //get the record matching the <userid> & <tripid>
 			    criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("userid").toString()))); 
 			    criteria.add(Restrictions.eq("tripid", Integer.parseInt(map.get("tripid").toString())));  
 			    
