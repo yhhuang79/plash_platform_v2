@@ -136,6 +136,7 @@ public class getLatestTripComponent {
 			    //store the result into the <latestTrip> item of the map
 			    map.put("latestTrip", resultList); 
 		   }
+        //jkkhjj
         
         session.close();
         //End of Programming Logic Implementation
