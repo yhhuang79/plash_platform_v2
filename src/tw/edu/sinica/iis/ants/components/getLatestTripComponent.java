@@ -54,6 +54,8 @@ public class getLatestTripComponent {
 
     public Object greet(Map map) {
     	
+    	
+    	
         System.out.println("getLatestTripComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
         // Please Implement Your Programming Logic From Here
         /**
@@ -97,6 +99,8 @@ public class getLatestTripComponent {
 			    //store the result into the <latestTrip> item of the map
 			    map.put("latestTrip", latestTrip); 
 		   }
+        //jhjhjkhjk
+        
         
         session.close();
         //End of Programming Logic Implementation
