@@ -101,7 +101,6 @@ public class getLatestTripComponent {
 			    //--------------------------------------------------//
 			    //Danny
 			    
-			    //Testing
 			    List<Map> resultList = new ArrayList();
 			    Map resultEntryMap;
 				while (tripids.hasNext()){
@@ -138,7 +137,6 @@ public class getLatestTripComponent {
 			    //store the result into the <latestTrip> item of the map
 			    map.put("latestTrip", resultList); 
 		   }
-        //jkkhjj222
         
         session.close();
         //End of Programming Logic Implementation
