@@ -94,7 +94,7 @@ public class getAuthTripLatLngComponent {
 			}//end while
 		}//end while
         map.put("getAuthTripLatLng", resultList);
-        
+        session.close();
         System.out.println("getAuthTripLatLngComponent successful end:\t"+ Calendar.getInstance().getTimeInMillis());
         return map;
     }//end method
