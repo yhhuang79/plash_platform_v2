@@ -62,6 +62,7 @@ public class getLatestTripComponent {
          * @version   1.0, 01/22/2011
          * @param     userid, trip_id
          * @return    latestTrip (id + label + gps)
+         * @return	  JASONObject(JASONArray) - see FriendMapHistory.java in PLASH_Android Client
          * @see       connpost.java
          * @example   http://localhost:1234/in?userid=1&trip_id=494
          */
@@ -113,7 +114,7 @@ public class getLatestTripComponent {
 				    resultEntryMap.put("lng", ((Geometry)latestTripId.getGps()).getCoordinate().x*1000000);
 				    resultEntryMap.put("lat", ((Geometry)latestTripId.getGps()).getCoordinate().y*1000000);
 				    resultEntryMap.put("label", latestTripId.getLabel());
-				    
+				    resultEntryMap.put("timestamp", latestTripId.getTimestamp().toString());
 				    //Test if latestTripId.getLabel() is null
 //				    Integer s = null;
 //				    
