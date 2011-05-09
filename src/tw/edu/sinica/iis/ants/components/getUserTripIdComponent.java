@@ -2,9 +2,11 @@ package tw.edu.sinica.iis.ants.components;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -58,7 +60,8 @@ public class getUserTripIdComponent {
 		} else {   
 			Criteria criteria = session.createCriteria(T_UserPointLocationTime.class);
 			criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("userid").toString())));
-			List tripid_list = new ArrayList();
+			//List tripid_list = new ArrayList();
+			Set tripid_list = new HashSet();
 			Iterator tripids = criteria.list().iterator();
 			while(tripids.hasNext()) {
 				T_UserPointLocationTime tripid = (T_UserPointLocationTime) tripids.next();
