@@ -67,8 +67,11 @@ public class getUserTripIdComponent {
 				T_UserPointLocationTime tripid = (T_UserPointLocationTime) tripids.next();
 				tripid_list.add(tripid.getTrip_id());
 			}
+			
+			//transform into List (cause MULE doesn't allow Set)
+			List tmpList = new ArrayList(tripid_list);
  
-			map.put("tripid_list", tripid_list);
+			map.put("tripid_list", tmpList);
 		}
         
         session.close();
