@@ -7,11 +7,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
 
@@ -61,7 +64,7 @@ public class getUserTripIdComponent {
 			Criteria criteria = session.createCriteria(T_UserPointLocationTime.class);
 			criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("userid").toString())));
 			//List tripid_list = new ArrayList();
-			Set tripid_list = new HashSet();
+			Set tripid_list = new TreeSet(Collections.reverseOrder());
 			Iterator tripids = criteria.list().iterator();
 			while(tripids.hasNext()) {
 				T_UserPointLocationTime tripid = (T_UserPointLocationTime) tripids.next();
