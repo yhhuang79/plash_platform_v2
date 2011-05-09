@@ -73,7 +73,7 @@ public class inputComponent {
 		} else {   
 				label = 0; //let old version can work as well, 0 means no mentioned
 				if(map.get("label") != null)
-				    label = Integer.parseInt(map.get(label).toString());
+				    label = Integer.parseInt(map.get("label").toString());
 				
 				
 				//store the <userid> into the database
