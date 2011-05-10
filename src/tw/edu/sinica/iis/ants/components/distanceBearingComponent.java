@@ -104,8 +104,9 @@ public class distanceBearingComponent {
 			String returnResult = oneResult[0].toString() + ";" + oneResult[1].toString();
 
 
-			
-			map.put("trip_list", returnResult);
+
+			//map.put("trip_list", returnResult);
+			map.put("result", returnResult);
 		}
         
         session.close();
