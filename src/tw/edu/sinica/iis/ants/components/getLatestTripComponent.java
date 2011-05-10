@@ -61,7 +61,7 @@ public class getLatestTripComponent {
          * @author    Angus Fuming Huang
          * @version   1.0, 01/22/2011
          * @param     userid, trip_id
-         * @return    latestTrip (id + label + gps)
+         * @return    latestTrip (id + label + lng + lat + timestamp)
          * @return	  JASONObject(JASONArray) - see FriendMapHistory.java in PLASH_Android Client
          * @see       connpost.java
          * @example   http://localhost:1234/in?userid=1&trip_id=494
