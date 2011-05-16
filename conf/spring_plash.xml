@@ -145,6 +145,7 @@
 				<value>T_AppUser.hbm.xml</value>
 				<value>T_Activity.hbm.xml</value>
 				<value>T_Item.hbm.xml</value>
+				<value>T_ActivityUser.hbm.xml</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -172,7 +173,8 @@
 				<value>T_AppName.hbm.xml</value>
 				<value>T_AppUser.hbm.xml</value>	
 				<value>T_Activity.hbm.xml</value>
-				<value>T_Item.hbm.xml</value>							
+				<value>T_Item.hbm.xml</value>	
+				<value>T_ActivityUser.hbm.xml</value>						
 			</list>
 		</property>
 		<property name="hibernateProperties">
