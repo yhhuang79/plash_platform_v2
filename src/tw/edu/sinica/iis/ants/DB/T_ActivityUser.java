@@ -1,8 +1,5 @@
 package tw.edu.sinica.iis.ants.DB;
 
-import java.sql.Timestamp;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 public class T_ActivityUser {
 	private Integer userid;
