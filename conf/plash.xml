@@ -150,6 +150,50 @@
 		class="tw.edu.sinica.iis.ants.components.getAuthTripLatLngComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
+	<spring:bean id="SetActivityComponent"
+		class="tw.edu.sinica.iis.ants.components.SetActivityComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="GetActivityComponent"
+		class="tw.edu.sinica.iis.ants.components.GetActivityComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="SetAttendActivityComponent"
+		class="tw.edu.sinica.iis.ants.components.SetAttendActivityComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="DelAttendActivityComponent"
+		class="tw.edu.sinica.iis.ants.components.DelAttendActivityComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="SetItemComponent"
+		class="tw.edu.sinica.iis.ants.components.SetItemComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="GetItemComponent"
+		class="tw.edu.sinica.iis.ants.components.GetItemComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="DelItemComponent"
+		class="tw.edu.sinica.iis.ants.components.DelItemComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="SetAssignItemComponent"
+		class="tw.edu.sinica.iis.ants.components.SetAssignItemComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="GetAssignedItemInfoOfUserComponent"
+		class="tw.edu.sinica.iis.ants.components.GetAssignedItemInfoOfUserComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="DelAssignItemComponent"
+		class="tw.edu.sinica.iis.ants.components.DelAssignItemComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="GetUsersAttendActivityComponent"
+		class="tw.edu.sinica.iis.ants.components.GetUsersAttendActivityComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
 	
 	
 	<spring:bean id="TestComponent"
@@ -171,7 +215,7 @@
 	
 
 	<jms:activemq-connector name="jmsCon"
-		specification="1.1" brokerURL="tcp://localhost:61616">
+		specification="1.1" brokerURL="tcp://localhost:61617">
 		<spring:property name="disableTemporaryReplyToDestinations"
 			value="true" />
 	</jms:activemq-connector>
@@ -247,6 +291,28 @@
 	<jms:endpoint name="plashGetAuthTripLatLngQueue" queue="plash.get.auth.trip.lat.lng"
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashRetrieveUserInfoQueue" queue="plash.retrieve.user.info"
+		connector-ref="jmsCon" />	
+	<jms:endpoint name="plashGetActivityQueue" queue="plash.get.activity"
+		connector-ref="jmsCon" />	
+	<jms:endpoint name="plashSetActivityQueue" queue="plash.set.activity"
+		connector-ref="jmsCon" />	
+	<jms:endpoint name="plashSetAttendActivityQueue" queue="plash.set.attend.activity"
+		connector-ref="jmsCon" />	
+	<jms:endpoint name="plashDelAttendActivityQueue" queue="plash.del.attend.activity"
+		connector-ref="jmsCon" />	
+	<jms:endpoint name="plashSetItemQueue" queue="plash.set.item"
+		connector-ref="jmsCon" />	
+	<jms:endpoint name="plashGetItemQueue" queue="plash.get.item"
+		connector-ref="jmsCon" />	
+	<jms:endpoint name="plashDelItemQueue" queue="plash.del.item"
+		connector-ref="jmsCon" />	
+	<jms:endpoint name="plashSetAssignItemQueue" queue="plash.set.assign.item"
+		connector-ref="jmsCon" />	
+	<jms:endpoint name="plashGetAssignedItemInfoOfUserQueue" queue="plash.get.assigned.item.info.user"
+		connector-ref="jmsCon" />	
+	<jms:endpoint name="plashDelAssignItemQueue" queue="plash.del.assign.item"
+		connector-ref="jmsCon" />	
+	<jms:endpoint name="plashGetUsersAttendActivityQueue" queue="plash.get.users.attend.activity"
 		connector-ref="jmsCon" />	
 	
 	<!-- 
@@ -384,6 +450,39 @@
 		
 	<https:endpoint name="plashNearestHttpsInboundEndpoint" host="localhost"
 		port="12345" path="Nearest" synchronous="true" connector-ref="httpsConnector" />
+		
+	<https:endpoint name="plashSetActivityHttpsInboundEndpoint" host="localhost"
+		port="12345" path="SetActivity" synchronous="true" connector-ref="httpsConnector" />
+		
+	<https:endpoint name="plashGetActivityHttpsInboundEndpoint" host="localhost"
+		port="12345" path="GetActivity" synchronous="true" connector-ref="httpsConnector" />
+		
+	<https:endpoint name="plashSetAttendActivityHttpsInboundEndpoint" host="localhost"
+		port="12345" path="SetAttendActivity" synchronous="true" connector-ref="httpsConnector" />
+		
+	<https:endpoint name="plashDelAttendActivityHttpsInboundEndpoint" host="localhost"
+		port="12345" path="DelAttendActivity" synchronous="true" connector-ref="httpsConnector" />
+		
+	<https:endpoint name="plashSetItemHttpsInboundEndpoint" host="localhost"
+		port="12345" path="SetItem" synchronous="true" connector-ref="httpsConnector" />
+		
+	<https:endpoint name="plashGetItemHttpsInboundEndpoint" host="localhost"
+		port="12345" path="GetItem" synchronous="true" connector-ref="httpsConnector" />
+		
+	<https:endpoint name="plashDelItemHttpsInboundEndpoint" host="localhost"
+		port="12345" path="DelItem" synchronous="true" connector-ref="httpsConnector" />
+		
+	<https:endpoint name="plashSetAssignItemHttpsInboundEndpoint" host="localhost"
+		port="12345" path="SetAssignItem" synchronous="true" connector-ref="httpsConnector" />
+		
+	<https:endpoint name="plashGetAssignedItemInfoOfUserHttpsInboundEndpoint" host="localhost"
+		port="12345" path="GetAssignedItemInfoOfUser" synchronous="true" connector-ref="httpsConnector" />
+		
+	<https:endpoint name="plashDelAssignItemHttpsInboundEndpoint" host="localhost"
+		port="12345" path="DelAssignItem" synchronous="true" connector-ref="httpsConnector" />
+		
+	<https:endpoint name="plashGetUsersAttendActivityHttpsInboundEndpoint" host="localhost"
+		port="12345" path="GetUsersAttendActivity" synchronous="true" connector-ref="httpsConnector" />
 		
 	<byte-array-to-string-transformer name="byteArrayToString" />
 	<custom-transformer class="tw.edu.sinica.iis.ants.CustomByteArrayToString"
@@ -1372,6 +1471,326 @@
 			</outbound>
 			<async-reply>
 				<inbound-endpoint ref="plashRetrieveUserInfoQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="rt" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		
+		<!-- (Step 4) Kenny: XXXXX =  RetrieveUserInfo-->
+		<service name="GetActivityService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashGetActivityHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="GetActivityComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashGetActivityQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashGetActivityQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="rt" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		
+		<!-- (Step 4) Kenny: XXXXX =  RetrieveUserInfo-->
+		<service name="SetActivityService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashSetActivityHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="SetActivityComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashSetActivityQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashSetActivityQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="rt" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		
+		<!-- (Step 4) Kenny: XXXXX =  RetrieveUserInfo-->
+		<service name="SetAttendActivityService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashSetAttendActivityHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="SetAttendActivityComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashSetAttendActivityQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashSetAttendActivityQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="rt" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		
+		<!-- (Step 4) Kenny: XXXXX =  RetrieveUserInfo-->
+		<service name="DelAttendActivityService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashDelAttendActivityHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="DelAttendActivityComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashDelAttendActivityQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashDelAttendActivityQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="rt" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		
+		
+		<!-- (Step 4) Kenny: XXXXX =  RetrieveUserInfo-->
+		<service name="SetItemService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashSetItemHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="SetItemComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashSetItemQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashSetItemQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="rt" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		
+		<!-- (Step 4) Kenny: XXXXX =  RetrieveUserInfo-->
+		<service name="GetItemService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashGetItemHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="GetItemComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashGetItemQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashGetItemQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="rt" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		
+		<!-- (Step 4) Kenny: XXXXX =  RetrieveUserInfo-->
+		<service name="DelItemService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashDelItemHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="DelItemComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashDelItemQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashDelItemQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="rt" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		
+		<!-- (Step 4) Kenny: XXXXX =  RetrieveUserInfo-->
+		<service name="SetAssignItemService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashSetAssignItemHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="SetAssignItemComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashSetAssignItemQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashSetAssignItemQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="rt" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		
+		<!-- (Step 4) Kenny: XXXXX =  RetrieveUserInfo-->
+		<service name="GetAssignedItemInfoOfUserService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashGetAssignedItemInfoOfUserHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="GetAssignedItemInfoOfUserComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashGetAssignedItemInfoOfUserQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashGetAssignedItemInfoOfUserQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="rt" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		
+		<!-- (Step 4) Kenny: XXXXX =  RetrieveUserInfo-->
+		<service name="DelAssignItemService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashDelAssignItemHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="DelAssignItemComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashDelAssignItemQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashDelAssignItemQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="rt" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		
+		<!-- (Step 4) Kenny: XXXXX =  RetrieveUserInfo-->
+		<service name="GetUsersAttendActivityService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashGetUsersAttendActivityHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="GetUsersAttendActivityComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashGetUsersAttendActivityQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashGetUsersAttendActivityQueue">
 					<transformers>
 						<jms:jmsmessage-to-object-transformer />
 						<transformer ref="rt" />

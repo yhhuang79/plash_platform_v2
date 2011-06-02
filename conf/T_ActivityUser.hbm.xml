@@ -7,6 +7,11 @@
 
 	<class name="tw.edu.sinica.iis.ants.DB.T_ActivityUser" table="activity.activity_user">
 
+		<id column="id" name="id" type="java.lang.Integer">
+			<generator class="sequence">
+				<param name="sequence">activity.activity_user_seq</param>
+			</generator>
+		</id>
 		<property name="userid" column="userid" />
 		<property name="activityid" column="activityid" />
 		

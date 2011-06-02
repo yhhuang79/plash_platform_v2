@@ -7,7 +7,7 @@ public class T_Item {
 	private String name;
 	private Double price;
 	private Boolean assigned;
-	private String assigneduserid;
+	private Integer assigneduserid;
 	
 	public T_Item(){
 	
@@ -61,11 +61,11 @@ public class T_Item {
 		this.assigned = assigned;
 	}
 
-	public String getAssigneduserid() {
+	public Integer getAssigneduserid() {
 		return assigneduserid;
 	}
 
-	public void setAssigneduserid(String assigneduserid) {
+	public void setAssigneduserid(Integer assigneduserid) {
 		this.assigneduserid = assigneduserid;
 	}
 	

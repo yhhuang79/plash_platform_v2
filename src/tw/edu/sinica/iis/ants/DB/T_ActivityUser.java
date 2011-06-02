@@ -2,11 +2,20 @@ package tw.edu.sinica.iis.ants.DB;
 
 
 public class T_ActivityUser {
+	private int id;
 	private Integer userid;
 	private Integer activityid;
 	
 	public T_ActivityUser(){
 		
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Integer getUserid() {
