@@ -26,7 +26,7 @@ import org.mule.routing.outbound.AbstractOutboundRouter;
 
 import tw.edu.sinica.iis.ants.DB.T_Login;
 
-public class MyRouter extends AbstractOutboundRouter {
+public class MyRouterWorkedOld extends AbstractOutboundRouter {
 
     private SessionFactory sessionFactory;
 
@@ -50,6 +50,7 @@ public class MyRouter extends AbstractOutboundRouter {
 
 		System.out.println("My Router Start:\t"+ Calendar.getInstance().getTimeInMillis());
 		
+
 		int endpoint_id = -1;
 		Map map = null;
 		int step = -1;
@@ -75,9 +76,6 @@ public class MyRouter extends AbstractOutboundRouter {
 			endpoint_id = -1;
  
 		sessionH.close();
-		
-
-		
 		
 		
 		
