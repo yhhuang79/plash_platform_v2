@@ -93,7 +93,7 @@ public class GetUserTripLatLngComponent {
 						break;
 				}//end while
 			}//end while
-	        map.put("GetUserTripLatLngComponent", resultList);
+	        map.put("GetUserTripLatLng", resultList);
 	        
 		}
 
