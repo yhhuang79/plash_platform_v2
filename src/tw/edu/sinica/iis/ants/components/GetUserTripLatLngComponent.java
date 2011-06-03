@@ -63,6 +63,7 @@ public class GetUserTripLatLngComponent {
 			System.out.println("!!!!!!!!!!!!!"+userid);
 			Criteria criteria = session.createCriteria(T_UserPointLocationTime.class);
 			criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("userid").toString())));
+			criteria.addOrder(Order.desc("trip_id"));
 
 			criteria.setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("trip_id"))));
 
@@ -77,7 +78,7 @@ public class GetUserTripLatLngComponent {
 			    criteria = session.createCriteria(T_UserPointLocationTime.class);
 			    criteria.add(Restrictions.eq("trip_id", (Integer)tripIDList.next()));
 				criteria.add(Restrictions.eq("userid", userid));
-				criteria.addOrder(Order.desc("timestamp"));
+				criteria.addOrder(Order.asc("timestamp"));
 				tripList = criteria.list().iterator();
 				if (tripList.hasNext()) {			
 					resultEntry= (T_UserPointLocationTime)tripList.next();
