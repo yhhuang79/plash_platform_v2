@@ -71,13 +71,13 @@ public class GetUserTripLatLngComponent {
 			List<Map> resultList = new ArrayList();
 			T_UserPointLocationTime resultEntry;
 			Map resultEntryMap;
-
+			int count = 0;
 			while(tripIDList.hasNext()) {			
 				
 			    criteria = session.createCriteria(T_UserPointLocationTime.class);
 			    criteria.add(Restrictions.eq("trip_id", (Integer)tripIDList.next()));
 				criteria.add(Restrictions.eq("userid", userid));
-				criteria.addOrder(Order.asc("timestamp"));
+				criteria.addOrder(Order.desc("timestamp"));
 				tripList = criteria.list().iterator();
 				if (tripList.hasNext()) {			
 					resultEntry= (T_UserPointLocationTime)tripList.next();
@@ -88,6 +88,9 @@ public class GetUserTripLatLngComponent {
 					resultEntryMap.put("lat",((Geometry)resultEntry.getGps()).getCoordinate().y*1000000);
 					
 					resultList.add(resultEntryMap);
+					count++;
+					if(count==10)
+						break;
 				}//end while
 			}//end while
 	        map.put("GetUserTripLatLngComponent", resultList);
