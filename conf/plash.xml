@@ -27,7 +27,7 @@
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	<spring:bean id="GetFriendListComponent"
-		class="tw.edu.sinica.iis.ants.components.getFriendListComponent">
+		class="tw.edu.sinica.iis.ants.components.GetFriendListComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	<!-- 
@@ -75,55 +75,55 @@
 	
 	
 	<spring:bean id="InputComponent"
-		class="tw.edu.sinica.iis.ants.components.inputComponent">
+		class="tw.edu.sinica.iis.ants.components.InputComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	
 	
 	<spring:bean id="GetLatestTripComponent"
-		class="tw.edu.sinica.iis.ants.components.getLatestTripComponent">
+		class="tw.edu.sinica.iis.ants.components.GetLatestTripComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	
 	
 	<spring:bean id="GetNewTripIdComponent"
-		class="tw.edu.sinica.iis.ants.components.getNewTripIdComponent">
+		class="tw.edu.sinica.iis.ants.components.GetNewTripIdComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	
 	
 	<spring:bean id="GetTripIdComponent"
-		class="tw.edu.sinica.iis.ants.components.getTripIdComponent">
+		class="tw.edu.sinica.iis.ants.components.GetTripIdComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	
 	
 	<spring:bean id="GetFriendLatestTripComponent"
-		class="tw.edu.sinica.iis.ants.components.getFriendLatestTripComponent">
+		class="tw.edu.sinica.iis.ants.components.GetFriendLatestTripComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	
 	
 	<spring:bean id="GetFriendOneTripComponent"
-		class="tw.edu.sinica.iis.ants.components.getFriendOneTripComponent">
+		class="tw.edu.sinica.iis.ants.components.GetFriendOneTripComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	
 	
 	<spring:bean id="GetUserTripIdComponent"
-		class="tw.edu.sinica.iis.ants.components.getUserTripIdComponent">
+		class="tw.edu.sinica.iis.ants.components.GetUserTripIdComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	
 	
 	<spring:bean id="DistanceBearingComponent"
-		class="tw.edu.sinica.iis.ants.components.distanceBearingComponent">
+		class="tw.edu.sinica.iis.ants.components.DistanceBearingComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	
 	
 	<spring:bean id="GetAllFriendLocationComponent"
-		class="tw.edu.sinica.iis.ants.components.getAllFriendLocationComponent">
+		class="tw.edu.sinica.iis.ants.components.GetAllFriendLocationComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	<spring:bean id="NearestComponent"
@@ -131,23 +131,23 @@
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	<spring:bean id="GetAuthFriendComponent"
-		class="tw.edu.sinica.iis.ants.components.getAuthFriendComponent">
+		class="tw.edu.sinica.iis.ants.components.GetAuthFriendComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	<spring:bean id="SetAuthFriendComponent"
-		class="tw.edu.sinica.iis.ants.components.setAuthFriendComponent">
+		class="tw.edu.sinica.iis.ants.components.SetAuthFriendComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	<spring:bean id="DelAuthFriendComponent"
-		class="tw.edu.sinica.iis.ants.components.delAuthFriendComponent">
+		class="tw.edu.sinica.iis.ants.components.DelAuthFriendComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	<spring:bean id="GetAuthTripComponent"
-		class="tw.edu.sinica.iis.ants.components.getAuthTripComponent">
+		class="tw.edu.sinica.iis.ants.components.GetAuthTripComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	<spring:bean id="GetAuthTripLatLngComponent"
-		class="tw.edu.sinica.iis.ants.components.getAuthTripLatLngComponent">
+		class="tw.edu.sinica.iis.ants.components.GetAuthTripLatLngComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	<spring:bean id="SetActivityComponent"
@@ -192,6 +192,10 @@
 	</spring:bean>
 	<spring:bean id="GetUsersAttendActivityComponent"
 		class="tw.edu.sinica.iis.ants.components.GetUsersAttendActivityComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="GetUserTripLatLngComponent"
+		class="tw.edu.sinica.iis.ants.components.GetUserTripLatLngComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	
@@ -314,6 +318,8 @@
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashGetUsersAttendActivityQueue" queue="plash.get.users.attend.activity"
 		connector-ref="jmsCon" />	
+	<jms:endpoint name="plashGetUserTripLatLngQueue" queue="plash.get.users.trip.lat.lng"
+		connector-ref="jmsCon" />	
 	
 	<!-- 
 		Step 2: Create a response queue for your component
@@ -330,6 +336,10 @@
 
 	<custom-transformer name="HttpParams"
 		class="tw.edu.sinica.iis.ants.PlashHTTPTransformer" />
+	<custom-transformer name="PlashPlatformTransformer"
+		class="tw.edu.sinica.iis.ants.PlashPlatformTransformer">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</custom-transformer>
 	<message-properties-transformer name="HttpResponse">
 		<add-message-property key="Content-Type" value="text/html" />
 		<add-message-property key="http.status" value="303" />
@@ -484,6 +494,13 @@
 	<https:endpoint name="plashGetUsersAttendActivityHttpsInboundEndpoint" host="localhost"
 		port="12345" path="GetUsersAttendActivity" synchronous="true" connector-ref="httpsConnector" />
 		
+	<https:endpoint name="plashGetUserTripLatLngHttpsInboundEndpoint" host="localhost"
+		port="12345" path="GetUserTripLatLng" synchronous="true" connector-ref="httpsConnector" />
+		
+		
+	<https:endpoint name="plashPlatformInboundEndpoint" host="localhost"
+		port="12345" path="plashPlatform" synchronous="true" connector-ref="httpsConnector" />
+		
 	<byte-array-to-string-transformer name="byteArrayToString" />
 	<custom-transformer class="tw.edu.sinica.iis.ants.CustomByteArrayToString"
 		name="bt" />
@@ -501,6 +518,56 @@
 			
 			Finally, run the mule and you could start to test it!
 		-->
+		
+		<service name="HttpInput">
+			<inbound>
+				<inbound-endpoint transformer-refs="PlashPlatformTransformer"
+					responseTransformer-refs="byteArrayToString" ref="plashPlatformInboundEndpoint" />
+			</inbound>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashWaitingQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashResponseQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="rt" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		
+		<service name="RouteService">
+			<inbound>
+				<inbound-endpoint ref="plashWaitingQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+					</transformers>
+				</inbound-endpoint>
+			</inbound>
+			<outbound>
+				<custom-outbound-router class="tw.edu.sinica.iis.ants.MyRouter">
+					<outbound-endpoint ref="plashLoginQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+					<outbound-endpoint ref="plashGetFriendListQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+					<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>					
+				</custom-outbound-router>
+			</outbound>
+		</service>
 		<!--
 		<service name="XXXXXService">
 			<inbound>
@@ -1791,6 +1858,36 @@
 			</outbound>
 			<async-reply>
 				<inbound-endpoint ref="plashGetUsersAttendActivityQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="rt" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		
+		
+		<!-- (Step 4) Kenny: XXXXX =  RetrieveUserInfo-->
+		<service name="GetUserTripLatLngService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashGetUserTripLatLngHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="GetUserTripLatLngComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashGetUserTripLatLngQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashGetUserTripLatLngQueue">
 					<transformers>
 						<jms:jmsmessage-to-object-transformer />
 						<transformer ref="rt" />
