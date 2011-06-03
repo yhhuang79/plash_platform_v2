@@ -5,6 +5,7 @@ import java.util.*;
 
 import org.hibernate.*;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import tw.edu.sinica.iis.ants.DB.T_FriendAuth;
@@ -59,9 +60,11 @@ public class GetUserTripLatLngComponent {
         if (userid.equals("")) {
 			map.put("message", "userid is empty");
 		} else {   
+			System.out.println("!!!!!!!!!!!!!"+userid);
 			Criteria criteria = session.createCriteria(T_UserPointLocationTime.class);
 			criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("userid").toString())));
-			
+
+			criteria.setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("trip_id"))));
 
 			Iterator tripList, tripIDList = criteria.list().iterator();
 			
@@ -72,7 +75,7 @@ public class GetUserTripLatLngComponent {
 			while(tripIDList.hasNext()) {			
 				
 			    criteria = session.createCriteria(T_UserPointLocationTime.class);
-			    criteria.add(Restrictions.eq("trip_id", ((T_UserPointLocationTime) tripIDList.next()).getTrip_id()));
+			    criteria.add(Restrictions.eq("trip_id", (Integer)tripIDList.next()));
 				criteria.add(Restrictions.eq("userid", userid));
 				criteria.addOrder(Order.asc("timestamp"));
 				tripList = criteria.list().iterator();
