@@ -34,7 +34,8 @@ public class LoginComponent {
 
 		Session session = sessionFactory.openSession(); 
 		String username = map.get("username").toString();
-		String password = map.remove("password").toString();
+		//String password = map.remove("password").toString();
+		String password = map.get("password").toString();
 		
 		Criteria criteria = session.createCriteria(T_Login.class);
 		criteria.add(Restrictions.eq("username", username));
