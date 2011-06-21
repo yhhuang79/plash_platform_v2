@@ -34,6 +34,7 @@ import org.hibernate.Transaction;
 import com.vividsolutions.jts.geom.Geometry;
 
 import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
+import tw.edu.sinica.iis.ants.DB.T_UserTrip;
 
 
 public class GetNewTripIdComponent {
@@ -58,8 +59,8 @@ public class GetNewTripIdComponent {
         // Please Implement Your Programming Logic From Here
         /**
          * @goal      make trip id increase and return the value
-         * @author    Angus Fuming Huang
-         * @version   1.0, 01/24/2011
+         * @author    Danny - Yao Hua Ho
+         * @version   1.1, 06/21/2011
          * @param     userid 
          * @return    newTripId
          * @see       connpost.java
@@ -76,6 +77,8 @@ public class GetNewTripIdComponent {
 		} else {   
 				int newTripId = 0;
 				
+				/*
+				//----------------------------------------------------------------------------------------//
 				//build the Hibernate query object and assign the session to the T_UserPointLocationTime.class
 				Criteria criteria = session.createCriteria(T_UserPointLocationTime.class); 
 				
@@ -97,6 +100,53 @@ public class GetNewTripIdComponent {
 				
 				//store the result into the <newTripId> item of the map
 				map.put("newTripId", newTripId);
+				//----------------------------------------------------------------------------------------//
+				*/
+				
+				//Sync all the trip ids (6/21/2011)
+				Criteria criteria = session.createCriteria(T_UserTrip.class);
+				int current_id = 1;
+				//criteria.add(Restrictions.eq("id", current_id));
+				Iterator ids = criteria.list().iterator();
+				while (ids.hasNext()){
+					int current_userid;
+					T_UserTrip id = (T_UserTrip) ids.next();
+					current_userid = id.getUserid(); 
+					
+					Criteria criteria2 = session.createCriteria(T_UserPointLocationTime.class);
+					criteria.add(Restrictions.eq("userid", current_userid)); 
+					criteria.addOrder(Order.desc("trip_id"));
+					Iterator tripids = criteria.list().iterator();
+					T_UserPointLocationTime tripid = (T_UserPointLocationTime) tripids.next();
+					newTripId = tripid.getTrip_id() + 1;
+					//id.setTrip_count(newTripId);
+					System.out.println("Danny - Sync ids:\t"+current_userid+"\t"+newTripId);
+					
+				}
+				
+				
+				/*
+				//build the Hibernate query object and assign the session to the T_UserTrip.class
+				Criteria criteria = session.createCriteria(T_UserTrip.class); 
+				
+				//get the record matching the <userid>
+				criteria.add(Restrictions.eq("userid", userid));
+				
+				//store the query results into the <tripids>
+				Iterator tripids = criteria.list().iterator();
+				
+				//store the value of <tripids> into the <tripid> object belonging to the T_UserTrip class
+				T_UserTrip tripid = (T_UserTrip) tripids.next();
+				
+				//get the value of <trip_id> by using the getTrip_id() method of tripid, and add 1
+				newTripId = tripid.getTrip_count() + 1;
+				
+				//update new <tripid> into T_UserTrip class
+				tripid.setTrip_count(newTripId);
+				
+				//store the result into the <newTripId> item of the map
+				map.put("newTripId", newTripId);
+				*/
 			}
         
         session.close();
