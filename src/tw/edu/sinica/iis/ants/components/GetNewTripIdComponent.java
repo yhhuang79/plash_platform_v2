@@ -70,7 +70,10 @@ public class GetNewTripIdComponent {
         Integer userid = null;
         
         //get the value of <userid>
-        if (map.containsKey("userid")) {userid = Integer.parseInt(map.get("userid").toString());}
+        if (map.containsKey("userid")) {
+        	userid = Integer.parseInt(map.get("userid").toString());
+        	System.out.println("Start - userid = "+userid);
+        }
         
         if (userid.equals("")) {
 			map.put("message", "userid is empty and can not make new trip_id");
@@ -100,32 +103,46 @@ public class GetNewTripIdComponent {
 				
 				//store the result into the <newTripId> item of the map
 				map.put("newTripId", newTripId);
+				
 				//----------------------------------------------------------------------------------------//
 				*/
 				
+				/*
+				
 				//Sync all the trip ids (6/21/2011)
 				Criteria criteria = session.createCriteria(T_UserTrip.class);
-				int current_id = 1;
+				//int current_id = 1;
 				//criteria.add(Restrictions.eq("id", current_id));
 				Iterator ids = criteria.list().iterator();
 				while (ids.hasNext()){
 					int current_userid;
 					T_UserTrip id = (T_UserTrip) ids.next();
-					current_userid = id.getUserid(); 
+					current_userid = id.getUserid();
+					int temp_TripId = id.getTrip_count();
+					//System.out.println("current_userid = "+current_userid);
 					
 					Criteria criteria2 = session.createCriteria(T_UserPointLocationTime.class);
-					criteria.add(Restrictions.eq("userid", current_userid)); 
-					criteria.addOrder(Order.desc("trip_id"));
-					Iterator tripids = criteria.list().iterator();
-					T_UserPointLocationTime tripid = (T_UserPointLocationTime) tripids.next();
-					newTripId = tripid.getTrip_id() + 1;
-					//id.setTrip_count(newTripId);
-					System.out.println("Danny - Sync ids:\t"+current_userid+"\t"+newTripId);
-					
+					criteria2.add(Restrictions.eq("userid", current_userid)); 
+					criteria2.addOrder(Order.desc("trip_id"));
+					Iterator tripids = criteria2.list().iterator();
+					if (tripids.hasNext()){
+						T_UserPointLocationTime tripid = (T_UserPointLocationTime) tripids.next();
+						newTripId = tripid.getTrip_id() + 1;
+						if (newTripId < temp_TripId){
+							newTripId = temp_TripId;
+						}
+						id.setTrip_count(newTripId);
+						//System.out.println("newTripId = "+newTripId);
+						
+						System.out.println("Danny - Sync ids:\t current_userid = "+current_userid+"\t newTripId = "+newTripId);
+					}
+			        Transaction tx = session.beginTransaction();
+			        session.save(id);
+			        tx.commit();
 				}
+				*/
+				//----------------------------------------------------------------------------------------//
 				
-				
-				/*
 				//build the Hibernate query object and assign the session to the T_UserTrip.class
 				Criteria criteria = session.createCriteria(T_UserTrip.class); 
 				
@@ -144,11 +161,16 @@ public class GetNewTripIdComponent {
 				//update new <tripid> into T_UserTrip class
 				tripid.setTrip_count(newTripId);
 				
+				//begin Transaction and commit to DB
+		        Transaction tx = session.beginTransaction();
+		        session.save(tripid);
+		        tx.commit();
+				
 				//store the result into the <newTripId> item of the map
 				map.put("newTripId", newTripId);
-				*/
+				
 			}
-        
+
         session.close();
         //End of Programming Logic Implementation
         System.out.println("makeNewTripIdComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
