@@ -60,7 +60,8 @@ public class GetTripIdComponent {
 	        /**
 	         * @goal      return current trip id
 	         * @author    Angus Fuming Huang
-	         * @version   1.0, 01/21/2011
+	         * @modifer	  Danny
+	         * @version   1.1, 06/27/2011
 	         * @param     userid 
 	         * @return    currentTripId
 	         * @see       connpost.java
@@ -91,16 +92,24 @@ public class GetTripIdComponent {
 					//store the query results into the <tripids>
 					Iterator tripids = criteria.list().iterator();
 					
-					//store the value of <tripids> into the <tripid> object belonging to the T_UserPointLocationTime class
-					T_UserPointLocationTime tripid = (T_UserPointLocationTime) tripids.next();
+					if (tripids.hasNext()){
+						//store the value of <tripids> into the <tripid> object belonging to the T_UserPointLocationTime class
+						T_UserPointLocationTime tripid = (T_UserPointLocationTime) tripids.next();
+						
+						//get the value of <trip_id> by using the getTrip_id() method of tripid
+						currentTripId = tripid.getTrip_id();
 					
-					//get the value of <trip_id> by using the getTrip_id() method of tripid
-					currentTripId = tripid.getTrip_id();
+					}
+					else {
+						//new user without any trip id. 
+						currentTripId = 1;
+					}
 					
 					//store the result into the <newTripId> item of the map
-					map.put("currentTripId", currentTripId);  
+					map.put("currentTripId", currentTripId);
+			        
 				}
-	        
+
 	        session.close();
 	        //End of Programming Logic Implementation
 	        System.out.println("getCurrentTripIdComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
