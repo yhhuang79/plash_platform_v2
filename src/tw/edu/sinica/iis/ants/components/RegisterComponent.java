@@ -261,8 +261,10 @@ public class RegisterComponent {
 				
 				//-------------------------------------------------------------------//
 			    //Email the link and passcode to activate new registered user account
-				String host = "http://plash.iis.sinica.edu.tw/plash/";
-				String action = "activate.action";
+				//String host = "http://plash.iis.sinica.edu.tw/plash/";
+				String host = "https://plash.iis.sinica.edu.tw:8080/";
+				//String action = "activate.action";
+				String action = "Activate";
 				String temp1 = "?username="+username;
 				String temp2 = "&password="+password;
 				String temp3 = "&passcode="+passcode;
@@ -273,7 +275,8 @@ public class RegisterComponent {
 				
 				//Or user can activate account by enter passcode.
 				String action2 = "preactivate.action";
-				String preactivateLink = host+action2;
+				String old_host = "http://plash.iis.sinica.edu.tw/plash/";
+				String preactivateLink = old_host+action2;
 				
 				String[] to={email};
 				sendMail sendAct = new sendMail();
@@ -283,7 +286,8 @@ public class RegisterComponent {
 				//If this RegisterAction request is from PreInvaitionAction
 				//Then a Confirm Friend Request Email is sent to inviter 
 				if (fid != 0){
-					action = "confirmfriendrequest.action";
+					//action = "confirmfriendrequest.action";
+					action = "ConfirmFriendRequest";
 					temp1 = "?fid="+fid;
 					temp2 = "&friendname="+friendname;
 					temp3 = "&passcode="+Req_passcode;
