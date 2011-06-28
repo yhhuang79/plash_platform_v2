@@ -2,8 +2,8 @@ package tw.edu.sinica.iis.ants.DB;
 
 public class T_UserTrip {
 	private int id;
-	private int userid;
-	private int trip_count;
+	private Integer userid;
+	private Integer trip_count;
 	
 	public T_UserTrip(){
 	
