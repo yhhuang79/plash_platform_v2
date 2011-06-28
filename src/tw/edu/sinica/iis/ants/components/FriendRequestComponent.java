@@ -96,8 +96,12 @@ public class FriendRequestComponent {
 		if (map.containsKey("username")) {
 			username = map.get("username").toString();
 		}
+		
 		if (map.containsKey("sid")) {
 			userid = Integer.parseInt(map.get("sid").toString());
+		}
+		else {
+			userid = Integer.parseInt(map.get("userid").toString());
 		}
 		if (map.containsKey("friendname")) {
 			friendname = map.remove("friendname").toString();
@@ -204,8 +208,12 @@ public class FriendRequestComponent {
 						// activation of friend request
 						passcode = getRandomString(10);
 						friendlist.setPasscode(passcode);
-						friendlist.setConfirmed(false);
+						boolean isConfirmed = false;
+						friendlist.setConfirmed(isConfirmed);
 						
+						System.out.println("---------FriendRequestComponent: (" + userid
+								+ "," + friendid + "," + friendemail + ","
+								+ passcode+","+isConfirmed+")");
 						Transaction tx = session.beginTransaction();
 						session.save(friendlist);
 						tx.commit();
