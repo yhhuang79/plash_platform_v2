@@ -33,6 +33,7 @@ import org.hibernate.Transaction;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+import tw.edu.sinica.iis.ants.DB.T_FriendList;
 import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
 import tw.edu.sinica.iis.ants.DB.T_UserTrip;
 
@@ -152,19 +153,40 @@ public class GetNewTripIdComponent {
 				//store the query results into the <tripids>
 				Iterator tripids = criteria.list().iterator();
 				
-				//store the value of <tripids> into the <tripid> object belonging to the T_UserTrip class
-				T_UserTrip tripid = (T_UserTrip) tripids.next();
+				if (tripids.hasNext()){
+					//store the value of <tripids> into the <tripid> object belonging to the T_UserTrip class
+					T_UserTrip tripid = (T_UserTrip) tripids.next();
 				
-				//get the value of <trip_id> by using the getTrip_id() method of tripid, and add 1
-				newTripId = tripid.getTrip_count() + 1;
+					//get the value of <trip_id> by using the getTrip_id() method of tripid, and add 1
+					newTripId = tripid.getTrip_count() + 1;
+					
+					//update new <tripid> into T_UserTrip class
+					tripid.setTrip_count(newTripId);
+					
+					//begin Transaction and commit to DB
+			        Transaction tx = session.beginTransaction();
+			        session.save(tripid);
+			        tx.commit();
+					
+				}
+				else {
+					//for new user without any recorded trip
+					newTripId = 1;
+					criteria = session.createCriteria(T_FriendList.class);
+	        		T_UserTrip tripid1 = new T_UserTrip();
+					//tripid.setId(id)
+					tripid1.setUserid(userid);
+					tripid1.setTrip_count(newTripId);
+					
+					//begin Transaction and commit to DB
+			        Transaction tx = session.beginTransaction();
+			        session.save(tripid1);
+			        tx.commit();
+				}
+			
 				
-				//update new <tripid> into T_UserTrip class
-				tripid.setTrip_count(newTripId);
 				
-				//begin Transaction and commit to DB
-		        Transaction tx = session.beginTransaction();
-		        session.save(tripid);
-		        tx.commit();
+
 				
 				//store the result into the <newTripId> item of the map
 				map.put("newTripId", newTripId);
