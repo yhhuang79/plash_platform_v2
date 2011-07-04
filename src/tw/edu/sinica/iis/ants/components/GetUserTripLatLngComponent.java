@@ -52,10 +52,14 @@ public class GetUserTripLatLngComponent {
 		Session session = sessionFactory.openSession();
         
         Integer userid = null;
+        Integer tripCount = null;
         
         if (map.containsKey("userid")) {
 			userid = Integer.parseInt(map.get("userid").toString());
 		}
+        if (map.containsKey("tripCount")){
+        	tripCount = Integer.parseInt(map.get("tripCount").toString());
+        }
         
         if (userid.equals("")) {
 			map.put("message", "userid is empty");
@@ -80,19 +84,25 @@ public class GetUserTripLatLngComponent {
 				criteria.add(Restrictions.eq("userid", userid));
 				criteria.addOrder(Order.asc("timestamp"));
 				tripList = criteria.list().iterator();
-				if (tripList.hasNext()) {			
-					resultEntry= (T_UserPointLocationTime)tripList.next();
-					resultEntryMap = new HashMap();
-					resultEntryMap.put("tripID", resultEntry.getTrip_id());				
-					resultEntryMap.put("timestamp", resultEntry.getTimestamp().toString());
-					resultEntryMap.put("lng",((Geometry)resultEntry.getGps()).getCoordinate().x*1000000);				
-					resultEntryMap.put("lat",((Geometry)resultEntry.getGps()).getCoordinate().y*1000000);
+				if (tripList.hasNext()) {
 					
-					resultList.add(resultEntryMap);
+					if (count >= tripCount-10 && count > tripCount){
+						resultEntry= (T_UserPointLocationTime)tripList.next();
+						resultEntryMap = new HashMap();
+						resultEntryMap.put("tripID", resultEntry.getTrip_id());				
+						resultEntryMap.put("timestamp", resultEntry.getTimestamp().toString());
+						resultEntryMap.put("lng",((Geometry)resultEntry.getGps()).getCoordinate().x*1000000);				
+						resultEntryMap.put("lat",((Geometry)resultEntry.getGps()).getCoordinate().y*1000000);
+						resultList.add(resultEntryMap);
+						
+					}
 					count++;
-					if(count==10)
-						break;
-				}//end while
+					
+
+					
+//					if(count==10)
+//						break;
+				}//end if
 			}//end while
 	        map.put("GetUserTripLatLng", resultList);
 	        
