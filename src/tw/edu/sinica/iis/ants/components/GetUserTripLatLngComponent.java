@@ -86,7 +86,7 @@ public class GetUserTripLatLngComponent {
 				tripList = criteria.list().iterator();
 				if (tripList.hasNext()) {
 					
-					if (count >= tripCount-10 && count > tripCount){
+					if (count >= tripCount-10 && count < tripCount){
 						resultEntry= (T_UserPointLocationTime)tripList.next();
 						resultEntryMap = new HashMap();
 						resultEntryMap.put("tripID", resultEntry.getTrip_id());				
@@ -97,6 +97,8 @@ public class GetUserTripLatLngComponent {
 						
 					}
 					count++;
+					if (count == tripCount)
+						break;
 					
 
 					
