@@ -96,7 +96,7 @@ public class GetAuthTripLatLngComponent {
 					resultEntry= (T_UserPointLocationTime)tripList.next();
 					resultEntryMap = new HashMap();
 					resultEntryMap.put("tripID", resultEntry.getTrip_id());				
-					 resultEntryMap.put("timestamp", resultEntry.getTimestamp().toString());
+					resultEntryMap.put("timestamp", resultEntry.getTimestamp().toString());
 					resultEntryMap.put("lng",((Geometry)resultEntry.getGps()).getCoordinate().x*1000000);				
 					resultEntryMap.put("lat",((Geometry)resultEntry.getGps()).getCoordinate().y*1000000);
 					resultList.add(resultEntryMap);
