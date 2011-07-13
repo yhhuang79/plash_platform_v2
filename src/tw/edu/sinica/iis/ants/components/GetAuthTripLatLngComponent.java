@@ -44,11 +44,18 @@ public class GetAuthTripLatLngComponent {
 
     public Object greet(Map map) {
     	
-    	
+    	Integer tripCount = 0;
         System.out.println("getAuthTripLatLngComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
-
-
         Session session = sessionFactory.openSession(); 
+        
+        //For dynamic load trip list
+        if (map.containsKey("tripCount")){
+        	tripCount = Integer.parseInt(map.get("tripCount").toString());
+        } else {
+        	//for older version of MapNTrack to work
+        	tripCount = -1;
+        }
+        
         Criteria criteria;
         criteria = session.createCriteria(T_FriendAuth.class);
         
@@ -75,6 +82,7 @@ public class GetAuthTripLatLngComponent {
 		T_UserPointLocationTime resultEntry;
 		Map resultEntryMap;
 
+		int count = 0;
 		while(tripIDList.hasNext()) {			
 			
 		    criteria = session.createCriteria(T_UserPointLocationTime.class);
@@ -82,16 +90,23 @@ public class GetAuthTripLatLngComponent {
 			criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("friendid").toString())));
 			criteria.addOrder(Order.asc("timestamp"));
 			tripList = criteria.list().iterator();
-			if (tripList.hasNext()) {			
-				resultEntry= (T_UserPointLocationTime)tripList.next();
-				resultEntryMap = new HashMap();
-				resultEntryMap.put("tripID", resultEntry.getTrip_id());				
-				resultEntryMap.put("timestamp", resultEntry.getTimestamp().toString());
-				resultEntryMap.put("lng",((Geometry)resultEntry.getGps()).getCoordinate().x*1000000);				
-				resultEntryMap.put("lat",((Geometry)resultEntry.getGps()).getCoordinate().y*1000000);
+			if (tripList.hasNext()) {	
 				
-				resultList.add(resultEntryMap);
-			}//end while
+				if ((count >= tripCount-10 && count < tripCount)||tripCount == -1){
+					resultEntry= (T_UserPointLocationTime)tripList.next();
+					resultEntryMap = new HashMap();
+					resultEntryMap.put("tripID", resultEntry.getTrip_id());				
+					 resultEntryMap.put("timestamp", resultEntry.getTimestamp().toString());
+					resultEntryMap.put("lng",((Geometry)resultEntry.getGps()).getCoordinate().x*1000000);				
+					resultEntryMap.put("lat",((Geometry)resultEntry.getGps()).getCoordinate().y*1000000);
+					resultList.add(resultEntryMap);
+				}//end if (count...)
+				count++;
+				
+				if (count == tripCount)
+					break;
+					
+			}//end if (tripList...)
 		}//end while
         map.put("getAuthTripLatLng", resultList);
         session.close();
