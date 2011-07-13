@@ -88,7 +88,7 @@ public class GetAuthTripLatLngComponent {
 		    criteria = session.createCriteria(T_UserPointLocationTime.class);
 		    criteria.add(Restrictions.eq("trip_id", ((T_FriendAuth)tripIDList.next()).getTripID()));
 			criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("friendid").toString())));
-			criteria.addOrder(Order.asc("timestamp"));
+			criteria.addOrder(Order.desc("timestamp"));
 			tripList = criteria.list().iterator();
 			if (tripList.hasNext()) {	
 				
