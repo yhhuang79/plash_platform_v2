@@ -83,7 +83,7 @@ public class InputGpsLocationComponent {
 		} else {   
 				int label = 0; //let old version can work as well, 0 means no mentioned
 				if(map.get("label") != null)
-				    label = Integer.parseInt(map.get(label).toString());
+				    label = Integer.parseInt(map.get("label").toString());
 				
 				//id值不存入，由資料庫主動遞增                                                                                            
 				
