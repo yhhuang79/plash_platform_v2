@@ -67,7 +67,7 @@ public class T_UserPointLocationTime {
 	}
 
 	public int getLabel() {
-		if (label != null){
+		if (label == null){
 			label = -1;
 		}
 		return label;
