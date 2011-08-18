@@ -1,0 +1,12 @@
+CREATE TABLE user_location.trip_info (
+	userid		INTEGER,
+	trip_id		INTEGER,
+	trip_name	TEXT,
+	trip_address	TEXT,
+	trip_st		TIMESTAMP,	-- trip start time
+	trip_et		TIMESTAMP,	-- trip end time
+	trip_length	INTEGER,
+	trip_preview	BYTEA,
+	update_status	SMALLINT,	--(0 = not updated (calculated), 1 = updated to status version 1)
+	id		SERIAL		PRIMARY KEY
+);
