@@ -1,7 +1,9 @@
 package tw.edu.sinica.iis.ants.components;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -17,9 +19,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-import tw.edu.sinica.iis.ants.DB.T_FriendList;
-import tw.edu.sinica.iis.ants.DB.T_FriendRequest;
-import tw.edu.sinica.iis.ants.DB.T_Login;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
+
+import tw.edu.sinica.iis.ants.DB.*;
 
 public class TestComponent {
 
@@ -42,26 +46,25 @@ public class TestComponent {
 		System.out.println("Test Start:\t"
 				+ Calendar.getInstance().getTimeInMillis());
 
-		Map a = new HashMap();
-		a.put("AA", "BB");
-		a.put("CC", "DD");
-		Map b = new HashMap();
-		b.put("AA", "BB");
-		b.put("CC", "DD");
-		Map c = new HashMap();
-		c.put("AA", "BB");
-		c.put("CC", "DD");
 		
-		List l = new ArrayList();
-		l.add(a);
-		l.add(b);
-		l.add(c);
+		//store the <userid> into the database
+		T_TripInfo t = new T_TripInfo();
+		t.setUserid(123);
 		
-		map.put("AAAAA", l);
+		//store the <trip_id> into the database
+		t.setTrip_id(456);
+	
+		//get the value of <server_timestamp>, and store it into the database
+		t.setTrip_st(new Timestamp(new Date().getTime()));
+		
+        Session session = sessionFactory.openSession();						
+		Transaction tx = session.beginTransaction();
+		session.save(t);
+		tx.commit();
 
 		
 		System.out.println("Test End:\t"
 				+ Calendar.getInstance().getTimeInMillis());
 		return map;
 	}
-}
+}//end class
