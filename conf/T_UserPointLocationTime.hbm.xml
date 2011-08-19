@@ -20,6 +20,14 @@
 		<property name="server_timestamp" column="server_timestamp" />
 		<property name="trip_id" column="trip_id" />
 		<property name="label" column="label" />
+		<property name="alt" column="alt" />
+		<property name="accu" column="accu" />
+		<property name="spd" column="spd" />
+		<property name="bear" column="bear" />
+		<property name="accex" column="accex" />
+		<property name="accey" column="accey" />
+		<property name="accez" column="accez" />
+		
 	</class>
 
 </hibernate-mapping>
