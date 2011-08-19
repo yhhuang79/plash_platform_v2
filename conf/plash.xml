@@ -354,7 +354,7 @@
 	<https:endpoint name="plashHttpsInboundEndpoint" host="localhost"
 		port="11111" path="in" synchronous="true" connector-ref="httpsConnector" />
 	<https:endpoint name="plashTestHttpsInboundEndpoint" host="localhost"
-		port="12345" path="in" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="in" synchronous="true" connector-ref="httpsConnector" />
 	<!-- 
 		Step 3: Create a HTTPS endpoint for your component
 		
@@ -374,132 +374,132 @@
 	-->
 	<!--
 	<https:endpoint name="plashxxxxxHttpsInboundEndpoint" host="localhost"
-		port="12345" path="PPPPPPP" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="PPPPPPP" synchronous="true" connector-ref="httpsConnector" />
 	-->
 	
 	<!-- 
 	<https:endpoint name="plashXXXXXHttpsInboundEndpoint" host="localhost"
-		port="12345" path="XXXXX" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="XXXXX" synchronous="true" connector-ref="httpsConnector" />
 	 -->
 	
 	<!-- (Step 3) Danny: XXXXX = ConfirmFriendRequest -->
 	<https:endpoint name="plashConfirmFriendRequestHttpsInboundEndpoint" host="localhost"
-		port="12345" path="ConfirmFriendRequest" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="ConfirmFriendRequest" synchronous="true" connector-ref="httpsConnector" />
 	
 	<!-- (Step 3) Danny: XXXXX = FriendRequest -->
 	<https:endpoint name="plashFriendRequestHttpsInboundEndpoint" host="localhost"
-		port="12345" path="FriendRequest" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="FriendRequest" synchronous="true" connector-ref="httpsConnector" />
 	
 	<!-- (Step 3) Danny: XXXXX = Register -->
 	<https:endpoint name="plashRegisterHttpsInboundEndpoint" host="localhost"
-		port="12345" path="Register" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="Register" synchronous="true" connector-ref="httpsConnector" />
 	
 	<!-- (Step 3) Danny: XXXXX = Activate -->	
 	<https:endpoint name="plashActivateHttpsInboundEndpoint" host="localhost"
-		port="12345" path="Activate" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="Activate" synchronous="true" connector-ref="httpsConnector" />
 		
 	<!-- (Step 3) Danny: XXXXX = Login2 -->	
 	<https:endpoint name="plashLogin2HttpsInboundEndpoint" host="localhost"
-		port="12345" path="Login2" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="Login2" synchronous="true" connector-ref="httpsConnector" />
 	
 	<!-- (Step 3) Danny: XXXXX = PasswordChange -->	
 	<https:endpoint name="plashPasswordChangeHttpsInboundEndpoint" host="localhost"
-		port="12345" path="PasswordChange" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="PasswordChange" synchronous="true" connector-ref="httpsConnector" />
 		
 
 	<https:endpoint name="plashInputHttpsInboundEndpoint" host="localhost"
-		port="12345" path="Input" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="Input" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashGetLatestTripHttpsInboundEndpoint" host="localhost"
-		port="12345" path="GetLatestTrip" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="GetLatestTrip" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashGetNewTripIdHttpsInboundEndpoint" host="localhost"
-		port="12345" path="GetNewTripId" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="GetNewTripId" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashGetTripIdHttpsInboundEndpoint" host="localhost"
-		port="12345" path="GetTripId" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="GetTripId" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashGetFriendLatestTripHttpsInboundEndpoint" host="localhost"
-		port="12345" path="GetFriendLatestTrip" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="GetFriendLatestTrip" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashGetFriendOneTripHttpsInboundEndpoint" host="localhost"
-		port="12345" path="GetFriendOneTrip" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="GetFriendOneTrip" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashGetUserTripIdHttpsInboundEndpoint" host="localhost"
-		port="12345" path="GetUserTripId" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="GetUserTripId" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashDistanceBearingHttpsInboundEndpoint" host="localhost"
-		port="12345" path="DistanceBearing" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="DistanceBearing" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashGetFriendListHttpsInboundEndpoint" host="localhost"
-		port="12345" path="GetFriendList" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="GetFriendList" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashGetAllFriendLocationHttpsInboundEndpoint" host="localhost"
-		port="12345" path="GetAllFriendLocation" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="GetAllFriendLocation" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashGetAuthFriendHttpsInboundEndpoint" host="localhost"
-		port="12345" path="GetAuthFriend" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="GetAuthFriend" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashSetAuthFriendHttpsInboundEndpoint" host="localhost"
-		port="12345" path="SetAuthFriend" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="SetAuthFriend" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashDelAuthFriendHttpsInboundEndpoint" host="localhost"
-		port="12345" path="DelAuthFriend" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="DelAuthFriend" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashGetAuthTripHttpsInboundEndpoint" host="localhost"
-		port="12345" path="GetAuthTrip" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="GetAuthTrip" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashGetAuthTripLatLngHttpsInboundEndpoint" host="localhost"
-		port="12345" path="GetAuthTripLatLng" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="GetAuthTripLatLng" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashLoginHttpsInboundEndpoint" host="localhost"
-		port="12345" path="Login" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="Login" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashRetrieveUserInfoHttpsInboundEndpoint" host="localhost"
-		port="12345" path="RetrieveUserInfo" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="RetrieveUserInfo" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashNearestHttpsInboundEndpoint" host="localhost"
-		port="12345" path="Nearest" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="Nearest" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashSetActivityHttpsInboundEndpoint" host="localhost"
-		port="12345" path="SetActivity" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="SetActivity" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashGetActivityHttpsInboundEndpoint" host="localhost"
-		port="12345" path="GetActivity" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="GetActivity" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashSetAttendActivityHttpsInboundEndpoint" host="localhost"
-		port="12345" path="SetAttendActivity" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="SetAttendActivity" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashDelAttendActivityHttpsInboundEndpoint" host="localhost"
-		port="12345" path="DelAttendActivity" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="DelAttendActivity" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashSetItemHttpsInboundEndpoint" host="localhost"
-		port="12345" path="SetItem" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="SetItem" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashGetItemHttpsInboundEndpoint" host="localhost"
-		port="12345" path="GetItem" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="GetItem" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashDelItemHttpsInboundEndpoint" host="localhost"
-		port="12345" path="DelItem" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="DelItem" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashSetAssignItemHttpsInboundEndpoint" host="localhost"
-		port="12345" path="SetAssignItem" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="SetAssignItem" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashGetAssignedItemInfoOfUserHttpsInboundEndpoint" host="localhost"
-		port="12345" path="GetAssignedItemInfoOfUser" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="GetAssignedItemInfoOfUser" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashDelAssignItemHttpsInboundEndpoint" host="localhost"
-		port="12345" path="DelAssignItem" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="DelAssignItem" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashGetUsersAttendActivityHttpsInboundEndpoint" host="localhost"
-		port="12345" path="GetUsersAttendActivity" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="GetUsersAttendActivity" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashGetUserTripLatLngHttpsInboundEndpoint" host="localhost"
-		port="12345" path="GetUserTripLatLng" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="GetUserTripLatLng" synchronous="true" connector-ref="httpsConnector" />
 		
 		
 	<https:endpoint name="plashPlatformInboundEndpoint" host="localhost"
-		port="12345" path="plashPlatform" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="plashPlatform" synchronous="true" connector-ref="httpsConnector" />
 		
 	<byte-array-to-string-transformer name="byteArrayToString" />
 	<custom-transformer class="tw.edu.sinica.iis.ants.CustomByteArrayToString"
