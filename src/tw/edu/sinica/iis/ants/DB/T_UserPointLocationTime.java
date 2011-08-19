@@ -13,6 +13,13 @@ public class T_UserPointLocationTime {
 	private Timestamp server_timestamp;
 	private Integer trip_id;
 	private Integer label;
+	private Double alt;
+	private Double accu;
+	private Double spd;
+	private Double bear;
+	private Double accex;
+	private Double accey;
+	private Double accez;
 	
 	public T_UserPointLocationTime(){
 	
@@ -28,6 +35,62 @@ public class T_UserPointLocationTime {
 
 	public int getUserid() {
 		return userid;
+	}
+
+	public Double getAlt() {
+		return alt;
+	}
+
+	public void setAlt(Double alt) {
+		this.alt = alt;
+	}
+
+	public Double getAccu() {
+		return accu;
+	}
+
+	public void setAccu(Double accu) {
+		this.accu = accu;
+	}
+
+	public Double getSpd() {
+		return spd;
+	}
+
+	public void setSpd(Double spd) {
+		this.spd = spd;
+	}
+
+	public Double getBear() {
+		return bear;
+	}
+
+	public void setBear(Double bear) {
+		this.bear = bear;
+	}
+
+	public Double getAccex() {
+		return accex;
+	}
+
+	public void setAccex(Double accex) {
+		this.accex = accex;
+	}
+
+	public Double getAccey() {
+		return accey;
+	}
+
+	public void setAccey(Double accey) {
+		this.accey = accey;
+	}
+
+	public Double getAccez() {
+		return accez;
+	}
+
+	public void setAccez(Double accez) {
+		this.accez = accez;
 	}
 
 	public void setUserid(Integer userid) {
