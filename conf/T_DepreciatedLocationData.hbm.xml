@@ -8,9 +8,6 @@
 	<class name="tw.edu.sinica.iis.ants.DB.T_DepreciatedLocationData" table="user_location.depreciated_location_data">
 
 		<id column="id" name="id" type="java.lang.Integer">
-			<generator class="sequence">
-				<param name="sequence">user_location.id_seq</param>
-			</generator>
 		</id>
 		<property name="userid" column="userid" />
 		<property name="timestamp" column="timestamp" />
