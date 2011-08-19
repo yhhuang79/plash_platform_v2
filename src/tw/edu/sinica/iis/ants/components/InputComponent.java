@@ -54,6 +54,17 @@ public class InputComponent {
         Integer label = null;
         Double lat = null, lng = null;
         // end
+        
+        //add by Danny
+        Double alt = 0.0;  	//Altitude in meter
+        Double accu = 0.0; 	//Accuracy in meter
+        Double spd = 0.0;	//Speed in m/s
+        Double bear = 0.0;	//Bearing
+        Double accex = 0.0;	//x-axis acceleration
+        Double accey = 0.0;	//y-axis acceleration
+        Double accez= 0.0; 	//z-axis acceleration
+        //End Danny
+        
         Timestamp timestamp = null;
         
         if (map.containsKey("userid")) 
@@ -66,6 +77,24 @@ public class InputComponent {
         if (map.containsKey("lng"))   
         	lng = Double.valueOf(map.get("lng").toString()).doubleValue();
         // end
+        
+        // add by Danny (
+        if (map.containsKey("alt"))
+        	alt = Double.valueOf(map.get("alt").toString()).doubleValue();
+        if (map.containsKey("accu"))
+        	accu = Double.valueOf(map.get("accu").toString()).doubleValue();
+        if (map.containsKey("spd"))
+        	spd = Double.valueOf(map.get("spd").toString()).doubleValue();
+        if (map.containsKey("bear"))
+        	bear = Double.valueOf(map.get("bear").toString()).doubleValue();
+        if (map.containsKey("accex"))
+        	accex = Double.valueOf(map.get("accex").toString()).doubleValue();
+        if (map.containsKey("accey"))
+        	accey = Double.valueOf(map.get("accey").toString()).doubleValue();
+        if (map.containsKey("accez"))
+        	accez = Double.valueOf(map.get("accez").toString()).doubleValue();
+        // end Danny
+        
         if (map.containsKey("timestamp")) 
         	timestamp = Timestamp.valueOf(map.get("timestamp").toString());
         if (userid.equals("") || trip_id.equals("") || timestamp.equals("") || lat.equals("") || lng.equals("")) {  //簡化的判斷式
@@ -105,7 +134,9 @@ public class InputComponent {
 				
 				//store the <label> into the database
 				user.setLabel(label);
-								
+				
+				
+				
 				Transaction tx = session.beginTransaction();
 				session.save(user);
 				tx.commit();
