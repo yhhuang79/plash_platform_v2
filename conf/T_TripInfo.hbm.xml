@@ -22,7 +22,7 @@
 		<property name="trip_st" column="trip_st" />
 		<property name="trip_et" column="trip_et" />
 		<property name="trip_length" column="trip_length" />
-		<!--   <property name="trip_preview" column="trip_preview" /> -->
+		<property name="num_of_pts" column="num_of_pts" /> 
 		<property name="update_status" column="update_status" />
 									
 
