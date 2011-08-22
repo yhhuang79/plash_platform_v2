@@ -11,7 +11,7 @@ public class T_TripInfo {
 	private Timestamp trip_st;
 	private Timestamp trip_et;	
 	private Integer trip_length;
-	private Blob trip_preview;
+	private Integer num_of_pts;
 	private Short update_status;
 	private Integer id;
 	public Integer getUserid() {
@@ -56,11 +56,11 @@ public class T_TripInfo {
 	public void setTrip_length(Integer trip_length) {
 		this.trip_length = trip_length;
 	}
-	public Blob getTrip_preview() {
-		return trip_preview;
+	public Integer getNum_of_pts() {
+		return num_of_pts;
 	}
-	public void setTrip_preview(Blob trip_preview) {
-		this.trip_preview = trip_preview;
+	public void setNum_of_pts(Integer num_of_pts) {
+		this.num_of_pts = num_of_pts;
 	}
 	public Short getUpdate_status() {
 		return update_status;
