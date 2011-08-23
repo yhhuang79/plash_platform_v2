@@ -7,7 +7,7 @@ public class T_TripInfo {
 	private Integer userid;
 	private Integer trip_id;
 	private String trip_name;
-	private String trip_address;
+	private String trip_st_address;
 	private Timestamp trip_st;
 	private Timestamp trip_et;	
 	private Integer trip_length;
@@ -32,11 +32,11 @@ public class T_TripInfo {
 	public void setTrip_name(String trip_name) {
 		this.trip_name = trip_name;
 	}
-	public String getTrip_address() {
-		return trip_address;
+	public String getTrip_st_address() {
+		return trip_st_address;
 	}
-	public void setTrip_address(String trip_address) {
-		this.trip_address = trip_address;
+	public void setTrip_st_address(String trip_st_address) {
+		this.trip_st_address = trip_st_address;
 	}
 	public Timestamp getTrip_st() {
 		return trip_st;
