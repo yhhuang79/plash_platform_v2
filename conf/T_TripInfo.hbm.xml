@@ -18,7 +18,7 @@
 		<property name="userid" column="userid" />
 		<property name="trip_id" column="trip_id" />
 		<property name="trip_name" column="trip_name" />
-		<property name="trip_address" column="trip_address" />
+		<property name="trip_st_address" column="trip_st_address" />
 		<property name="trip_st" column="trip_st" />
 		<property name="trip_et" column="trip_et" />
 		<property name="trip_length" column="trip_length" />
