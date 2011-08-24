@@ -227,8 +227,10 @@ public class FriendRequestComponent {
 					
 					//--------------------------------------------------------------//
 					// create a Confirmation Link to confirm the friendship
-					String host = "http://plash.iis.sinica.edu.tw/plash/";
-					String action = "confirmfriendrequest.action";
+					//String host = "http://plash.iis.sinica.edu.tw/plash/";
+					//String action = "confirmfriendrequest.action";
+					String host = "https://plash.iis.sinica.edu.tw:8080/";
+					String action = "ConfirmFriendRequest";
 					String temp1 = "?fid=" + fid;
 					// String temp2 = "&userid="+userid; //sid
 					// String temp3 = "&friendid="+friendid; //friend's sid
