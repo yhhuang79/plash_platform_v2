@@ -223,7 +223,7 @@
 	
 
 	<jms:activemq-connector name="jmsCon"
-		specification="1.1" brokerURL="tcp://localhost:61616">
+		specification="1.1" brokerURL="tcp://localhost:61617">
 		<spring:property name="disableTemporaryReplyToDestinations"
 			value="true" />
 	</jms:activemq-connector>
@@ -355,7 +355,7 @@
 		name="rt" />
 
 	<https:connector name="httpsConnector">
-		<https:tls-key-store path="file:/home/plash/Plash_Platform/workspace/PLASH_Platform_Test/resources/tmpKey/keystore" keyPassword="password" storePassword="password"/>
+		<https:tls-key-store path="file:/home/kennywu/tmpKey/keystore" keyPassword="password" storePassword="password"/>
 	</https:connector>
 	<https:endpoint name="plashHttpsInboundEndpoint" host="localhost"
 		port="11111" path="in" synchronous="true" connector-ref="httpsConnector" />
