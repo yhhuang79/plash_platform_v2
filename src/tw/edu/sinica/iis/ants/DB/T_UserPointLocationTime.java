@@ -20,6 +20,8 @@ public class T_UserPointLocationTime {
 	private Double accex;
 	private Double accey;
 	private Double accez;
+	private String gsminfo;
+	private String wifiinfo;
 	
 	public T_UserPointLocationTime(){
 	
@@ -139,5 +141,22 @@ public class T_UserPointLocationTime {
 	public void setLabel(Integer label) {
 		this.label = label;
 	}
+
+	public String getGsminfo() {
+		return gsminfo;
+	}
+
+	public void setGsminfo(String gsminfo) {
+		this.gsminfo = gsminfo;
+	}
+
+	public String getWifiinfo() {
+		return wifiinfo;
+	}
+
+	public void setWifiinfo(String wifiinfo) {
+		this.wifiinfo = wifiinfo;
+	}
+	
 	
 }
