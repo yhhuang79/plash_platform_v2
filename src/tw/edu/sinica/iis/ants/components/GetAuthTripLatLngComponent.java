@@ -62,7 +62,7 @@ public class GetAuthTripLatLngComponent {
 		try {			
 			criteria.add(Restrictions.eq("userAID", Integer.parseInt(map.get("friendid").toString())));
 			criteria.add(Restrictions.eq("userBID", Integer.parseInt(map.get("userid").toString())));
-			criteria.addOrder(Order.asc("tripID"));
+			criteria.addOrder(Order.desc("tripID"));
    			
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
 			map.put("getAuthTripLatLng",false); //result flag, flag name to be unified, para_failed as appeared in excel file
@@ -88,7 +88,7 @@ public class GetAuthTripLatLngComponent {
 		    criteria = session.createCriteria(T_UserPointLocationTime.class);
 		    criteria.add(Restrictions.eq("trip_id", ((T_FriendAuth)tripIDList.next()).getTripID()));
 			criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("friendid").toString())));
-			criteria.addOrder(Order.desc("timestamp"));
+			criteria.addOrder(Order.asc("timestamp"));
 			tripList = criteria.list().iterator();
 			if (tripList.hasNext()) {	
 				
