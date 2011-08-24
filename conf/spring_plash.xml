@@ -147,8 +147,10 @@
 				<value>T_Item.hbm.xml</value>
 				<value>T_ActivityUser.hbm.xml</value>
 				<value>T_UserTrip.xml</value>
+				<value>T_TripInfo.hbm.xml</value>
+				<!-- 
 				<value>T_DepreciatedLocationData.hbm.xml</value>
-				<value>T_TripInfo.hbm.xml</value>											
+				 -->
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -180,7 +182,9 @@
 				<value>T_ActivityUser.hbm.xml</value>	
 				<value>T_UserTrip.xml</value>
 				<value>T_TripInfo.hbm.xml</value>
-				<value>T_DepreciatedLocationData.hbm.xml</value>					
+				<!-- 
+				<value>T_DepreciatedLocationData.hbm.xml</value>
+				 -->					
 			</list>
 		</property>
 		<property name="hibernateProperties">
