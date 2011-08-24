@@ -63,6 +63,8 @@ public class InputComponent {
         Double accex = 0.0;	//x-axis acceleration
         Double accey = 0.0;	//y-axis acceleration
         Double accez= 0.0; 	//z-axis acceleration
+        String gsminfo = ""; //first 5 is phone information, last 3 is the nearest cell information, NULL if information is missing
+        String wifiinfo = ""; // set of AP info: MAC address, frequency (MHz), signal strength (dBM)
         //End Danny
         
         Timestamp timestamp = null;
@@ -93,6 +95,10 @@ public class InputComponent {
         	accey = Double.valueOf(map.get("accey").toString()).doubleValue();
         if (map.containsKey("accez"))
         	accez = Double.valueOf(map.get("accez").toString()).doubleValue();
+        if (map.containsKey("gsminfo"))
+        	gsminfo = map.get("gsminfo").toString();
+        if (map.containsKey("wifiinfo"))
+        	wifiinfo = map.get("wifiinfo").toString();
         // end Danny
         
         if (map.containsKey("timestamp")) 
@@ -135,7 +141,17 @@ public class InputComponent {
 				//store the <label> into the database
 				user.setLabel(label);
 				
-				
+				//Danny
+				user.setAlt(alt);
+				user.setAccu(accu);
+				user.setSpd(spd);
+				user.setBear(bear);
+				user.setAccex(accex);
+				user.setAccey(accey);
+				user.setAccez(accez);
+				user.setGsminfo(gsminfo);
+				user.setWifiinfo(wifiinfo);
+				//END Danny
 				
 				Transaction tx = session.beginTransaction();
 				session.save(user);
