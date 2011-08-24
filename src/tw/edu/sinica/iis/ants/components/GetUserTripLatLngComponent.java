@@ -52,7 +52,7 @@ public class GetUserTripLatLngComponent {
 		Session session = sessionFactory.openSession();
         
         Integer userid = null;
-        Integer tripCount = null;
+        Integer tripCount = -1 ;
         
         if (map.containsKey("userid")) {
 			userid = Integer.parseInt(map.get("userid").toString());
@@ -86,7 +86,7 @@ public class GetUserTripLatLngComponent {
 				tripList = criteria.list().iterator();
 				if (tripList.hasNext()) {
 					
-					if (count >= tripCount-10 && count < tripCount){
+					if ((count >= tripCount-10 && count < tripCount)||tripCount==-1){
 						resultEntry= (T_UserPointLocationTime)tripList.next();
 						resultEntryMap = new HashMap();
 						resultEntryMap.put("tripID", resultEntry.getTrip_id());				
