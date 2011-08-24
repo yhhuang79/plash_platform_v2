@@ -168,7 +168,8 @@ public class TripInfoManagerComponent {
 	 */
 	private void scanDB(int level, int max_proc_time) {
 		
-		long currentTime, startTime = Calendar.getInstance().getTimeInMillis();
+		long startTime = Calendar.getInstance().getTimeInMillis();
+		long currentTime = startTime;
 				
     	
     	//First, get a list of unique userid, trip_id pairs
@@ -207,9 +208,9 @@ public class TripInfoManagerComponent {
 			try {
 				currTripInfoRec = (T_TripInfo) criteriaTripInfo.uniqueResult();
 			} catch (HibernateException he) {
-				return;
+				continue;
 				//most likely due to duplicate matching result
-				//handle hibernation exception here, to be implemented 
+				//handle hibernate exception here, to be implemented 
 			}//end try catch			
 			//Check whether such trip record exists or not and is updated or not
 			if (currTripInfoRec == null || currTripInfoRec.getUpdate_status() < level) {
@@ -217,8 +218,8 @@ public class TripInfoManagerComponent {
 				//then generate it!
 				generateLevelOneTripStatus(tmpUserID, tmpTripID,currTripInfoRec);
 			} else {
-				//the trip_info record is up-to-date
-				return;
+				//this trip_info record is up-to-date
+				continue;
 				
 			}//fi
 				
