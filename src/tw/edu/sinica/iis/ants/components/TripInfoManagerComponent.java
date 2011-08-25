@@ -24,16 +24,12 @@ import com.vividsolutions.jts.io.WKTReader;
 
 import tw.edu.sinica.iis.ants.DB.*;
 
-/*
+/**
  * This Component manages the trip information. This component performs task according to the task_id feed to the component. <br>
  * This component does: <br>
  * task_id = 1 : Set trip name <br>
  * task_id = 2 : Populate trip info <br>
- * 
- * @author	Yi-Chun Teng 
- * @param	map A map object that contains task_id and (optionally) the following keys: userid, trip_id, trip_name, max_proc_record
- * @example	 
- * @note	Map key description: <br>
+ * Map key descriptions: <br>
  * 			Map key-value pairs are served as additional parameters. <br> 
  * 			task_id specifies which task to perform. <br>
  * 			To perform task with task_id = 1, the caller must also specify userid and trip_id to indicate which trip record to access. <br> 
@@ -44,8 +40,13 @@ import tw.edu.sinica.iis.ants.DB.*;
  * 			the caller may optionally specify max_proc_time to limit the maximum time to be spent. The unit is in seconds <br>
  * 			Notice that the program does not force calculation termination immediately when the this limit is reached. <br>
  * 			Rather, the program continues current calculations and finishes up the current trip. <br>    
- * 			Current default maximum processing time is 1 hour (3600)
+ * 			Current default maximum processing time is 1 hour (3600) <br><br>
  * 
+ * Example: TripInfoManagerComponent?task_id=1&trip_id=5&userid=123&trip_name="happy trip to Chun Fu's room"
+ *  
+ * 
+ * @author	Yi-Chun Teng 
+ * @param	map A map object that contains task_id and (optionally) the following keys: userid, trip_id, trip_name, max_proc_record
  */
 public class TripInfoManagerComponent {
 
@@ -121,15 +122,15 @@ public class TripInfoManagerComponent {
 		return map;
 	}//end method
 	
-	/*
-	 * This method sets trip name
+	/**
+	 * This method sets trip name<br>
+	 * If the specified trip info record is not found, then the operation simply stops without notifying the caller <br><br>
+	 * Example:	setTripName(1,2,"my trip");
 	 * 
 	 * @author	Yi-Chun Teng 
 	 * @param	userid Indicates user's id  
 	 * @param	trip_id Indicates trip id
-	 * @param	trip_name The trip name to be set
-	 * @example	setTripName(1,2,"my trip"); 
-	 * @note	If the specified trip info record is not found, then the operation simply stops without notifying the caller
+	 * @param	trip_name The trip name to be set 	
 	 * 
 	 */
 	private void setTripName(int userid, int trip_id, String trip_name){
@@ -157,7 +158,7 @@ public class TripInfoManagerComponent {
 	
 	}//end method
 	
-	/*
+	/**
 	 * This method tries to scan the DB <br>
 	 * 
 	 * @author Yi-Chun Teng
@@ -192,6 +193,7 @@ public class TripInfoManagerComponent {
     	Criteria criteriaTripInfo;//criteria for table Trip_Info
     	int tmpUserID, tmpTripID;
     	T_TripInfo currTripInfoRec; //current trip info record
+    	System.out.println("Size of trip: " + criteriaUPLT.list().size() );
 		do {
 			//get the ids
 			currUPLTrec = tripListItr.next();			
@@ -229,16 +231,16 @@ public class TripInfoManagerComponent {
 		
 	}//end method
 	
-	/*
-	 * This method populate trip information, level one means the status info adheres level one definition
+	/**
+	 * This method populate trip information, level one means the status info adheres level one definition <br>
+	 * If the specified trip info record is not found, then the operation simply stops without notifying the caller <br><br>
+	 * setTripName(1,2,"my trip");	  
 	 * 
 	 * @author	Yi-Chun Teng 
 	 * @param	userid Indicates user's id  
 	 * @param	trip_id Indicates trip id
 	 * @param	tripInfoRec Indicates the POJO object to be manipulated. <br>
 	 * 			If null, then it means no such entry exists in the TripInfo table. 
-	 * @example	setTripName(1,2,"my trip"); 
-	 * @note	If the specified trip info record is not found, then the operation simply stops without notifying the caller
 	 * 
 	 */
 	private void generateLevelOneTripStatus(int userid, int trip_id, T_TripInfo tripInfoRec){
@@ -310,9 +312,8 @@ public class TripInfoManagerComponent {
 	}//end method	
 	
 
-	/*
+	/**
 	 * This method queries address-GPS coordinate conversation service. <br>
-	 * The Current
 	 * @param lat Double value indicates the latitude
 	 * @param lon Double value that indicates the long  
 	 */
@@ -362,8 +363,8 @@ public class TripInfoManagerComponent {
 		return addr; 
 	}//end method
 	
-	/*
-	 * This class handles address retrieval in a separate thread
+	/**
+	 * This class handles address retrieval in a separate thread	 * 
 	 * 
 	 */
 	private class GetAddrThread extends Thread {
@@ -371,10 +372,10 @@ public class TripInfoManagerComponent {
 		private double lon;
 		private T_TripInfo tripInfoRec; //reference to trip info record
 		
-		/*
+		/**
 		 * Constructor
-		 * @param lat
-		 * @param lon
+		 * @param lat Double value indicates the latitude
+		 * @param lon Double value that indicates the long  
 		 * @param tripInfoRec Reference to T_TripInfo instance currently working on
 		 * 
 		 */
@@ -384,8 +385,8 @@ public class TripInfoManagerComponent {
 			this.tripInfoRec = tripInfoRec;
 		}//end method
 
-		/*
-		 * requires some kind of call back handler
+		/**
+		 * Run the threaded task!
 		 */
 
 		public void run() {
