@@ -142,18 +142,30 @@ public class TripInfoManagerComponent {
 			T_TripInfo tripInfoRec = (T_TripInfo) criteriaTripInfo.uniqueResult();
 			//Check whether such trip record exists or not and is updated or not
 			if (tripInfoRec == null) {
-				//do nothing or return some error messages
-			} else {
-				//the trip_info record exists
+				//Create a new tripInfo record but set the update status value to 0
+				tripInfoRec = new T_TripInfo();
+				tripInfoRec.setUserid(userid);
+				tripInfoRec.setTrip_id(trip_id);					
+			}//fi				
 				tripInfoRec.setTrip_name(trip_name);							
 				tskSession.save(tripInfoRec);
 				tskSession.beginTransaction().commit();			
-			}//fi
+
 											
 		} catch (HibernateException he) {
 			return;
 			//most likely due to duplicate matching result
-			//handle hibernation exception here, to be implemented 
+			//handle hibernation exception here, to be implemented
+			
+			//DBValidityScan(postgistemplate.user_location_point_time, 3600);
+			
+			//Map argMap = new Map();			
+			//argMap.put("DB","postgistemplate");
+			//argMap.put("table","user_location_point_time");
+			//argMap.put("max_proc_time","3600");
+			//new DBValidityScanComponent().greet(argMap);
+			//DBValidityScanComponent pDVScanComponent = ComponentPool.get(DBValidityScanComponent.class);
+			//pDVScanComponent.greet(argMapd);
 		}//end try catch			
 	
 	}//end method
@@ -312,56 +324,6 @@ public class TripInfoManagerComponent {
 	}//end method	
 	
 
-	/**
-	 * This method queries address-GPS coordinate conversation service. <br>
-	 * @param lat Double value indicates the latitude
-	 * @param lon Double value that indicates the long  
-	 */
-	private String getAddress(double lat, double lon) {
-        String addr = new String("");
-		try {
-			URL addrRequestURL = new URL(
-					"http://maps.googleapis.com/maps/api/geocode/json?latlng=" +
-					lat +
-					"," +
-					lon +
-					"&sensor=true"
-					);
-
-			URLConnection addrConnect = addrRequestURL.openConnection(); 
-	        BufferedReader buffInReader = new BufferedReader( new InputStreamReader(addrConnect.getInputStream()));
-	       
-	        
-       
-
-
-			//Make the reader be the JSONObject	      
-	        
-	        JSONObject jObj = new JSONObject(new JSONTokener(buffInReader));	        
-	        buffInReader.close();					     
-	        JSONArray jArray = ((JSONObject) (jObj.getJSONArray("results").get(0))).getJSONArray("address_components");
-	        for (int i = 0; i < jArray.length(); i++ ) {
-	        	addr = addr + ((JSONObject)jArray.get(i)).get("long_name") + " ";
-	        }//rof */
-	 			
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;			
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block			
-			return new String("Address not available");			
-		}//try catch
-		
-
-		
-
-		return addr; 
-	}//end method
 	
 	/**
 	 * This class handles address retrieval in a separate thread	 * 
