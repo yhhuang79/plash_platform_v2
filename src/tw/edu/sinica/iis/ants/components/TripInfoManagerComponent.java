@@ -383,10 +383,10 @@ public class TripInfoManagerComponent {
 						tripInfoRec.setSt_addr_prt1((String)((JSONObject)jArray.get(4)).get("long_name"));						
 					} else if (addrType == 1) {
 						tripInfoRec.setEt_addr_prt5((String)((JSONObject)jArray.get(0)).get("long_name"));
-						tripInfoRec.setEt_addr_prt5((String)((JSONObject)jArray.get(1)).get("long_name"));
-						tripInfoRec.setEt_addr_prt5((String)((JSONObject)jArray.get(2)).get("long_name"));
-						tripInfoRec.setEt_addr_prt5((String)((JSONObject)jArray.get(3)).get("long_name"));
-						tripInfoRec.setEt_addr_prt5((String)((JSONObject)jArray.get(4)).get("long_name"));						
+						tripInfoRec.setEt_addr_prt4((String)((JSONObject)jArray.get(1)).get("long_name"));
+						tripInfoRec.setEt_addr_prt3((String)((JSONObject)jArray.get(2)).get("long_name"));
+						tripInfoRec.setEt_addr_prt2((String)((JSONObject)jArray.get(3)).get("long_name"));
+						tripInfoRec.setEt_addr_prt1((String)((JSONObject)jArray.get(4)).get("long_name"));						
 					}//fi		
 			 			
 				} catch (MalformedURLException e) {
