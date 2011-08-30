@@ -7,11 +7,20 @@ public class T_TripInfo {
 	private Integer userid;
 	private Integer trip_id;
 	private String trip_name;
-	private String trip_st_address;
 	private Timestamp trip_st;
 	private Timestamp trip_et;	
 	private Integer trip_length;
 	private Integer num_of_pts;
+	private String st_addr_prt1;
+	private String st_addr_prt2;
+	private String st_addr_prt3;
+	private String st_addr_prt4;
+	private String st_addr_prt5;	
+	private String et_addr_prt1;	
+	private String et_addr_prt2;
+	private String et_addr_prt3;
+	private String et_addr_prt4;
+	private String et_addr_prt5;	
 	private Short update_status;
 	private Integer id;
 	public Integer getUserid() {
@@ -32,11 +41,65 @@ public class T_TripInfo {
 	public void setTrip_name(String trip_name) {
 		this.trip_name = trip_name;
 	}
-	public String getTrip_st_address() {
-		return trip_st_address;
+	public String getSt_addr_prt1() {
+		return st_addr_prt1;
 	}
-	public void setTrip_st_address(String trip_st_address) {
-		this.trip_st_address = trip_st_address;
+	public void setSt_addr_prt1(String st_addr_prt1) {
+		this.st_addr_prt1 = st_addr_prt1;
+	}
+	public String getSt_addr_prt2() {
+		return st_addr_prt2;
+	}
+	public void setSt_addr_prt2(String st_addr_prt2) {
+		this.st_addr_prt2 = st_addr_prt2;
+	}
+	public String getSt_addr_prt3() {
+		return st_addr_prt3;
+	}
+	public void setSt_addr_prt3(String st_addr_prt3) {
+		this.st_addr_prt3 = st_addr_prt3;
+	}
+	public String getSt_addr_prt4() {
+		return st_addr_prt4;
+	}
+	public void setSt_addr_prt4(String st_addr_prt4) {
+		this.st_addr_prt4 = st_addr_prt4;
+	}
+	public String getSt_addr_prt5() {
+		return st_addr_prt5;
+	}
+	public void setSt_addr_prt5(String st_addr_prt5) {
+		this.st_addr_prt5 = st_addr_prt5;
+	}
+	public String getEt_addr_prt1() {
+		return et_addr_prt1;
+	}
+	public void setEt_addr_prt1(String et_addr_prt1) {
+		this.et_addr_prt1 = et_addr_prt1;
+	}
+	public String getEt_addr_prt2() {
+		return et_addr_prt2;
+	}
+	public void setEt_addr_prt2(String et_addr_prt2) {
+		this.et_addr_prt2 = et_addr_prt2;
+	}
+	public String getEt_addr_prt3() {
+		return et_addr_prt3;
+	}
+	public void setEt_addr_prt3(String et_addr_prt3) {
+		this.et_addr_prt3 = et_addr_prt3;
+	}
+	public String getEt_addr_prt4() {
+		return et_addr_prt4;
+	}
+	public void setEt_addr_prt4(String et_addr_prt4) {
+		this.et_addr_prt4 = et_addr_prt4;
+	}
+	public String getEt_addr_prt5() {
+		return et_addr_prt5;
+	}
+	public void setEt_addr_prt5(String et_addr_prt5) {
+		this.et_addr_prt5 = et_addr_prt5;
 	}
 	public Timestamp getTrip_st() {
 		return trip_st;
