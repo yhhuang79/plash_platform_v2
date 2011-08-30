@@ -1,0 +1,8 @@
+CREATE TABLE user_location.trip_info (
+	userid		INTEGER REFERENCES user_location.user_point_location_time(userid),
+	trip_id		INTEGER REFERENCES user_location.user_point_location_time(trip_id),
+	pic_url		TEXT,
+	time		TIMESTAMP,	-- photo capturing time
+	location	GEOMETRY,	
+	pic_id		SERIAL		PRIMARY KEY
+);
