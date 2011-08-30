@@ -3,8 +3,6 @@ package tw.edu.sinica.iis.ants.components;
 import java.sql.Timestamp;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.io.*;
 import java.math.*;
 import java.net.*;
@@ -19,13 +17,12 @@ import org.hibernate.transform.*;
 import org.json.*;
 
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
+import com.vividsolutions.jts.io.*;
 
 import tw.edu.sinica.iis.ants.DB.*;
 
 /**
- * This Component manages the trip information. This component performs task according to the task_id feed to the component. <br>
+ * This component manages the trip information. This component performs task according to the task_id fed to the component. <br>
  * This component does: <br>
  * task_id = 1 : Set trip name <br>
  * task_id = 2 : Populate trip info <br>
@@ -274,8 +271,11 @@ public class TripInfoManagerComponent {
 		tripInfoRec.setNum_of_pts(tripRecList.size());
 		//tripInfoRec.setTrip_st_address(getAddress(tripRecList.get(0).getGps().getCoordinate().y, tripRecList.get(0).getGps().getCoordinate().x));
 		//use thread to get address
-		GetAddrThread at = new GetAddrThread(tripRecList.get(0).getGps().getCoordinate().y, tripRecList.get(0).getGps().getCoordinate().x,tripInfoRec);
-		at.run();
+		GetAddrThread stAddr = new GetAddrThread(tripRecList.get(0).getGps().getCoordinate().y, tripRecList.get(0).getGps().getCoordinate().x,tripInfoRec,(short) 0);
+		stAddr.run();
+		GetAddrThread etAddr = new GetAddrThread(tripRecList.get(0).getGps().getCoordinate().y, tripRecList.get(0).getGps().getCoordinate().x,tripInfoRec,(short) 1);
+		etAddr.run();
+		
 		
 		if (tripInfoRec.getTrip_name() == null) { 
 			//this trip doesn't have a name yet
@@ -310,7 +310,8 @@ public class TripInfoManagerComponent {
 		tripInfoRec.setTrip_length(tmpDist.intValue());
 			
 		try {
-			at.join();
+			stAddr.join();
+			etAddr.join();
 			tripInfoRec.setUpdate_status((short) 1);
 		} catch (InterruptedException e) {
 			// trip address failed to be set
@@ -333,18 +334,20 @@ public class TripInfoManagerComponent {
 		private double lat;
 		private double lon;
 		private T_TripInfo tripInfoRec; //reference to trip info record
+		private short addrType; //start address or end address
 		
 		/**
 		 * Constructor
 		 * @param lat Double value indicates the latitude
 		 * @param lon Double value that indicates the long  
 		 * @param tripInfoRec Reference to T_TripInfo instance currently working on
-		 * 
+		 * @param addrType Indicates the type of address. 0 = starting point's address, 1 = end point's address	
 		 */
-		private GetAddrThread(double lat, double lon,T_TripInfo tripInfoRec) {
+		private GetAddrThread(double lat, double lon,T_TripInfo tripInfoRec, short addrType) {
 			this.lat = lat;
 			this.lon = lon;
 			this.tripInfoRec = tripInfoRec;
+			this.addrType = addrType;
 		}//end method
 
 		/**
@@ -352,7 +355,7 @@ public class TripInfoManagerComponent {
 		 */
 
 		public void run() {
-		       String addr = new String("");
+		       String addr = new String("" );
 				try {
 					URL addrRequestURL = new URL(
 							"http://maps.googleapis.com/maps/api/geocode/json?latlng=" +
@@ -372,22 +375,42 @@ public class TripInfoManagerComponent {
 			        JSONObject jObj = new JSONObject(new JSONTokener(buffInReader));	        
 			        buffInReader.close();					     
 			        JSONArray jArray = ((JSONObject) (jObj.getJSONArray("results").get(0))).getJSONArray("address_components");
-			        for (int i = 0; i < jArray.length(); i++ ) {
-			        	addr = addr + ((JSONObject)jArray.get(i)).get("long_name") + " ";
-			        }//rof */
+					if (addrType == 0) {
+						tripInfoRec.setSt_addr_prt5((String)((JSONObject)jArray.get(0)).get("long_name"));
+						tripInfoRec.setSt_addr_prt4((String)((JSONObject)jArray.get(1)).get("long_name"));
+						tripInfoRec.setSt_addr_prt3((String)((JSONObject)jArray.get(2)).get("long_name"));
+						tripInfoRec.setSt_addr_prt2((String)((JSONObject)jArray.get(3)).get("long_name"));
+						tripInfoRec.setSt_addr_prt1((String)((JSONObject)jArray.get(4)).get("long_name"));						
+					} else if (addrType == 1) {
+						tripInfoRec.setEt_addr_prt5((String)((JSONObject)jArray.get(0)).get("long_name"));
+						tripInfoRec.setEt_addr_prt5((String)((JSONObject)jArray.get(1)).get("long_name"));
+						tripInfoRec.setEt_addr_prt5((String)((JSONObject)jArray.get(2)).get("long_name"));
+						tripInfoRec.setEt_addr_prt5((String)((JSONObject)jArray.get(3)).get("long_name"));
+						tripInfoRec.setEt_addr_prt5((String)((JSONObject)jArray.get(4)).get("long_name"));						
+					}//fi		
 			 			
 				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
-					tripInfoRec.setTrip_st_address("Error generating address");
+					if (addrType == 0) {
+						tripInfoRec.setSt_addr_prt5("Invalid location data");
+					} else if (addrType == 1) {
+						tripInfoRec.setEt_addr_prt5("Invalid location data");
+					}//fi
+					
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					tripInfoRec.setTrip_st_address("Error generating address");
+					if (addrType == 0) {
+						tripInfoRec.setSt_addr_prt5("Address not available");
+					} else if (addrType == 1) {
+						tripInfoRec.setEt_addr_prt5("Address not available");
+					}//fi					
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block			
-					tripInfoRec.setTrip_st_address("Address not available");			
+					if (addrType == 0) {
+						tripInfoRec.setSt_addr_prt5("Invalid data");
+					} else if (addrType == 1) {
+						tripInfoRec.setEt_addr_prt5("Invalid data");
+					}//fi		
 				}//try catch
 				
-				tripInfoRec.setTrip_st_address(addr);
+	
 							 
 		}//end method
 		
