@@ -1,6 +1,6 @@
 CREATE TABLE user_location.trip_info (
-	userid		INTEGER REFERENCES user_location.user_point_location_time(userid),
-	trip_id		INTEGER REFERENCES user_location.user_point_location_time(trip_id),
+	userid		INTEGER,
+	trip_id		INTEGER,
 	trip_name	TEXT,
 	trip_st		TIMESTAMP,	-- trip start time
 	trip_et		TIMESTAMP,	-- trip end time
@@ -18,5 +18,6 @@ CREATE TABLE user_location.trip_info (
 	et_addr_prt5	TEXT,
 	update_status	SMALLINT,	--(0 = not updated (calculated), 1 = updated to status version 1)
 	id		SERIAL		PRIMARY KEY
+	-- FOREIGN KEY (userid, trip_id) REFERENCES user_location.user_point_location_time(userid,trip_id)	
 );
 
