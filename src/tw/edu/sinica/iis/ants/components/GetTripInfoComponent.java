@@ -138,6 +138,7 @@ public class GetTripInfoComponent {
 	 * @author	Yi-Chun Teng 
 	 * @param	userid Indicates user's id  
 	 * @param	trip_id Indicates trip id
+	 * @param	field_mask Indicates which field to be included in the returned map
 	 * @return	A map that contains the trip info. 
 	 * 			If such info is not found, the map will not contain corresponding key-value pairs
 	 * 
@@ -195,8 +196,7 @@ public class GetTripInfoComponent {
     	}//fi
    	
   	
-    	criteriaTripInfo.setProjection(filterProjList);
-    	
+    	criteriaTripInfo.setProjection(filterProjList);    	
     	criteriaTripInfo.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
     	
 		try {
@@ -219,7 +219,7 @@ public class GetTripInfoComponent {
 	 * 
 	 * @author	Yi-Chun Teng 
 	 * @param	userid Indicates user's id  
-	 * @param 	field_mask Indicates which field to select
+	 * @param	field_mask Indicates which field to be included in the returned map
 	 * @return	A list of map that contains the individual trip info
 	 * 
 	 */
@@ -277,15 +277,12 @@ public class GetTripInfoComponent {
     	}//fi
 
     	
-    	criteriaTripInfo.setProjection(filterProjList);
-    	
+    	criteriaTripInfo.setProjection(filterProjList);    	
     	criteriaTripInfo.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
     	
 		try {
-			//T_TripInfo tripInfoRec = (T_TripInfo) criteriaTripInfo.uniqueResult();
 			List<Map> tripInfoList = (List<Map>) criteriaTripInfo.list();
 
-			//Check whether such trip record exists or not and is updated or not
 			if (tripInfoList.size() == 0) {
 				return null;
 			}//fi					
