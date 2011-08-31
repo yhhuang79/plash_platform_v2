@@ -37,7 +37,7 @@ import tw.edu.sinica.iis.ants.DB.*;
  * @author	Yi-Chun Teng 
  * @param	map A map object that contains userid and (optionally) trip_id
  */
-public class TestComponent {
+public class GetUserTripLatLngComponent {
 
 
 	private SessionFactory sessionFactory;
@@ -51,7 +51,7 @@ public class TestComponent {
 		this.sessionFactory = sessionFactory;
 	}
 
-	public TestComponent() {
+	public GetUserTripLatLngComponent() {
 
 	}
 
