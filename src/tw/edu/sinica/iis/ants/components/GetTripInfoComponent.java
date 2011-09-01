@@ -180,7 +180,7 @@ public class GetTripInfoComponent {
     		filterProjList.add(Projections.property("st_addr_prt5"),"st_addr_prt5");
     	}//fi
     	if ((field_mask & 16) != 0) { 
-    		filterProjList.add(Projections.property("et_addr_prt1"),"st_addr_prt5");
+    		filterProjList.add(Projections.property("et_addr_prt1"),"et_addr_prt1");
     	}//fi
     	if ((field_mask & 8) != 0) { 
     		filterProjList.add(Projections.property("et_addr_prt2"),"et_addr_prt2");
@@ -261,7 +261,7 @@ public class GetTripInfoComponent {
     		filterProjList.add(Projections.property("st_addr_prt5"),"st_addr_prt5");
     	}//fi
     	if ((field_mask & 16) != 0) { 
-    		filterProjList.add(Projections.property("et_addr_prt1"),"st_addr_prt5");
+    		filterProjList.add(Projections.property("et_addr_prt1"),"et_addr_prt1");
     	}//fi
     	if ((field_mask & 8) != 0) { 
     		filterProjList.add(Projections.property("et_addr_prt2"),"et_addr_prt2");
