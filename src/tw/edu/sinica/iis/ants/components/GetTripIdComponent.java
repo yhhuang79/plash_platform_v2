@@ -87,6 +87,7 @@ public class GetTripIdComponent {
 				    //Criteria criteria = session.createCriteria(T_UserPointLocationTime.class); 
 					Criteria criteria = session.createCriteria(T_UserTrip.class);
 				
+					
 	 			    //get the record matching the <userid>
 				    //criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("userid").toString())));
 					criteria.add(Restrictions.eq("userid", userid));
