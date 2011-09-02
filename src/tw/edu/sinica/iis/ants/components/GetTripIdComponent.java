@@ -96,7 +96,6 @@ public class GetTripIdComponent {
 				    //criteria.addOrder(Order.desc("trip_id"));
 				    //criteria.setProjection(Projections.max("trip_id"));
 				    
-					
 					//store the query results into the <tripids>
 					Iterator tripids = criteria.list().iterator();
 					
