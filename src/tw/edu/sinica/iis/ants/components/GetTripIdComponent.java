@@ -33,7 +33,9 @@ import org.hibernate.Transaction;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+import tw.edu.sinica.iis.ants.DB.T_FriendList;
 import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
+import tw.edu.sinica.iis.ants.DB.T_UserTrip;
 
 
 
@@ -72,37 +74,53 @@ public class GetTripIdComponent {
 	        
 	        Integer userid = null;
 	        
-	        if (map.containsKey("userid")) {userid = Integer.parseInt(map.get("userid").toString());}
+	        if (map.containsKey("userid")) {
+	        	userid = Integer.parseInt(map.get("userid").toString());
+	        }
 	        
 	        if (userid.equals("")) {
 				map.put("message", "userid is empty and can not get the current tripid");
 			} else {   
-				Integer currentTripId = null;
+					Integer currentTripId = null;
 				    
 				    //build the Hibernate query object and assign the session to the T_UserPointLocationTime.class
-				    Criteria criteria = session.createCriteria(T_UserPointLocationTime.class); 
-				    
+				    //Criteria criteria = session.createCriteria(T_UserPointLocationTime.class); 
+					Criteria criteria = session.createCriteria(T_UserTrip.class);
+				
 	 			    //get the record matching the <userid>
-				    criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("userid").toString())));
-				    
+				    //criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("userid").toString())));
+					criteria.add(Restrictions.eq("userid", userid));
+					
 				    //sort the <trip_id> from big to small, to get the record having the biggest <trip_id>
-				    criteria.addOrder(Order.desc("trip_id"));
+				    //criteria.addOrder(Order.desc("trip_id"));
 				    //criteria.setProjection(Projections.max("trip_id"));
 				    
+					
 					//store the query results into the <tripids>
 					Iterator tripids = criteria.list().iterator();
 					
 					if (tripids.hasNext()){
 						//store the value of <tripids> into the <tripid> object belonging to the T_UserPointLocationTime class
-						T_UserPointLocationTime tripid = (T_UserPointLocationTime) tripids.next();
+						T_UserTrip tripid = (T_UserTrip) tripids.next();
 						
 						//get the value of <trip_id> by using the getTrip_id() method of tripid
-						currentTripId = tripid.getTrip_id();
+						currentTripId = tripid.getTrip_count();
 					
 					}
 					else {
 						//new user without any trip id. 
 						currentTripId = 1;
+						criteria = session.createCriteria(T_FriendList.class);
+		        		T_UserTrip tripid1 = new T_UserTrip();
+						//tripid.setId(id)
+						tripid1.setUserid(userid);
+						tripid1.setTrip_count(currentTripId);
+						
+						//begin Transaction and commit to DB
+				        Transaction tx = session.beginTransaction();
+				        session.save(tripid1);
+				        tx.commit();
+						
 					}
 					
 					//store the result into the <newTripId> item of the map
