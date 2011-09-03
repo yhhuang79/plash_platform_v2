@@ -31,21 +31,22 @@ import tw.edu.sinica.iis.ants.DB.*;
  * 				If trip_id is absent, this component simply returns all trips belonging to that user. <br>
  * field_mask: Indicates which columns in the trip info record are included. <br>
  * There are currently 15 fields to select. Caller can enable them or disable them by putting the mask bits in corresponding order: <br>
- * 	1. trip_name <br>
- * 	2. trip_st <br>
- * 	3. trip_et <br>
- * 	4. trip_length <br>
- * 	5. num_of_pts <br>
- * 	6. st_addr_prt1 <br>
- * 	7. st_addr_prt2 <br>
- * 	8. st_addr_prt3 <br>  
- * 	9. st_addr_prt4 <br>
- * 	10. st_addr_prt5 <br>
- * 	11. et_addr_prt1 <br>
- * 	12. et_addr_prt2 <br>
- * 	13. et_addr_prt3 <br>
- *  14. et_addr_prt4 <br>
- *  15. et_addr_prt5 <br>
+ *  1. trip_id <br>
+ * 	2. trip_name <br>
+ * 	3. trip_st <br>
+ * 	4. trip_et <br>
+ * 	5. trip_length <br>
+ * 	6. num_of_pts <br>
+ * 	7. st_addr_prt1 <br>
+ * 	8. st_addr_prt2 <br>
+ * 	9. st_addr_prt3 <br>  
+ * 	10. st_addr_prt4 <br>
+ * 	11. st_addr_prt5 <br>
+ * 	12. et_addr_prt1 <br>
+ * 	13. et_addr_prt2 <br>
+ * 	14. et_addr_prt3 <br>
+ *  15. et_addr_prt4 <br>
+ *  16. et_addr_prt5 <br>
  * Example: GetTripInfoComponent?userid=5&trip_ic=3&field_mask=0x111110000000000  
  *  
  * @author	Yi-Chun Teng 
@@ -148,54 +149,10 @@ public class GetTripInfoComponent {
     	Criteria criteriaTripInfo = tskSession.createCriteria(T_TripInfo.class);
     	criteriaTripInfo.add(Restrictions.eq("userid", userid));
     	criteriaTripInfo.add(Restrictions.eq("trip_id", trip_id));
-    	ProjectionList filterProjList = Projections.projectionList(); 
-    	if ((field_mask & 16384) != 0) { //16384 = 100000000000000
-    		filterProjList.add(Projections.property("trip_name"),"trip_name");
-    	}//fi
-    	if ((field_mask & 8192) != 0) { 
-        	filterProjList.add(Projections.sqlProjection("trip_st", new String[] {"trip_st"}, new Type[] { new StringType() }));
-    	}//fi
-    	if ((field_mask & 4096) != 0) { //4096 = 1000000000000
-        	filterProjList.add(Projections.sqlProjection("trip_et", new String[] {"trip_et"}, new Type[] { new StringType() }));    	
-    	}//fi
-    	if ((field_mask & 2048) != 0) { 
-        	filterProjList.add(Projections.property("trip_length"),"trip_length");  
-    	}//fi
-    	if ((field_mask & 1024) != 0) { //1024 = 10000000000
-        	filterProjList.add(Projections.property("num_of_pts"),"num_of_pts");
-    	}//fi
-    	if ((field_mask & 512) != 0) { 
-    		filterProjList.add(Projections.property("st_addr_prt1"),"st_addr_prt1");
-    	}//fi
-    	if ((field_mask & 256) != 0) { 
-    		filterProjList.add(Projections.property("st_addr_prt2"),"st_addr_prt2");
-    	}//fi
-    	if ((field_mask & 128) != 0) { 
-    		filterProjList.add(Projections.property("st_addr_prt3"),"st_addr_prt3");
-    	}//fi
-    	if ((field_mask & 64) != 0) { 
-    		filterProjList.add(Projections.property("st_addr_prt4"),"st_addr_prt4");
-    	}//fi
-    	if ((field_mask & 32) != 0) { //32 = 100000
-    		filterProjList.add(Projections.property("st_addr_prt5"),"st_addr_prt5");
-    	}//fi
-    	if ((field_mask & 16) != 0) { 
-    		filterProjList.add(Projections.property("et_addr_prt1"),"et_addr_prt1");
-    	}//fi
-    	if ((field_mask & 8) != 0) { 
-    		filterProjList.add(Projections.property("et_addr_prt2"),"et_addr_prt2");
-    	}//fi
-    	if ((field_mask & 4) != 0) { 
-    		filterProjList.add(Projections.property("et_addr_prt3"),"et_addr_prt3");
-    	}//fi
-    	if ((field_mask & 2) != 0) { //2 = 10
-    		filterProjList.add(Projections.property("et_addr_prt4"),"et_addr_prt4");
-    	}//fi
-    	if ((field_mask & 1) != 0) { //1=1
-    		filterProjList.add(Projections.property("et_addr_prt5"),"et_addr_prt5");
-    	}//fi
+    	ProjectionList filterProjList = Projections.projectionList();
+    	criteriaTripInfo.setProjection(addFilterList(filterProjList,field_mask));      	
    	
-  	
+ 
     	criteriaTripInfo.setProjection(filterProjList);    	
     	criteriaTripInfo.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
     	
@@ -228,8 +185,35 @@ public class GetTripInfoComponent {
 		//obtain the record
     	Criteria criteriaTripInfo = tskSession.createCriteria(T_TripInfo.class);
     	criteriaTripInfo.add(Restrictions.eq("userid", userid));
-    	ProjectionList filterProjList = Projections.projectionList(); 
- 
+    	ProjectionList filterProjList = Projections.projectionList();     	
+    	criteriaTripInfo.setProjection(addFilterList(filterProjList,field_mask));    	
+    	criteriaTripInfo.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+    	
+		try {
+			List<Map> tripInfoList = (List<Map>) criteriaTripInfo.list();
+
+			if (tripInfoList.size() == 0) {
+				return tripInfoList;
+			}//fi					
+			return tripInfoList;
+											
+		} catch (HibernateException he) {
+			return null;
+		}//end try catch			//*/
+		
+	}//end method
+	
+	/**
+	 * Add corresponding projection property according to field_mask
+	 * 
+	 * @param filterProjList The projection list to contain various properties
+	 * @param field_mask Indicates which field to be included in the returned map
+	 * @return
+	 */
+	private ProjectionList addFilterList(ProjectionList filterProjList, int field_mask) {
+    	if ((field_mask & 32768) != 0) { //32768 = 1000000000000000
+    		filterProjList.add(Projections.property("trip_id"),"trip_id");
+    	}//fi    	 
     	if ((field_mask & 16384) != 0) { //16384 = 100000000000000
     		filterProjList.add(Projections.property("trip_name"),"trip_name");
     	}//fi
@@ -275,22 +259,7 @@ public class GetTripInfoComponent {
     	if ((field_mask & 1) != 0) { //1=1
     		filterProjList.add(Projections.property("et_addr_prt5"),"et_addr_prt5");
     	}//fi
-
-    	
-    	criteriaTripInfo.setProjection(filterProjList);    	
-    	criteriaTripInfo.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-    	
-		try {
-			List<Map> tripInfoList = (List<Map>) criteriaTripInfo.list();
-
-			if (tripInfoList.size() == 0) {
-				return null;
-			}//fi					
-			return tripInfoList;
-											
-		} catch (HibernateException he) {
-			return null;
-		}//end try catch			//*/
+		return filterProjList;
 		
 	}//end method
 	
