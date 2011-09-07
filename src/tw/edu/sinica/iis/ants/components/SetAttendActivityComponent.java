@@ -16,20 +16,22 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 
+/**
+ * @goal      set user to attend an activity
+ * @author    Kenny
+ * @version   1, 05/13/2011
+ * @param     userid, activityid
+ * @return    message 
+ * 
+ */
+
 public class SetAttendActivityComponent extends PLASHComponent {
 
 	@Override
-	public Object theMainLogic(Map map) {
+	public Object serviceMethod(Map map) {
         System.out.println("SetAttendActivityComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
         // Please Implement Your Programming Logic From Here
-        /**
-         * @goal      set user to attend an activity
-         * @author    Kenny
-         * @version   1, 05/13/2011
-         * @param     userid, activityid
-         * @return    message 
-         * 
-         */
+
 		if (!map.containsKey("userid") || !map.containsKey("activityid")) {
         	map.put("message", "Lacking of parameters");
         	return map;

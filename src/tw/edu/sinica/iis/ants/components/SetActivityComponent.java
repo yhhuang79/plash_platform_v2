@@ -14,21 +14,21 @@ import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
-
+/**
+ * @goal      create activity
+ * @author    Kenny
+ * @version   1, 05/13/2011
+ * @param     userid, name, timestamp, lat, lng, image
+ * @return    message 
+ * 
+ */
 public class SetActivityComponent extends PLASHComponent {
 
 	@Override
-	public Object theMainLogic(Map map) {    	
+	public Object serviceMethod(Map map) {    	
         System.out.println("SetActivityComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
         // Please Implement Your Programming Logic From Here
-        /**
-         * @goal      create activity
-         * @author    Kenny
-         * @version   1, 05/13/2011
-         * @param     userid, name, timestamp, lat, lng, image
-         * @return    message 
-         * 
-         */
+
         if(!map.containsKey("userid") || !map.containsKey("name") || !map.containsKey("timestamp") || !map.containsKey("lat") || !map.containsKey("lng")){
         	map.put("message", "Lacking of parameters");
         	return map;

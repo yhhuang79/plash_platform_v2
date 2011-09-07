@@ -45,25 +45,17 @@ import tw.edu.sinica.iis.ants.DB.*;
  * @author	Yi-Chun Teng 
  * @param	map A map object that contains task_id and (optionally) the following keys: userid, trip_id, trip_name, max_proc_record
  */
-public class TripInfoManagerComponent {
+public class TripInfoManagerComponent extends PLASHComponent{
 
 
-	private SessionFactory sessionFactory;
 	private Session tskSession; //task session
 
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
-
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
 
 	public TripInfoManagerComponent() {
 
 	}
 
-	public Object greet(Map map) {
+	public Object serviceMethod(Map map) {
 		
 		System.out.println("Test Start:\t"	+ Calendar.getInstance().getTimeInMillis());
 		

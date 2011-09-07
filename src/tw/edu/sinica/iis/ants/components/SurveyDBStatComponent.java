@@ -23,25 +23,17 @@ import tw.edu.sinica.iis.ants.DB.*;
  * @example	http://localhost:1234/in?userid=1&tripid=555       
  * @note	Follow the algorithm implemented in the original server
  */
-public class SurveyDBStatComponent {
+public class SurveyDBStatComponent extends PLASHComponent {
 	
 	Session session;
 
-	private SessionFactory sessionFactory;
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     public SurveyDBStatComponent() {
 
     }//end constructor
 
-    public Object greet(Map map) {
+    public Object serviceMethod(Map map) {
         session = sessionFactory.openSession(); 
         System.out.println("getAuthFriendComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
 

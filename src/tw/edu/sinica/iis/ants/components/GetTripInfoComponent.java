@@ -30,7 +30,7 @@ import tw.edu.sinica.iis.ants.DB.*;
  * trip_id: Indicates which trip to return. This is optional <br>
  * 				If trip_id is absent, this component simply returns all trips belonging to that user. <br>
  * field_mask: Indicates which columns in the trip info record are included. <br>
- * There are currently 15 fields to select. Caller can enable them or disable them by putting the mask bits in corresponding order: <br>
+ * There are currently 15 fields that can be selected. Caller can enable them or disable them by set corresponding mask bits: <br>
  *  1. trip_id <br>
  * 	2. trip_name <br>
  * 	3. trip_st <br>
@@ -47,30 +47,19 @@ import tw.edu.sinica.iis.ants.DB.*;
  * 	14. et_addr_prt3 <br>
  *  15. et_addr_prt4 <br>
  *  16. et_addr_prt5 <br>
- * Example: GetTripInfoComponent?userid=5&trip_ic=3&field_mask=0x111110000000000  
+ * Example: GetTripInfoComponent?userid=5&trip_ic=3&field_mask="0111110000000000  
  *  
  * @author	Yi-Chun Teng 
  * @param	map A map object that contains userid, (optionally) trip_id and (optionally) field_mask 
  */
-public class GetTripInfoComponent {
+public class GetTripInfoComponent extends PLASHComponent {
 
 
-	private SessionFactory sessionFactory;
 	private Session tskSession; //task session
 
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
 
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
 
-	public GetTripInfoComponent() {
-
-	}
-
-	public Object greet(Map map) {
+	public Object serviceMethod(Map map) {
 		
 		System.out.println("GetTripInfoComponent Start:\t"	+ Calendar.getInstance().getTimeInMillis());
 		

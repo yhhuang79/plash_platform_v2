@@ -15,7 +15,7 @@ import tw.edu.sinica.iis.ants.DB.T_Item;
 public class DelAssignItemComponent extends PLASHComponent {
 
 	@Override
-	public Object theMainLogic(Map map) {
+	public Object serviceMethod(Map map) {
 
         System.out.println("DelAssignItemComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
         

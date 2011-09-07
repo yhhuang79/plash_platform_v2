@@ -18,7 +18,7 @@ import tw.edu.sinica.iis.ants.DB.T_Item;
 public class GetAssignedItemInfoOfUserComponent extends PLASHComponent {
 
 	@Override
-	public Object theMainLogic(Map map) {
+	public Object serviceMethod(Map map) {
 
         if(!map.containsKey("userid") || map.get("userid").toString().equals("") || !map.containsKey("activityid") || map.get("activityid").toString().equals("")){
         	map.put("message", "Lacking of parameters or required information");

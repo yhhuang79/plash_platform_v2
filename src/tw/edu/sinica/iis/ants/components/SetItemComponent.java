@@ -7,28 +7,26 @@ import java.util.Map;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import tw.edu.sinica.iis.ants.DB.T_Activity;
 import tw.edu.sinica.iis.ants.DB.T_Item;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
 
+
+/**
+ * @goal      create item
+ * @author    Kenny
+ * @version   1, 05/13/2011
+ * @param     userid, activityid, name, price, assigned, assigneduserid
+ * @return    message 
+ * 
+ */
 public class SetItemComponent extends PLASHComponent {
 
 	@Override
-	public Object theMainLogic(Map map) {
+	public Object serviceMethod(Map map) {
 		
         System.out.println("SetItemComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
         // Please Implement Your Programming Logic From Here
-        /**
-         * @goal      create item
-         * @author    Kenny
-         * @version   1, 05/13/2011
-         * @param     userid, activityid, name, price, assigned, assigneduserid
-         * @return    message 
-         * 
-         */
+
 		if (!map.containsKey("userid") || !map.containsKey("activityid") || !map.containsKey("name") || !map.containsKey("price") || !map.containsKey("assigned") || !map.containsKey("assigneduserid")) {
         	map.put("message", "Lacking of parameters");
         	return map;
