@@ -1,3 +1,9 @@
 insert into user_location.depreciated_location_data
 (id,userid,"timestamp",gps,server_timestamp,trip_id,label)
 select * from user_location.user_point_location_time where userid=108 AND trip_id=74
+
+select * 
+from 
+(select distinct on(trip_id) trip_id from user_location.user_point_location_time where userid=1 order by trip_id desc) TIDs
+left join (select * from user_location.trip_info where user_location.trip_info.userid=1) TINFO
+on TIDs.trip_id=TINFO.trip_id
