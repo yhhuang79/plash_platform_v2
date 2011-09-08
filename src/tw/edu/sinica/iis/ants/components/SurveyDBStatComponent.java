@@ -33,7 +33,7 @@ public class SurveyDBStatComponent extends PLASHComponent {
 
     }//end constructor
 
-    public Object serviceMethod(Map map) {
+    public Object serviceMain(Map map) {
         session = sessionFactory.openSession(); 
         System.out.println("getAuthFriendComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
 

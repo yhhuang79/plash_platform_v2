@@ -42,6 +42,6 @@ public abstract class PLASHComponent {
      * @return Object Return type should be an instance of HashMap. <br>
      * 			This map contains results as well as parameters and data for next component 
      */
-    public abstract Object serviceMethod(Map map);
+    public abstract Object serviceMain(Map map);
     
 }//end class

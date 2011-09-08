@@ -15,7 +15,7 @@ import tw.edu.sinica.iis.ants.DB.T_FriendAuth;
 public class DelAttendActivityComponent extends PLASHComponent {
 
 	@Override
-	public Object serviceMethod(Map map) {
+	public Object serviceMain(Map map) {
         if(!map.containsKey("activityid") || !map.containsKey("userid") || map.get("activityid").toString().equals("") || map.get("userid").toString().equals("")){
         	map.put("message", "Lacking of parameters or required information");
         	return map;        

@@ -59,7 +59,7 @@ public class GetTripInfoComponent extends PLASHComponent {
 
 
 
-	public Object serviceMethod(Map map) {
+	public Object serviceMain(Map map) {
 		
 		System.out.println("GetTripInfoComponent Start:\t"	+ Calendar.getInstance().getTimeInMillis());
 		

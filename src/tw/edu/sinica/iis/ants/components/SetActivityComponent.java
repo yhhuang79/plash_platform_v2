@@ -25,7 +25,7 @@ import com.vividsolutions.jts.io.WKTReader;
 public class SetActivityComponent extends PLASHComponent {
 
 	@Override
-	public Object serviceMethod(Map map) {    	
+	public Object serviceMain(Map map) {    	
         System.out.println("SetActivityComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
         // Please Implement Your Programming Logic From Here
 

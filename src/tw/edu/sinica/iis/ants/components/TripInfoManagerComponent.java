@@ -51,11 +51,9 @@ public class TripInfoManagerComponent extends PLASHComponent{
 	private Session tskSession; //task session
 
 
-	public TripInfoManagerComponent() {
 
-	}
 
-	public Object serviceMethod(Map map) {
+	public Object serviceMain(Map map) {
 		
 		System.out.println("Test Start:\t"	+ Calendar.getInstance().getTimeInMillis());
 		

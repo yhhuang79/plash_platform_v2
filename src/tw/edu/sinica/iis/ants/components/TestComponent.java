@@ -37,25 +37,14 @@ import tw.edu.sinica.iis.ants.DB.*;
  * @author	Yi-Chun Teng 
  * @param	map A map object that contains userid and (optionally) trip_id
  */
-public class TestComponent {
+public class TestComponent extends PLASHComponent {
 
 
-	private SessionFactory sessionFactory;
+
 	private Session tskSession; //task session
 
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
 
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
-
-	public TestComponent() {
-
-	}
-
-	public Object greet(Map map) {
+	public Object serviceMain(Map map) {
 		
 		System.out.println("GetTripInfoComponent Start:\t"	+ Calendar.getInstance().getTimeInMillis());
 		

@@ -22,7 +22,7 @@ import tw.edu.sinica.iis.ants.DB.T_Item;
 public class SetItemComponent extends PLASHComponent {
 
 	@Override
-	public Object serviceMethod(Map map) {
+	public Object serviceMain(Map map) {
 		
         System.out.println("SetItemComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
         // Please Implement Your Programming Logic From Here

@@ -14,7 +14,7 @@ import tw.edu.sinica.iis.ants.DB.T_Item;
 public class GetItemComponent extends PLASHComponent {
 
 	@Override
-	public Object serviceMethod(Map map) {
+	public Object serviceMain(Map map) {
         if(!map.containsKey("itemid") || map.get("itemid").toString().equals("")){
         	map.put("message", "Lacking of parameters or required information");
         	return map;        
