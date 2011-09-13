@@ -26,10 +26,10 @@ import tw.edu.sinica.iis.ants.DB.*;
  * This component returns the trip information.  <br>
  * 
  * This component takes a Map object that contains the following keys: <br>
- * userid : Indicates which user's trip to return <br>
- * trip_id: Indicates which trip to return. This is optional <br>
+ * userid : Required. This parameter indicates which user's trip to return <br>
+ * trip_id: Optional. This parameter indicates which trip to return. This is optional <br>
  * 				If trip_id is absent, this component simply returns all trips belonging to that user. <br>
- * field_mask: Indicates which columns in the trip info record are included. <br>
+ * field_mask: Optional. This parameter indicates which columns in the trip info record are included. <br>
  * There are currently 15 fields that can be selected. Caller can enable them or disable them by set corresponding mask bits: <br>
  *  1. trip_id <br>
  * 	2. trip_name <br>
@@ -180,10 +180,7 @@ public class GetTripInfoComponent extends PLASHComponent {
     	
 		try {
 			List<Map> tripInfoList = (List<Map>) criteriaTripInfo.list();
-
-			if (tripInfoList.size() == 0) {
-				return tripInfoList;
-			}//fi					
+			
 			return tripInfoList;
 											
 		} catch (HibernateException he) {
