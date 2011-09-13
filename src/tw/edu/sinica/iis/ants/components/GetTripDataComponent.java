@@ -204,7 +204,16 @@ public class GetTripDataComponent extends PLASHComponent {
     	criteriaTripData.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
     	
 		try {
-			List<Map> tripDataList = (List<Map>) criteriaTripData.list();		
+			List<Map> tripDataList = (List<Map>) criteriaTripData.list();	
+	    	if ((field_mask & 4096) != 0) { //4096 = 1000000000000
+	    		Geometry tmpGPS;
+	    		for (Map tmpMap:tripDataList) {
+	    			tmpGPS = (Geometry)tmpMap.remove("gps");
+	    			tmpMap.put("lng", tmpGPS.getCoordinate().x*1000000);
+	    			tmpMap.put("lat", tmpGPS.getCoordinate().y*1000000);
+	    		}//rof
+	    	
+	    	}//fi
 			return tripDataList;
 											
 		} catch (HibernateException he) {
@@ -225,8 +234,7 @@ public class GetTripDataComponent extends PLASHComponent {
         	filterProjList.add(Projections.sqlProjection("timestamp", new String[] {"timestamp"}, new Type[] { new StringType() }));
     	}//fi
     	if ((field_mask & 4096) != 0) { //4096 = 1000000000000
-        	filterProjList.add(Projections.sqlProjection("ST_GeomFromWKB(ST_AsBinary(?))", new String[] {"gps"}, new Type[] { new StringType() }));    	
-      //  	filterProjList.add(Projections.sqlProjection("ST_GeomFromWKB(ST_AsBinary(gps))", new String[] {"lon"}, new Type[] { new StringType() }));
+    		filterProjList.add(Projections.property("gps"),"gps");
     	}//fi
     	if ((field_mask & 2048) != 0) { 
         	filterProjList.add(Projections.property("server_timestamp"),"server_timestamp");  
@@ -259,10 +267,10 @@ public class GetTripDataComponent extends PLASHComponent {
     		filterProjList.add(Projections.property("accez"),"accez");
     	}//fi
     	if ((field_mask & 2) != 0) { //2 = 10
-    		filterProjList.add(Projections.property("gsminfo"),"gsminfo");
+        	filterProjList.add(Projections.sqlProjection("gsminfo", new String[] {"gsminfo"}, new Type[] { new StringType() }));    		
     	}//fi
     	if ((field_mask & 1) != 0) { //1=1
-    		filterProjList.add(Projections.property("wifiinfo"),"wifiinfo");
+        	filterProjList.add(Projections.sqlProjection("wifiinfo", new String[] {"wifiinfo"}, new Type[] { new StringType() }));    		
     	}//fi
 		return filterProjList;
 		
