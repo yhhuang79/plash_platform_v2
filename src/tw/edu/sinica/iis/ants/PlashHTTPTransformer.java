@@ -1,7 +1,7 @@
 package tw.edu.sinica.iis.ants;
 
-import java.util.Calendar;
-import java.util.Map;
+import java.util.*;
+import java.net.*;
 
 import org.apache.log4j.Logger;
 import org.mule.api.MuleMessage;
@@ -12,8 +12,7 @@ import org.mule.transport.http.transformers.HttpRequestBodyToParamMap;
 public class PlashHTTPTransformer extends HttpRequestBodyToParamMap {
 
 	@Override
-	public Object transform(MuleMessage message, String encoding)
-			throws TransformerException {
+	public Object transform(MuleMessage message, String encoding)	throws TransformerException {
 		
 		System.out.println("HTTP Transformer Start:\t"+ Calendar.getInstance().getTimeInMillis());
 		//System.out.println(message.getPayload().toString());
@@ -26,4 +25,4 @@ public class PlashHTTPTransformer extends HttpRequestBodyToParamMap {
 		return super.transform(message, encoding);
 	}
 
-}
+}//end class
