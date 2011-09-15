@@ -82,7 +82,7 @@ public class GetTripInfoComponent extends PLASHComponent {
 			}//fi
 			
 			if ((tmpField_mask = (String)map.remove("field_mask")) == null) {
-				field_mask = Integer.parseInt("111111111111111",2);				
+				field_mask = Integer.parseInt("1111111111111111",2);				
 			} else {
 				field_mask = Integer.parseInt(tmpField_mask,2);
 			}//fi
