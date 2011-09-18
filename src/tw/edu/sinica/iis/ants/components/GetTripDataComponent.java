@@ -31,25 +31,25 @@ import tw.edu.sinica.iis.ants.DB.*;
  * 			If trip_id is absent, this component simply returns the newest trip belonging to the user with id userid. <br>
  * field_mask: Optional. This mask indicates which columns in the trip data record are included
  * sort: Not enabled yet. This parameter indicate which column will be served as the sorting key
- * latest_pt_only: Optional. This is a boolean value indicating whether the returned result should be a list of all points or a single point indicating the latest point.
- * 			If return_latest is not specified, the default value is false and the component will return a list of all trip points.
- * fields and corresponding bit positions (from left to right):
- * 	1. timestamp
- * 	2. gps
- * 	3. server_timestamp
- * 	4. trip_id
- * 	5. label
- * 	6. alt
- * 	7. accu
- * 	8. spd
- * 	9. bear
- * 	10. accex
- * 	11. accey
- * 	12. accez
- * 	13. gsminfo
- * 	14. wifiinfo
- * 	
- * Example:  
+ * latest_pt_only: Optional. This is a boolean value indicating whether the returned result should be a list of all points or a single point indicating the latest point. <br>
+ * 			If return_latest is not specified, the default value is false and the component will return a list of all trip points. <br>
+ * fields and corresponding bit positions (from left to right):  <br>
+ * 	1. timestamp <br>
+ * 	2. gps <br>
+ * 	3. server_timestamp <br>
+ * 	4. trip_id <br>
+ * 	5. label <br>
+ * 	6. alt <br>
+ * 	7. accu <br>
+ * 	8. spd <br>
+ * 	9. bear <br>
+ * 	10. accex <br>
+ * 	11. accey <br>
+ * 	12. accez <br>
+ * 	13. gsminfo <br>
+ * 	14. wifiinfo <br>
+ * 	 <br>
+ * Example:  GetTripDataComponent?userid=1&trip_id=5&return_latest=true&field_mask=11001011001101  <br>
  * 
  *   
  * @author	Yi-Chun Teng 
