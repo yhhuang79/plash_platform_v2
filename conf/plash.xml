@@ -85,7 +85,11 @@
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	
-	
+	<spring:bean id="GetTripDataComponent"
+		class="tw.edu.sinica.iis.ants.components.GetTripDataComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+		
 	<spring:bean id="GetNewTripIdComponent"
 		class="tw.edu.sinica.iis.ants.components.GetNewTripIdComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
@@ -194,8 +198,8 @@
 		class="tw.edu.sinica.iis.ants.components.GetUsersAttendActivityComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
-	<spring:bean id="GetUserTripLatLngComponent"
-		class="tw.edu.sinica.iis.ants.components.GetUserTripLatLngComponent">
+	<spring:bean id="GetTripInfoComponent"
+		class="tw.edu.sinica.iis.ants.components.GetTripInfoComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 
@@ -229,7 +233,7 @@
 	
 
 	<jms:activemq-connector name="jmsCon"
-		specification="1.1" brokerURL="tcp://localhost:61617">
+		specification="1.1" brokerURL="tcp://localhost:61616">
 		<spring:property name="disableTemporaryReplyToDestinations"
 			value="true" />
 	</jms:activemq-connector>
@@ -281,6 +285,8 @@
 	<jms:endpoint name="plashInputQueue" queue="plash.input"
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashGetLatestTripQueue" queue="plash.get.latest.trip"
+		connector-ref="jmsCon" />
+	<jms:endpoint name="plashGetTripDataQueue" queue="plash.get.trip.data"
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashGetNewTripIdQueue" queue="plash.get.new.trip.id"
 		connector-ref="jmsCon" />	
@@ -328,7 +334,7 @@
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashGetUsersAttendActivityQueue" queue="plash.get.users.attend.activity"
 		connector-ref="jmsCon" />	
-	<jms:endpoint name="plashGetUserTripLatLngQueue" queue="plash.get.users.trip.lat.lng"
+	<jms:endpoint name="plashGetTripInfoQueue" queue="plash.get.users.trip.lat.lng"
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashTripInfoManagerResponseQueue" queue="plash.response.Trip.Info.Manager"
 		connector-ref="jmsCon" />
@@ -428,6 +434,9 @@
 	<https:endpoint name="plashGetLatestTripHttpsInboundEndpoint" host="localhost"
 		port="8080" path="GetLatestTrip" synchronous="true" connector-ref="httpsConnector" />
 		
+	<https:endpoint name="plashGetTripDataHttpsInboundEndpoint" host="localhost"
+		port="8080" path="GetTripData" synchronous="true" connector-ref="httpsConnector" />
+		
 	<https:endpoint name="plashGetNewTripIdHttpsInboundEndpoint" host="localhost"
 		port="8080" path="GetNewTripId" synchronous="true" connector-ref="httpsConnector" />
 		
@@ -509,8 +518,8 @@
 	<https:endpoint name="plashGetUsersAttendActivityHttpsInboundEndpoint" host="localhost"
 		port="8080" path="GetUsersAttendActivity" synchronous="true" connector-ref="httpsConnector" />
 		
-	<https:endpoint name="plashGetUserTripLatLngHttpsInboundEndpoint" host="localhost"
-		port="8080" path="GetUserTripLatLng" synchronous="true" connector-ref="httpsConnector" />
+	<https:endpoint name="plashGetTripInfoHttpsInboundEndpoint" host="localhost"
+		port="8080" path="GetTripInfo" synchronous="true" connector-ref="httpsConnector" />
 		
 		
 	<https:endpoint name="plashPlatformInboundEndpoint" host="localhost"
@@ -1096,6 +1105,34 @@
 			</outbound>
 			<async-reply>
 				<inbound-endpoint ref="plashGetLatestTripQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="rt" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+
+		<service name="GetTripDataService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashGetTripDataHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="GetTripDataComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashGetTripDataQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashGetTripDataQueue">
 					<transformers>
 						<jms:jmsmessage-to-object-transformer />
 						<transformer ref="rt" />
@@ -1891,17 +1928,17 @@
 		
 		
 		<!-- (Step 4) Kenny: XXXXX =  RetrieveUserInfo-->
-		<service name="GetUserTripLatLngService">
+		<service name="GetTripInfoService">
 			<inbound>
 				<inbound-endpoint transformer-refs="HttpParams"
-					responseTransformer-refs="byteArrayToString" ref="plashGetUserTripLatLngHttpsInboundEndpoint" />
+					responseTransformer-refs="byteArrayToString" ref="plashGetTripInfoHttpsInboundEndpoint" />
 			</inbound>			
 			<component>
-				<spring-object bean="GetUserTripLatLngComponent"></spring-object>
+				<spring-object bean="GetTripInfoComponent"></spring-object>
 			</component>
 			<outbound>
 				<pass-through-router>
-					<outbound-endpoint ref="plashGetUserTripLatLngQueue">
+					<outbound-endpoint ref="plashGetTripInfoQueue">
 						<transformers>
 							<jms:object-to-jmsmessage-transformer />
 						</transformers>
@@ -1909,7 +1946,7 @@
 				</pass-through-router>
 			</outbound>
 			<async-reply>
-				<inbound-endpoint ref="plashGetUserTripLatLngQueue">
+				<inbound-endpoint ref="plashGetTripInfoQueue">
 					<transformers>
 						<jms:jmsmessage-to-object-transformer />
 						<transformer ref="rt" />
