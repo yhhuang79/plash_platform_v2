@@ -55,7 +55,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
 
 	public Object serviceMain(Map map) {
 		
-		System.out.println("Test Start:\t"	+ Calendar.getInstance().getTimeInMillis());
+		System.out.println("TripInfoManagerComponent Start:\t"	+ Calendar.getInstance().getTimeInMillis());
 		
 		tskSession = sessionFactory.openSession();
 		
@@ -93,11 +93,11 @@ public class TripInfoManagerComponent extends PLASHComponent{
 			}//end switch
    			
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
-			map.put("TripInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
+			map.put("TripInfoManagerComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
 	        System.out.println("TripInfoManagerComponent failure end1:\t"+ Calendar.getInstance().getTimeInMillis());
 			return map;
 		} catch (NumberFormatException e) { //invalid arguments 
-			map.put("TripInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file
+			map.put("TripInfoManagerComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file
 			//map.put("error detail" , e.toString()); //perhaps put error detail?
 	        System.out.println("TripInfoManagerComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
 			return map;
@@ -105,7 +105,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
 		
 
 		
-		System.out.println("Test End:\t"+ Calendar.getInstance().getTimeInMillis());
+		System.out.println("TripInfoManagerComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
 		return map;
 	}//end method
 	
