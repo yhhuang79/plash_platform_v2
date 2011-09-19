@@ -74,7 +74,7 @@ public class GetTripDataComponent extends PLASHComponent {
 
 
 			int userid, trip_id, field_mask;
-			boolean return_latest;
+			boolean latest_pt_only;
 			String tmpUserid, tmpTrip_id, tmpField_mask, tmpReturn_latest;
 			if ((tmpUserid = (String)map.remove("userid")) == null) {
 				//user id must be specified
@@ -104,14 +104,14 @@ public class GetTripDataComponent extends PLASHComponent {
 
 			}//fi
 			
-			if ((tmpReturn_latest = (String)map.remove("return_latest")) == null) {
-				return_latest = false;				
+			if ((tmpReturn_latest = (String)map.remove("latest_pt_only")) == null) {
+				latest_pt_only = false;				
 			} else {
-				return_latest = Boolean.parseBoolean(tmpReturn_latest);
+				latest_pt_only = Boolean.parseBoolean(tmpReturn_latest);
 				//field_mask = Integer.parseInt(tmpField_mask,2);
 			}//fi
 			
-			if(return_latest){
+			if(latest_pt_only){
 				//return latest trip point
 				map.putAll(getLatestTripPt(userid,trip_id,field_mask));
 				System.out.println("GetTripDataComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
