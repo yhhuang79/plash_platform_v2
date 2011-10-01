@@ -31,7 +31,8 @@ import tw.edu.sinica.iis.ants.DB.*;
  * 			task_id specifies which task to perform. <br>
  * 			To perform task with task_id = 1, the caller must also specify userid and trip_id to indicate which trip record to access. <br> 
  * 			If the corresponding trip is found, the trip name is set to be the name specified by trip_name.  <br> 
- * 			To perform task with task_id = 2: <br> 
+ * 			To perform task with task_id = 2: <br>
+ * 			The caller may optionally specify userid to indicate which person's trip to update. 
  * 			The caller may optionally specify level value to indicate which level of information to generate <br>
  * 			If level is not specified, a default value(currently 1) will be used.
  * 			the caller may optionally specify max_proc_time to limit the maximum time to be spent. The unit is in seconds <br>
@@ -59,20 +60,26 @@ public class TripInfoManagerComponent extends PLASHComponent{
 		
 		tskSession = sessionFactory.openSession();
 		
-		
+		int userid, trip_id;
 	     
 		try {
 
 			switch (Integer.parseInt(map.remove("task_id").toString())) {
 
 			case 1:
-				int userid = Integer.parseInt(map.remove("userid").toString());
-				int trip_id = Integer.parseInt(map.remove("trip_id").toString());				
+				userid = Integer.parseInt(map.remove("userid").toString());
+				trip_id = Integer.parseInt(map.remove("trip_id").toString());				
 				setTripName(userid,trip_id,map.remove("trip_name").toString());
 				break;
 			case 2:
-				String tmpLevel, tmpProcTime;
+				String tmpUserid, tmpLevel, tmpProcTime;
 				int level, max_proc_time;
+				if ((tmpUserid = (String)map.remove("userid")) == null) {
+					userid = -1; //meaning no userid is supplied
+				} else {
+					userid = Integer.parseInt(tmpUserid);
+				}//fi
+				
 				if ((tmpLevel = (String)map.remove("level")) == null) {
 					level = 1; //modify the default level here
 				} else {
@@ -83,7 +90,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
 				} else {
 					max_proc_time = Integer.parseInt(tmpProcTime)*1000;
 				}//fi			
-				scanDB(level, max_proc_time);
+				scanDB(userid, level, max_proc_time);
 				
 				break;
 			case 3:
@@ -161,12 +168,13 @@ public class TripInfoManagerComponent extends PLASHComponent{
 	 * This method tries to scan the DB <br>
 	 * 
 	 * @author Yi-Chun Teng
+	 * @param userid Indicates which user's trip to scan. If -1 then scan the whole database for all users' trips
 	 * @param level Indicates the level the trip info should be updated to
 	 * @param max_proc_time This value indicates the time allocated to process the database. 
 	 * 						Notice that the program does not force calculation termination immediately when the this limit is reached.
 	 * 						Rather, the program continues current calculations and finishes up the current trip.    
 	 */
-	private void scanDB(int level, int max_proc_time) {
+	private void scanDB(int userid, int level, int max_proc_time) {
 		
 		long startTime = Calendar.getInstance().getTimeInMillis();
 		long currentTime = startTime;
@@ -175,11 +183,17 @@ public class TripInfoManagerComponent extends PLASHComponent{
     	//First, get a list of unique userid, trip_id pairs
     	T_TripIdent currUPLTrec; //current user poiknt location time record	    	
     	Criteria criteriaUPLT = tskSession.createCriteria(T_UserPointLocationTime.class); //criteria for table user_point_location_time
-    	ProjectionList uniqUIDTIDprojList = Projections.projectionList(); 
+    	if (userid != -1) {
+ //   		criteriaUPLT.add(Restrictions.eq("userid", userid));
+    	} else {        	
+    	}//fi    	
+    	ProjectionList uniqUIDTIDprojList = Projections.projectionList();    	
     	uniqUIDTIDprojList.add(Projections.property("userid"),"userid");
     	uniqUIDTIDprojList.add(Projections.property("trip_id"),"trip_id");
+    	criteriaUPLT.setProjection(uniqUIDTIDprojList);
     	criteriaUPLT.setProjection(Projections.distinct(uniqUIDTIDprojList));
     	//criteriaUPLT.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP );
+
     	criteriaUPLT.setResultTransformer(Transformers.aliasToBean(T_TripIdent.class) );
     	@SuppressWarnings("unchecked")    	
     	//Iterator<Map> tripListItr = (Iterator<Map>)criteriaUPLT.list().iterator();
@@ -188,6 +202,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
     		return;
     	}//fi
     	
+      	
     	//A list of unique user id and trip id has been extracted, now scan through each entry and check for info status
     	Criteria criteriaTripInfo;//criteria for table Trip_Info
     	int tmpUserID, tmpTripID;
@@ -199,9 +214,9 @@ public class TripInfoManagerComponent extends PLASHComponent{
 			tmpUserID = currUPLTrec.getUserid();
 			tmpTripID = currUPLTrec.getTrip_id();
 			
-		
-			//Map currRecMap = tripListItr.next();
-			//System.out.println(currRecMap.remove("userid") + " : " + currRecMap.remove("trip_id") + " : ");
+			if (userid != -1 && tmpUserID != userid) {
+				continue;
+			}//fi
 			
 			criteriaTripInfo = tskSession.createCriteria(T_TripInfo.class);
 			criteriaTripInfo.add(Restrictions.eq("userid", tmpUserID));
@@ -225,7 +240,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
 			}//fi
 				
 			currentTime = Calendar.getInstance().getTimeInMillis();			
-		}while(currentTime-startTime < max_proc_time && tripListItr.hasNext() );
+		}while(currentTime-startTime < max_proc_time && tripListItr.hasNext() ); //*/
 	
 		
 	}//end method
