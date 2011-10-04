@@ -46,7 +46,7 @@ public class FriendRequestComponent {
 	}
 
 	public static boolean isValidEmailAddress(String emailAddress) {
-		String expression = "^[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+		String expression = "^[\\w\\_-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
 		CharSequence inputStr = emailAddress;
 		Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattern.matcher(inputStr);
