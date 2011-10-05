@@ -175,9 +175,10 @@ public class GetTripInfoComponent extends PLASHComponent {
     	Criteria criteriaTripInfo = tskSession.createCriteria(T_TripInfo.class);
     	criteriaTripInfo.add(Restrictions.eq("userid", userid));
     	ProjectionList filterProjList = Projections.projectionList();     	
-    	criteriaTripInfo.setProjection(addFilterList(filterProjList,field_mask));    	
+    	criteriaTripInfo.setProjection(addFilterList(filterProjList,field_mask));
+    	criteriaTripInfo.addOrder(Order.desc("timestamp"));
     	criteriaTripInfo.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-    	
+
 		try {
 			List<Map> tripInfoList = (List<Map>) criteriaTripInfo.list();
 			
