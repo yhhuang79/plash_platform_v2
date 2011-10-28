@@ -40,6 +40,7 @@ public class LoginComponent {
 		Criteria criteria = session.createCriteria(T_Login.class);
 		criteria.add(Restrictions.eq("username", username));
 		criteria.add(Restrictions.eq("password", password));
+		System.out.println("Login Component:  " + username + " : " + password);
 		Iterator users = criteria.list().iterator(); 
 		if(users.hasNext()) {
 			T_Login user = (T_Login) users.next(); 

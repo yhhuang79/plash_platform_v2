@@ -23,16 +23,7 @@ import com.vividsolutions.jts.io.*;
 import tw.edu.sinica.iis.ants.DB.*;
 
 /**
- * This component returns the trip data.  <br>
- * 
- * This component takes a Map object that contains the following keys: <br>
- * userid : Indicates which user's trip to return <br>
- * trip_id: Indicates which trip to return. This is optional <br>
- * 			If trip_id is absent, this component simply returns the newest trip belonging to the user with id userid. <br>
- * field_mask: Indicates which columns in the trip data record are included
- * sort:
- * fields:
- * Example:  
+ * This is test component.  <br>
  * 
  *   
  * @author	Yi-Chun Teng 
@@ -66,29 +57,12 @@ public class TestComponent extends PLASHComponent {
 			} else {
 				userid = Integer.parseInt(tmpUserid);
 			}//fi
-			
-			if ((tmpField_mask = (String)map.remove("field_mask")) == null) {
-				field_mask = Integer.parseInt("111111111111111",2);				
-			} else {
-				field_mask = Integer.parseInt(tmpField_mask,2);
-			}//fi
-			
-			
-			if ((tmpTrip_id = (String)map.remove("trip_id")) == null) {
-				Criteria latestTripCriteria = tskSession.createCriteria(T_TripData.class);
-				latestTripCriteria.add(Restrictions.eq("userid", userid));				    
-		    	latestTripCriteria.setProjection(Projections.projectionList().add(Projections.max("trip_id")));      			   			 		    	  		    
-				trip_id = (Integer)latestTripCriteria.uniqueResult();		   
-				
-			} else {
-
-				trip_id = Integer.parseInt(tmpTrip_id);
-
-			}//fi			
-			
-			//return all trip
-			//map.put("tripInfoList", getAllTripInfo(userid,field_mask));
-			System.out.println(" latest trip "  + trip_id);
+			int tmpLat = (int) ((double)Math.random()*1150 + 25041390);
+			int tmpLng = (int) ((double)Math.random()*1150 + 121614672);
+			map.put("userid", userid);
+			System.out.println("userid and tmp lat, lng are " + userid + ":"+ tmpLat + ":" + tmpLng);
+			map.put("lat", tmpLat);
+			map.put("lng", tmpLng);
 			System.out.println("GetTripDataComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
 			return map;				
    			

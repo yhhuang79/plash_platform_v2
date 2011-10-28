@@ -29,6 +29,7 @@
 		<property name="accez" column="accez" />	
 		<property name="gsminfo" column="gsminfo" />
 		<property name="wifiinfo" column="wifiinfo" />
+		<property name="app" column="app" />		
 		
 		
 	</class>
