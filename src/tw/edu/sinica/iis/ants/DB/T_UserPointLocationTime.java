@@ -1,4 +1,4 @@
-package tw.edu.sinica.iis.ants.DB;
+	package tw.edu.sinica.iis.ants.DB;
 
 import java.sql.Timestamp;
 
@@ -22,7 +22,16 @@ public class T_UserPointLocationTime {
 	private Double accez;
 	private String gsminfo;
 	private String wifiinfo;
+	private Integer app;
 	
+	public Integer getApp() {
+		return app;
+	}
+
+	public void setApp(Integer app) {
+		this.app = app;
+	}
+
 	public T_UserPointLocationTime(){
 	
 	}

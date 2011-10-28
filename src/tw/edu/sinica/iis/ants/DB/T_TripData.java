@@ -22,7 +22,10 @@ public class T_TripData {
 	private Double accez;
 	private String gsminfo;
 	private String wifiinfo;
+	private Integer app;
 	
+
+
 	public T_TripData(){
 	
 	}
@@ -158,5 +161,12 @@ public class T_TripData {
 		this.wifiinfo = wifiinfo;
 	}
 	
+	public Integer getApp() {
+		return app;
+	}
+
+	public void setApp(Integer app) {
+		this.app = app;
+	}	
 	
 }
