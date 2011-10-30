@@ -61,11 +61,12 @@ public class GetTripDataComponent extends PLASHComponent {
 
 
 	private Session tskSession; //task session
-
-
+	private long timeID;
+	
+	
 	public Object serviceMain(Map map) {
-		
-		System.out.println("GetTripDataComponent Start:\t"	+ Calendar.getInstance().getTimeInMillis());
+		timeID = Calendar.getInstance().getTimeInMillis();
+		System.out.println("GetTripDataComponent Start:\t"	+ timeID + " Obj ID: " + this);
 		
 		tskSession = sessionFactory.openSession();
 		
@@ -116,13 +117,14 @@ public class GetTripDataComponent extends PLASHComponent {
 			if(latest_pt_only){
 				//return latest trip point
 				map.putAll(getLatestTripPt(userid,trip_id,field_mask));
-				System.out.println("GetTripDataComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
+				//System.out.println("GetTripDataComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
+				System.out.println("GetTripDataComponent end:\t"	+ timeID + " Obj ID: " + this);
 				return map;				
 				
 			} else {
 				//return all trip
 				map.put("tripDataList", getTripData(userid, trip_id,field_mask));
-				System.out.println("GetTripDataComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
+				System.out.println("GetTripDataComponent end:\t"	+ timeID + " Obj ID: " + this);
 				return map;				
 
 			}//fi
@@ -155,36 +157,38 @@ public class GetTripDataComponent extends PLASHComponent {
 	 * 			If such info is not found, the map will not contain corresponding key-value pairs	   
 	 */
 	private Map getLatestTripPt(int userid, int trip_id, int field_mask) {
+		
 		//obtain the record
-		/*
     	Criteria criteriaTripData = tskSession.createCriteria(T_TripData.class);
     	criteriaTripData.add(Restrictions.eq("userid", userid));
-    	criteriaTripData.add(Restrictions.eq("trip_id", trip_id));
-    	ProjectionList filterProjList = Projections.projectionList();
-    	criteriaTripData.setProjection(addFilterList(filterProjList,field_mask));      	
-    	criteriaTripData.setProjection(filterProjList);    	
-    	criteriaTripData.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP); //*/
+    	ProjectionList filterProjList = Projections.projectionList();     	
+    	criteriaTripData.setProjection(addFilterList(filterProjList,field_mask));
+    	criteriaTripData.addOrder(Order.desc("timestamp"));
+    	criteriaTripData.setFetchSize(1);
+    	criteriaTripData.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
     	
 		try {
-			/*
-			Map tripDataRec = (Map) criteriaTripData.uniqueResult();
-
-			//Check whether such trip record exists or not and is updated or not
-			if (tripDataRec == null) {				
-				return null;
-			}//fi			
-			return tripDataRec; //*/
-			List<Map> resultList = getTripData(userid,trip_id,field_mask);
+			List<Map> resultList = (List<Map>) criteriaTripData.list();
+			
 			if (resultList.size()  == 0 ) {
 				return new HashMap();
-			} else {
+			} else {				
+		   		if ((field_mask & 8192) != 0) { 
+		    		Geometry tmpGPS = (Geometry)resultList.get(0).remove("gps");		    		
+		    		resultList.get(0).put("lng", tmpGPS.getCoordinate().x*1000000);
+		    		resultList.get(0).put("lat", tmpGPS.getCoordinate().y*1000000);		    	
+		    	}//fi 				
 				return resultList.get(0);
-			}//fi
-			
-								
+			}//fi			//*/
+
+						
 		} catch (HibernateException he) {
+			System.out.println("Warning: hibernation exception");
 			return null;
 		}//end try catch			//*/
+		
+    
+			
 		
 	}//end method
 	
@@ -207,7 +211,7 @@ public class GetTripDataComponent extends PLASHComponent {
     	
 		try {
 			List<Map> tripDataList = (List<Map>) criteriaTripData.list();	
-	    	if ((field_mask & 8192) != 0) { //4096 = 10000000000000
+	   		if ((field_mask & 8192) != 0) { 
 	    		Geometry tmpGPS;
 	    		for (Map tmpMap:tripDataList) {
 	    			tmpGPS = (Geometry)tmpMap.remove("gps");
@@ -215,7 +219,7 @@ public class GetTripDataComponent extends PLASHComponent {
 	    			tmpMap.put("lat", tmpGPS.getCoordinate().y*1000000);
 	    		}//rof
 	    	
-	    	}//fi
+	    	}//fi */
 			return tripDataList;
 											
 		} catch (HibernateException he) {
