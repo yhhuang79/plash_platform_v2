@@ -17,6 +17,8 @@ import org.mule.api.transformer.TransformerException;
 import org.mule.transformer.AbstractTransformer;
 import org.mule.util.IOUtils;
 
+import com.vividsolutions.jts.geom.Geometry;
+
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -27,27 +29,24 @@ import java.util.List;
 import java.util.Map;
 
 
-public class ResponseTransform extends AbstractTransformer
-{
+public class ResponseTransform extends AbstractTransformer {
     
-    public ResponseTransform()
-    {
+    public ResponseTransform()   {
         super();
         this.registerSourceType(Map.class);
         this.setReturnClass(String.class);
     }
 
-    public Object doTransform(Object src, String encoding) throws TransformerException
-    {
+    public Object doTransform(Object src, String encoding) throws TransformerException   {
+    	
     	Map map = (Map)src;
     	map.put("timeto", Calendar.getInstance().getTimeInMillis());    
 
 		Logger logger = Logger.getLogger("tw.edu.plash");     
-		//logger.debug(map.get("timefrom1") + "\t" + map.get("timeto"));
+		
+		
 		logger.debug(((Long)map.get("timeto") - Long.parseLong((String)map.get("timefrom1"))));
-		
-		Iterator i = map.keySet().iterator();
-		
+
 
 		//map = checkMap(map);
 		
@@ -55,7 +54,7 @@ public class ResponseTransform extends AbstractTransformer
 		
 		return j.toString();
     	//return map;
-    }
+    }//end method
     
     public static Map checkMap(Map m){
     	Iterator i = m.keySet().iterator();

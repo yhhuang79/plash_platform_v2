@@ -45,8 +45,7 @@ public class MyRouter extends AbstractOutboundRouter {
 	}
 
 	@Override
-	public MuleMessage route(MuleMessage message, MuleSession session)
-			throws MessagingException {
+	public MuleMessage route(MuleMessage message, MuleSession session)	throws MessagingException {
 
 		System.out.println("My Router Start:\t"+ Calendar.getInstance().getTimeInMillis());
 		
@@ -69,21 +68,20 @@ public class MyRouter extends AbstractOutboundRouter {
 		SQLQuery query = sessionH.createSQLQuery("select service.endpoint_id from plash.routing as routing, plash.service as service where routing.asl_id=? and routing.step=? and service.id=routing.service_id");
 		query.setInteger(0, asl_id);
 		query.setInteger(1, step);		
-		if(query.uniqueResult() != null)
+		if(query.uniqueResult() != null) {
 			endpoint_id = Integer.parseInt(query.uniqueResult().toString());
-		else
+		} else {
 			endpoint_id = -1;
+		}//fi
  
 		sessionH.close();
-		
-
-		
+	
 		
 		
 		
 		if(map.containsKey("tostep") && Integer.parseInt(map.get("tostep").toString()) == step){
 			endpoint_id = -1;
-		}
+		}//fi		
 		step++;
 		map.put("step", step);
 		message.setPayload(map);
@@ -110,8 +108,8 @@ public class MyRouter extends AbstractOutboundRouter {
 			throw new CouldNotRouteOutboundMessageException(message, ep, e);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}//end try catch
 		return null;
 	}
 
-}
+}//end class	

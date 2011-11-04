@@ -62,13 +62,26 @@ public class GetTripDataComponent extends PLASHComponent {
 
 	private Session tskSession; //task session
 	private long timeID;
+	private int requestCount;
+
+	
+	public GetTripDataComponent() {
+		super();
+		requestCount = 0;
+
+		
+	};
 	
 	
 	public Object serviceMain(Map map) {
+
+		requestCount++;
 		timeID = Calendar.getInstance().getTimeInMillis();
-		System.out.println("GetTripDataComponent Start:\t"	+ timeID + " Obj ID: " + this);
-		
+		System.out.println("GetTripDataComponent Start:\t"	+ timeID + " Obj ID: " + this + " request ID: " + requestCount);
+		System.out.println(map.toString());
+			
 		tskSession = sessionFactory.openSession();
+		System.out.println("Gone here 1: Obj ID: " + this + " request ID: " + requestCount);
 		
 		
 	    
@@ -94,13 +107,20 @@ public class GetTripDataComponent extends PLASHComponent {
 				field_mask = Integer.parseInt(tmpField_mask,2);
 			}//fi
 			
-			
+			System.out.println("Gone here 2: Obj ID: " + this + " request ID: " + requestCount);
 			if ((tmpTrip_id = (String)map.remove("trip_id")) == null) {
 				Criteria latestTripCriteria = tskSession.createCriteria(T_TripData.class);
+				System.out.println("Gone here 2.1: Obj ID: " + this + " request ID: " + requestCount);
 				latestTripCriteria.add(Restrictions.eq("userid", userid));				    
-		    	latestTripCriteria.setProjection(Projections.projectionList().add(Projections.max("trip_id")));      			   			 		    	  		    
-				trip_id = (Integer)latestTripCriteria.uniqueResult();		   
-				
+		    	latestTripCriteria.setProjection(Projections.projectionList().add(Projections.max("trip_id")));
+				System.out.println("Gone here 2.2: Obj ID: " + this + " request ID: " + requestCount);		    					
+				Integer tmpIntTrip_id = (Integer)latestTripCriteria.uniqueResult();				
+				System.out.println("Gone here 2.3: Obj ID: " + this + " request ID: " + requestCount);
+				if (tmpIntTrip_id == null) {
+					return map;
+				} else {
+					trip_id = tmpIntTrip_id;
+				}//fi
 			} else {
 
 				trip_id = Integer.parseInt(tmpTrip_id);
@@ -113,6 +133,8 @@ public class GetTripDataComponent extends PLASHComponent {
 				latest_pt_only = Boolean.parseBoolean(tmpReturn_latest);
 				//field_mask = Integer.parseInt(tmpField_mask,2);
 			}//fi
+			
+			System.out.println("Gone here 3: Obj ID: " + this + " request ID: " + requestCount);
 			
 			if(latest_pt_only){
 				//return latest trip point
@@ -132,7 +154,7 @@ public class GetTripDataComponent extends PLASHComponent {
    			
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
 			map.put("GetTripDataComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
-	        System.out.println("GetTripDataComponent failure end1:\t"+ Calendar.getInstance().getTimeInMillis());
+	        System.out.println("GetTripDataComponent failure end1:\t" + e.toString() + " : requestID: " + requestCount);
 			return map; //*/
 			
 		} catch (NumberFormatException e) { //invalid arguments 
@@ -157,7 +179,7 @@ public class GetTripDataComponent extends PLASHComponent {
 	 * 			If such info is not found, the map will not contain corresponding key-value pairs	   
 	 */
 	private Map getLatestTripPt(int userid, int trip_id, int field_mask) {
-		
+		System.out.println("Gone here getLatestTripPt Obj ID: " + this + " request ID: " + requestCount);		
 		//obtain the record
     	Criteria criteriaTripData = tskSession.createCriteria(T_TripData.class);
     	criteriaTripData.add(Restrictions.eq("userid", userid));
@@ -200,7 +222,7 @@ public class GetTripDataComponent extends PLASHComponent {
 	 * @return a List object containing a list of map objects where each map object contains data of a point
 	 */
 	private List<Map> getTripData(int userid, int trip_id, int field_mask) {
-
+		System.out.println("Gone here getTripData Obj ID: " + this + " request ID: " + requestCount);
 		//obtain the record
     	Criteria criteriaTripData = tskSession.createCriteria(T_TripData.class);
     	criteriaTripData.add(Restrictions.eq("userid", userid));

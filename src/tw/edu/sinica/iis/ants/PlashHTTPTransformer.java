@@ -17,9 +17,6 @@ public class PlashHTTPTransformer extends HttpRequestBodyToParamMap {
 		System.out.println("HTTP Transformer Start:\t"+ Calendar.getInstance().getTimeInMillis());
 		//System.out.println(message.getPayload().toString());
 		String url = message.getPayload().toString() + "&timefrom1="+Calendar.getInstance().getTimeInMillis();
-		/*Map map = (Map) message.getPayload();
-    	map.put("timefrom1", Calendar.getInstance().getTimeInMillis());    
-    	message.setPayload(map);*/
 		message.setPayload(url);
 		System.out.println("HTTP Transformer End:\t"+ Calendar.getInstance().getTimeInMillis());
 		return super.transform(message, encoding);
