@@ -1,6 +1,10 @@
 package tw.edu.sinica.iis.ants.components;
 
+import java.io.*;
+import java.util.Calendar;
 import java.util.Map;
+import java.util.StringTokenizer;
+
 import org.hibernate.SessionFactory;
 
 /**
@@ -10,8 +14,16 @@ import org.hibernate.SessionFactory;
  */
 public abstract class PLASHComponent {
 
+	public static boolean globalDebugMode = false;
 
+	
 	protected SessionFactory sessionFactory;
+	
+	//Debug related variables
+	protected BufferedWriter debugFileLogger;
+	protected boolean debugMode;
+	protected long debugTimer;
+	protected long tmpTimer;
 
 	/**
 	 * This is a bean property getter that obtains associated session factory object
@@ -30,11 +42,86 @@ public abstract class PLASHComponent {
     }//end method
 
     /**
-     * Dummy constructor
+     * Constructor
      */
     public PLASHComponent() {
-
+    	if (globalDebugMode) {
+    		enableDebugLog();
+    	}//fi
+    	
     }//end constructor
+    
+    /**
+     * Enable debug log mode
+     */
+    protected void enableDebugLog() {
+    	if (debugFileLogger != null) { 
+    		return;
+    	}//fi
+    	debugMode = true;
+    	String fileURI = this.toString();
+    	fileURI = fileURI + " " + this.getClass().toString(); 
+    	StringTokenizer st = new StringTokenizer(fileURI,".");
+    	while (st.hasMoreTokens()) {
+    		fileURI = st.nextToken();
+    	}//end while
+    	fileURI = "//tmp/" + fileURI + ".log";
+    	
+		try {
+			System.out.println("now try writing");
+			debugFileLogger = new BufferedWriter(new FileWriter(fileURI));
+		} catch (IOException e) {				
+			System.out.println("Warning: Nnable to generate error log file " + fileURI);
+			debugMode = false;
+		};//end try
+
+    	System.out.println("Debug URI: " + fileURI);    	
+    }//end method
+    
+    /**
+     * This method records log message and put it into default debug file log stream
+     * @param msg String message to be recorded 
+     */
+    protected void log(String msg){
+    	if (debugMode) {
+			try {
+				debugFileLogger.write(msg);
+				debugFileLogger.write('\n');
+				debugFileLogger.flush();
+			} catch (IOException e) {
+				System.out.println("Error: Debug logger encountered error hence stopped logging service for the component " + this.toString() + e.toString());
+				debugMode = false;
+			}//end try
+		}//fi
+    
+    }//end method
+    
+    /**
+     * This method triggers a time measurement
+     * Call this to set the initial time of a measurement
+     */
+    protected void markTime() {
+    	debugTimer = Calendar.getInstance().getTimeInMillis();    	
+    }//end method
+
+    /**
+     * This method measures current time and returns time elapsed since last measurement
+     * @return long elapsed time in milliseconds
+     */
+    protected long getElapsed() {
+    	return Calendar.getInstance().getTimeInMillis() - debugTimer;    	
+    }//end method
+    
+    /**
+     * End log writer explicitly
+     */
+    protected void endLog() {
+    	try {
+			debugFileLogger.close();
+		} catch (IOException e) {
+			System.out.println("Error: Debug logger encountered error when writing log file hence stopped logging service for the component " + this.toString() + e.toString());
+		}
+    }//end method
     
     /**
      * The main method that performs the service of the component

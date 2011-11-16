@@ -19,6 +19,20 @@
 
 
 	<description></description>
+	
+	<!-- 
+		Step 1: Make a spring bean for your customized component
+		
+		Please put your customized component in the "tw.edu.sinica.iis.ants.components" package, 
+		and replace the "id" attribute, which is XXXXXCompoent, with your customized component name 
+	-->
+	<!--
+	<spring:bean id="XXXXXComponent"
+		class="tw.edu.sinica.iis.ants.components.XXXXXComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	-->
+		
 	<spring:beans>
 		<spring:import resource="spring_plash.xml" />
 	</spring:beans>
@@ -124,8 +138,7 @@
 		class="tw.edu.sinica.iis.ants.components.DistanceBearingComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
-	
-	
+
 	<spring:bean id="GetAllFriendLocationComponent"
 		class="tw.edu.sinica.iis.ants.components.GetAllFriendLocationComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
@@ -218,20 +231,18 @@
 		class="tw.edu.sinica.iis.ants.components.TestComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
+
+	
 	<!-- 
-		Step 1: Make a spring bean for your customized component
+		Step 2: Create a response queue for your component
 		
-		Please put your customized component in the "tw.edu.sinica.iis.ants.components" package, 
-		and replace the "id" attribute, which is XXXXXCompoent, with your customized component name 
-	-->
-	<!--
-	<spring:bean id="XXXXXComponent"
-		class="tw.edu.sinica.iis.ants.components.XXXXXComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
+		Please replace the "name" attribute with one you like, which is plashXXXXXResponseQueue in this example, to be the reference for latter use.
+		Please replace the "queue" attribute with one you like, which is plash.test.responseXXXXX in this example, for the actual name in ActiveMQ.
+	
+	<jms:endpoint name="plashXXXXXResponseQueue" queue="plash.test.responseXXXXX"
+		connector-ref="jmsCon" />
 	-->
 	
-
 	<jms:activemq-connector name="jmsCon"
 		specification="1.1" brokerURL="tcp://localhost:61616">
 		<spring:property name="disableTemporaryReplyToDestinations"
@@ -242,12 +253,10 @@
 		connector-ref="jmsCon" />		
 	<jms:endpoint name="plashResponseQueue" queue="plash.response"
 		connector-ref="jmsCon" />
-	<jms:endpoint name="plashTestResponseQueue" queue="plash.test.response"
+	<jms:endpoint name="plashTestResponseQueue" queue="plash.test"
 		connector-ref="jmsCon" />
 	<jms:endpoint name="plashLogQueue" queue="plash.log"
 		connector-ref="jmsCon" />
-		
-	
 	<jms:endpoint name="plashLoginQueue" queue="plash.login"
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashGetFriendListQueue" queue="plash.get.friend.list"
@@ -256,32 +265,18 @@
 		connector-ref="jmsCon" />
 	<jms:endpoint name="plashNearestQueue" queue="plash.nearest"
 		connector-ref="jmsCon" />
-	
-	<!-- (Step 2) Danny: XXXXX = ConfirmFriendRequest -->
 	<jms:endpoint name="plashConfirmFriendRequestQueue" queue="plash.ConfirmFriendRequest"
 		connector-ref="jmsCon" />
-
-	<!-- (Step 2) Danny: XXXXX = FriendRequest -->
 	<jms:endpoint name="plashFriendRequestQueue" queue="plash.FriendRequest"
 		connector-ref="jmsCon" />
-
-	<!-- (Step 2) Danny: XXXXX = Register -->
 	<jms:endpoint name="plashRegisterQueue" queue="plash.Register"
 		connector-ref="jmsCon" />
-
-	<!-- (Step 2) Danny: XXXXX = Activate -->
 	<jms:endpoint name="plashActivateQueue" queue="plash.Activate"
 		connector-ref="jmsCon" />
-		
-	<!-- (Step 2) Danny: XXXXX = Login2 -->
 	<jms:endpoint name="plashLogin2Queue" queue="plash.Login2"
 		connector-ref="jmsCon" />
-		
-	<!-- (Step 2) Danny: XXXXX = PasswordChange -->
 	<jms:endpoint name="plashPasswordChangeQueue" queue="plash.PasswordChange"
 		connector-ref="jmsCon" />	
-		
-		
 	<jms:endpoint name="plashInputQueue" queue="plash.input"
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashGetLatestTripQueue" queue="plash.get.latest.trip"
@@ -341,15 +336,9 @@
 	<!-- chunfu add deltrip -->
 	<jms:endpoint name="plashDelTripResponseQueue" queue="plash.response.Del.Trip"
 		connector-ref="jmsCon" />
+	
 			
-	<!-- 
-		Step 2: Create a response queue for your component
-		
-		Please replace the "name" attribute with one you like, which is plashXXXXXResponseQueue in this example, to be the reference for latter use.
-		Please replace the "queue" attribute with one you like, which is plash.test.responseXXXXX in this example, for the actual name in ActiveMQ.
-	-->
-	<jms:endpoint name="plashXXXXXResponseQueue" queue="plash.test.responseXXXXX"
-		connector-ref="jmsCon" />
+
 
 	<custom-transformer name="ExceptionToString"
 		class="tw.edu.sinica.iis.ants.ExceptionToString" />
@@ -370,12 +359,9 @@
 		name="rt" />
 
 	<https:connector name="httpsConnector">
-		<https:tls-key-store path="file:/home/kennywu/tmpKey/keystore" keyPassword="password" storePassword="password"/>
+		<https:tls-key-store path="file://../resources/tmpKey/keystore" keyPassword="password" storePassword="password"/>
 	</https:connector>
-	<https:endpoint name="plashHttpsInboundEndpoint" host="localhost"
-		port="11111" path="in" synchronous="true" connector-ref="httpsConnector" />
-	<https:endpoint name="plashTestHttpsInboundEndpoint" host="localhost"
-		port="8080" path="in" synchronous="true" connector-ref="httpsConnector" />
+
 	<!-- 
 		Step 3: Create a HTTPS endpoint for your component
 		
@@ -531,7 +517,11 @@
 	<https:endpoint name="plashDelTripHttpsInboundEndpoint" host="localhost"
 		port="8080" path="DelTrip" synchronous="true" connector-ref="httpsConnector" />
 		
-		
+	<https:endpoint name="plashHttpsInboundEndpoint" host="localhost"
+		port="11111" path="in" synchronous="true" connector-ref="httpsConnector" />
+	<https:endpoint name="plashTestHttpsInboundEndpoint" host="localhost"
+		port="8080" path="Test" synchronous="true" connector-ref="httpsConnector" />		
+				
 	<byte-array-to-string-transformer name="byteArrayToString" />
 	<custom-transformer class="tw.edu.sinica.iis.ants.CustomByteArrayToString"
 		name="bt" />
@@ -629,198 +619,6 @@
 		</service>
 		-->
 
- <!--Temporarily removed because for the new architecture		
-		<service name="TestHttpInput">
-			<inbound>
-				<inbound-endpoint transformer-refs="HttpParams"
-					responseTransformer-refs="byteArrayToString" ref="plashTestHttpsInboundEndpoint" />
-			</inbound>			
-			<component>
-				<spring-object bean="TestComponent"></spring-object>
-			</component>
-			<outbound>
-				<pass-through-router>
-					<outbound-endpoint ref="plashTestResponseQueue">
-						<transformers>
-							<jms:object-to-jmsmessage-transformer />
-						</transformers>
-					</outbound-endpoint>
-				</pass-through-router>
-			</outbound>
-			<async-reply>
-				<inbound-endpoint ref="plashTestResponseQueue">
-					<transformers>
-						<jms:jmsmessage-to-object-transformer />
-						<transformer ref="rt" />
-					</transformers>
-				</inbound-endpoint>
-				<single-async-reply-router/>				
-			</async-reply>
-		</service>
-
-
-		<service name="HttpInput">
-			<inbound>
-				<inbound-endpoint transformer-refs="HttpParams"
-					responseTransformer-refs="byteArrayToString" ref="plashHttpsInboundEndpoint" />
-			</inbound>
-			<component class="tw.edu.sinica.iis.ants.components.RequestPreProcess" />
-			<outbound>
-				<pass-through-router>
-					<outbound-endpoint ref="plashWaitingQueue">
-						<transformers>
-							<jms:object-to-jmsmessage-transformer />
-						</transformers>
-					</outbound-endpoint>
-				</pass-through-router>
-			</outbound>
-			<async-reply>
-				<inbound-endpoint ref="plashResponseQueue">
-					<transformers>
-						<jms:jmsmessage-to-object-transformer />
-						<transformer ref="rt" />
-					</transformers>
-				</inbound-endpoint>
-				<single-async-reply-router/>				
-			</async-reply>
-		</service>
-		
-		
-		<service name="RouteService">
-			<inbound>
-				<inbound-endpoint ref="plashWaitingQueue">
-					<transformers>
-						<jms:jmsmessage-to-object-transformer />
-					</transformers>
-				</inbound-endpoint>
-			</inbound>
-			<outbound>
-				<custom-outbound-router class="tw.edu.sinica.iis.ants.MyRouter">
-					<outbound-endpoint ref="plashLoginQueue">
-						<transformers>
-							<jms:object-to-jmsmessage-transformer />
-						</transformers>
-					</outbound-endpoint>
-					<outbound-endpoint ref="plashFriendListQueue">
-						<transformers>
-							<jms:object-to-jmsmessage-transformer />
-						</transformers>
-					</outbound-endpoint>
-					<outbound-endpoint ref="plashPeopleLocationsQueue">
-						<transformers>
-							<jms:object-to-jmsmessage-transformer />
-						</transformers>
-					</outbound-endpoint>
-					<outbound-endpoint ref="plashNearestQueue">
-						<transformers>
-							<jms:object-to-jmsmessage-transformer />
-						</transformers>
-					</outbound-endpoint>
-					<outbound-endpoint ref="plashResponseQueue">
-						<transformers>
-							<jms:object-to-jmsmessage-transformer />
-						</transformers>
-					</outbound-endpoint>
-					<outbound-endpoint ref="plashLogQueue">
-						<transformers>
-							<jms:object-to-jmsmessage-transformer />
-						</transformers>
-					</outbound-endpoint>
-					<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>					
-				</custom-outbound-router>
-			</outbound>
-		</service>
-		
-		
-		<service name="LoginService">
-			<inbound>
-				<inbound-endpoint ref="plashLoginQueue">
-					<transformers>
-						<jms:jmsmessage-to-object-transformer />
-					</transformers>
-				</inbound-endpoint>
-			</inbound>
-			<component>
-				<spring-object bean="LoginComponent"></spring-object>
-			</component>
-			<outbound>
-				<pass-through-router>
-					<outbound-endpoint ref="plashWaitingQueue">
-						<transformers>
-							<jms:object-to-jmsmessage-transformer />
-						</transformers>
-					</outbound-endpoint>
-				</pass-through-router>
-			</outbound>
-		</service>
- 
-		<service name="FriendListService">
-			<inbound>
-				<inbound-endpoint ref="plashFriendListQueue">
-					<transformers>
-						<jms:jmsmessage-to-object-transformer />
-					</transformers>
-				</inbound-endpoint>
-			</inbound>
-			<component>
-				<spring-object bean="FriendListComponent"></spring-object>
-			</component>
-			<outbound>
-				<pass-through-router>
-					<outbound-endpoint ref="plashWaitingQueue">
-						<transformers>
-							<jms:object-to-jmsmessage-transformer />
-						</transformers>
-					</outbound-endpoint>
-				</pass-through-router>
-			</outbound>
-		</service>
-
-		<service name="PeopleLocationsService">
-			<inbound>
-				<inbound-endpoint ref="plashPeopleLocationsQueue">
-					<transformers>
-						<jms:jmsmessage-to-object-transformer />
-					</transformers>
-				</inbound-endpoint>
-			</inbound>
-			<component>
-				<spring-object bean="PeopleLocationsComponent"></spring-object>
-			</component>
-			<outbound>
-				<pass-through-router>
-					<outbound-endpoint ref="plashWaitingQueue">
-						<transformers>
-							<jms:object-to-jmsmessage-transformer />
-						</transformers>
-					</outbound-endpoint>
-				</pass-through-router>
-			</outbound>
-		</service>
-
-
-		<service name="NearestService">
-			<inbound>
-				<inbound-endpoint ref="plashNearestQueue">
-					<transformers>
-						<jms:jmsmessage-to-object-transformer />
-					</transformers>
-				</inbound-endpoint>
-			</inbound>
-			<component>
-				<spring-object bean="NearestComponent"></spring-object>
-			</component>
-			<outbound>
-				<pass-through-router>
-					<outbound-endpoint ref="plashWaitingQueue">
-						<transformers>
-							<jms:object-to-jmsmessage-transformer />
-						</transformers>
-					</outbound-endpoint>
-				</pass-through-router>
-			</outbound>
-		</service>
-  -->		
 		<service name="UserErrorHandler">
 			<inbound>
 				<vm:inbound-endpoint path="userErrorHandler"
@@ -2014,7 +1812,36 @@
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
+
+		<service name="TestService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashTestHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="TestComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashTestResponseQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashTestResponseQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="rt" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
 		
+				
 	</model>
 
 </mule>
