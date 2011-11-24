@@ -74,7 +74,7 @@
 		
 		
 		public Object serviceMain(Map map) {
-	
+			
 			requestCount++;
 			timeID = Calendar.getInstance().getTimeInMillis();
 			System.out.println("GetTripDataComponent Start:\t"	+ timeID + " Obj ID: " + this + " request ID: " + requestCount);

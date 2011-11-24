@@ -75,7 +75,8 @@ public class GetTripInfoComponent extends PLASHComponent {
 			if ((tmpUserid = (String)map.remove("userid")) == null) {
 				//user id must be specified
 				map.put("GetTripInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
-		        System.out.println("GetTripInfoComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());				
+		        System.out.println("GetTripInfoComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
+		        tskSession.close();
 				return map;
 			} else {
 				userid = Integer.parseInt(tmpUserid);
@@ -85,13 +86,25 @@ public class GetTripInfoComponent extends PLASHComponent {
 				field_mask = Integer.parseInt("1111111111111111",2);				
 			} else {
 				field_mask = Integer.parseInt(tmpField_mask,2);
+				if (field_mask == 0) { //return nothing
+			        tskSession.close();
+					return map;
+				}//fi 
 			}//fi
 			
 			
 			if ((tmpTrip_id = (String)map.remove("trip_id")) == null) {
 				//return all trip
-				map.put("tripInfoList", getAllTripInfo(userid,field_mask));
+				List<Map> tmpList = getAllTripInfo(userid,field_mask);
+				if (tmpList == null) {//error here
+					return map;
+				} else {
+					System.out.println("list: " + tmpList.toString() );
+					map.put("tripInfoList", tmpList);
+				}
+				
 				System.out.println("GetTripInfoComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
+		        tskSession.close();
 				return map;				
 				
 			} else {
@@ -149,12 +162,14 @@ public class GetTripInfoComponent extends PLASHComponent {
 			Map tripInfoRec = (Map) criteriaTripInfo.uniqueResult();
 
 			//Check whether such trip record exists or not and is updated or not
-			if (tripInfoRec == null) {				
+			if (tripInfoRec == null) {	
+				
 				return null;
 			}//fi					
 			return tripInfoRec;
 											
 		} catch (HibernateException he) {
+
 			return null;
 		}//end try catch			//*/
 	}//end method
@@ -176,7 +191,7 @@ public class GetTripInfoComponent extends PLASHComponent {
     	criteriaTripInfo.add(Restrictions.eq("userid", userid));
     	ProjectionList filterProjList = Projections.projectionList();     	
     	criteriaTripInfo.setProjection(addFilterList(filterProjList,field_mask));
-    	criteriaTripInfo.addOrder(Order.desc("timestamp"));
+    	criteriaTripInfo.addOrder(Order.desc("trip_st"));
     	criteriaTripInfo.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
 
 		try {
@@ -185,6 +200,7 @@ public class GetTripInfoComponent extends PLASHComponent {
 			return tripInfoList;
 											
 		} catch (HibernateException he) {
+			
 			return null;
 		}//end try catch			//*/
 		

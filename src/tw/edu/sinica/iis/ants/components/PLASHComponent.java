@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 
 /**
  * The general abstract class for PLASH component 
+ * It contains method for 
  * @author Yi-Chun Teng
  *
  */
@@ -60,18 +61,20 @@ public abstract class PLASHComponent {
     	}//fi
     	debugMode = true;
     	String fileURI = this.toString();
-    	fileURI = fileURI + " " + this.getClass().toString(); 
-    	StringTokenizer st = new StringTokenizer(fileURI,".");
+    	StringTokenizer st = new StringTokenizer(fileURI,".", false);
     	while (st.hasMoreTokens()) {
     		fileURI = st.nextToken();
+    		System.out.println("file uri : " + fileURI);    
     	}//end while
+
+    	
     	fileURI = "//tmp/" + fileURI + ".log";
     	
 		try {
 			System.out.println("now try writing");
 			debugFileLogger = new BufferedWriter(new FileWriter(fileURI));
 		} catch (IOException e) {				
-			System.out.println("Warning: Nnable to generate error log file " + fileURI);
+			System.out.println("Warning: Unable to generate error log file " + fileURI);
 			debugMode = false;
 		};//end try
 
@@ -121,6 +124,15 @@ public abstract class PLASHComponent {
 		} catch (IOException e) {
 			System.out.println("Error: Debug logger encountered error when writing log file hence stopped logging service for the component " + this.toString() + e.toString());
 		}
+    }//end method
+    
+    /**
+     * This method adds a "normal return status" to the map to indicate a successful execution of the component
+     * @param processedMap
+     * @return
+     */
+    protected Map successfulResult(Map processedMap) {
+    	return processedMap;
     }//end method
     
     /**
