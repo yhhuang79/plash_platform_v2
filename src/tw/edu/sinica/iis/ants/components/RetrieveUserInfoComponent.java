@@ -168,15 +168,15 @@ public class RetrieveUserInfoComponent {
         
         //Empty field(s): User did not provide any input
         if (username.equals("") && email.equals("")){
-        	map.put("message", "Field(s) is empty.");
+        	map.put("message", "Empty Field");
         }
-        //if username format is invalided
+        //if username format is invalid
         else if (email.equals("")&&!isValidUsername(username)){
-        	map.put("message", "Field(s) is invalided.");
+        	map.put("message", "Invalid Username");
         }
-        //if email format is invalided.
+        //if email format is invalid.
         else if (username.equals("")&&!isValidEmailAddress(email)){
-        	map.put("message", "Field(s) is invalided.");
+        	map.put("message", "Invalid Email");
         }
         //retrieve user password
         else {
@@ -184,21 +184,25 @@ public class RetrieveUserInfoComponent {
         	//Query login table for input username and email
         	Criteria criteria = session.createCriteria(T_Login.class);
     		criteria.add(Restrictions.eq("username", username));
-    		criteria.add(Restrictions.eq("email", email));
+//    		criteria.add(Restrictions.eq("email", email));
     		Iterator users = criteria.list().iterator(); 
     		if(users.hasNext()) {
     			T_Login user = (T_Login) users.next();
     			password = user.getPassword();
+    			String srvEmail = user.getEmail();
     			
-    			String[] to={email};
-    			sendMail sendAct = new sendMail();
-    			sendAct.sendPassword(to, username, password);
-    			map.put("retrivedPW", password);
-    			map.put("message", "Your password is sent to your e-mail.");
-    			
-    		}
-    		else{
-    			map.put("message", "User Name or E-mail is not match.");
+    			//check if the email address saved on server match the one inputed
+    			if(srvEmail.equals(email)){
+    				String[] to={email};
+        			sendMail sendAct = new sendMail();
+        			sendAct.sendPassword(to, username, password);
+        			map.put("retrivedPW", password);
+        			map.put("message", "Password Sent To Email");
+    			}else{
+    				map.put("message", "No Match");
+    			}
+    		}else{
+    			map.put("message", "Account Not Found");
     		}
         	
         	
