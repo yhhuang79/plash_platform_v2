@@ -65,22 +65,34 @@ public class ActivateComponent {
         	if (users.hasNext()){
         		T_Login user = (T_Login) users.next();
         		
-        		if (username.equals(user.getUsername()) && password.equals(user.getPassword()) && passcode.equals(user.getPasscode())){
+        		if (username.equals(user.getUsername())){ //check username
         			
-        			user.setConfirmed(true);
-        			Transaction tx = session.beginTransaction();
-        			session.save(user);
-        			tx.commit();
-        			map.put("message", "Successful Activate");
-        		}
-        		else {
-        			map.put("message", "Invalid password or activation code");
+        			if(password.equals(user.getPassword())){ //check password
+        				
+        				if(passcode.equals(user.getPasscode())){ //check passcode
+        					
+        					user.setConfirmed(true);
+                			Transaction tx = session.beginTransaction();
+                			session.save(user);
+                			tx.commit();
+                			map.put("message", "Successful Activate");
+                			
+        				} else{ //wrong passcode
+        					
+        					map.put("message", "Invalid Activation Code");
+        				}
+        			} else{ //wrong password
+        				
+        				map.put("message", "Invalid Password");
+        			}
+        		} else { //wrong username
         			
+        			map.put("message", "Invalid Username");
         		}
         		
         	} else { //end if (result.next())
         		//if (result.next()) is empty = no item found in DB
-        		map.put("message", "Username invalid");
+        		map.put("message", "Invalid Username");
         	}
         	
         
