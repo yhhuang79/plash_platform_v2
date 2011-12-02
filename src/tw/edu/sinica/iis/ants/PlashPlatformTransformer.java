@@ -25,7 +25,7 @@ public class PlashPlatformTransformer extends HttpRequestBodyToParamMap {
 	public Object transform(MuleMessage message, String encoding)
 			throws TransformerException {
 
-		System.out.println("HTTP Transformer Start:\t"+ Calendar.getInstance().getTimeInMillis());
+		System.out.println("PLASH Platform Transformer Start:\t"+ Calendar.getInstance().getTimeInMillis());
 		//System.out.println(message.getPayload().toString());		
 		String url = message.getPayload().toString() + "&timefrom1="+Calendar.getInstance().getTimeInMillis();
 		String asl_id = "";
@@ -36,7 +36,7 @@ public class PlashPlatformTransformer extends HttpRequestBodyToParamMap {
     	map.put("timefrom1", Calendar.getInstance().getTimeInMillis());    
     	message.setPayload(map);*/
 		message.setPayload(url);
-		System.out.println("HTTP Transformer End:\t"+ Calendar.getInstance().getTimeInMillis());
+		System.out.println("PLASH Platform Transformer End:\t"+ Calendar.getInstance().getTimeInMillis());
 		return super.transform(message, encoding);
 	}
 
