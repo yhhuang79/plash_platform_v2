@@ -77,41 +77,46 @@ public class RegisterComponent {
 	 
 		//Entered passwords do not match
 	    if (username==null || password==null||password2==null){
-	    	message = "Username empty";
+//	    	message = "Username empty";
+	    	message = "Empty Field";
 			return message;
 	    }
 		
 		else if (!password.equals(password2)){
-	    		message = "Password unmatch";
+	    		message = "Password Unmatch";
 			   	return message;
 	    }
 	    
 	    else if (!email.equals(email2)){
-	    	message = "E-mail unmatch";
+	    	message = "E-mail Unmatch";
 			return message;
 	    }
 	
 	    //Username or password is empty
 	    else if (username.equals("") || password.equalsIgnoreCase("") ||password2.equalsIgnoreCase("")){
-	    	message = "Username empty";
+//	    	message = "Username empty";
+	    	message = "Empty Field";
 			return message;
 	    }
 	    
 	    //Username is invalid
 	    else if (!isValidUsername(username)){
-	    	message = "Username invalid";
+//	    	message = "Username invalid";
+	    	message = "Invalid Username";	    	
 			return message;
 	    }
 	    
 	    //Password is invalid
 	    else if (!isValidPassword(password)){
-	    	message = "Password invalid";
+//	    	message = "Password invalid";
+	    	message = "Invalid Password";
 			return message;
 	    }
 	    
 	    //Email address format is invalid
 	    else if (!isValidEmailAddress(email)){
-	    	message = "E-mail invalid";
+//	    	message = "E-mail invalid";
+	    	message = "Invalid E-mail";
 			return message;
 	    }
 	    
@@ -225,11 +230,11 @@ public class RegisterComponent {
 		    	
 		    	//Username is not available
 		    	if (existUsername.equals(username)){
-		    		map.put("message", "Username unavailable");
+		    		map.put("message", "Username Unavailable");
 		    	}
 		    	//Email address is unavailable (used by other)
 		    	else {
-		    		map.put("message", "E-mail unavailable");
+		    		map.put("message", "E-mail Unavailable");
 		    	}
 		    }
 		    //-------------------------------------------------------------------//
@@ -298,7 +303,7 @@ public class RegisterComponent {
 								
 				}
 				else {
-					map.put("message", "Successful Registered");
+					map.put("message", "Successfully Registered");
 				}
 			
 			}
