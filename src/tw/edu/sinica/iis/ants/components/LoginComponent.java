@@ -56,25 +56,26 @@ public class LoginComponent {
 			}
 			//account is not activate
 			else {
-				//re-sent activation code to user
-    			String email = user.getEmail();
-    			String passcode = user.getPasscode();
-    			
-    			String host = "http://plash.iis.sinica.edu.tw/plash/";
-				String action = "activate.action";
-				String temp1 = "?username="+username;
-				String temp2 = "&password="+password;
-				String temp3 = "&passcode="+passcode;
-				//String temp4 = "&deviceType="+deviceType;
-				String parameter = temp1+temp2+temp3;//+temp4;//+temp5;
-				String activateLink = host+action+parameter;
-				//Or user can activate account by enter passcode.
-				String action2 = "preactivate.action";
-				String preactivateLink = host+action2;
-				String[] to={email};
-				sendMail sendAct = new sendMail();
-				sendAct.sendActivationCode(to, passcode, preactivateLink, activateLink);
-    			
+				//SHOUELD BE REQUESTED BY USER, DO NOT SEND AUTOMATICALLY
+//				//re-sent activation code to user
+//    			String email = user.getEmail();
+//    			String passcode = user.getPasscode();
+//    			
+//    			String host = "http://plash.iis.sinica.edu.tw/plash/";
+//				String action = "activate.action";
+//				String temp1 = "?username="+username;
+//				String temp2 = "&password="+password;
+//				String temp3 = "&passcode="+passcode;
+//				//String temp4 = "&deviceType="+deviceType;
+//				String parameter = temp1+temp2+temp3;//+temp4;//+temp5;
+//				String activateLink = host+action+parameter;
+//				//Or user can activate account by enter passcode.
+//				String action2 = "preactivate.action";
+//				String preactivateLink = host+action2;
+//				String[] to={email};
+//				sendMail sendAct = new sendMail();
+//				sendAct.sendActivationCode(to, passcode, preactivateLink, activateLink);
+//    			
 				map.put("sid", "0");
 				map.put("message", "Inactivate");
 			}
