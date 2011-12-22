@@ -3,6 +3,8 @@ package tw.edu.sinica.iis.ants;
 import java.io.Serializable;
 import java.util.*;
 
+import javax.jms.ObjectMessage;
+
 /**
  * This class is the abstract  class for storing execution result status  
  * An inherited class will be an entry item in a log stack or result status stack
@@ -52,5 +54,14 @@ public abstract class ExecutionResultStatus implements Serializable {
 		timeStamp = Calendar.getInstance().getTimeInMillis();
 
 	}//end constructor	
+	
+	public Serializable getObject() {
+		return this;
+	}//end method
+	
+	public void setObject(Serializable object) {
+		
+	}//end method
+	
 
 }//end method

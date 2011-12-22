@@ -19,6 +19,8 @@
 
 
 	<description></description>
+
+	
 	
 	<!-- 
 		Step 1: Make a spring bean for your customized component
@@ -35,202 +37,13 @@
 		
 	<spring:beans>
 		<spring:import resource="spring_plash.xml" />
+		<spring:import resource="PLASH-spring-bean-components.xml" />
+		<spring:import resource="GetUsernameListConfig.xml" />
 	</spring:beans>
-	<spring:bean id="LoginComponent"
-		class="tw.edu.sinica.iis.ants.components.LoginComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="GetFriendListComponent"
-		class="tw.edu.sinica.iis.ants.components.GetFriendListComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<!-- 
-	<spring:bean id="ActivateComponent"
-		class="tw.edu.sinica.iis.ants.components.ActivateComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	-->
-	<!-- (Step 1) Danny: XXXXX = ConfirmFriendRequest -->
-	<spring:bean id="ConfirmFriendRequestComponent"
-		class="tw.edu.sinica.iis.ants.components.ConfirmFriendRequestComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<!-- (Step 1) Danny: XXXXX = FriendRequest -->
-	<spring:bean id="FriendRequestComponent"
-		class="tw.edu.sinica.iis.ants.components.FriendRequestComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<!-- (Step 1) Danny: XXXXX = Register -->
-	<spring:bean id="RegisterComponent"
-		class="tw.edu.sinica.iis.ants.components.RegisterComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<!-- (Step 1) Danny: XXXXX = Activate -->
-	<spring:bean id="ActivateComponent"
-		class="tw.edu.sinica.iis.ants.components.ActivateComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<!-- (Step 1) Danny: XXXXX = Login2 -->
-	<spring:bean id="Login2Component"
-		class="tw.edu.sinica.iis.ants.components.Login2Component">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<!-- (Step 1) Danny: XXXXX = PasswordChange -->
-	<spring:bean id="PasswordChangeComponent"
-		class="tw.edu.sinica.iis.ants.components.PasswordChangeComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	
-	
-	<spring:bean id="RetrieveUserInfoComponent"
-		class="tw.edu.sinica.iis.ants.components.RetrieveUserInfoComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	
-	
-	<spring:bean id="InputComponent"
-		class="tw.edu.sinica.iis.ants.components.InputComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	
-	
-	<spring:bean id="GetLatestTripComponent"
-		class="tw.edu.sinica.iis.ants.components.GetLatestTripComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	
-	<spring:bean id="GetTripDataComponent"
-		class="tw.edu.sinica.iis.ants.components.GetTripDataComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-		
-	<spring:bean id="GetNewTripIdComponent"
-		class="tw.edu.sinica.iis.ants.components.GetNewTripIdComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	
-	
-	<spring:bean id="GetTripIdComponent"
-		class="tw.edu.sinica.iis.ants.components.GetTripIdComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	
-	
-	<spring:bean id="GetFriendLatestTripComponent"
-		class="tw.edu.sinica.iis.ants.components.GetFriendLatestTripComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	
-	
-	<spring:bean id="GetFriendOneTripComponent"
-		class="tw.edu.sinica.iis.ants.components.GetFriendOneTripComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	
-	
-	<spring:bean id="GetUserTripIdComponent"
-		class="tw.edu.sinica.iis.ants.components.GetUserTripIdComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	
-	
-	<spring:bean id="DistanceBearingComponent"
-		class="tw.edu.sinica.iis.ants.components.DistanceBearingComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
 
-	<spring:bean id="GetAllFriendLocationComponent"
-		class="tw.edu.sinica.iis.ants.components.GetAllFriendLocationComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="NearestComponent"
-		class="tw.edu.sinica.iis.ants.components.NearestComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="GetAuthFriendComponent"
-		class="tw.edu.sinica.iis.ants.components.GetAuthFriendComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="SetAuthFriendComponent"
-		class="tw.edu.sinica.iis.ants.components.SetAuthFriendComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="DelAuthFriendComponent"
-		class="tw.edu.sinica.iis.ants.components.DelAuthFriendComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="GetAuthTripComponent"
-		class="tw.edu.sinica.iis.ants.components.GetAuthTripComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="GetAuthTripLatLngComponent"
-		class="tw.edu.sinica.iis.ants.components.GetAuthTripLatLngComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="SetActivityComponent"
-		class="tw.edu.sinica.iis.ants.components.SetActivityComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="GetActivityComponent"
-		class="tw.edu.sinica.iis.ants.components.GetActivityComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="SetAttendActivityComponent"
-		class="tw.edu.sinica.iis.ants.components.SetAttendActivityComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="DelAttendActivityComponent"
-		class="tw.edu.sinica.iis.ants.components.DelAttendActivityComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="SetItemComponent"
-		class="tw.edu.sinica.iis.ants.components.SetItemComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="GetItemComponent"
-		class="tw.edu.sinica.iis.ants.components.GetItemComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="DelItemComponent"
-		class="tw.edu.sinica.iis.ants.components.DelItemComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="SetAssignItemComponent"
-		class="tw.edu.sinica.iis.ants.components.SetAssignItemComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="GetAssignedItemInfoOfUserComponent"
-		class="tw.edu.sinica.iis.ants.components.GetAssignedItemInfoOfUserComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="DelAssignItemComponent"
-		class="tw.edu.sinica.iis.ants.components.DelAssignItemComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="GetUsersAttendActivityComponent"
-		class="tw.edu.sinica.iis.ants.components.GetUsersAttendActivityComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
-	<spring:bean id="GetTripInfoComponent"
-		class="tw.edu.sinica.iis.ants.components.GetTripInfoComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
 
-	<spring:bean id="TripInfoManagerComponent"
-		class="tw.edu.sinica.iis.ants.components.TripInfoManagerComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
+
 	
-	<!-- chunfu add deltrip -->
-	<spring:bean id="DelTripComponent"
-		class="tw.edu.sinica.iis.ants.components.DelTripComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>		
-	
-	<spring:bean id="TestComponent"
-		class="tw.edu.sinica.iis.ants.components.TestComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
 
 	
 	<!-- 
@@ -248,13 +61,13 @@
 		<spring:property name="disableTemporaryReplyToDestinations"
 			value="true" />
 	</jms:activemq-connector>
-
+	
 	<jms:endpoint name="plashWaitingQueue" queue="plash.watingQueue"
 		connector-ref="jmsCon" />		
 	<jms:endpoint name="plashResponseQueue" queue="plash.response"
 		connector-ref="jmsCon" />
 	<jms:endpoint name="plashTestResponseQueue" queue="plash.test"
-		connector-ref="jmsCon" />
+		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashLogQueue" queue="plash.log"
 		connector-ref="jmsCon" />
 	<jms:endpoint name="plashLoginQueue" queue="plash.login"
@@ -343,6 +156,10 @@
 	<custom-transformer name="ExceptionToString"
 		class="tw.edu.sinica.iis.ants.ExceptionToString" />
 
+	<custom-transformer name="PLASHCompToJMSTransformer"
+		class="tw.edu.sinica.iis.ants.PLASHCompToJMSTransformer" />
+	
+	
 
 	<custom-transformer name="HttpParams"
 		class="tw.edu.sinica.iis.ants.PlashHTTPTransformer" />
@@ -525,9 +342,11 @@
 	<byte-array-to-string-transformer name="byteArrayToString" />
 	<custom-transformer class="tw.edu.sinica.iis.ants.CustomByteArrayToString"
 		name="bt" />
+	
 
 
 	<model name="PLASH">
+	
 		<!-- 
 			Step 4: Combine all the things: Create a service for your component
 			
@@ -539,6 +358,8 @@
 			
 			Finally, run the mule and you could start to test it!
 		-->
+
+
 		
 		<service name="HttpInput">
 			<inbound>
@@ -589,35 +410,7 @@
 				</custom-outbound-router>
 			</outbound>
 		</service>
-		<!--
-		<service name="XXXXXService">
-			<inbound>
-				<inbound-endpoint transformer-refs="HttpParams"
-					responseTransformer-refs="byteArrayToString" ref="OOOOOOO" />
-			</inbound>			
-			<component>
-				<spring-object bean="XXXXXComponent"></spring-object>
-			</component>
-			<outbound>
-				<pass-through-router>
-					<outbound-endpoint ref="plashXXXXXResponseQueue">
-						<transformers>
-							<jms:object-to-jmsmessage-transformer />
-						</transformers>
-					</outbound-endpoint>
-				</pass-through-router>
-			</outbound>
-			<async-reply>
-				<inbound-endpoint ref="plashXXXXXResponseQueue">
-					<transformers>
-						<jms:jmsmessage-to-object-transformer />
-						<transformer ref="rt" />
-					</transformers>
-				</inbound-endpoint>
-				<single-async-reply-router/>				
-			</async-reply>
-		</service>
-		-->
+	
 
 		<service name="UserErrorHandler">
 			<inbound>
@@ -1725,7 +1518,7 @@
 		</service>
 		
 		
-		<!-- (Step 4) Kenny: XXXXX =  RetrieveUserInfo-->
+		<!-- Yi-Chun: GetTripInfoService-->
 		<service name="GetTripInfoService">
 			<inbound>
 				<inbound-endpoint transformer-refs="HttpParams"
@@ -1825,7 +1618,11 @@
 				<pass-through-router>
 					<outbound-endpoint ref="plashTestResponseQueue">
 						<transformers>
+							<transformer ref="PLASHCompToJMSTransformer"/>
+							<transformer ref="rt" />
+							
 							<jms:object-to-jmsmessage-transformer />
+							
 						</transformers>
 					</outbound-endpoint>
 				</pass-through-router>
@@ -1840,7 +1637,33 @@
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
-		
+
+	<service name="GetUsernameListService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashGetUsernameListHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="GetUsernameListComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashGetUsernameListQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashGetUsernameListQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>			
 				
 	</model>
 

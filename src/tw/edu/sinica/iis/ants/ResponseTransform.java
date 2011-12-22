@@ -28,8 +28,14 @@ public class ResponseTransform extends AbstractTransformer {
     }//end constructor
 
     public Object doTransform(Object src, String encoding) throws TransformerException   {
+    	System.out.print("gone here, ResponseTransform");
+    	System.out.print(((Map)src).toString());
+    	if (((Map)src).containsKey("resultstatus")) {
+    		//do something meaningful
+    		((Map)src).remove("resultstatus");
+    		
+    	}//fi
     	
-    	//Map map = (Map)src;
  		
 		JSONObject j = new JSONObject((Map)src);
 		

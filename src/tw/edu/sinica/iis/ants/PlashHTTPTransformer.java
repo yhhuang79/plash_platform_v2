@@ -14,11 +14,11 @@ public class PlashHTTPTransformer extends HttpRequestBodyToParamMap {
 	@Override
 	public Object transform(MuleMessage message, String encoding)	throws TransformerException {
 		
-		System.out.println("HTTP Transformer Start:\t"+ Calendar.getInstance().getTimeInMillis());
+		System.out.println("PlashHTTPTransformer Start:\t"+ Calendar.getInstance().getTimeInMillis());
 		//System.out.println(message.getPayload().toString());
 		String url = message.getPayload().toString() + "&timefrom1="+Calendar.getInstance().getTimeInMillis();
 		message.setPayload(url);
-		System.out.println("HTTP Transformer End:\t"+ Calendar.getInstance().getTimeInMillis());
+		System.out.println("PlashHTTPTransformer End:\t"+ Calendar.getInstance().getTimeInMillis());
 		return super.transform(message, encoding);
 	}
 

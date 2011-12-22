@@ -23,9 +23,9 @@ public class AbnormalResult extends ExecutionResultStatus {
 	public final char type;
 	
 	/**
-	 * Error code
+	 * Reference code, used to find corresponding reference
 	 */
-	public short errorCode;
+	public short refCode;
 	
 	/**
 	 * log exception stack
