@@ -24,7 +24,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
  * This service component tries to parse input argument and find all matching user names
  * The component receives following arguments:
  * name - the name string to be matched
- * user_id - optional ?
+ * userID - the user id to be excluded
  * 
  * @author Yi-Chun Teng
  *
@@ -44,9 +44,9 @@ public class GetUsernameListComponent extends PLASHComponent {
 		try {
 
 
-			int user_id;				
-			String tmpUser_id, tmpName;
-			if ((tmpUser_id = (String)map.remove("user_id")) == null) {				
+			int userID;				
+			String tmpUserID, tmpName;
+			if ((tmpUserID = (String)map.remove("user_id")) == null) {				
 
 		        tskSession.close();
 		        AbnormalResult err = new AbnormalResult(this,'E');
@@ -56,7 +56,7 @@ public class GetUsernameListComponent extends PLASHComponent {
 		        return map;
 		        
 			} else {
-				user_id = Integer.parseInt(tmpUser_id);
+				userID = Integer.parseInt(tmpUserID);
 			}//fi
 						
 			
@@ -83,7 +83,7 @@ public class GetUsernameListComponent extends PLASHComponent {
 			if (Calendar.getInstance().getTimeInMillis() - lastAccessTime > 1800000) {
 				//obtain the record			
 		    	Criteria criteriaNameData = tskSession.createCriteria(T_Login.class);
-		    	criteriaNameData.add(Restrictions.ne("sid", user_id));
+		    	criteriaNameData.add(Restrictions.ne("sid", userID));
 		    	ProjectionList filterProjList = Projections.projectionList();  
 		    	filterProjList.add(Projections.property("username"),"name");
 		    	criteriaNameData.setProjection(filterProjList);
@@ -102,12 +102,10 @@ public class GetUsernameListComponent extends PLASHComponent {
 			} else {	
 				for (String nameItem:queryResult) {			
 			
-					if (nameItem.startsWith(tmpName)) {						
+					if (nameItem.toLowerCase().startsWith(tmpName.toLowerCase())) {						
 						resultList.add(nameItem);
 					}//fi */
 				}//rof
-				System.out.println("list is " + resultList.toString()); 
-				System.out.println("tmp name is " + tmpName);
 				map.put("name_list", resultList);
 
 			}//fi		
