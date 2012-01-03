@@ -39,6 +39,7 @@
 		<spring:import resource="spring_plash.xml" />
 		<spring:import resource="PLASH-spring-bean-components.xml" />
 		<spring:import resource="GetUsernameListConfig.xml" />
+		<spring:import resource="GetTripDataConfig.xml" />		
 	</spring:beans>
 
 
