@@ -20,7 +20,8 @@
 	import com.vividsolutions.jts.geom.Geometry;
 	import com.vividsolutions.jts.io.*;
 	
-	import tw.edu.sinica.iis.ants.DB.*;
+import tw.edu.sinica.iis.ants.DB.*;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	
 	/**
 	 * This component returns the trip data.  <br>
@@ -70,15 +71,13 @@
 			requestCount = 0;
 			enableDebugLog();
 			
-		};
+		}
 		
 		
 		public Object serviceMain(Map map) {
 			
 			requestCount++;
-			timeID = Calendar.getInstance().getTimeInMillis();
-			System.out.println("GetTripDataComponent Start:\t"	+ timeID + " Obj ID: " + this + " request ID: " + requestCount);
-			System.out.println(map.toString());
+
 			try {
 				tskSession = sessionFactory.getCurrentSession();
 			} catch ( HibernateException e) {
@@ -105,18 +104,19 @@
 				}//fi
 				
 				if ((tmpField_mask = (String)map.remove("field_mask")) == null) {
-					field_mask = Integer.parseInt("0110010000000000",2);				
+					field_mask = Integer.parseInt("111111111111111",2);				
 				} else {
 					field_mask = Integer.parseInt(tmpField_mask,2);
 				}//fi
 				
 				if ((tmpTrip_id = (String)map.remove("trip_id")) == null) {				
 					Criteria latestTripCriteria = tskSession.createCriteria(T_TripData.class);
-					latestTripCriteria.add(Restrictions.eq("userid", userid));
+					latestTripCriteria.add(Restrictions.eq("userid", userid));				    
 			    	latestTripCriteria.setProjection(Projections.projectionList().add(Projections.max("trip_id")));						    					
 					Integer tmpIntTrip_id = (Integer)latestTripCriteria.uniqueResult();								
-					tskSession.close();							
+						
 					if (tmpIntTrip_id == null) {
+						tskSession.close();	
 						return map;
 					} else {
 						trip_id = tmpIntTrip_id;
@@ -124,7 +124,7 @@
 				} else {
 	
 					trip_id = Integer.parseInt(tmpTrip_id);
-					map.put("trip_id", trip_id);
+	
 				}//fi
 				
 				if ((tmpReturn_latest = (String)map.remove("latest_pt_only")) == null) {
@@ -134,18 +134,18 @@
 					//field_mask = Integer.parseInt(tmpField_mask,2);
 				}//fi
 				
-				System.out.println("Gone here 3: Obj ID: " + this + " request ID: " + requestCount);
+
 				
 				if(latest_pt_only){
 					//return latest trip point
-					map.putAll(getLatestTripPt(userid,trip_id, field_mask));
-					//System.out.println("GetTripDataComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
-					System.out.println("GetTripDataComponent end:\t"	+ timeID + " Obj ID: " + this);
+					map.putAll(getLatestTripPt(userid,trip_id,field_mask));
+					//System.out.println("GetTripDataComponent End:\t"+ Calendar.getInstance().getTimeInMillis());					
+					tskSession.close();	
 					return map;				
 					
 				} else {
 					//return all trip
-					map.put("tripDataList", getTripData(userid, trip_id, field_mask));
+					map.put("tripDataList", getTripData(userid, trip_id,field_mask));
 					System.out.println("GetTripDataComponent end:\t"	+ timeID + " Obj ID: " + this);
 					return map;				
 	
@@ -312,10 +312,5 @@
 			
 		}//end method
 		
-		
-	
-		
-	
-	
 	
 	}//end class
