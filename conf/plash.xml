@@ -94,8 +94,7 @@
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashGetLatestTripQueue" queue="plash.get.latest.trip"
 		connector-ref="jmsCon" />
-	<jms:endpoint name="plashGetTripDataQueue" queue="plash.get.trip.data"
-		connector-ref="jmsCon" />	
+
 	<jms:endpoint name="plashGetNewTripIdQueue" queue="plash.get.new.trip.id"
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashGetTripIdQueue" queue="plash.get.trip.id"
@@ -235,10 +234,7 @@
 		port="8080" path="Input" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashGetLatestTripHttpsInboundEndpoint" host="localhost"
-		port="8080" path="GetLatestTrip" synchronous="true" connector-ref="httpsConnector" />
-		
-	<https:endpoint name="plashGetTripDataHttpsInboundEndpoint" host="localhost"
-		port="8080" path="GetTripData" synchronous="true" connector-ref="httpsConnector" />
+		port="8080" path="GetLatestTrip" synchronous="true" connector-ref="httpsConnector" />		
 		
 	<https:endpoint name="plashGetNewTripIdHttpsInboundEndpoint" host="localhost"
 		port="8080" path="GetNewTripId" synchronous="true" connector-ref="httpsConnector" />
@@ -1651,6 +1647,7 @@
 					<outbound-endpoint ref="plashGetUsernameListQueue">
 						<transformers>
 							<jms:object-to-jmsmessage-transformer />
+
 						</transformers>
 					</outbound-endpoint>
 				</pass-through-router>
@@ -1659,6 +1656,7 @@
 				<inbound-endpoint ref="plashGetUsernameListQueue">
 					<transformers>
 						<jms:jmsmessage-to-object-transformer />
+						
 					</transformers>
 				</inbound-endpoint>
 				<single-async-reply-router/>				
