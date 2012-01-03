@@ -105,14 +105,14 @@
 				}//fi
 				
 				if ((tmpField_mask = (String)map.remove("field_mask")) == null) {
-					field_mask = Integer.parseInt("11111111111111",2);				
+					field_mask = Integer.parseInt("0110010000000000",2);				
 				} else {
 					field_mask = Integer.parseInt(tmpField_mask,2);
 				}//fi
 				
 				if ((tmpTrip_id = (String)map.remove("trip_id")) == null) {				
 					Criteria latestTripCriteria = tskSession.createCriteria(T_TripData.class);
-					latestTripCriteria.add(Restrictions.eq("userid", userid));				    
+					latestTripCriteria.add(Restrictions.eq("userid", userid));
 			    	latestTripCriteria.setProjection(Projections.projectionList().add(Projections.max("trip_id")));						    					
 					Integer tmpIntTrip_id = (Integer)latestTripCriteria.uniqueResult();								
 					tskSession.close();							
@@ -124,7 +124,7 @@
 				} else {
 	
 					trip_id = Integer.parseInt(tmpTrip_id);
-	
+					map.put("trip_id", trip_id);
 				}//fi
 				
 				if ((tmpReturn_latest = (String)map.remove("latest_pt_only")) == null) {
@@ -138,14 +138,14 @@
 				
 				if(latest_pt_only){
 					//return latest trip point
-					map.putAll(getLatestTripPt(userid,trip_id,field_mask));
+					map.putAll(getLatestTripPt(userid,trip_id, field_mask));
 					//System.out.println("GetTripDataComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
 					System.out.println("GetTripDataComponent end:\t"	+ timeID + " Obj ID: " + this);
 					return map;				
 					
 				} else {
 					//return all trip
-					map.put("tripDataList", getTripData(userid, trip_id,field_mask));
+					map.put("tripDataList", getTripData(userid, trip_id, field_mask));
 					System.out.println("GetTripDataComponent end:\t"	+ timeID + " Obj ID: " + this);
 					return map;				
 	
@@ -183,6 +183,7 @@
 			//obtain the record
 	    	Criteria criteriaTripData = tskSession.createCriteria(T_TripData.class);
 	    	criteriaTripData.add(Restrictions.eq("userid", userid));
+	    	criteriaTripData.add(Restrictions.eq("trip_id", trip_id));	    	
 	    	ProjectionList filterProjList = Projections.projectionList();     	
 	    	criteriaTripData.setProjection(addFilterList(filterProjList,field_mask));
 	    	criteriaTripData.addOrder(Order.desc("timestamp"));
@@ -226,6 +227,7 @@
 			//obtain the record
 	    	Criteria criteriaTripData = tskSession.createCriteria(T_TripData.class);
 	    	criteriaTripData.add(Restrictions.eq("userid", userid));
+	    	criteriaTripData.add(Restrictions.eq("trip_id", trip_id));
 	    	ProjectionList filterProjList = Projections.projectionList();     	
 	    	criteriaTripData.setProjection(addFilterList(filterProjList,field_mask));
 	    	criteriaTripData.addOrder(Order.desc("timestamp"));
