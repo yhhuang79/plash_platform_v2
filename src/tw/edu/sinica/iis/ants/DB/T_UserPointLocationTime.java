@@ -22,6 +22,14 @@ public class T_UserPointLocationTime {
 	private Double accez;
 	private String gsminfo;
 	private String wifiinfo;
+	private Integer app;
+	private Double latitude;
+	private Double longitude;
+	private Double azimuth;
+	private Double pitch;
+	private Double roll;
+	private String battery_info;
+	
 	
 	public T_UserPointLocationTime(){
 	
@@ -156,6 +164,62 @@ public class T_UserPointLocationTime {
 
 	public void setWifiinfo(String wifiinfo) {
 		this.wifiinfo = wifiinfo;
+	}
+
+	public Integer getApp() {
+		return app;
+	}
+
+	public void setApp(Integer app) {
+		this.app = app;
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+
+	public Double getAzimuth() {
+		return azimuth;
+	}
+
+	public void setAzimuth(Double azimuth) {
+		this.azimuth = azimuth;
+	}
+
+	public Double getPitch() {
+		return pitch;
+	}
+
+	public void setPitch(Double pitch) {
+		this.pitch = pitch;
+	}
+
+	public Double getRoll() {
+		return roll;
+	}
+
+	public void setRoll(Double roll) {
+		this.roll = roll;
+	}
+
+	public String getBattery_info() {
+		return battery_info;
+	}
+
+	public void setBattery_info(String battery_info) {
+		this.battery_info = battery_info;
 	}
 	
 	

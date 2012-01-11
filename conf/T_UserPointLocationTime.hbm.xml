@@ -29,6 +29,13 @@
 		<property name="accez" column="accez" />
 		<property name="gsminfo" column="gsminfo" />
 		<property name="wifiinfo" column="wifiinfo" />
+		<property name="app" column="app" />
+		<property name="latitude" column="latitude" />
+		<property name="longitude" column="longitude" />
+		<property name="azimuth" column="azimuth" />
+		<property name="pitch" column="pitch" />
+		<property name="roll" column="roll" />
+		<property name="battery_info" column="battery_info" />											
 		
 		
 	</class>

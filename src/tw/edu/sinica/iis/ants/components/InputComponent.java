@@ -15,7 +15,16 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 
-
+/**
+ * @goal      input gps location
+ * @author    Angus Fuming Huang, Yi-Chun Teng
+ * @version   1.2, 01/5/2012
+ * @param     
+ * @return    message 
+ * @see       connpost.java
+ * @example   http://localhost:1234/in?userid=1&trip_id=500&timestamp=2011-11-11 11:11:11.111
+ * 
+ */
 public class InputComponent {
 
 	private SessionFactory sessionFactory;
@@ -32,30 +41,22 @@ public class InputComponent {
 
     }
 
+
     public Object greet(Map map) {
     	
         System.out.println("inputGpsLocationComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
         // Please Implement Your Programming Logic From Here
-        /**
-         * @goal      input gps location
-         * @author    Angus Fuming Huang
-         * @version   1.1, 01/30/2011
-         * @param     userid, trip_id, lat, lng, timestamp, label
-         * @return    message 
-         * @see       connpost.java
-         * @example   http://localhost:1234/in?userid=1&trip_id=500&timestamp=2011-11-11 11:11:11.111
-         * 
-         */
+
         
         Session session = sessionFactory.openSession();
         Integer userid = null;
         Integer trip_id = null;
-        // add by Yu-Hsiang Huang
-        Integer label = null;
-        Double lat = null, lng = null;
-        // end
+
         
-        //add by Danny
+        Integer label = null;
+        Double lat = 0.0, lng = 0.0;
+
+                
         Double alt = 0.0;  	//Altitude in meter
         Double accu = 0.0; 	//Accuracy in meter
         Double spd = 0.0;	//Speed in m/s
@@ -65,7 +66,11 @@ public class InputComponent {
         Double accez= 0.0; 	//z-axis acceleration
         String gsminfo = ""; //first 5 is phone information, last 3 is the nearest cell information, NULL if information is missing
         String wifiinfo = ""; // set of AP info: MAC address, frequency (MHz), signal strength (dBM)
-        //End Danny
+        Integer app = 0;
+    	Double azimuth = 0.0;
+    	Double pitch = 0.0;
+    	Double roll = 0.0;
+    	String battery_info = "";        
         
         Timestamp timestamp = null;
         
@@ -73,7 +78,6 @@ public class InputComponent {
         	userid = Integer.parseInt(map.get("userid").toString());
         if (map.containsKey("trip_id"))   
         	trip_id = Integer.parseInt(map.get("trip_id").toString());
-        // add by Yu-Hsiang Huang
         if (map.containsKey("lat")) 
         	lat = Double.valueOf(map.get("lat").toString()).doubleValue();
         if (map.containsKey("lng"))   
@@ -99,10 +103,20 @@ public class InputComponent {
         	gsminfo = map.get("gsminfo").toString();
         if (map.containsKey("wifiinfo"))
         	wifiinfo = map.get("wifiinfo").toString();
-        // end Danny
-        
+        if (map.containsKey("app"))
+        	app = Integer.parseInt(map.get("app").toString());
+        if (map.containsKey("azimuth"))
+        	azimuth = Double.valueOf(map.get("azimuth").toString()).doubleValue();
+        if (map.containsKey("pitch"))
+        	pitch = Double.valueOf(map.get("pitch").toString()).doubleValue();
+        if (map.containsKey("roll"))
+        	roll = Double.valueOf(map.get("roll").toString()).doubleValue();
+        if (map.containsKey("battery_info"))
+        	battery_info = map.get("battery_info").toString();
+        	
         if (map.containsKey("timestamp")) 
         	timestamp = Timestamp.valueOf(map.get("timestamp").toString());
+        
         if (userid.equals("") || trip_id.equals("") || timestamp.equals("") || lat.equals("") || lng.equals("")) {  //簡化的判斷式
 			map.put("message", "required information is empty and can not input the GPS location");
 		} else {   
@@ -141,7 +155,7 @@ public class InputComponent {
 				//store the <label> into the database
 				user.setLabel(label);
 				
-				//Danny
+
 				user.setAlt(alt);
 				user.setAccu(accu);
 				user.setSpd(spd);
@@ -151,7 +165,13 @@ public class InputComponent {
 				user.setAccez(accez);
 				user.setGsminfo(gsminfo);
 				user.setWifiinfo(wifiinfo);
-				//END Danny
+				user.setLatitude(lat);
+				user.setLongitude(lng);
+				user.setApp(app);		        
+		    	user.setAzimuth(azimuth);
+		    	user.setPitch(pitch);
+		    	user.setRoll(roll);
+		    	user.setBattery_info(battery_info);   
 				
 				Transaction tx = session.beginTransaction();
 				session.save(user);
