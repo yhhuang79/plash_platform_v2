@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesource.org/schema/mule/core/2.2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:spring="http://www.springframework.org/schema/beans"
+	xmlns:http="http://www.mulesource.org/schema/mule/http/2.2" xmlns:vm="http://www.mulesource.org/schema/mule/vm/2.2"
+	xmlns:stdio="http://www.mulesource.org/schema/mule/stdio/2.2"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:jms="http://www.mulesource.org/schema/mule/jms/2.2"
+	xmlns:scripting="http://www.mulesource.org/schema/mule/scripting/2.2"
+	xmlns:https="http://www.mulesource.org/schema/mule/https/2.2"
+	xsi:schemaLocation="
+			http://www.mulesource.org/schema/mule/scripting/2.2	http://www.mulesource.org/schema/mule/scripting/2.2/mule-scripting.xsd
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+            http://www.mulesource.org/schema/mule/core/2.2 http://www.mulesource.org/schema/mule/core/2.2/mule.xsd
+            http://www.mulesource.org/schema/mule/http/2.2 http://www.mulesource.org/schema/mule/http/2.2/mule-http.xsd
+            http://www.mulesource.org/schema/mule/vm/2.2 http://www.mulesource.org/schema/mule/vm/2.2/mule-vm.xsd
+            http://www.mulesource.org/schema/mule/stdio/2.2 http://www.mulesource.org/schema/mule/stdio/2.2/mule-stdio.xsd
+            http://www.mulesource.org/schema/mule/jms/2.2 http://www.mulesource.org/schema/mule/jms/2.2/mule-jms.xsd
+            http://www.mulesource.org/schema/mule/https/2.2 http://www.mulesource.org/schema/mule/https/2.2/mule-https.xsd">
+
+	<spring:bean id="LoginComponent"
+		class="tw.edu.sinica.iis.ants.components.LoginComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="GetFriendListComponent"
+		class="tw.edu.sinica.iis.ants.components.GetFriendListComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+
+	<spring:bean id="ConfirmFriendRequestComponent"
+		class="tw.edu.sinica.iis.ants.components.ConfirmFriendRequestComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+
+	<spring:bean id="FriendRequestComponent"
+		class="tw.edu.sinica.iis.ants.components.FriendRequestComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+
+	<spring:bean id="RegisterComponent"
+		class="tw.edu.sinica.iis.ants.components.RegisterComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+
+	<spring:bean id="ActivateComponent"
+		class="tw.edu.sinica.iis.ants.components.ActivateComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+
+	<spring:bean id="Login2Component"
+		class="tw.edu.sinica.iis.ants.components.Login2Component">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+
+	<spring:bean id="PasswordChangeComponent"
+		class="tw.edu.sinica.iis.ants.components.PasswordChangeComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	
+	
+	<spring:bean id="RetrieveUserInfoComponent"
+		class="tw.edu.sinica.iis.ants.components.RetrieveUserInfoComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	
+	
+	<spring:bean id="InputComponent"
+		class="tw.edu.sinica.iis.ants.components.InputComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	
+	
+	<spring:bean id="GetLatestTripComponent"
+		class="tw.edu.sinica.iis.ants.components.GetLatestTripComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	
+
+		
+	<spring:bean id="GetNewTripIdComponent"
+		class="tw.edu.sinica.iis.ants.components.GetNewTripIdComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	
+	
+	<spring:bean id="GetTripIdComponent"
+		class="tw.edu.sinica.iis.ants.components.GetTripIdComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	
+	
+	<spring:bean id="GetFriendLatestTripComponent"
+		class="tw.edu.sinica.iis.ants.components.GetFriendLatestTripComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	
+	
+	<spring:bean id="GetFriendOneTripComponent"
+		class="tw.edu.sinica.iis.ants.components.GetFriendOneTripComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	
+	
+	<spring:bean id="GetUserTripIdComponent"
+		class="tw.edu.sinica.iis.ants.components.GetUserTripIdComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	
+	
+	<spring:bean id="DistanceBearingComponent"
+		class="tw.edu.sinica.iis.ants.components.DistanceBearingComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+
+	<spring:bean id="GetAllFriendLocationComponent"
+		class="tw.edu.sinica.iis.ants.components.GetAllFriendLocationComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="NearestComponent"
+		class="tw.edu.sinica.iis.ants.components.NearestComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="GetAuthFriendComponent"
+		class="tw.edu.sinica.iis.ants.components.GetAuthFriendComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="SetAuthFriendComponent"
+		class="tw.edu.sinica.iis.ants.components.SetAuthFriendComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="DelAuthFriendComponent"
+		class="tw.edu.sinica.iis.ants.components.DelAuthFriendComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="GetAuthTripComponent"
+		class="tw.edu.sinica.iis.ants.components.GetAuthTripComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="GetAuthTripLatLngComponent"
+		class="tw.edu.sinica.iis.ants.components.GetAuthTripLatLngComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="SetActivityComponent"
+		class="tw.edu.sinica.iis.ants.components.SetActivityComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="GetActivityComponent"
+		class="tw.edu.sinica.iis.ants.components.GetActivityComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="SetAttendActivityComponent"
+		class="tw.edu.sinica.iis.ants.components.SetAttendActivityComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="DelAttendActivityComponent"
+		class="tw.edu.sinica.iis.ants.components.DelAttendActivityComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="SetItemComponent"
+		class="tw.edu.sinica.iis.ants.components.SetItemComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="GetItemComponent"
+		class="tw.edu.sinica.iis.ants.components.GetItemComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="DelItemComponent"
+		class="tw.edu.sinica.iis.ants.components.DelItemComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="SetAssignItemComponent"
+		class="tw.edu.sinica.iis.ants.components.SetAssignItemComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="GetAssignedItemInfoOfUserComponent"
+		class="tw.edu.sinica.iis.ants.components.GetAssignedItemInfoOfUserComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="DelAssignItemComponent"
+		class="tw.edu.sinica.iis.ants.components.DelAssignItemComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="GetUsersAttendActivityComponent"
+		class="tw.edu.sinica.iis.ants.components.GetUsersAttendActivityComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	<spring:bean id="GetTripInfoComponent"
+		class="tw.edu.sinica.iis.ants.components.GetTripInfoComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+
+	<spring:bean id="TripInfoManagerComponent"
+		class="tw.edu.sinica.iis.ants.components.TripInfoManagerComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	
+	<!-- chunfu add deltrip -->
+	<spring:bean id="DelTripComponent"
+		class="tw.edu.sinica.iis.ants.components.DelTripComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>		
+	
+	<spring:bean id="TestComponent"
+		class="tw.edu.sinica.iis.ants.components.TestComponent">
+		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+	</spring:bean>
+	
+</mule>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<!--
+		<bean id="eventDao" class="tw.edu.sinica.iis.ants.dao.EventDaoImpl">
+		<property name="sessionFactory"> <ref bean="sessionFactory" />
+		</property> </bean>
+	-->
+	<!--
+		<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="configLocation">
+		<value>classpath:hibernate.cfg.xml</value> </property> </bean>
+	-->
+
+	<bean id="SocialDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="org.postgresql.Driver">
+		</property>
+		<property name="jdbcUrl" value="jdbc:postgresql://localhost/myServletDB">
+		</property>
+		<property name="user" value="postgres"></property>
+		<property name="password" value="root"></property>
+		<property name="minPoolSize">
+			<value>10</value>
+		</property>
+		<property name="maxPoolSize">
+			<value>20</value>
+		</property>
+		<property name="maxIdleTime">
+			<value>1800</value>
+		</property>
+		<property name="acquireIncrement">
+			<value>2</value>
+		</property>
+		<property name="maxStatements">
+			<value>0</value>
+		</property>
+		<property name="initialPoolSize">
+			<value>2</value>
+		</property>
+		<property name="idleConnectionTestPeriod">
+			<value>1800</value>
+		</property>
+		<property name="acquireRetryAttempts">
+			<value>30</value>
+		</property>
+		<property name="breakAfterAcquireFailure">
+			<value>true</value>
+		</property>
+		<property name="testConnectionOnCheckout">
+			<value>false</value>
+		</property>
+	</bean>
+
+	<bean id="GeoDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="org.postgresql.Driver">
+		</property>
+		<property name="jdbcUrl" value="jdbc:postgresql://localhost/postgistemplate">
+		</property>
+		<property name="user" value="postgres"></property>
+		<property name="password" value="root"></property>
+		<property name="minPoolSize">
+			<value>10</value>
+		</property>
+		<property name="maxPoolSize">
+			<value>20</value>
+		</property>
+		<property name="maxIdleTime">
+			<value>1800</value>
+		</property>
+		<property name="acquireIncrement">
+			<value>2</value>
+		</property>
+		<property name="maxStatements">
+			<value>0</value>
+		</property>
+		<property name="initialPoolSize">
+			<value>2</value>
+		</property>
+		<property name="idleConnectionTestPeriod">
+			<value>1800</value>
+		</property>
+		<property name="acquireRetryAttempts">
+			<value>30</value>
+		</property>
+		<property name="breakAfterAcquireFailure">
+			<value>true</value>
+		</property>
+		<property name="testConnectionOnCheckout">
+			<value>false</value>
+		</property>
+	</bean>
+
+
+	<bean id="SocialSessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"
+		destroy-method="destroy">
+		<property name="dataSource">
+			<ref bean="SocialDataSource" />
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>T_Login.hbm.xml</value>
+				<value>T_FriendList.hbm.xml</value>
+				<value>T_FriendAuth.hbm.xml</value>
+				<value>T_UserPointLocationTime.hbm.xml</value>
+				<value>T_TripData.hbm.xml</value>				
+				<value>T_Routing.hbm.xml</value>
+				<value>T_Service.hbm.xml</value>
+				<value>T_FriendRequest.hbm.xml</value>
+				<value>T_AppName.hbm.xml</value>
+				<value>T_AppUser.hbm.xml</value>
+				<value>T_Activity.hbm.xml</value>
+				<value>T_Item.hbm.xml</value>
+				<value>T_ActivityUser.hbm.xml</value>
+				<value>T_UserTrip.xml</value>
+				<value>T_TripInfo.hbm.xml</value>			
+				<value>T_DepreciatedLocationData.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernatespatial.postgis.PostgisDialect</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="GeoSessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"
+		destroy-method="destroy">
+		<property name="dataSource">
+			<ref bean="GeoDataSource" />
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>T_Login.hbm.xml</value>
+				<value>T_FriendList.hbm.xml</value>
+				<value>T_FriendAuth.hbm.xml</value>
+				<value>T_UserPointLocationTime.hbm.xml</value>
+				<value>T_TripData.hbm.xml</value>					
+				<value>T_Routing.hbm.xml</value>
+				<value>T_Service.hbm.xml</value>
+				<value>T_FriendRequest.hbm.xml</value>
+				<value>T_AppName.hbm.xml</value>
+				<value>T_AppUser.hbm.xml</value>	
+				<value>T_Activity.hbm.xml</value>
+				<value>T_Item.hbm.xml</value>	
+				<value>T_ActivityUser.hbm.xml</value>	
+				<value>T_UserTrip.xml</value>
+				<value>T_TripInfo.hbm.xml</value>
+				<!-- 
+				<value>T_DepreciatedLocationData.hbm.xml</value>
+				 -->					
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernatespatial.postgis.PostgisDialect</prop>
+			</props>
+		</property>
+	</bean>
+</beans>
