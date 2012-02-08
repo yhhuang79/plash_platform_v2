@@ -20,6 +20,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.*;
 
 import tw.edu.sinica.iis.ants.DB.*;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 /**
  * This component manages the trip information. This component performs task according to the task_id fed to the component. <br>
@@ -98,22 +99,25 @@ public class TripInfoManagerComponent extends PLASHComponent{
 			default:				
 				break;
 			}//end switch
-   			
+			
+			System.out.println("TripInfoManagerComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
+			tskSession.close();
+			return map;
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
 			map.put("TripInfoManagerComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
 	        System.out.println("TripInfoManagerComponent failure end1:\t"+ Calendar.getInstance().getTimeInMillis());
+	        tskSession.close();
 			return map;
 		} catch (NumberFormatException e) { //invalid arguments 
 			map.put("TripInfoManagerComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file
 			//map.put("error detail" , e.toString()); //perhaps put error detail?
 	        System.out.println("TripInfoManagerComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
+	        tskSession.close();
 			return map;
 		}//end try catch
 		
 
-		
-		System.out.println("TripInfoManagerComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
-		return map;
+
 	}//end method
 	
 	/**

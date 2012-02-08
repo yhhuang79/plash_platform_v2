@@ -96,7 +96,8 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 				if ((tmpUserid = (String)map.remove("userid")) == null) {
 					//user id must be specified
 					map.put("GetTripInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
-			        System.out.println("GetTripInfoComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());				
+			        System.out.println("GetTripInfoComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
+			        tskSession.close();
 					return map;
 				} else {
 					userid = Integer.parseInt(tmpUserid);
@@ -147,6 +148,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 					//return all trip
 					map.put("tripDataList", getTripData(userid, trip_id,field_mask));
 					System.out.println("GetTripDataComponent end:\t"	+ timeID + " Obj ID: " + this);
+					tskSession.close();
 					return map;				
 	
 				}//fi
@@ -155,15 +157,18 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 			} catch (NullPointerException e) { //Most likely due to invalid arguments 
 				map.put("GetTripDataComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
 		        System.out.println("GetTripDataComponent failure end1:\t" + e.toString() + " : requestID: " + requestCount);
+		        tskSession.close(); 	
 				return map; //*/
 				
 			} catch (NumberFormatException e) { //invalid arguments 
 				map.put("GetTripDataComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file
 				//map.put("error detail" , e.toString()); //perhaps put error detail?
 		        System.out.println("GetTripDataComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
+		        tskSession.close(); 	
 				return map;
 			} catch (HibernateException he) { //bad db validity
 		        System.out.println("GetTripDataComponent failure end3:\t"+ Calendar.getInstance().getTimeInMillis());
+		        tskSession.close(); 	
 				return map;
 			}//end try catch
 			
@@ -189,10 +194,9 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	    	criteriaTripData.addOrder(Order.desc("timestamp"));
 	    	criteriaTripData.setFetchSize(1);
 	    	criteriaTripData.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-	    	
+			
 			try {
-				List<Map> resultList = (List<Map>) criteriaTripData.list();
-				tskSession.close();
+				List<Map> resultList = (List<Map>) criteriaTripData.list();	
 				if (resultList.size()  == 0 ) {
 					return new HashMap();
 				} else {				
@@ -206,7 +210,8 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	
 							
 			} catch (HibernateException he) {
-				System.out.println("Warning: hibernation exception");
+				
+				System.out.println("Warning: hibernation exception");	
 				return null;
 			}//end try catch			//*/
 			
@@ -248,7 +253,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 				return tripDataList;
 												
 			} catch (HibernateException he) {
-				System.out.println("Warning: hibernation exception");
+				System.out.println("Warning: hibernation exception"); 	
 				return null;
 			}//end try catch			//*/
 		}//end method	
