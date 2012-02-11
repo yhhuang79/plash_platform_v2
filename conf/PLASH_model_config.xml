@@ -31,6 +31,7 @@
 		<spring:import resource="GetUsernameListConfig.xml" />
 		<spring:import resource="GetTripDataConfig.xml" />
 		<spring:import resource="GetTripInfoConfig.xml"/>
+		<spring:import resource="InputTripInfoConfig.xml"/>		
 		<spring:import resource="TripInfoManagerConfig.xml"/>		
 		<spring:import resource="TestConfig.xml" />				
 	</spring:beans>
@@ -1461,7 +1462,34 @@
 			</async-reply>
 		</service>
 		
-		
+		<!-- Yi-Chun: InputTripInfoService-->
+		<service name="InputTripInfoService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashInputTripInfoHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="InputTripInfoComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashInputTripInfoQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashInputTripInfoQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />						
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+				
 		<!-- Yi-Chun: TripInfoManager-->
 		<service name="TripInfoManagerService">
 			<inbound>

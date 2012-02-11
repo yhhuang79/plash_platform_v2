@@ -17,16 +17,16 @@
             http://www.mulesource.org/schema/mule/jms/2.2 http://www.mulesource.org/schema/mule/jms/2.2/mule-jms.xsd
             http://www.mulesource.org/schema/mule/https/2.2 http://www.mulesource.org/schema/mule/https/2.2/mule-https.xsd">
 
-	<spring:bean id="GetTripInfoComponent"
-		class="tw.edu.sinica.iis.ants.components.GetTripInfoComponent">
+	<spring:bean id="InputTripInfoComponent"
+		class="tw.edu.sinica.iis.ants.components.InputTripInfoComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 	
-	<jms:endpoint name="plashGetTripInfoQueue" queue="plash.get.trip.info"
+	<jms:endpoint name="plashInputTripInfoQueue" queue="plash.input.trip.info"
 		connector-ref="jmsCon" />	
 		
-	<https:endpoint name="plashGetTripInfoHttpsInboundEndpoint" host="localhost"
-		port="8080" path="GetTripInfo" synchronous="true" connector-ref="httpsConnector" />
+	<https:endpoint name="plashInputTripInfoHttpsInboundEndpoint" host="localhost"
+		port="8080" path="InputTripInfo" synchronous="true" connector-ref="httpsConnector" />
 				
 </mule>
 							
