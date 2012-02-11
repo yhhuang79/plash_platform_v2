@@ -97,6 +97,7 @@ public class GetTripInfoComponent extends PLASHComponent {
 				//return all trip
 				List<Map> tmpList = getAllTripInfo(userid,field_mask);
 				if (tmpList == null) {//error here
+					tskSession.close();
 					return map;
 				} else {
 					System.out.println("list: " + tmpList.toString() );
@@ -112,6 +113,7 @@ public class GetTripInfoComponent extends PLASHComponent {
 				trip_id = Integer.parseInt(tmpTrip_id);								
 				map.putAll(getSingleTripInfo(userid,trip_id,field_mask));
 				System.out.println("GetTripInfoComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
+				tskSession.close();
 				return map;
 				
 
@@ -122,12 +124,14 @@ public class GetTripInfoComponent extends PLASHComponent {
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
 			map.put("GetTripInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
 	        System.out.println("GetTripInfoComponent failure end1:\t"+ Calendar.getInstance().getTimeInMillis());
+	        tskSession.close();
 			return map; //*/
 			
 		} catch (NumberFormatException e) { //invalid arguments 
 			map.put("GetTripInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file
 			//map.put("error detail" , e.toString()); //perhaps put error detail?
 	        System.out.println("GetTripInfoComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
+	        tskSession.close();
 			return map;
 		}//end try catch
 				
