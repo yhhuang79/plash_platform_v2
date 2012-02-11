@@ -240,7 +240,6 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	    	
 			try {
 				List<Map> tripDataList = (List<Map>) criteriaTripData.list();
-				tskSession.close();
 		   		if ((field_mask & 8192) != 0) { 
 		    		Geometry tmpGPS;
 		    		for (Map tmpMap:tripDataList) {
