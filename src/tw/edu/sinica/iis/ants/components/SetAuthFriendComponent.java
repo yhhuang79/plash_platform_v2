@@ -16,6 +16,7 @@ import com.vividsolutions.jts.io.WKTReader;
 import tw.edu.sinica.iis.ants.sendMail;
 import tw.edu.sinica.iis.ants.DB.T_Login;
 import tw.edu.sinica.iis.ants.DB.T_FriendAuth;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 /**
  * set authorized friend
@@ -27,30 +28,22 @@ import tw.edu.sinica.iis.ants.DB.T_FriendAuth;
  * @example	http://localhost:1234/in?userid=1&friendid=7&tripid=555       
  * @note	Follow the algorithm implemented in the original server
  */
-public class SetAuthFriendComponent {
+public class SetAuthFriendComponent extends PLASHComponent {
 
-	private SessionFactory sessionFactory;
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
 
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+	private Session tskSession; //task session
 
-    public SetAuthFriendComponent() {
 
-    }
 
-    public Object greet(Map map) {
+	public Object serviceMain(Map map) {
     	
     	
         System.out.println("setAuthFriendComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
  
 
-        Session session = sessionFactory.openSession(); 
-        Criteria criteria = session.createCriteria(T_FriendAuth.class);
+        tskSession = sessionFactory.openSession(); 
+        Criteria criteria = tskSession.createCriteria(T_FriendAuth.class);
         
 		try {			
 			criteria.add(Restrictions.eq("userAID", Integer.parseInt(map.get("userid").toString())));
@@ -84,8 +77,8 @@ public class SetAuthFriendComponent {
 			entry.setUserAID(Integer.parseInt(map.get("userid").toString()));
 			entry.setUserBID(Integer.parseInt(map.get("friendid").toString()));
 			entry.setTripID(Integer.parseInt(map.get("tripid").toString()));						
-			session.save(entry);
-			session.beginTransaction().commit();
+			tskSession.save(entry);
+			tskSession.beginTransaction().commit();
 
 			//put code for sending e-mail here
 			//Suggestion: the process of sending e-mail should be initiated by router rather than this component
@@ -99,5 +92,6 @@ public class SetAuthFriendComponent {
 
 
 	} //close Object greet
+
     
 }  //close class inputGpsLocationComponent

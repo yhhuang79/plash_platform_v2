@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 
 import tw.edu.sinica.iis.ants.DB.T_Activity;
 import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;

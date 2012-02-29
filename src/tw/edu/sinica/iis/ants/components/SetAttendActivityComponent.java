@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 
 import tw.edu.sinica.iis.ants.DB.T_Activity;
 import tw.edu.sinica.iis.ants.DB.T_ActivityUser;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;

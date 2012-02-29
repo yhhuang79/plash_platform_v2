@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import tw.edu.sinica.iis.ants.DB.T_Item;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 
 
