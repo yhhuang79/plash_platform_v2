@@ -26,12 +26,11 @@ public class PLASHCompToJMSTransformer extends AbstractTransformer {
 	protected Object doTransform(Object src, String encoding)	throws TransformerException {
 
 		Map haha = (Map)src;
-		System.out.println("hahahaha, gone here hahahaha");
 		ActiveMQObjectMessage om = new ActiveMQObjectMessage();
 		ActiveMQMapMessage mm = new  ActiveMQMapMessage();
 		try {
 			//om.setObject((Serializable) haha.remove("teststatus"));
-			mm.setString("hahaha", "kekeke");
+			mm.setString("asdf", "jklm");
 		} catch (JMSException e) {
 			System.out.println(e.toString());
 			e.printStackTrace();

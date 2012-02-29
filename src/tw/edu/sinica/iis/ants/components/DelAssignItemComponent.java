@@ -11,6 +11,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import tw.edu.sinica.iis.ants.DB.T_Item;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 public class DelAssignItemComponent extends PLASHComponent {
 

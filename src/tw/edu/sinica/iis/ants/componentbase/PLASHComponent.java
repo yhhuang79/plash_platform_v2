@@ -71,15 +71,12 @@ public abstract class PLASHComponent {
     	
     	fileURI = "//tmp/" + fileURI + ".log";
     	
-		try {
-			System.out.println("now try writing");
+		try {			
 			debugFileLogger = new BufferedWriter(new FileWriter(fileURI));
 		} catch (IOException e) {				
 			System.out.println("Warning: Unable to generate error log file " + fileURI);
 			debugMode = false;
-		};//end try
-
-    	System.out.println("Debug URI: " + fileURI);    	
+		};//end try    	    	
     }//end method
     
     /**
@@ -134,10 +131,10 @@ public abstract class PLASHComponent {
      * @return process map along with success status pushed into the execution result stack. 
      */
 	protected Map returnSuccess(Map processedMap) {
-    	if (!processedMap.containsKey("resultStatus")) {    
-    		processedMap.put("resultStatus",new Stack<ExecutionResultStatus>());
+    	if (!processedMap.containsKey("resultstatus")) {    
+    		processedMap.put("resultstatus",new Stack<ExecutionResultStatus>());
     	}//fi
-    	((Stack<ExecutionResultStatus>)processedMap.get("resultStatus")).push(new NormalResult(this,null));
+    	((Stack<ExecutionResultStatus>)processedMap.get("resultstatus")).push(new NormalResult(this,null));
     	return processedMap;
     }//end method
     
@@ -149,10 +146,10 @@ public abstract class PLASHComponent {
      * @return process map along with success status pushed into the execution result stack. 
      */
     protected Map returnSuccess(Map processedMap, NormalResult result) {
-    	if (!processedMap.containsKey("resultStatus")) {    
-    		processedMap.put("resultStatus",new Stack<ExecutionResultStatus>());
+    	if (!processedMap.containsKey("resultstatus")) {    
+    		processedMap.put("resultstatus",new Stack<ExecutionResultStatus>());
     	}//fi
-    	((Stack<ExecutionResultStatus>)processedMap.get("resultStatus")).push(result);
+    	((Stack<ExecutionResultStatus>)processedMap.get("resultstatus")).push(result);
     	return processedMap;
     }//end method
 
@@ -165,10 +162,10 @@ public abstract class PLASHComponent {
      * @return process map along with success status pushed into the execution result stack. 
      */
 	protected Map returnUnsuccess(Map processedMap, AbnormalResult result) {
-    	if (!processedMap.containsKey("resultStatus")) {    
-    		processedMap.put("resultStatus",new Stack<ExecutionResultStatus>());
+    	if (!processedMap.containsKey("resultstatus")) {    
+    		processedMap.put("resultstatus",new Stack<ExecutionResultStatus>());
     	}//fi
-    	((Stack<ExecutionResultStatus>)processedMap.get("resultStatus")).push(result);
+    	((Stack<ExecutionResultStatus>)processedMap.get("resultstatus")).push(result);
     	return processedMap;
     }//end method
     

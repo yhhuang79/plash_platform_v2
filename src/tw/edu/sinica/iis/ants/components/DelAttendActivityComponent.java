@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 
 import tw.edu.sinica.iis.ants.DB.T_ActivityUser;
 import tw.edu.sinica.iis.ants.DB.T_FriendAuth;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 public class DelAttendActivityComponent extends PLASHComponent {
 
