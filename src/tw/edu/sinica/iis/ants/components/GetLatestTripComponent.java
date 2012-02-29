@@ -34,6 +34,7 @@ import org.hibernate.Transaction;
 import com.vividsolutions.jts.geom.Geometry;
 
 import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 /**
  * @goal      get location of the latest trip
