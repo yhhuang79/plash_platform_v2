@@ -32,7 +32,8 @@
 		<spring:import resource="GetTripDataConfig.xml" />
 		<spring:import resource="GetTripInfoConfig.xml"/>
 		<spring:import resource="InputTripInfoConfig.xml"/>		
-		<spring:import resource="TripInfoManagerConfig.xml"/>		
+		<spring:import resource="TripInfoManagerConfig.xml"/>	
+		<spring:import resource="SetAuthFriendConfig.xml" />		
 		<spring:import resource="TestConfig.xml" />				
 	</spring:beans>
 
@@ -91,8 +92,7 @@
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashGetAuthFriendQueue" queue="plash.get.auth.friend"
 		connector-ref="jmsCon" />	
-	<jms:endpoint name="plashSetAuthFriendQueue" queue="plash.set.auth.friend"
-		connector-ref="jmsCon" />	
+
 	<jms:endpoint name="plashDelAuthFriendQueue" queue="plash.del.auth.friend"
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashGetAuthTripQueue" queue="plash.get.auth.trip"
@@ -216,9 +216,6 @@
 		
 	<https:endpoint name="plashGetAuthFriendHttpsInboundEndpoint" host="localhost"
 		port="8080" path="GetAuthFriend" synchronous="true" connector-ref="httpsConnector" />
-		
-	<https:endpoint name="plashSetAuthFriendHttpsInboundEndpoint" host="localhost"
-		port="8080" path="SetAuthFriend" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashDelAuthFriendHttpsInboundEndpoint" host="localhost"
 		port="8080" path="DelAuthFriend" synchronous="true" connector-ref="httpsConnector" />
