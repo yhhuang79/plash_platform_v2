@@ -119,10 +119,6 @@
 		class="tw.edu.sinica.iis.ants.components.NearestComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
-	<spring:bean id="GetAuthFriendComponent"
-		class="tw.edu.sinica.iis.ants.components.GetAuthFriendComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
 
 	<spring:bean id="DelAuthFriendComponent"
 		class="tw.edu.sinica.iis.ants.components.DelAuthFriendComponent">

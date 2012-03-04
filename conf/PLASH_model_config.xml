@@ -31,13 +31,12 @@
 		<spring:import resource="GetUsernameListConfig.xml" />
 		<spring:import resource="GetTripDataConfig.xml" />
 		<spring:import resource="GetTripInfoConfig.xml"/>
+		<spring:import resource="GetAuthFriendConfig.xml"/>		
 		<spring:import resource="InputTripInfoConfig.xml"/>		
-		<spring:import resource="TripInfoManagerConfig.xml"/>	
-		<spring:import resource="SetAuthFriendConfig.xml" />		
+		<spring:import resource="SetAuthFriendConfig.xml"/>
+		<spring:import resource="TripInfoManagerConfig.xml"/>		
 		<spring:import resource="TestConfig.xml" />				
 	</spring:beans>
-
-
 
 	
 	
@@ -90,9 +89,6 @@
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashDistanceBearingQueue" queue="plash.distance.bearing"
 		connector-ref="jmsCon" />	
-	<jms:endpoint name="plashGetAuthFriendQueue" queue="plash.get.auth.friend"
-		connector-ref="jmsCon" />	
-
 	<jms:endpoint name="plashDelAuthFriendQueue" queue="plash.del.auth.friend"
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashGetAuthTripQueue" queue="plash.get.auth.trip"
@@ -213,9 +209,6 @@
 		
 	<https:endpoint name="plashGetAllFriendLocationHttpsInboundEndpoint" host="localhost"
 		port="8080" path="GetAllFriendLocation" synchronous="true" connector-ref="httpsConnector" />
-		
-	<https:endpoint name="plashGetAuthFriendHttpsInboundEndpoint" host="localhost"
-		port="8080" path="GetAuthFriend" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashDelAuthFriendHttpsInboundEndpoint" host="localhost"
 		port="8080" path="DelAuthFriend" synchronous="true" connector-ref="httpsConnector" />
@@ -890,7 +883,9 @@
 				<pass-through-router>
 					<outbound-endpoint ref="plashGetAuthFriendQueue">
 						<transformers>
+							<transformer ref="TestResponseTransformer" />	
 							<jms:object-to-jmsmessage-transformer />
+						
 						</transformers>
 					</outbound-endpoint>
 				</pass-through-router>
@@ -898,8 +893,9 @@
 			<async-reply>
 				<inbound-endpoint ref="plashGetAuthFriendQueue">
 					<transformers>
-						<jms:jmsmessage-to-object-transformer />
 						<transformer ref="TestResponseTransformer" />
+						<jms:jmsmessage-to-object-transformer />
+
 					</transformers>
 				</inbound-endpoint>
 				<single-async-reply-router/>				
