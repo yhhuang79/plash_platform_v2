@@ -17,9 +17,13 @@ import tw.edu.sinica.iis.ants.DB.T_FriendAuth;
  * 
  * @author	Yi-Chun Teng 
  * @version 
- * @param   a map that contains the following keys: userid,tripid
+ * @param   a map that contains the following keys: <br>
+ * 			userid - required. This indicates which user you are referring to <br>
+ * 			friend_id - optional. When provided, this component returns a list of trip_ids that belongs to the user and this friend <br>
+ * 			trip_id - optional. When provided, this component returns a list of friends that the user has shared this trip with <br> 
+ *			If neigher friend_id nor trip_id is provided, then the component will return a list of trip ids where the key of trip id indicate friend id.
  * @return  map containing a list of IDs. empty list if no ID found
- * @example	http://localhost:1234/in?userid=1&tripid=555       
+ * @example	http://localhost:1234/GetAuthFriend?userid=1&tripid=555       
  * @note	Follow the algorithm implemented in the original server
  */
 public class GetAuthFriendComponent {
