@@ -15,8 +15,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
  * set authorized friend
  * 
  * @author	Yi-Chun Teng 
- * @version 
- * @param   a map that contains the following keys: userid,friendid, tripID
+ * @param   a map that contains the following keys: userid,friend_id, trip_id
  * @return  map containing result status
  * @example	https://localhost:8080/SetAuthFriendComponent?userid=334&trip_id=4,5,6,74&friend_id=5,4,51,22      
  */
