@@ -1,4 +1,4 @@
-
+package tw.edu.sinica.iis.ants.components;
 
 import java.util.Calendar;
 import java.util.Iterator;
@@ -14,12 +14,12 @@ import tw.edu.sinica.iis.ants.sendMail;
 import tw.edu.sinica.iis.ants.DB.T_Login;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
-public class BakLogin2Component extends PLASHComponent{
+public class Login2Component extends PLASHComponent{
 
     private SessionFactory sessionFactory;
 
 
-	public BakLogin2Component() {
+	public Login2Component() {
 
 	}
 
