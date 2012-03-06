@@ -1,4 +1,4 @@
-package tw.edu.sinica.iis.ants.components;
+
 
 import java.util.Calendar;
 import java.util.Iterator;
@@ -12,35 +12,36 @@ import org.hibernate.criterion.Restrictions;
 
 import tw.edu.sinica.iis.ants.sendMail;
 import tw.edu.sinica.iis.ants.DB.T_Login;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
-public class LoginComponent {
+public class BakLogin2Component extends PLASHComponent{
 
     private SessionFactory sessionFactory;
 
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
 
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
-
-	public LoginComponent() {
+	public BakLogin2Component() {
 
 	}
 
-	public Object greet(Map map) {
-		System.out.println("Login Start:\t"+ Calendar.getInstance().getTimeInMillis());
+
+	@Override
+	public Object serviceMain(Map map) {
+	
 
 		Session session = sessionFactory.openSession(); 
-		String username = map.get("username").toString();
-		//String password = map.remove("password").toString();
-		String password = map.get("password").toString();
+
+		String username = null;
+		String password = null;
+		if (map.containsKey("username")){
+        	username = map.get("username").toString();
+        }//fi
+		if (map.containsKey("password")){
+        	password = map.remove("password").toString();
+        }//fi
 		
 		Criteria criteria = session.createCriteria(T_Login.class);
 		criteria.add(Restrictions.eq("username", username));
 		criteria.add(Restrictions.eq("password", password));
-		System.out.println("Login Component:  " + username + " : " + password);
 		Iterator users = criteria.list().iterator(); 
 		if(users.hasNext()) {
 			T_Login user = (T_Login) users.next(); 
@@ -56,35 +57,33 @@ public class LoginComponent {
 			}
 			//account is not activate
 			else {
-				//SHOUELD BE REQUESTED BY USER, DO NOT SEND AUTOMATICALLY
-//				//re-sent activation code to user
-//    			String email = user.getEmail();
-//    			String passcode = user.getPasscode();
-//    			
-//    			String host = "http://plash.iis.sinica.edu.tw/plash/";
-//				String action = "activate.action";
-//				String temp1 = "?username="+username;
-//				String temp2 = "&password="+password;
-//				String temp3 = "&passcode="+passcode;
-//				//String temp4 = "&deviceType="+deviceType;
-//				String parameter = temp1+temp2+temp3;//+temp4;//+temp5;
-//				String activateLink = host+action+parameter;
-//				//Or user can activate account by enter passcode.
-//				String action2 = "preactivate.action";
-//				String preactivateLink = host+action2;
-//				String[] to={email};
-//				sendMail sendAct = new sendMail();
-//				sendAct.sendActivationCode(to, passcode, preactivateLink, activateLink);
-//    			
+				//re-sent activation code to user
+    			String email = user.getEmail();
+    			String passcode = user.getPasscode();
+    			
+    			String host = "http://plash.iis.sinica.edu.tw/plash/";
+				String action = "activate.action";
+				String temp1 = "?username="+username;
+				String temp2 = "&password="+password;
+				String temp3 = "&passcode="+passcode;
+				//String temp4 = "&deviceType="+deviceType;
+				String parameter = temp1+temp2+temp3;//+temp4;//+temp5;
+				String activateLink = host+action+parameter;
+				//Or user can activate account by enter passcode.
+				String action2 = "preactivate.action";
+				String preactivateLink = host+action2;
+				String[] to={email};
+				sendMail sendAct = new sendMail();
+				sendAct.sendActivationCode(to, passcode, preactivateLink, activateLink);
+    			
 				map.put("sid", "0");
 				map.put("message", "Inactivate");
 			}
 
-		}
-		else{
+		}else{
 			map.put("sid", "0");
 			map.put("message", "Login Fail");
-		}
+		}//fi
  
 		session.close();
 		
@@ -93,4 +92,5 @@ public class LoginComponent {
 		System.out.println("Login End:\t"+ Calendar.getInstance().getTimeInMillis());
 		return map;
 	}
-}
+
+}//end class
