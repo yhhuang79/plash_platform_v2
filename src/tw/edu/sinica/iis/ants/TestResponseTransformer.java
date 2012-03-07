@@ -31,15 +31,19 @@ public class TestResponseTransformer extends AbstractTransformer {
     	System.out.println(((Map)src).toString());
     	if (((Map)src).containsKey("resultstatus")) {
     		//do something meaningful
-    		Object status = ((Map)src).remove("resultstatus");
-    		if ( status instanceof AbnormalResult){
-    			
-    	   		System.out.println("Reason: " + ((AbnormalResult)status).explaination); 			
-    		} else {
-    			System.out.println("Unknown status" + status.toString());
-    		}//fi
+    		Stack<ExecutionResultStatus> statusStack = (Stack<ExecutionResultStatus>) ((Map)src).remove("resultstatus");
+    		
+    		for (Object status:statusStack) {
 
- 
+        		if ( status instanceof AbnormalResult){        			
+        	   		System.out.println("Reason: " + ((AbnormalResult)status).explaination); 			
+        		} else {
+
+        		}//fi
+   			
+    		}//rof
+
+    		
     		
     		System.out.println("result status has been removed");
     	}//fi
