@@ -13,9 +13,8 @@ import org.hibernate.criterion.Restrictions;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-import tw.edu.sinica.iis.ants.DB.T_Activity;
-import tw.edu.sinica.iis.ants.DB.T_FriendList;
-import tw.edu.sinica.iis.ants.DB.T_Login;
+import tw.edu.sinica.iis.ants.DB.*;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 public class GetActivityComponent extends PLASHComponent {
 
@@ -24,7 +23,7 @@ public class GetActivityComponent extends PLASHComponent {
         if(!map.containsKey("activityid") || map.get("activityid").toString().equals("")){
         	map.put("message", "Lacking of parameters or required information");
         	return map;        
-        }
+        }//fi
 
 		System.out.println("GetActivityComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
 
@@ -38,8 +37,7 @@ public class GetActivityComponent extends PLASHComponent {
 		
 		if(theResultList.size()<1){
 			map.put("message", "No such activity");
-		}
-		else{
+		} else{
 			T_Activity activity = (T_Activity) theResultList.get(0);
 			map.put("userid", activity.getUserid().toString());
 			map.put("name", activity.getName());
@@ -51,7 +49,7 @@ public class GetActivityComponent extends PLASHComponent {
 			map.put("lat", lat);
 			map.put("lng", lng);
 			map.put("image", activity.getImage());
-		}
+		}//fi
 		
 		session.close();
 

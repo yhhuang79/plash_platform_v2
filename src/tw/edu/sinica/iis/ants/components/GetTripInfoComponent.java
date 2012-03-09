@@ -21,6 +21,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.*;
 
 import tw.edu.sinica.iis.ants.DB.*;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 /**
  * This component returns the trip information.  <br>

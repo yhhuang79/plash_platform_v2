@@ -1,9 +1,10 @@
 package tw.edu.sinica.iis.ants.components;
 
-import java.util.Calendar;
-import java.util.Map;
+import java.util.*;
 
 import org.hibernate.Session;
+
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 public class MergeTripComponent extends PLASHComponent {
 
@@ -19,4 +20,4 @@ public class MergeTripComponent extends PLASHComponent {
 		return null;
 	}
 
-}
+}//end class

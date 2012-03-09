@@ -10,6 +10,7 @@ import org.hibernate.criterion.Restrictions;
 
 import tw.edu.sinica.iis.ants.DB.T_Activity;
 import tw.edu.sinica.iis.ants.DB.T_Item;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 public class GetItemComponent extends PLASHComponent {
 
@@ -18,7 +19,7 @@ public class GetItemComponent extends PLASHComponent {
         if(!map.containsKey("itemid") || map.get("itemid").toString().equals("")){
         	map.put("message", "Lacking of parameters or required information");
         	return map;        
-        }
+        }//fi
 
 		System.out.println("GetItemComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
 
@@ -32,8 +33,7 @@ public class GetItemComponent extends PLASHComponent {
 		
 		if(theResultList.size()<1){
 			map.put("message", "No such item");
-		}
-		else{
+		} else{
 			T_Item item = (T_Item) theResultList.get(0);
 			map.put("userid", item.getUserid().toString());
 			map.put("activityid", item.getActivityid().toString());
@@ -41,7 +41,7 @@ public class GetItemComponent extends PLASHComponent {
 			map.put("price", item.getPrice().toString());
 			map.put("assigned", item.getAssigned().toString());
 			map.put("assigneduserid", item.getAssigneduserid().toString());
-		}
+		}//fi
 		
 		session.close();
 
@@ -49,4 +49,4 @@ public class GetItemComponent extends PLASHComponent {
 		return map;
 	}
 	
-}
+}//end class

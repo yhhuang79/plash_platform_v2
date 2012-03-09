@@ -10,9 +10,8 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import tw.edu.sinica.iis.ants.DB.T_Activity;
-import tw.edu.sinica.iis.ants.DB.T_ActivityUser;
-import tw.edu.sinica.iis.ants.DB.T_Item;
+import tw.edu.sinica.iis.ants.DB.*;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 public class GetUsersAttendActivityComponent extends PLASHComponent {
 
@@ -21,7 +20,7 @@ public class GetUsersAttendActivityComponent extends PLASHComponent {
         if(!map.containsKey("activityid") || map.get("activityid").toString().equals("")){
         	map.put("message", "Lacking of parameters or required information");
         	return map;        
-        }
+        }//fi
 
 		System.out.println("GetUsersAttendActivityComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
 
@@ -37,16 +36,15 @@ public class GetUsersAttendActivityComponent extends PLASHComponent {
 		
 		if(theResultList.size()<1){
 			map.put("message", "No user in this activity");
-		}
-		else{
+		} else{
 			people = new ArrayList();
 			Iterator i = theResultList.iterator();
 			while(i.hasNext()){
 				T_ActivityUser au = (T_ActivityUser) i.next();
 				people.add(au.getUserid());
-			}
+			}//end while
 			map.put("people", people);
-		}
+		}//fi
 		
 		session.close();
 
@@ -54,4 +52,4 @@ public class GetUsersAttendActivityComponent extends PLASHComponent {
 		return map;
 	}
 	
-}
+}//end class

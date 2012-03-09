@@ -1,19 +1,13 @@
 package tw.edu.sinica.iis.ants.components;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import tw.edu.sinica.iis.ants.DB.T_Activity;
-import tw.edu.sinica.iis.ants.DB.T_FriendList;
-import tw.edu.sinica.iis.ants.DB.T_Item;
+import tw.edu.sinica.iis.ants.DB.*;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 public class GetAssignedItemInfoOfUserComponent extends PLASHComponent {
 
