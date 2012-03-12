@@ -27,7 +27,7 @@ public class TestResponseTransformer extends AbstractTransformer {
     }//end constructor
 
     public Object doTransform(Object src, String encoding) throws TransformerException   {
-    	System.out.println("This is ResponseTransform transformer");
+    	System.out.println("This is ResponseTransform transformer, encoding: " + encoding);
     	System.out.println(((Map)src).toString());
     	if (((Map)src).containsKey("resultstatus")) {
     		//do something meaningful
@@ -48,9 +48,8 @@ public class TestResponseTransformer extends AbstractTransformer {
     		System.out.println("result status has been removed");
     	}//fi
     	
- 		
+ 		//return src;
 		JSONObject j = new JSONObject((Map)src);
-		
 		return j.toString();
 
     }//end method

@@ -914,7 +914,8 @@
 				<pass-through-router>
 					<outbound-endpoint ref="plashGetTripAuthDataQueue">
 						<transformers>
-							<transformer ref="TestResponseTransformer" />	
+
+							<transformer ref="TestResponseTransformer" />
 							<jms:object-to-jmsmessage-transformer />
 						
 						</transformers>
@@ -922,8 +923,9 @@
 				</pass-through-router>
 			</outbound>
 			<async-reply>
-				<inbound-endpoint ref="plashGetAuthFriendQueue">
+				<inbound-endpoint ref="plashGetTripAuthDataQueue">
 					<transformers>
+
 						<transformer ref="TestResponseTransformer" />
 						<jms:jmsmessage-to-object-transformer />
 
