@@ -69,7 +69,7 @@ public class RegisterComponent {
 		 Pattern pattern = Pattern.compile(expression);
 		 Matcher matcher = pattern.matcher(inputStr);
 		 return matcher.matches();
-	}
+	}//end method
 	
 	public static String inputFormatChecker (String username, String password, String password2, String email, String email2){
 		
@@ -105,13 +105,13 @@ public class RegisterComponent {
 	    	message = "Invalid Username";	    	
 			return message;
 	    }
-	    
+	    /*
 	    //Password is invalid
 	    else if (!isValidPassword(password)){
 //	    	message = "Password invalid";
 	    	message = "Invalid Password";
 			return message;
-	    }
+	    }*/
 	    
 	    //Email address format is invalid
 	    else if (!isValidEmailAddress(email)){

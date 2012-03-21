@@ -29,7 +29,7 @@ public class DelItemComponent extends PLASHComponent {
 		       
         
 		try {
-			criteria.add(Restrictions.eq("itemid", Integer.parseInt(map.get("itemid").toString())));
+			criteria.add(Restrictions.eq("itemid", Integer.parseInt((String)map.get("itemid"))));
 			Iterator fls = criteria.list().iterator();
 			session.delete((T_Item)fls.next());
 			session.beginTransaction().commit();       

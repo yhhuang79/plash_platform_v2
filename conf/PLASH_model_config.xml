@@ -32,9 +32,11 @@
 		<spring:import resource="GetTripDataConfig.xml" />
 		<spring:import resource="GetTripAuthDataConfig.xml"/>	
 		<spring:import resource="GetTripInfoConfig.xml"/>
-		<spring:import resource="GetAuthFriendConfig.xml"/>						
+		<spring:import resource="GetAuthFriendConfig.xml"/>		
+		<spring:import resource="GetLatestTripConfig.xml"/>						
 		<spring:import resource="InputTripInfoConfig.xml"/>		
 		<spring:import resource="SetAuthFriendConfig.xml"/>
+		<spring:import resource="SetLoginConfig.xml"/>		
 		<spring:import resource="TripInfoManagerConfig.xml"/>		
 		<spring:import resource="TestConfig.xml" />				
 	</spring:beans>
@@ -75,8 +77,6 @@
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashInputQueue" queue="plash.input"
 		connector-ref="jmsCon" />	
-	<jms:endpoint name="plashGetLatestTripQueue" queue="plash.get.latest.trip"
-		connector-ref="jmsCon" />
 	<jms:endpoint name="plashGetNewTripIdQueue" queue="plash.get.new.trip.id"
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashGetTripIdQueue" queue="plash.get.trip.id"
@@ -179,12 +179,8 @@
 	<https:endpoint name="plashPasswordChangeHttpsInboundEndpoint" host="localhost"
 		port="8080" path="PasswordChange" synchronous="true" connector-ref="httpsConnector" />
 		
-
 	<https:endpoint name="plashInputHttpsInboundEndpoint" host="localhost"
 		port="8080" path="Input" synchronous="true" connector-ref="httpsConnector" />
-		
-	<https:endpoint name="plashGetLatestTripHttpsInboundEndpoint" host="localhost"
-		port="8080" path="GetLatestTrip" synchronous="true" connector-ref="httpsConnector" />		
 		
 	<https:endpoint name="plashGetNewTripIdHttpsInboundEndpoint" host="localhost"
 		port="8080" path="GetNewTripId" synchronous="true" connector-ref="httpsConnector" />
@@ -455,6 +451,34 @@
 			</outbound>
 			<async-reply>
 				<inbound-endpoint ref="plashRegisterQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="TestResponseTransformer" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+
+		<service name="SetLoginService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashSetLoginHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="SetLoginComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashSetLoginQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashSetLoginQueue">
 					<transformers>
 						<jms:jmsmessage-to-object-transformer />
 						<transformer ref="TestResponseTransformer" />

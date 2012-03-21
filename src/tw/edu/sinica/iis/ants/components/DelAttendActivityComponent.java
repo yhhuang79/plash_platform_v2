@@ -32,8 +32,8 @@ public class DelAttendActivityComponent extends PLASHComponent {
 		       
         
 		try {
-			criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("userid").toString())));
-			criteria.add(Restrictions.eq("activityid", Integer.parseInt(map.get("activityid").toString())));	
+			criteria.add(Restrictions.eq("userid", Integer.parseInt((String)map.get("userid"))));
+			criteria.add(Restrictions.eq("activityid", Integer.parseInt((String)map.get("activityid"))));	
 
 			Iterator fls = criteria.list().iterator();
 			session.delete((T_ActivityUser)fls.next());
