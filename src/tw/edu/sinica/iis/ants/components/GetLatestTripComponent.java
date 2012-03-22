@@ -51,21 +51,15 @@ public class GetLatestTripComponent extends PLASHComponent {
 
 
     public Object serviceMain(Map map) {
-    	System.out.println("getLatestTripComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
-    	map = legacyMethod(map);
-        System.out.println("getLatestTripComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
-        return map;
-    } //close Object greet
-   
-    private Map legacyMethod(Map map) {
+
         
 
         Session session = sessionFactory.openSession();
         Integer userid = null;
         Integer trip_id = null;
         
-        if (map.containsKey("userid")) {userid = Integer.parseInt(map.get("userid").toString());}
-        if (map.containsKey("trip_id")) {trip_id = Integer.parseInt(map.get("trip_id").toString());}
+        if (map.containsKey("userid")) {userid = Integer.parseInt((String)map.get("userid"));}
+        if (map.containsKey("trip_id")) {trip_id = Integer.parseInt((String)map.get("trip_id"));}
                 
         if (userid.equals("") || trip_id.equals("")) {
     		map.put("message", "userid or trip_id is empty and can not get the latest trip");
