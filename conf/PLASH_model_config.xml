@@ -128,8 +128,10 @@
 
 
 	<https:connector name="httpsConnector">
-		<https:tls-key-store path="file://../resources/tmpKey/keystore" keyPassword="password" storePassword="password"/>
+		<https:tls-key-store path="file:///opt/plash/PLASH_Platform_Test/resources/tmpKey/keystore" keyPassword="password" storePassword="password"/>
 	</https:connector>
+
+	
 
 	<!-- 
 		Step 3: Create a HTTPS endpoint for your component
@@ -268,7 +270,13 @@
 	<https:endpoint name="plashHttpsInboundEndpoint" host="localhost"
 		port="11111" path="in" synchronous="true" connector-ref="httpsConnector" />
 	
-				
+	<!-- Yu-Hsiang add HTTP endpoint -->
+	<http:endpoint name="plashInputHttpInboundEndpoint" host="localhost"
+		port="8081" path="Input2" synchronous="true" />
+	<http:endpoint name="plashGetNewTripIdHttpInboundEndpoint" host="localhost"
+		port="8081" path="GetNewTripId2" synchronous="true" />
+		
+			
 	<byte-array-to-string-transformer name="byteArrayToString" />
 	<custom-transformer class="tw.edu.sinica.iis.ants.CustomByteArrayToString"
 		name="bt" />
@@ -1661,7 +1669,46 @@
 				</inbound-endpoint>
 				<single-async-reply-router/>				
 			</async-reply>
-		</service>			
+		</service>
+
+		<service name="Input2Service">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashInputHttpInboundEndpoint" />
+			</inbound>                        
+			<component>
+				<spring-object bean="InputComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashInputQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+		</service>
+
+		<service name="GetNewTripId2Service">
+                        <inbound>
+                                <inbound-endpoint transformer-refs="HttpParams"
+                                        responseTransformer-refs="byteArrayToString" ref="plashGetNewTripIdHttpInboundEndpoint" />
+                        </inbound>                        
+                        <component>
+                                <spring-object bean="GetNewTripIdComponent"></spring-object>
+                        </component>
+                        <outbound>
+                                <pass-through-router>
+                                        <outbound-endpoint ref="plashGetNewTripIdQueue">
+                                                <transformers>
+                                                        <jms:object-to-jmsmessage-transformer />
+                                                </transformers>
+                                        </outbound-endpoint>
+                                </pass-through-router>
+                        </outbound>
+                </service>
+			
 				
 	</model>
 
