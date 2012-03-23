@@ -125,7 +125,11 @@
 		connector-ref="jmsCon" />
 	
 			
-
+	<!-- Yu-Hsiang add  -->
+	<jms:endpoint name="plashGetNewTripId2Queue" queue="plash.get.new.trip.id2"
+		connector-ref="jmsCon" />
+	<jms:endpoint name="plashInput2Queue" queue="plash.input2"
+		connector-ref="jmsCon" />
 
 	<https:connector name="httpsConnector">
 		<https:tls-key-store path="file:///opt/plash/PLASH_Platform_Test/resources/tmpKey/keystore" keyPassword="password" storePassword="password"/>
@@ -1681,13 +1685,22 @@
 			</component>
 			<outbound>
 				<pass-through-router>
-					<outbound-endpoint ref="plashInputQueue">
+					<outbound-endpoint ref="plashInput2Queue">
 						<transformers>
 							<jms:object-to-jmsmessage-transformer />
 						</transformers>
 					</outbound-endpoint>
 				</pass-through-router>
-			</outbound>
+			</outbound>			
+			<async-reply>
+                                <inbound-endpoint ref="plashInput2Queue">
+                                        <transformers>
+                                                <jms:jmsmessage-to-object-transformer />
+                                                <transformer ref="TestResponseTransformer" />
+                                        </transformers>
+                                </inbound-endpoint>
+                                <single-async-reply-router/>                                
+                        </async-reply>
 		</service>
 
 		<service name="GetNewTripId2Service">
@@ -1700,13 +1713,22 @@
                         </component>
                         <outbound>
                                 <pass-through-router>
-                                        <outbound-endpoint ref="plashGetNewTripIdQueue">
+                                        <outbound-endpoint ref="plashGetNewTripId2Queue">
                                                 <transformers>
                                                         <jms:object-to-jmsmessage-transformer />
                                                 </transformers>
                                         </outbound-endpoint>
                                 </pass-through-router>
-                        </outbound>
+                        </outbound>                        
+			<async-reply>
+                                <inbound-endpoint ref="plashGetNewTripId2Queue">
+                                        <transformers>
+                                                <jms:jmsmessage-to-object-transformer />
+                                                <transformer ref="TestResponseTransformer" />
+                                        </transformers>
+                                </inbound-endpoint>
+                                <single-async-reply-router/>                                
+                        </async-reply> 
                 </service>
 			
 				
