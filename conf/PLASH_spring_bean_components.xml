@@ -69,11 +69,6 @@
 	</spring:bean>
 	
 	
-		
-	<spring:bean id="GetNewTripIdComponent"
-		class="tw.edu.sinica.iis.ants.components.GetNewTripIdComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
 	
 	
 	<spring:bean id="GetTripIdComponent"

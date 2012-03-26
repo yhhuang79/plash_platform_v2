@@ -23,15 +23,16 @@ public class TestResponseTransformer extends AbstractTransformer {
     public TestResponseTransformer()   {
         super();
         this.registerSourceType(Map.class);
-        this.setReturnClass(String.class);
+        this.setReturnClass(HashMap.class);
     }//end constructor
 
     public Object doTransform(Object src, String encoding) throws TransformerException   {
     	System.out.println("This is ResponseTransform transformer, encoding: " + encoding);
     	System.out.println(((Map)src).toString());
-    	if (((Map)src).containsKey("resultstatus")) {
+    	Map srcMap = (Map)src;
+    	if (srcMap.containsKey("resultstatus")) {
     		//do something meaningful
-    		Stack<ExecutionResultStatus> statusStack = (Stack<ExecutionResultStatus>) ((Map)src).remove("resultstatus");
+    		Stack<ExecutionResultStatus> statusStack = (Stack<ExecutionResultStatus>) srcMap.remove("resultstatus");
     		
     		for (Object status:statusStack) {
 
@@ -48,9 +49,9 @@ public class TestResponseTransformer extends AbstractTransformer {
     		System.out.println("result status has been removed");
     	}//fi
     	
- 		//return src;
-		JSONObject j = new JSONObject((Map)src);
-		return j.toString();
+ 		return srcMap;
+		//JSONObject j = new JSONObject((Map)src);
+		//return j.toString();
 
     }//end method
     

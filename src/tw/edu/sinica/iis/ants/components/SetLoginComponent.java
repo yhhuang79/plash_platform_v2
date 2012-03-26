@@ -41,15 +41,20 @@ public class SetLoginComponent extends PLASHComponent {
 		return sb.toString();
 	}
 
-	public static boolean isValidEmailAddress(String emailAddress) {
+	/**
+	 * Check if the e-mail address provided is valid
+	 * @param emailAddress the e-mail address
+	 * @return a boolean value indicating the validity   
+	 */
+	public boolean isValidEmailAddress(String emailAddress) {
 		String expression = "^[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
 		CharSequence inputStr = emailAddress;
 		Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattern.matcher(inputStr);
 		return matcher.matches();
-	}
+	}//end method
 
-	public static boolean isValidUsername(String username) {
+	public boolean isValidUsername(String username) {
 		String expression = "^[A-Za-z0-9_]{6,20}$";
 		CharSequence inputStr = username;
 		Pattern pattern = Pattern.compile(expression);
@@ -57,70 +62,6 @@ public class SetLoginComponent extends PLASHComponent {
 		return matcher.matches();
 	}
 	
-	//Password must contain a minimum of 6 to 20 characters 
-	public static boolean isValidPassword (String password){
-		 String expression = "^[A-Za-z0-9!@#$%^&*()_]{6,20}$";
-		 CharSequence inputStr = password; 
-		 Pattern pattern = Pattern.compile(expression);
-		 Matcher matcher = pattern.matcher(inputStr);
-		 return matcher.matches();
-	}
-	
-	public static String inputFormatChecker (String username, String password, String password2, String email, String email2){
-		
-		String message;
-	 
-		//Entered passwords do not match
-	    if (username==null || password==null||password2==null){
-//	    	message = "Username empty";
-	    	message = "Empty Field";
-			return message;
-	    }
-		
-		else if (!password.equals(password2)){
-	    		message = "Password Unmatch";
-			   	return message;
-	    }
-	    
-	    else if (!email.equals(email2)){
-	    	message = "E-mail Unmatch";
-			return message;
-	    }
-	
-	    //Username or password is empty
-	    else if (username.equals("") || password.equalsIgnoreCase("") ||password2.equalsIgnoreCase("")){
-//	    	message = "Username empty";
-	    	message = "Empty Field";
-			return message;
-	    }
-	    
-	    //Username is invalid
-	    else if (!isValidUsername(username)){
-//	    	message = "Username invalid";
-	    	message = "Invalid Username";	    	
-			return message;
-	    }
-	    
-	    //Password is invalid
-	    else if (!isValidPassword(password)){
-//	    	message = "Password invalid";
-	    	message = "Invalid Password";
-			return message;
-	    }
-	    
-	    //Email address format is invalid
-	    else if (!isValidEmailAddress(email)){
-//	    	message = "E-mail invalid";
-	    	message = "Invalid E-mail";
-			return message;
-	    }
-	    
-	    else {
-	    	message = "Pass";
-	    	return message;
-	    }
-		
-	}
 	
 
 	private Session tskSession; //task session

@@ -30,6 +30,7 @@
 		<spring:import resource="PLASH_transformers_config.xml" />
 		<spring:import resource="GetUsernameListConfig.xml" />
 		<spring:import resource="GetTripDataConfig.xml" />
+		<spring:import resource="GetNewTripIDConfig.xml" />
 		<spring:import resource="GetTripAuthDataConfig.xml"/>	
 		<spring:import resource="GetTripInfoConfig.xml"/>
 		<spring:import resource="GetAuthFriendConfig.xml"/>		
@@ -76,8 +77,6 @@
 	<jms:endpoint name="plashPasswordChangeQueue" queue="plash.PasswordChange"
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashInputQueue" queue="plash.input"
-		connector-ref="jmsCon" />	
-	<jms:endpoint name="plashGetNewTripIdQueue" queue="plash.get.new.trip.id"
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashGetTripIdQueue" queue="plash.get.trip.id"
 		connector-ref="jmsCon" />	
@@ -132,7 +131,7 @@
 		connector-ref="jmsCon" />
 
 	<https:connector name="httpsConnector">
-		<https:tls-key-store path="file:///opt/plash/PLASH_Platform_Test/resources/tmpKey/keystore" keyPassword="password" storePassword="password"/>
+		<https:tls-key-store path="file://../resources/tmpKey/keystore" keyPassword="password" storePassword="password"/>
 	</https:connector>
 
 	
@@ -187,9 +186,6 @@
 		
 	<https:endpoint name="plashInputHttpsInboundEndpoint" host="localhost"
 		port="8080" path="Input" synchronous="true" connector-ref="httpsConnector" />
-		
-	<https:endpoint name="plashGetNewTripIdHttpsInboundEndpoint" host="localhost"
-		port="8080" path="GetNewTripId" synchronous="true" connector-ref="httpsConnector" />
 		
 	<https:endpoint name="plashGetTripIdHttpsInboundEndpoint" host="localhost"
 		port="8080" path="GetTripId" synchronous="true" connector-ref="httpsConnector" />
@@ -696,7 +692,6 @@
 				<inbound-endpoint ref="plashGetNewTripIdQueue">
 					<transformers>
 						<jms:jmsmessage-to-object-transformer />
-						<transformer ref="TestResponseTransformer" />
 					</transformers>
 				</inbound-endpoint>
 				<single-async-reply-router/>				
