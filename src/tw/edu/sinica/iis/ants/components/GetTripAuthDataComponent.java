@@ -85,18 +85,24 @@ public class GetTripAuthDataComponent extends PLASHComponent {
 
    			
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
-			map.put("getAuthFriend",false); //result flag, flag name to be unified, para_failed as appeared in excel file
-			//map.put("error detail" , e.toString()); //perhaps put error detail?
-	        System.out.println("getAuthFriendComponent failure end1:\t"+ Calendar.getInstance().getTimeInMillis());
-			return map;
+			getElapsed();
+	        tskSession.close();
+	        AbnormalResult err = new AbnormalResult(this,'E');
+	        err.refCode = 003;
+	        err.explaination = "NullPointerException occured, probably due to invalid argument";
+			return returnUnsuccess(map,err);					
+	
 		} catch (NumberFormatException e) { //invalid arguments 
-			map.put("getAuthFriend",false); //result flag, flag name to be unified, para_failed as appeared in excel file
-			//map.put("error detail" , e.toString()); //perhaps put error detail?
-	        System.out.println("getAuthFriendComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
-			return map;
+
+			getElapsed();
+	        tskSession.close();
+	        AbnormalResult err = new AbnormalResult(this,'E');
+	        err.refCode = 003;
+	        err.explaination = "NumberFormatException occured, probably due to invalid argument";
+			return returnUnsuccess(map,err);			
 		}//end try catch
 		
-        return map;
+        return 	returnSuccess(map);
 	} //end method greet
 
 	/**

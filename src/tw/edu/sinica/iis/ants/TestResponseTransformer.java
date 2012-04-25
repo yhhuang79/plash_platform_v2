@@ -10,6 +10,7 @@
 
 package tw.edu.sinica.iis.ants;
 
+import org.apache.activemq.command.ActiveMQMapMessage;
 import org.json.*;
 import org.mule.api.transformer.TransformerException;
 import org.mule.transformer.AbstractTransformer;
@@ -17,23 +18,25 @@ import org.mule.util.*;
 
 import java.util.*;
 
+import javax.jms.JMSException;
+
 
 public class TestResponseTransformer extends AbstractTransformer {
     
     public TestResponseTransformer()   {
         super();
         this.registerSourceType(Map.class);
-        this.setReturnClass(HashMap.class);
+        this.setReturnClass(String.class);
+        //this.setReturnClass(ActiveMQMapMessage.class);
     }//end constructor
 
     public Object doTransform(Object src, String encoding) throws TransformerException   {
     	System.out.println("This is ResponseTransform transformer, encoding: " + encoding);
-    	System.out.println(((Map)src).toString());
     	Map srcMap = (Map)src;
+    	System.out.println("Before: " + srcMap.keySet().toString());     	
     	if (srcMap.containsKey("resultstatus")) {
     		//do something meaningful
     		Stack<ExecutionResultStatus> statusStack = (Stack<ExecutionResultStatus>) srcMap.remove("resultstatus");
-    		
     		for (Object status:statusStack) {
 
         		if ( status instanceof AbnormalResult){        			
@@ -49,9 +52,22 @@ public class TestResponseTransformer extends AbstractTransformer {
     		System.out.println("result status has been removed");
     	}//fi
     	
- 		return srcMap;
-		//JSONObject j = new JSONObject((Map)src);
-		//return j.toString();
+ 		
+    	System.out.println("After: " + srcMap.keySet().toString()); 
+
+    	JSONObject j = new JSONObject(srcMap);
+		System.out.println("Transformed: " + j.toString());
+		return j.toString(); //*/
+    	/*
+		ActiveMQMapMessage mm = new  ActiveMQMapMessage();
+		try {
+			//om.setObject((Serializable) haha.remove("teststatus"));
+			mm.setString("asdf", "jklm");
+		} catch (JMSException e) {
+			System.out.println("error:  " + e.toString());
+			e.printStackTrace();
+		}
+		return mm;    	//*/
 
     }//end method
     

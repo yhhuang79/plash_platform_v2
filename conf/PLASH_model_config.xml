@@ -700,7 +700,7 @@
 			</async-reply>
 		</service>
 		
-		<!-- (Step 4) Kenny: XXXXX =  GetTripId-->
+
 		<service name="GetTripIdService">
 			<inbound>
 				<inbound-endpoint transformer-refs="HttpParams"
@@ -713,20 +713,12 @@
 				<pass-through-router>
 					<outbound-endpoint ref="plashGetTripIdQueue">
 						<transformers>
+							<transformer ref="TestResponseTransformer" />	
 							<jms:object-to-jmsmessage-transformer />
 						</transformers>
 					</outbound-endpoint>
 				</pass-through-router>
 			</outbound>
-			<async-reply>
-				<inbound-endpoint ref="plashGetTripIdQueue">
-					<transformers>
-						<jms:jmsmessage-to-object-transformer />
-						<transformer ref="TestResponseTransformer" />
-					</transformers>
-				</inbound-endpoint>
-				<single-async-reply-router/>				
-			</async-reply>
 		</service>
 		
 		<!-- (Step 4) Kenny: XXXXX =  GetFriendLatestTrip-->
@@ -947,25 +939,15 @@
 				<pass-through-router>
 					<outbound-endpoint ref="plashGetTripAuthDataQueue">
 						<transformers>
-
-							<transformer ref="TestResponseTransformer" />
-							<jms:object-to-jmsmessage-transformer />
 						
+							<transformer ref="TestResponseTransformer" />						
+							<jms:object-to-jmsmessage-transformer />
+							
+
 						</transformers>
 					</outbound-endpoint>
 				</pass-through-router>
 			</outbound>
-			<async-reply>
-				<inbound-endpoint ref="plashGetTripAuthDataQueue">
-					<transformers>
-
-						<transformer ref="TestResponseTransformer" />
-						<jms:jmsmessage-to-object-transformer />
-
-					</transformers>
-				</inbound-endpoint>
-				<single-async-reply-router/>				
-			</async-reply>
 		</service>
 
 
