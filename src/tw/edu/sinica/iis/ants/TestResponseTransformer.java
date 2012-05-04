@@ -27,7 +27,7 @@ public class TestResponseTransformer extends AbstractTransformer {
         super();
         this.registerSourceType(Map.class);
         this.setReturnClass(String.class);
-        //this.setReturnClass(ActiveMQMapMessage.class);
+        
     }//end constructor
 
     public Object doTransform(Object src, String encoding) throws TransformerException   {
@@ -58,16 +58,7 @@ public class TestResponseTransformer extends AbstractTransformer {
     	JSONObject j = new JSONObject(srcMap);
 		System.out.println("Transformed: " + j.toString());
 		return j.toString(); //*/
-    	/*
-		ActiveMQMapMessage mm = new  ActiveMQMapMessage();
-		try {
-			//om.setObject((Serializable) haha.remove("teststatus"));
-			mm.setString("asdf", "jklm");
-		} catch (JMSException e) {
-			System.out.println("error:  " + e.toString());
-			e.printStackTrace();
-		}
-		return mm;    	//*/
+
 
     }//end method
     
