@@ -35,7 +35,8 @@
 		<spring:import resource="GetTripInfoConfig.xml"/>
 		<spring:import resource="GetAuthFriendConfig.xml"/>		
 		<spring:import resource="GetLatestTripConfig.xml"/>						
-		<spring:import resource="InputTripInfoConfig.xml"/>		
+		<spring:import resource="InputTripInfoConfig.xml"/>
+		<spring:import resource="InputTripDataConfig.xml"/>	
 		<spring:import resource="SetAuthFriendConfig.xml"/>
 		<spring:import resource="SetLoginConfig.xml"/>		
 		<spring:import resource="TripInfoManagerConfig.xml"/>		
@@ -586,7 +587,6 @@
 		</service>
 		
 		
-		<!-- (Step 4) Kenny: XXXXX =  Input-->
 		<service name="InputService">
 			<inbound>
 				<inbound-endpoint transformer-refs="HttpParams"
@@ -614,7 +614,35 @@
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
-		
+
+		<service name="InputTripDataService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashInputTripDataHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="InputTripDataComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashInputTripDataQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashInputTripDataQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="TestResponseTransformer" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+				
 		<!-- (Step 4) Kenny: XXXXX =  GetLatestTrip-->
 		<service name="GetLatestTripService">
 			<inbound>
