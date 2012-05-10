@@ -16,8 +16,37 @@ import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 
 /**
- * @goal      input gps location
- * @author    Angus Fuming Huang, Yi-Chun Teng
+ *
+ * This component receives trip point data and stores it on the appropriate place of database. <br>
+ * 
+ * This component takes a Map object that contains the following keys: <br>
+ * userid : Required. This parameter indicates which user <br>
+ * trip_id: Required. This parameter indicates which trip of the user <br>
+ * update_status: Required. This parameter indicates which update status this record is currently in <br>
+ * 					Warning: use this component carefully! Misuse will ruin the integrity of the database table <br> 
+ * 				
+ * Optional arguments: Available arguments are as follows: <br>
+ * 	trip_name <br>
+ * 	trip_st <br>
+ * 	trip_et <br>
+ * 	trip_length <br>
+ * 	num_of_pts <br>
+ * 	st_addr_prt1 <br>
+ * 	st_addr_prt2 <br>
+ * 	st_addr_prt3 <br>  
+ * 	st_addr_prt4 <br>
+ * 	st_addr_prt5 <br>
+ * 	et_addr_prt1 <br>
+ * 	et_addr_prt2 <br>
+ * 	et_addr_prt3 <br>
+ *  et_addr_prt4 <br>
+ *  et_addr_prt5 <br>
+ * Example: InputComponent?userid=1&trip_id=500&timestamp=2011-11-11 11:11:11.111
+ *  
+ * @author  Angus Fuming Huang, Yi-Chun Teng
+ * @param	map A map object that contains userid, trip_id, update_status and any of the items listed above 
+ *
+
  * @version   1.2, 01/5/2012
  * @param     
  * @return    message 
