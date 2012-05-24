@@ -3,14 +3,12 @@
 	import java.sql.Timestamp;
 	
 	import java.util.*;
-	import java.io.*;
-	import java.math.*;
-	import java.net.*;
+
 	
 	
 	import javax.net.ssl.HttpsURLConnection;
 	
-	import org.apache.commons.httpclient.HttpClient;
+
 	import org.hibernate.*;
 	import org.hibernate.criterion.*;
 	import org.hibernate.transform.*;
@@ -24,14 +22,15 @@ import tw.edu.sinica.iis.ants.DB.*;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	
 	/**
+	 * 
 	 * This component returns the trip data.  <br>
 	 * 
 	 * This component takes a Map object that contains the following keys: <br>
 	 * userid : Required. This parameter indicates which user's trip to return <br>
 	 * trip_id: Optional. This parameter indicates which trip to return. This is optional <br>
 	 * 			If trip_id is absent, this component simply returns the newest trip belonging to the user with id userid. <br>
-	 * field_mask: Optional. This mask indicates which columns in the trip data record are included
-	 * sort: Not enabled yet. This parameter indicate which column will be served as the sorting key
+	 * field_mask: Optional. This mask indicates which columns of the trip data record are included. <br>
+	 * sort: Currently disabled for performance issue. This parameter indicates which column will be served as the sorting key
 	 * latest_pt_only: Optional. This is a boolean value indicating whether the returned result should be a list of all points or a single point indicating the latest point. <br>
 	 * 			If return_latest is not specified, the default value is false and the component will return a list of all trip points. <br>
 	 * fields and corresponding bit positions (from left to right):  <br>
@@ -50,12 +49,14 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	 * 	13. gsminfo <br>
 	 * 	14. wifiinfo <br>
 	 *  15. app <br>
+	 *  16. mood <br>
 	 * 	<br>
-	 * Example:  GetTripDataComponent?userid=1&latest_pt_only=true&field_mask=0100000000000000 <br>
+	 * Example:  https://localhost:8080/GetTripDataComponent?userid=1&latest_pt_only=true&field_mask=0100000000000001 <br>
 	 * 
 	 *   
 	 * @author	Yi-Chun Teng 
-	 * @param	map A map object that contains trip data
+	 * @param	map A map object that contains userid and optionally trip_id, field_mask, latest_pt_only.
+	 * @return	map A map object that contains trip data, with field names as keys and field data as values.
 	 */
 	public class GetTripDataComponent extends PLASHComponent {
 	
@@ -266,52 +267,56 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 		 */
 		private ProjectionList addFilterList(ProjectionList filterProjList, int field_mask) {
 	
-	    	if ((field_mask & 16384) != 0) { 
+	    	if ((field_mask & 32768) != 0) { 
 	        	filterProjList.add(Projections.sqlProjection("timestamp", new String[] {"timestamp"}, new Type[] { new StringType() }));
 	    	}//fi
-	    	if ((field_mask & 8192) != 0) { 
+	    	if ((field_mask & 16384) != 0) { 
 	    		filterProjList.add(Projections.property("gps"),"gps");
 	    	}//fi
-	    	if ((field_mask & 4096) != 0) { //4096 = 1000000000000
+	    	if ((field_mask & 8192) != 0) { 
 	        	filterProjList.add(Projections.property("server_timestamp"),"server_timestamp");  
 	    	}//fi
-	    	if ((field_mask & 2048) != 0) { 
+	    	if ((field_mask & 4096) != 0) { //4096 = 1000000000000
 	        	filterProjList.add(Projections.property("trip_id"),"trip_id");
 	    	}//fi
-	    	if ((field_mask & 1024) != 0) { //1024 = 10000000000
+	    	if ((field_mask & 2048) != 0) { 
 	    		filterProjList.add(Projections.property("label"),"label");
 	    	}//fi
-	    	if ((field_mask & 512) != 0) { 
+	    	if ((field_mask & 1024) != 0) { //1024 = 10000000000
 	    		filterProjList.add(Projections.property("alt"),"alt");
 	    	}//fi
-	    	if ((field_mask & 256) != 0) { 
+	    	if ((field_mask & 512) != 0) { 
 	    		filterProjList.add(Projections.property("accu"),"accu");
 	    	}//fi
-	    	if ((field_mask & 128) != 0) { 
+	    	if ((field_mask & 256) != 0) { 
 	    		filterProjList.add(Projections.property("spd"),"spd");
 	    	}//fi
-	    	if ((field_mask & 64) != 0) { 
+	    	if ((field_mask & 128) != 0) { 
 	    		filterProjList.add(Projections.property("bear"),"bear");
 	    	}//fi
-	    	if ((field_mask & 32) != 0) { //32 = 100000
+	    	if ((field_mask & 64) != 0) { 
 	    		filterProjList.add(Projections.property("accex"),"accex");
 	    	}//fi
-	    	if ((field_mask & 16) != 0) { 
+	    	if ((field_mask & 32) != 0) { //32 = 100000
 	    		filterProjList.add(Projections.property("accey"),"accey");
 	    	}//fi
-	    	if ((field_mask & 8) != 0) { 
+	    	if ((field_mask & 16) != 0) { 
 	    		filterProjList.add(Projections.property("accez"),"accez");
 	    	}//fi
-	    	if ((field_mask & 4) != 0) { //2 = 10
+	    	if ((field_mask & 8) != 0) { 
 	        	filterProjList.add(Projections.sqlProjection("gsminfo", new String[] {"gsminfo"}, new Type[] { new StringType() }));    		
 	    	}//fi
-	    	if ((field_mask & 2) != 0) { //1=1
+	    	if ((field_mask & 4) != 0) { 
 	        	filterProjList.add(Projections.sqlProjection("wifiinfo", new String[] {"wifiinfo"}, new Type[] { new StringType() }));    		
 	    	}//fi
 	    	
-	    	if ((field_mask & 1) != 0) { //1=1
+	    	if ((field_mask & 2) != 0) { //2 = 10
 	    		filterProjList.add(Projections.property("app"),"app");    		
 	    	}//fi    	
+	    	
+	    	if ((field_mask & 1) != 0) { //1=1
+	    		filterProjList.add(Projections.property("mood"),"mood");    		
+	    	}//fi    		    	
 			return filterProjList;
 			
 		}//end method

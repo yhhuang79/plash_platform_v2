@@ -8,7 +8,7 @@ import java.util.Map;
 import org.hibernate.*;
 
 
-import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
+import tw.edu.sinica.iis.ants.DB.T_TripData;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -22,25 +22,26 @@ import com.vividsolutions.jts.io.WKTReader;
  * This component takes a Map object that contains the following keys: <br>
  * userid : Required. This parameter indicates which user <br>
  * trip_id: Required. This parameter indicates which trip of the user <br>
- * update_status: Required. This parameter indicates which update status this record is currently in <br>
- * 					Warning: use this component carefully! Misuse will ruin the integrity of the database table <br> 
+ * lat: Required. This parameter indicates this point's latitude <br>
+ * lng: Required. This parameter indicates this point's longitude <br>
  * 				
  * Optional arguments: Available arguments are as follows: <br>
- * 	trip_name <br>
- * 	trip_st <br>
- * 	trip_et <br>
- * 	trip_length <br>
- * 	num_of_pts <br>
- * 	st_addr_prt1 <br>
- * 	st_addr_prt2 <br>
- * 	st_addr_prt3 <br>  
- * 	st_addr_prt4 <br>
- * 	st_addr_prt5 <br>
- * 	et_addr_prt1 <br>
- * 	et_addr_prt2 <br>
- * 	et_addr_prt3 <br>
- *  et_addr_prt4 <br>
- *  et_addr_prt5 <br>
+ * 	1. timestamp <br>
+ * 	2. gps <br>
+ * 	3. server_timestamp <br>
+ * 	4. trip_id <br>
+ * 	5. label <br>
+ * 	6. alt <br>
+ * 	7. accu <br>
+ * 	8. spd <br>
+ * 	9. bear <br>
+ * 	10. accex <br>
+ * 	11. accey <br>
+ * 	12. accez <br>
+ * 	13. gsminfo <br>
+ * 	14. wifiinfo <br>
+ *  15. app <br>
+ *  15. mood <br> 
  * Example: InputComponent?userid=1&trip_id=500&timestamp=2011-11-11 11:11:11.111
  *  
  * @author  Angus Fuming Huang, Yi-Chun Teng
@@ -51,7 +52,7 @@ import com.vividsolutions.jts.io.WKTReader;
  * @param     
  * @return    message 
  * @see       connpost.java
- * @example   http://localhost:1234/in?userid=1&trip_id=500&timestamp=2011-11-11 11:11:11.111
+ * @example   http://localhost:8080/InputTripDataComponent?userid=1&trip_id=500&timestamp=2011-11-11 11:11:11.111&mood=5
  * 
  */
 public class InputTripDataComponent extends PLASHComponent {
@@ -97,6 +98,7 @@ public class InputTripDataComponent extends PLASHComponent {
     	Double pitch = 0.0;
     	Double roll = 0.0;
     	String battery_info = "";        
+    	Short mood = 0;
         
         Timestamp timestamp = null;
         
@@ -138,10 +140,11 @@ public class InputTripDataComponent extends PLASHComponent {
         if (map.containsKey("roll"))
         	roll = Double.valueOf(map.get("roll").toString()).doubleValue();
         if (map.containsKey("battery_info"))
-        	battery_info = map.get("battery_info").toString();
-        	
+        	battery_info = map.get("battery_info").toString();        	
         if (map.containsKey("timestamp")) 
         	timestamp = Timestamp.valueOf(map.get("timestamp").toString());
+        if (map.containsKey("mood")) 
+        	mood = Short.valueOf(map.get("mood").toString()).shortValue();
         
         if (userid.equals("") || trip_id.equals("") || timestamp.equals("") || lat.equals("") || lng.equals("")) {  //簡化的判斷式
 			map.put("message", "required information is empty and can not input the GPS location");
@@ -152,14 +155,14 @@ public class InputTripDataComponent extends PLASHComponent {
 				
 				
 				//store the <userid> into the database
-				T_UserPointLocationTime user = new T_UserPointLocationTime();
-				user.setUserid(userid);
+				T_TripData pt = new T_TripData();
+				pt.setUserid(userid);
 				
 				//store the <trip_id> into the database
-				user.setTrip_id(trip_id);
+				pt.setTrip_id(trip_id);
 				
 				//store the <timestamp> into the database
-				user.setTimestamp(timestamp);
+				pt.setTimestamp(timestamp);
 				
 				//store the <gps> into the database
 				// Add by Yu-Hsiang Huang
@@ -172,39 +175,40 @@ public class InputTripDataComponent extends PLASHComponent {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				user.setGps(gps);	
+				pt.setGps(gps);	
 				// end
 				
 				//get the value of <server_timestamp>, and store it into the database
-				user.setServer_timestamp(new Timestamp(new Date().getTime()));
+				pt.setServer_timestamp(new Timestamp(new Date().getTime()));
 				
 				//store the <label> into the database
-				user.setLabel(label);
+				pt.setLabel(label);
 				
 
-				user.setAlt(alt);
-				user.setAccu(accu);
-				user.setSpd(spd);
-				user.setBear(bear);
-				user.setAccex(accex);
-				user.setAccey(accey);
-				user.setAccez(accez);
-				user.setGsminfo(gsminfo);
-				user.setWifiinfo(wifiinfo);
-				user.setLatitude(lat);
-				user.setLongitude(lng);
-				user.setApp(app);		        
-		    	user.setAzimuth(azimuth);
-		    	user.setPitch(pitch);
-		    	user.setRoll(roll);
-		    	user.setBattery_info(battery_info);   
+				pt.setAlt(alt);
+				pt.setAccu(accu);
+				pt.setSpd(spd);
+				pt.setBear(bear);
+				pt.setAccex(accex);
+				pt.setAccey(accey);
+				pt.setAccez(accez);
+				pt.setGsminfo(gsminfo);
+				pt.setWifiinfo(wifiinfo);
+				pt.setLatitude(lat);
+				pt.setLongitude(lng);
+				pt.setApp(app);		        
+				pt.setAzimuth(azimuth);
+				pt.setPitch(pitch);
+				pt.setRoll(roll);
+				pt.setBattery_info(battery_info);   
+				pt.setMood(mood);
 				
 				Transaction tx = tskSession.beginTransaction();
-				tskSession.save(user);
+				tskSession.save(pt);
 				tx.commit();
 				
 				map.put("message", "Success in GPS location input"); 
-			}
+			}//fi
         
         tskSession.close();
         //End of Programming Logic Implementation

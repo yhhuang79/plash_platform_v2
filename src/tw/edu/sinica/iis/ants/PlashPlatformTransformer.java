@@ -3,7 +3,7 @@ package tw.edu.sinica.iis.ants;
 import java.util.Calendar;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+
 import org.hibernate.SessionFactory;
 import org.mule.api.MuleMessage;
 import org.mule.api.transformer.TransformerException;

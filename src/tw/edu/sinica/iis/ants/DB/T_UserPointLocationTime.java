@@ -29,8 +29,17 @@ public class T_UserPointLocationTime {
 	private Double pitch;
 	private Double roll;
 	private String battery_info;
+	private Short mood;
 	
 	
+	public Short getMood() {
+		return mood;
+	}
+
+	public void setMood(Short mood) {
+		this.mood = mood;
+	}
+
 	public T_UserPointLocationTime(){
 	
 	}

@@ -3,7 +3,7 @@ package tw.edu.sinica.iis.ants;
 import java.util.*;
 import java.net.*;
 
-import org.apache.log4j.Logger;
+
 import org.mule.api.MuleMessage;
 import org.mule.api.transformer.TransformerException;
 import org.mule.transport.http.transformers.HttpRequestBodyToParamMap;

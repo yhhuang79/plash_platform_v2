@@ -10,7 +10,7 @@ import java.net.*;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import org.apache.commons.httpclient.HttpClient;
+
 import org.hibernate.*;
 import org.hibernate.criterion.*;
 import org.hibernate.transform.*;
@@ -48,7 +48,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
  * 	14. et_addr_prt3 <br>
  *  15. et_addr_prt4 <br>
  *  16. et_addr_prt5 <br>
- * Example: GetTripInfoComponent?userid=5&trip_ic=3&field_mask="0111110000000000  
+ * Example: GetTripInfoComponent?userid=5&trip_ic=3&field_mask=0111110000000000  
  *  
  * @author	Yi-Chun Teng 
  * @param	map A map object that contains userid, (optionally) trip_id and (optionally) field_mask 

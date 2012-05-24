@@ -35,7 +35,8 @@
 		<property name="azimuth" column="azimuth" />
 		<property name="pitch" column="pitch" />
 		<property name="roll" column="roll" />
-		<property name="battery_info" column="battery_info" />											
+		<property name="battery_info" column="battery_info" />
+		<property name="mood" column="mood" />			
 		
 		
 	</class>

@@ -10,7 +10,7 @@ import java.net.*;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import org.apache.commons.httpclient.HttpClient;
+
 import org.hibernate.*;
 import org.hibernate.criterion.*;
 import org.hibernate.transform.*;
@@ -33,9 +33,9 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
  * 			To perform task with task_id = 1, the caller must also specify userid and trip_id to indicate which trip record to access. <br> 
  * 			If the corresponding trip is found, the trip name is set to be the name specified by trip_name.  <br> 
  * 			To perform task with task_id = 2: <br>
- * 			The caller may optionally specify userid to indicate which person's trip to update. 
+ * 			The caller may optionally specify userid to indicate which person's trip to update. <br> 
  * 			The caller may optionally specify level value to indicate which level of information to generate <br>
- * 			If level is not specified, a default value(currently 1) will be used.
+ * 			If level is not specified, a default value(currently 1) will be used. <br>
  * 			the caller may optionally specify max_proc_time to limit the maximum time to be spent. The unit is in seconds <br>
  * 			Notice that the program does not force calculation termination immediately when the this limit is reached. <br>
  * 			Rather, the program continues current calculations and finishes up the current trip. <br>    
@@ -46,6 +46,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
  * 
  * @author	Yi-Chun Teng 
  * @param	map A map object that contains task_id and (optionally) the following keys: userid, trip_id, trip_name, max_proc_record
+ * @return	map A map object that contains trip data, with field names as keys and field data as values.
  */
 public class TripInfoManagerComponent extends PLASHComponent{
 
