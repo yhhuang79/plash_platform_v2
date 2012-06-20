@@ -35,7 +35,7 @@
 			<value>3</value>
 		</property>
 		<property name="maxStatements">
-			<value>1000</value>
+			<value>0</value>
 		</property>
 		<property name="initialPoolSize">
 			<value>10</value>
@@ -74,7 +74,7 @@
 			<value>3</value>
 		</property>
 		<property name="maxStatements">
-			<value>1000</value>
+			<value>0</value>
 		</property>
 		<property name="initialPoolSize">
 			<value>10</value>
@@ -162,3 +162,4 @@
 		</property>
 	</bean>
 </beans>
+
