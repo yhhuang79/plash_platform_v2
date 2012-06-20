@@ -18,7 +18,7 @@
 		<property name="confirmed" column="confirmed" />
 		<property name="email" column="email" />
 		<property name="phonenum" column="phonenum" />
-
+		<property name="facebookid" column="facebookid" />
 	</class>
 
 </hibernate-mapping>
