@@ -4,21 +4,13 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Map;
 
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-import tw.edu.sinica.iis.ants.DB.T_FriendList;
-import tw.edu.sinica.iis.ants.DB.T_FriendRequest;
 import tw.edu.sinica.iis.ants.DB.T_Login;
-import tw.edu.sinica.iis.ants.sendMail;
 
 public class FacebookRegisterComponent {
 	
@@ -75,7 +67,7 @@ public class FacebookRegisterComponent {
 			user = (T_Login) users.next(); 			
 			if (user.isConfirmed()) {
 				map.put("sid", user.getSid());
-				String message = "Successful Login:" + user.getSid();
+				String message = "Successful FacebookRegister:" + user.getSid();
 				map.put("message", message);
 			}
 		}
