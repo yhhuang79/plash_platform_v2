@@ -34,7 +34,7 @@ public class FacebookLoginComponent {
 
 		Session session = sessionFactory.openSession(); 
 		String email = map.get("email").toString();
-		String facebookid = map.get("facebookid").toString();
+		Integer facebookid = Integer.parseInt(map.get("facebookid").toString());
 		//String password = map.remove("password").toString();
 		//String password = map.get("password").toString();
 		
@@ -72,7 +72,7 @@ public class FacebookLoginComponent {
 		
 		System.out.println(sessionFactory.toString());
 
-		System.out.println("Login End:\t"+ Calendar.getInstance().getTimeInMillis());
+		System.out.println("FacebookLogin End:\t"+ Calendar.getInstance().getTimeInMillis());
 		return map;
 	}
 }
