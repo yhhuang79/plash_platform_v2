@@ -10,37 +10,43 @@
 
 package tw.edu.sinica.iis.ants;
 
-import org.apache.activemq.command.ActiveMQMapMessage;
 import org.json.*;
+
 import org.mule.api.transformer.TransformerException;
 import org.mule.transformer.AbstractTransformer;
-import org.mule.util.*;
+
+
 
 import java.util.*;
 
-import javax.jms.JMSException;
 
 
 public class TestResponseTransformer extends AbstractTransformer {
     
     public TestResponseTransformer()   {
         super();
+        
         this.registerSourceType(Map.class);
         this.setReturnClass(String.class);
-        
+        //this.setReturnClass(java.util.Map.class);
+       // this.setReturnClass(MuleMessage.class);
     }//end constructor
 
     public Object doTransform(Object src, String encoding) throws TransformerException   {
-    	System.out.println("This is ResponseTransform transformer, encoding: " + encoding);
+    	System.out.println("This is TestResponseTransform transformer, encoding: " + encoding);
     	Map srcMap = (Map)src;
     	System.out.println("Before: " + srcMap.keySet().toString());     	
     	if (srcMap.containsKey("resultstatus")) {
     		//do something meaningful
     		Stack<ExecutionResultStatus> statusStack = (Stack<ExecutionResultStatus>) srcMap.remove("resultstatus");
     		for (Object status:statusStack) {
-
-        		if ( status instanceof AbnormalResult){        			
-        	   		System.out.println("Reason: " + ((AbnormalResult)status).explaination); 			
+    			
+        		if ( status instanceof AbnormalResult){        			        	   		
+        	   		srcMap.put("abnormal_result ", "true");
+        	   		srcMap.put("type", ((AbnormalResult)status).type);
+        	   		srcMap.put("ref_code", ((AbnormalResult)status).refCode);
+        	   		srcMap.put("explanation", ((AbnormalResult)status).explaination);        	   	
+        	   		
         		} else {
 
         		}//fi
@@ -48,15 +54,12 @@ public class TestResponseTransformer extends AbstractTransformer {
     		}//rof
 
     		
-    		
-    		System.out.println("result status has been removed");
-    	}//fi
     	
- 		
-    	System.out.println("After: " + srcMap.keySet().toString()); 
+    	}//fi
+    			
 
-    	JSONObject j = new JSONObject(srcMap);
-		System.out.println("Transformed: " + j.toString());
+    
+    	JSONObject j = new JSONObject(srcMap);				
 		return j.toString(); //*/
 
 
@@ -68,16 +71,16 @@ public class TestResponseTransformer extends AbstractTransformer {
     		String key = i.next().toString();
     		if(m.get(key) instanceof List){
     			m.put(key, makeListIntoJSONArray((List)m.get(key)));
-    		}
+    		}//fi
     		if(m.get(key) instanceof Map){
     			m.put(key, checkMap((Map)m.get(key)));
-    		}
-    	}
+    		}//fi
+    	}//end while
     	return m;
-    }
+    }//end method
     
     public static JSONArray makeListIntoJSONArray(List l){
 		return new JSONArray(l);
     	
     }
-}
+}//end class
