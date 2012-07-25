@@ -44,7 +44,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
  * @return    latestTrip (id + label + gps)
  * @return	  JASONObject(JASONArray) - see FriendMapHistory.java in PLASH_Android Client
  * @see       connpost.java
- * @example   http://localhost:1234/in?userid=1&trip_id=494
+ * @example   https://localhost:8080/GetLatestTripComponent?userid=1&trip_id=494
  */
 
 public class GetLatestTripComponent extends PLASHComponent {
