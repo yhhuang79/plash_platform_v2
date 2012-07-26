@@ -37,6 +37,12 @@
 		class="tw.edu.sinica.iis.ants.TestResponseTransformer"/>
 
 
+	<custom-transformer class="tw.edu.sinica.iis.ants.TestTransformer"
+		name="bt" />
+					
+	<byte-array-to-string-transformer name="byteArrayToString" />
+	
+	
 	<message-properties-transformer name="HttpResponse">
 		<add-message-property key="Content-Type" value="text/html" />
 		<add-message-property key="http.status" value="303" />
