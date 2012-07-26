@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE hibernate-mapping 
+ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+ "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="tw.edu.sinica.iis.ants.DB.T_Login" table="socialcore.login">
+
+		<id column="sid" name="sid" type="java.lang.Integer">
+			<generator class="sequence">
+				<param name="sequence">socialcore.login_sid_seq</param>
+			</generator>
+		</id>
+		<property name="username" column="username" />
+		<property name="password" column="password" />
+		<property name="passcode" column="passcode" />
+		<property name="confirmed" column="confirmed" />
+		<property name="email" column="email" />
+		<property name="phonenum" column="phonenum" />
+
+	</class>
+
+</hibernate-mapping>

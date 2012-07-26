@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 16, 2012 8:52:19 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="tw.edu.sinica.iis.ants.db.common.PointDeviceData" table="common_data.point_device_data">
+        <id name="pointId" type="long">
+            <column name="point_id" />
+            <generator class="assigned" />
+        </id>
+        <property name="gsmInfo" type="string">
+            <column name="gsm_info" />
+        </property>
+        <property name="wifiInfo" type="string">
+            <column name="wifi_info" />
+        </property>
+        <property name="application" type="java.lang.Short">
+            <column name="application" />
+        </property>
+        <property name="deviceInfo" type="string">
+            <column name="device_info" />
+        </property>
+        <property name="battery" type="string">
+            <column name="battery" />
+        </property>
+        <property name="imei" type="string">
+            <column name="imei" />
+        </property>
+        <property name="extra" type="string">
+            <column name="extra" />
+        </property>
+    </class>
+</hibernate-mapping>

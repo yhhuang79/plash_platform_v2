@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping 
+ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+ "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="tw.edu.sinica.iis.ants.DB.T_FriendRequest" table="socialcore.friend_request">
+
+		<id column="fid" name="fid" type="java.lang.Integer">
+			<generator class="sequence">
+				<param name="sequence">socialcore.friend_request_fid_seq</param>
+			</generator>
+		</id>
+		<property name="useraid" column="useraid" />
+		<property name="userbid" column="userbid" />
+		<property name="friendemail" column="friendemail"/>
+		<property name="passcode" column="passcode"/>
+		<property name="confirmed" column="confirmed"/>
+		
+	</class>
+
+</hibernate-mapping>

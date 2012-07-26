@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 16, 2012 8:52:41 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="tw.edu.sinica.iis.ants.db.common.TrajectoryInfo" table="common_data.trajectory_info">
+        <id name="trajectoryId" type="int">
+            <column name="trajectory_id" />
+            <generator class="sequence-identity">
+            	<param name="sequence"> common_data.trajectory_info_trajectory_id_seq   </param>
+            </generator>
+        </id>
+        <property name="startTime" type="java.sql.Timestamp">
+            <column name="start_time" length="35" />
+        </property>
+        <property name="endTime" type="java.sql.Timestamp">
+            <column name="end_time" length="35" />
+        </property>
+        <property name="tripLength" type="java.lang.Integer">
+            <column name="trip_length" />
+        </property>
+        <property name="numOfPts" type="java.lang.Integer">
+            <column name="num_of_pts" />
+        </property>
+        <property name="stAddrPrt1" type="string">
+            <column name="st_addr_prt1" />
+        </property>
+        <property name="stAddrPrt2" type="string">
+            <column name="st_addr_prt2" />
+        </property>
+        <property name="stAddrPrt3" type="string">
+            <column name="st_addr_prt3" />
+        </property>
+        <property name="stAddrPrt4" type="string">
+            <column name="st_addr_prt4" />
+        </property>
+        <property name="stAddrPrt5" type="string">
+            <column name="st_addr_prt5" />
+        </property>
+        <property name="etAddrPrt1" type="string">
+            <column name="et_addr_prt1" />
+        </property>
+        <property name="etAddrPrt2" type="string">
+            <column name="et_addr_prt2" />
+        </property>
+        <property name="etAddrPrt3" type="string">
+            <column name="et_addr_prt3" />
+        </property>
+        <property name="etAddrPrt4" type="string">
+            <column name="et_addr_prt4" />
+        </property>
+        <property name="etAddrPrt5" type="string">
+            <column name="et_addr_prt5" />
+        </property>
+        <property name="updateStatus" type="short">
+            <column name="update_status" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

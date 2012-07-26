@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<type-mapping>
+		<sql-type jdbc-type="OTHER"
+			hibernate-type='com.vividsolutions.jts.geom.Geometry'
+			not-null="false">
+		</sql-type>
+		<sql-type jdbc-type="TIMESTAMP"
+			hibernate-type="java.sql.Timestamp" not-null="false">
+		</sql-type>
+	</type-mapping>
+	<table-filter match-name="trajectory_info"></table-filter>
+</hibernate-reverse-engineering>

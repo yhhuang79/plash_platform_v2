@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 16, 2012 8:53:00 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="tw.edu.sinica.iis.ants.db.common.TrajectoryPoints" table="common_data.trajectory_points">
+    
+        <id name="pointId" type="long">
+            <column name="point_id" />
+            <generator class="sequence-identity">
+            	<param name="sequence"> common_data.trajectory_points_point_id_seq  </param>
+            </generator>
+        </id>
+ 
+        <property name="trajectoryId" type="int">
+            <column name="trajectory_id" not-null="true" />
+        </property>
+        <property name="recordTime" type="java.sql.Timestamp">
+            <column name="record_time" length="35" />
+        </property>
+        <property name="latitude" type="double">
+            <column name="latitude" precision="17" scale="17" not-null="true" />
+        </property>
+        <property name="longitude" type="double">
+            <column name="longitude" precision="17" scale="17" not-null="true" />
+        </property>
+        <property name="receiveTime" type="java.sql.Timestamp">
+            <column name="receive_time" length="29" />
+        </property>
+        <property name="altitude" type="java.lang.Float">
+            <column name="altitude" precision="8" scale="8" />
+        </property>
+        <property name="accuracy" type="java.lang.Float">
+            <column name="accuracy" precision="8" scale="8" />
+        </property>
+        <property name="speed" type="java.lang.Float">
+            <column name="speed" precision="8" scale="8" />
+        </property>
+        <property name="bearing" type="java.lang.Float">
+            <column name="bearing" precision="8" scale="8" />
+        </property>
+        <property name="accelX" type="java.lang.Float">
+            <column name="accel_x" precision="8" scale="8" />
+        </property>
+        <property name="accelY" type="java.lang.Float">
+            <column name="accel_y" precision="8" scale="8" />
+        </property>
+        <property name="accelZ" type="java.lang.Float">
+            <column name="accel_z" precision="8" scale="8" />
+        </property>
+        <property name="azimuth" type="java.lang.Float">
+            <column name="azimuth" precision="8" scale="8" />
+        </property>
+        <property name="pitch" type="java.lang.Float">
+            <column name="pitch" precision="8" scale="8" />
+        </property>
+        <property name="roll" type="java.lang.Float">
+            <column name="roll" precision="8" scale="8" />
+        </property>
+    </class>
+</hibernate-mapping>
