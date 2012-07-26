@@ -15,44 +15,6 @@
 		<value>classpath:hibernate.cfg.xml</value> </property> </bean>
 	-->
 
-	<bean id="SocialDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-		<property name="driverClass" value="org.postgresql.Driver">
-		</property>
-		<property name="jdbcUrl" value="jdbc:postgresql://localhost/myServletDB">
-		</property>
-		<property name="user" value="postgres"></property>
-		<property name="password" value="root"></property>
-		<property name="minPoolSize">
-			<value>10</value>
-		</property>
-		<property name="maxPoolSize">
-			<value>500</value>
-		</property>
-		<property name="maxIdleTime">
-			<value>60</value>
-		</property>
-		<property name="acquireIncrement">
-			<value>3</value>
-		</property>
-		<property name="maxStatements">
-			<value>0</value>
-		</property>
-		<property name="initialPoolSize">
-			<value>10</value>
-		</property>
-		<property name="idleConnectionTestPeriod">
-			<value>60</value>
-		</property>
-		<property name="acquireRetryAttempts">
-			<value>30</value>
-		</property>
-		<property name="breakAfterAcquireFailure">
-			<value>true</value>
-		</property>
-		<property name="testConnectionOnCheckout">
-			<value>false</value>
-		</property>
-	</bean>
 
 	<bean id="GeoDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="driverClass" value="org.postgresql.Driver">
@@ -74,7 +36,7 @@
 			<value>3</value>
 		</property>
 		<property name="maxStatements">
-			<value>0</value>
+			<value>1000</value>
 		</property>
 		<property name="initialPoolSize">
 			<value>10</value>
@@ -94,39 +56,6 @@
 	</bean>
 
 
-	<bean id="SocialSessionFactory"
-		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"
-		destroy-method="destroy">
-		<property name="dataSource">
-			<ref bean="SocialDataSource" />
-		</property>
-		<property name="mappingResources">
-			<list>
-				<value>T_Login.hbm.xml</value>
-				<value>T_FriendList.hbm.xml</value>
-				<value>T_FriendAuth.hbm.xml</value>
-				<value>T_UserPointLocationTime.hbm.xml</value>
-				<value>T_TripData.hbm.xml</value>				
-				<value>T_Routing.hbm.xml</value>
-				<value>T_Service.hbm.xml</value>
-				<value>T_FriendRequest.hbm.xml</value>
-				<value>T_AppName.hbm.xml</value>
-				<value>T_AppUser.hbm.xml</value>
-				<value>T_Activity.hbm.xml</value>
-				<value>T_Item.hbm.xml</value>
-				<value>T_ActivityUser.hbm.xml</value>
-				<value>T_UserTrip.xml</value>
-				<value>T_TripInfo.hbm.xml</value>			
-				<value>T_DepreciatedLocationData.hbm.xml</value>
-			</list>
-		</property>
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernatespatial.postgis.PostgisDialect</prop>
-			</props>
-		</property>
-	</bean>
-
 	<bean id="GeoSessionFactory"
 		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"
 		destroy-method="destroy">
@@ -135,21 +64,28 @@
 		</property>
 		<property name="mappingResources">
 			<list>
-				<value>T_Login.hbm.xml</value>
-				<value>T_FriendList.hbm.xml</value>
-				<value>T_FriendAuth.hbm.xml</value>
-				<value>T_UserPointLocationTime.hbm.xml</value>
-				<value>T_TripData.hbm.xml</value>					
-				<value>T_Routing.hbm.xml</value>
-				<value>T_Service.hbm.xml</value>
-				<value>T_FriendRequest.hbm.xml</value>
-				<value>T_AppName.hbm.xml</value>
-				<value>T_AppUser.hbm.xml</value>	
-				<value>T_Activity.hbm.xml</value>
-				<value>T_Item.hbm.xml</value>	
-				<value>T_ActivityUser.hbm.xml</value>	
-				<value>T_UserTrip.xml</value>
-				<value>T_TripInfo.hbm.xml</value>
+				<value>legacyhbmxml/T_Login.hbm.xml</value>
+				<value>legacyhbmxml/T_FriendList.hbm.xml</value>
+				<value>legacyhbmxml/T_FriendAuth.hbm.xml</value>
+				<value>legacyhbmxml/T_UserPointLocationTime.hbm.xml</value>
+				<value>legacyhbmxml/T_TripData.hbm.xml</value>					
+				<value>legacyhbmxml/T_Routing.hbm.xml</value>
+				<value>legacyhbmxml/T_Service.hbm.xml</value>
+				<value>legacyhbmxml/T_FriendRequest.hbm.xml</value>
+				<value>legacyhbmxml/T_AppName.hbm.xml</value>
+				<value>legacyhbmxml/T_AppUser.hbm.xml</value>	
+				<value>legacyhbmxml/T_Activity.hbm.xml</value>
+				<value>legacyhbmxml/T_Item.hbm.xml</value>	
+				<value>legacyhbmxml/T_ActivityUser.hbm.xml</value>	
+				<value>legacyhbmxml/T_UserTrip.xml</value>
+				<value>legacyhbmxml/T_TripInfo.hbm.xml</value>
+				
+				<value>hbmxml.common_data/PointBinaryData.hbm.xml</value>
+				<value>hbmxml.common_data/PointDeviceData.hbm.xml</value>
+				<value>hbmxml.common_data/TrajectoryPoints.hbm.xml</value>
+				<value>hbmxml.common_data/TrajectoryInfo.hbm.xml</value>				
+				<value>hbmxml.common_data/UserSpecified.hbm.xml</value>
+								
 				<!-- 
 				<value>T_DepreciatedLocationData.hbm.xml</value>
 				 -->					
@@ -162,4 +98,3 @@
 		</property>
 	</bean>
 </beans>
-
