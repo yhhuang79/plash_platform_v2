@@ -10,7 +10,7 @@ import java.net.*;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import org.apache.commons.httpclient.HttpClient;
+
 import org.hibernate.*;
 import org.hibernate.criterion.*;
 import org.hibernate.transform.*;
