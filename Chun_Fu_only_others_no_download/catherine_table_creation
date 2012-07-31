@@ -1,9 +1,0 @@
-CREATE TABLE user_location.trip_pic (
-	userid		INTEGER,
-	trip_id		INTEGER,
-	pic_url		TEXT,
-	time		TIMESTAMP,	-- photo capturing time
-	location	GEOMETRY,	
-	pic_id		SERIAL		PRIMARY KEY
-	-- FOREIGN KEY (userid, trip_id) REFERENCES user_location.user_point_location_time(userid,trip_id)
-);
