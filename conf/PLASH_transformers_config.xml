@@ -48,6 +48,11 @@
 		<add-message-property key="http.status" value="303" />
 	</message-properties-transformer>
 
+
+	<custom-transformer name="HttpPostParams"
+		class="org.mule.transport.http.transformers.HttpRequestBodyToParamMap" />
+
+
 		
 </mule>
 		
