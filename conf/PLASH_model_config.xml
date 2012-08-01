@@ -147,6 +147,16 @@
 		connector-ref="jmsCon" />
 	<jms:endpoint name="plashInput2Queue" queue="plash.input2"
 		connector-ref="jmsCon" />
+	<jms:endpoint name="plashFacebookLoginQueue" queue="plash.facebooklogin"
+		connector-ref="jmsCon" />	
+	<jms:endpoint name="plashFacebookRegisterQueue" queue="plash.FacebookRegister"
+		connector-ref="jmsCon" />
+	<jms:endpoint name="plashGetCheckInDataQueue" queue="plash.get.check.in.data"
+		connector-ref="jmsCon" />
+	<jms:endpoint name="plashUploadTripQueue" queue="plash.upload.trip"
+		connector-ref="jmsCon" />					
+	<jms:endpoint name="plashSignUpQueue" queue="plash.sign.up"
+		connector-ref="jmsCon" />
 
 	<https:connector name="httpsConnector">
 		<https:tls-key-store path="file://../resources/tmpKey/keystore" keyPassword="password" storePassword="password"/>
@@ -171,22 +181,13 @@
 		
 		for the following example.
 	-->
-	<!--
-	<https:endpoint name="plashxxxxxHttpsInboundEndpoint" host="localhost"
-		port="8080" path="PPPPPPP" synchronous="true" connector-ref="httpsConnector" />
-	-->
 	
-
-	
-	<!-- (Step 3) Danny: XXXXX = ConfirmFriendRequest -->
 	<https:endpoint name="plashConfirmFriendRequestHttpsInboundEndpoint" host="localhost"
 		port="8080" path="ConfirmFriendRequest" synchronous="true" connector-ref="httpsConnector" />
 	
-	<!-- (Step 3) Danny: XXXXX = FriendRequest -->
 	<https:endpoint name="plashFriendRequestHttpsInboundEndpoint" host="localhost"
 		port="8080" path="FriendRequest" synchronous="true" connector-ref="httpsConnector" />
 	
-	<!-- (Step 3) Danny: XXXXX = Register -->
 	<https:endpoint name="plashRegisterHttpsInboundEndpoint" host="localhost"
 		port="8080" path="Register" synchronous="true" connector-ref="httpsConnector" />
 	
@@ -293,9 +294,17 @@
 		port="8081" path="Input2" synchronous="true" />
 	<http:endpoint name="plashGetNewTripIdHttpInboundEndpoint" host="localhost"
 		port="8081" path="GetNewTripId2" synchronous="true" />
-		
-
-
+	<https:endpoint name="plashFacebookLoginHttpsInboundEndpoint" host="localhost"
+		port="8080" path="FacebookLogin" synchronous="true" connector-ref="httpsConnector" />
+	<https:endpoint name="plashFacebookRegisterHttpsInboundEndpoint" host="localhost"
+		port="8080" path="FacebookRegister" synchronous="true" connector-ref="httpsConnector" />
+	<https:endpoint name="plashGetCheckInDataHttpsInboundEndpoint" host="localhost"
+		port="8080" path="GetCheckInData" synchronous="true" connector-ref="httpsConnector" />
+	<https:endpoint name="plashUploadTripHttpsInboundEndpoint" host="localhost" method="POST"
+		port="8080" path="UploadTrip" synchronous="true" connector-ref="httpsConnector" />		
+	<https:endpoint name="plashSignUpHttpsInboundEndpoint" host="localhost"
+		port="8080" path="SignUp" synchronous="true" connector-ref="httpsConnector" />
+			
 
 	<model name="PLASH">
 	
@@ -1783,7 +1792,148 @@
 								
 		</service>
 
-			
+
+		<!-- (Step 4) Yu-Hsiang: XXXXX =  FacebookLogin-->
+		<service name="FacebookLoginService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashFacebookLoginHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="FacebookLoginComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashFacebookLoginQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashFacebookLoginQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="TestResponseTransformer" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		<!-- (Step 4) Yu-Hsiang: XXXXX = FacebookRegister -->
+		<service name="FacebookRegisterService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashFacebookRegisterHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="FacebookRegisterComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashFacebookRegisterQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashFacebookRegisterQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="TestResponseTransformer" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		<!-- (Step 4) Yu-Hsiang: XXXXX = GetCheckInData -->
+		<service name="GetCheckInService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashGetCheckInDataHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="GetCheckinDataComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashGetCheckInDataQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashGetCheckInDataQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="TestResponseTransformer" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		<!-- (Step 4) Yu-Hsiang: XXXXX = UploadTrip -->
+		<service name="UploadTripService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpPostParams"
+					responseTransformer-refs="byteArrayToString" ref="plashUploadTripHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="UploadTripComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashUploadTripQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashUploadTripQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="TestResponseTransformer" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		<!-- (Step 4) Yu-Hsiang: XXXXX = Sign Up -->
+		<service name="SignUpService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashSignUpHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="SignUpComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashSignUpQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashSignUpQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="TestResponseTransformer" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>			
+
 		<service name="NewTrajectoryInfoService">
 			<inbound>
 				<inbound-endpoint transformer-refs="HttpParams"
@@ -1865,8 +2015,7 @@
 				</http:inbound-endpoint>
 			</inbound>
 		</service>
-		
-
+	
 						
 	</model>
 
