@@ -16,14 +16,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import tw.edu.sinica.iis.ants.DB.T_CheckInInfo;
+import tw.edu.sinica.iis.ants.DB.T_TripData;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
+
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKTReader;
-
-import tw.edu.sinica.iis.ants.DB.T_CheckInInfo;
-import tw.edu.sinica.iis.ants.DB.T_Login;
-import tw.edu.sinica.iis.ants.DB.T_TripData;
-import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
-import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 public class UploadTripComponent extends PLASHComponent{
 
@@ -76,35 +74,35 @@ public class UploadTripComponent extends PLASHComponent{
 				if(tpoint.containsKey("lat"))
 					lat = Double.valueOf(tpoint.get("lat").toString()).doubleValue();
 				if(tpoint.containsKey("lng"))
-					lat = Double.valueOf(tpoint.get("lng").toString()).doubleValue();
+					lng = Double.valueOf(tpoint.get("lng").toString()).doubleValue();
 				if(tpoint.containsKey("alt"))
-					lat = Double.valueOf(tpoint.get("alt").toString()).doubleValue();
+					alt = Double.valueOf(tpoint.get("alt").toString()).doubleValue();
 				if(tpoint.containsKey("accu"))
-					lat = Double.valueOf(tpoint.get("accu").toString()).doubleValue();
+					accu = Double.valueOf(tpoint.get("accu").toString()).doubleValue();
 				if(tpoint.containsKey("spd"))
-					lat = Double.valueOf(tpoint.get("spd").toString()).doubleValue();
+					spd = Double.valueOf(tpoint.get("spd").toString()).doubleValue();
 				if(tpoint.containsKey("bear"))
-					lat = Double.valueOf(tpoint.get("bear").toString()).doubleValue();
+					bear = Double.valueOf(tpoint.get("bear").toString()).doubleValue();
 				if(tpoint.containsKey("accex"))
-					lat = Double.valueOf(tpoint.get("accex").toString()).doubleValue();
+					accex = Double.valueOf(tpoint.get("accex").toString()).doubleValue();
 				if(tpoint.containsKey("accey"))
-					lat = Double.valueOf(tpoint.get("accey").toString()).doubleValue();
+					accey = Double.valueOf(tpoint.get("accey").toString()).doubleValue();
 				if(tpoint.containsKey("accez"))
-					lat = Double.valueOf(tpoint.get("accez").toString()).doubleValue();
+					accez = Double.valueOf(tpoint.get("accez").toString()).doubleValue();
 				if(tpoint.containsKey("gsminfo"))
 					gsminfo = tpoint.get("gsminfo").toString();
 				if(tpoint.containsKey("wifiinfo"))
-					gsminfo = tpoint.get("wifiinfo").toString();
+					wifiinfo = tpoint.get("wifiinfo").toString();
 				if(tpoint.containsKey("app"))
-					label = Integer.parseInt(tpoint.get("app").toString());
+					app = Integer.parseInt(tpoint.get("app").toString());
 				if(tpoint.containsKey("azimuth"))
-					lat = Double.valueOf(tpoint.get("azimuth").toString()).doubleValue();				
+					azimuth = Double.valueOf(tpoint.get("azimuth").toString()).doubleValue();				
 				if(tpoint.containsKey("pitch"))
-					lat = Double.valueOf(tpoint.get("pitch").toString()).doubleValue();
+					pitch = Double.valueOf(tpoint.get("pitch").toString()).doubleValue();
 				if(tpoint.containsKey("roll"))
-					lat = Double.valueOf(tpoint.get("roll").toString()).doubleValue();				
+					roll = Double.valueOf(tpoint.get("roll").toString()).doubleValue();				
 				if(tpoint.containsKey("battery_info"))
-					gsminfo = tpoint.get("battery_info").toString();				
+					battery_info = tpoint.get("battery_info").toString();				
 				if(tpoint.containsKey("timestamp"))
 					timestamp = Timestamp.valueOf(tpoint.get("timestamp").toString());
 				
