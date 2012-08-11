@@ -57,13 +57,13 @@ public class UploadTripComponent extends PLASHComponent{
 		        Double accex = 0.0;	//x-axis acceleration
 		        Double accey = 0.0;	//y-axis acceleration
 		        Double accez= 0.0; 	//z-axis acceleration
-		        String gsminfo = ""; //first 5 is phone information, last 3 is the nearest cell information, NULL if information is missing
-		        String wifiinfo = ""; // set of AP info: MAC address, frequency (MHz), signal strength (dBM)
+		        String gsminfo = null; //first 5 is phone information, last 3 is the nearest cell information, NULL if information is missing
+		        String wifiinfo = null; // set of AP info: MAC address, frequency (MHz), signal strength (dBM)
 		        Integer app = 0;
 		    	Double azimuth = 0.0;
 		    	Double pitch = 0.0;
 		    	Double roll = 0.0;
-		    	String battery_info = "";        
+		    	String battery_info = null;        
 		        
 		        Timestamp timestamp = null;
 		        
