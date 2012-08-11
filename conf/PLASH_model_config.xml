@@ -744,6 +744,7 @@
 				<inbound-endpoint ref="plashGetNewTripIdQueue">
 					<transformers>
 						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="TestResponseTransformer" />
 					</transformers>
 				</inbound-endpoint>
 				<single-async-reply-router/>				
