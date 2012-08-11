@@ -36,7 +36,7 @@
 			<value>3</value>
 		</property>
 		<property name="maxStatements">
-			<value>1000</value>
+			<value>0</value>
 		</property>
 		<property name="initialPoolSize">
 			<value>10</value>
@@ -67,8 +67,8 @@
 				<value>legacyhbmxml/T_Login.hbm.xml</value>
 				<value>legacyhbmxml/T_FriendList.hbm.xml</value>
 				<value>legacyhbmxml/T_FriendAuth.hbm.xml</value>
-				<value>legacyhbmxml/T_UserPointLocationTime.hbm.xml</value>
-				<value>legacyhbmxml/T_TripData.hbm.xml</value>					
+				<value>legacyhbmxml/T_TripData.hbm.xml</value>
+				<value>legacyhbmxml/T_UserPointLocationTime.hbm.xml</value>				
 				<value>legacyhbmxml/T_Routing.hbm.xml</value>
 				<value>legacyhbmxml/T_Service.hbm.xml</value>
 				<value>legacyhbmxml/T_FriendRequest.hbm.xml</value>
@@ -79,6 +79,7 @@
 				<value>legacyhbmxml/T_ActivityUser.hbm.xml</value>	
 				<value>legacyhbmxml/T_UserTrip.xml</value>
 				<value>legacyhbmxml/T_TripInfo.hbm.xml</value>
+				<value>legacyhbmxml/T_CheckInInfo.hbm.xml</value>
 				
 				<value>hbmxml.common_data/PointBinaryData.hbm.xml</value>
 				<value>hbmxml.common_data/PointDeviceData.hbm.xml</value>

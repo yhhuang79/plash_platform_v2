@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE hibernate-mapping 
+ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+ "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="tw.edu.sinica.iis.ants.DB.T_CheckInInfo" table="user_location.check_in_info">
+
+		<id column="id" name="id" type="java.lang.Integer">
+		</id>
+		<property name="message" column="message" />
+		<property name="emotion" column="emotion" />
+		<property name="picture_uri" column="picture_uri" />
+				
+	</class>
+
+</hibernate-mapping>
