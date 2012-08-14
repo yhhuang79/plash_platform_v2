@@ -18,6 +18,7 @@
 	import com.vividsolutions.jts.geom.Geometry;
 	import com.vividsolutions.jts.io.*;
 	
+import tw.edu.sinica.iis.ants.AbnormalResult;
 import tw.edu.sinica.iis.ants.DB.*;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	
@@ -201,7 +202,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 				if (resultList.size()  == 0 ) {
 					return new HashMap();
 				} else {				
-			   		if ((field_mask & 8192) != 0) { 
+			   		if ((field_mask & 16384) != 0) { 
 			    		Geometry tmpGPS = (Geometry)resultList.get(0).remove("gps");		    		
 			    		resultList.get(0).put("lng", tmpGPS.getCoordinate().x*1000000);
 			    		resultList.get(0).put("lat", tmpGPS.getCoordinate().y*1000000);		    	
@@ -211,9 +212,8 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	
 							
 			} catch (HibernateException he) {
-				
-				System.out.println("Warning: hibernation exception");	
-				return null;
+				System.out.println(he.toString()); 	
+				return null;  
 			}//end try catch			//*/
 			
 	    
@@ -241,7 +241,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	    	
 			try {
 				List<Map> tripDataList = (List<Map>) criteriaTripData.list();
-		   		if ((field_mask & 8192) != 0) { 
+		   		if ((field_mask & 16384) != 0) { 
 		    		Geometry tmpGPS;
 		    		for (Map tmpMap:tripDataList) {
 		    			tmpGPS = (Geometry)tmpMap.remove("gps");
@@ -253,7 +253,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 				return tripDataList;
 												
 			} catch (HibernateException he) {
-				System.out.println("Warning: hibernation exception"); 	
+				System.out.println(he.toString()); 	
 				return null;
 			}//end try catch			//*/
 		}//end method	
@@ -315,7 +315,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	    	}//fi    	
 	    	
 	    	if ((field_mask & 1) != 0) { //1=1
-	    		filterProjList.add(Projections.property("mood"),"mood");    		
+	    		filterProjList.add(Projections.property("checkin"),"checkin");    		
 	    	}//fi    		    	
 			return filterProjList;
 			
