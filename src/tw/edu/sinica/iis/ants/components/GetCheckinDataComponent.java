@@ -20,7 +20,7 @@
 	import com.vividsolutions.jts.geom.Geometry;
 	import com.vividsolutions.jts.io.*;
 	
-import tw.edu.sinica.iis.ants.DB.*;
+	import tw.edu.sinica.iis.ants.DB.*;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	
 	/**
@@ -105,7 +105,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 				}//fi
 				
 				if ((tmpField_mask = (String)map.remove("field_mask")) == null) {
-					field_mask = Integer.parseInt("111111111111111",2);				
+					field_mask = Integer.parseInt("1111111111111111",2);				
 				} else {
 					field_mask = Integer.parseInt(tmpField_mask,2);
 				}//fi
@@ -240,7 +240,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	    	
 			try {
 				List<Map> tripDataList = (List<Map>) criteriaTripData.list();
-		   		if ((field_mask & 8192) != 0) { 
+		   		if ((field_mask & 16384) != 0) { 
 		    		Geometry tmpGPS;
 		    		String tmpCheckIn = null;
 		    		Integer tmpPointId;
@@ -249,9 +249,11 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 		    			tmpGPS = (Geometry)tmpMap.remove("gps");
 		    			tmpMap.put("lng", tmpGPS.getCoordinate().x*1000000);
 		    			tmpMap.put("lat", tmpGPS.getCoordinate().y*1000000);
-		    			//tmpCheckIn = tmpMap.get("checkin").toString();		    			
+		    			//System.out.println("GetCheckInDataComponent GPS:\t"	+ tmpGPS.getCoordinate().x*1000000 + " : " + tmpGPS.getCoordinate().y*1000000);
+		    			if (tmpMap.get("checkin") != null) tmpCheckIn = tmpMap.get("checkin").toString();		    			
 		    			tmpPointId = (Integer)tmpMap.remove("id");
-				   		if (tmpMap.get("checkin") != null){
+		    			//System.out.println("GetCheckInDataComponent PointId:\t"	+ tmpPointId + " : " + tmpCheckIn);
+				   		if (tmpCheckIn == "true"){
 				   			Criteria criteriaCheckInData = tskSession.createCriteria(T_CheckInInfo.class);
 				   			criteriaCheckInData.add(Restrictions.eq("id", tmpPointId));
 				   			Iterator clist = criteriaCheckInData.list().iterator();	
@@ -284,54 +286,57 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 		 */
 		private ProjectionList addFilterList(ProjectionList filterProjList, int field_mask) {
 	
-	    	if ((field_mask & 16384) != 0) { 
+	    	if ((field_mask & 32768) != 0) { 
 	        	filterProjList.add(Projections.sqlProjection("timestamp", new String[] {"timestamp"}, new Type[] { new StringType() }));
 	    	}//fi
-	    	if ((field_mask & 8192) != 0) { 
+	    	if ((field_mask & 16384) != 0) { 
 	    		filterProjList.add(Projections.property("gps"),"gps");
 	    	}//fi
-	    	if ((field_mask & 4096) != 0) { //4096 = 1000000000000
+	    	if ((field_mask & 8192) != 0) { 
 	        	filterProjList.add(Projections.property("server_timestamp"),"server_timestamp");  
 	    	}//fi
-	    	if ((field_mask & 2048) != 0) { 
+	    	if ((field_mask & 4096) != 0) { //4096 = 1000000000000
 	        	filterProjList.add(Projections.property("trip_id"),"trip_id");
 	    	}//fi
-	    	if ((field_mask & 1024) != 0) { //1024 = 10000000000
+	    	if ((field_mask & 2048) != 0) { 
 	    		filterProjList.add(Projections.property("label"),"label");
 	    	}//fi
-	    	if ((field_mask & 512) != 0) { 
+	    	if ((field_mask & 1024) != 0) { //1024 = 10000000000
 	    		filterProjList.add(Projections.property("alt"),"alt");
 	    	}//fi
-	    	if ((field_mask & 256) != 0) { 
+	    	if ((field_mask & 512) != 0) { 
 	    		filterProjList.add(Projections.property("accu"),"accu");
 	    	}//fi
-	    	if ((field_mask & 128) != 0) { 
+	    	if ((field_mask & 256) != 0) { 
 	    		filterProjList.add(Projections.property("spd"),"spd");
 	    	}//fi
-	    	if ((field_mask & 64) != 0) { 
+	    	if ((field_mask & 128) != 0) { 
 	    		filterProjList.add(Projections.property("bear"),"bear");
 	    	}//fi
-	    	if ((field_mask & 32) != 0) { //32 = 100000
+	    	if ((field_mask & 64) != 0) { 
 	    		filterProjList.add(Projections.property("accex"),"accex");
 	    	}//fi
-	    	if ((field_mask & 16) != 0) { 
+	    	if ((field_mask & 32) != 0) { //32 = 100000
 	    		filterProjList.add(Projections.property("accey"),"accey");
 	    	}//fi
-	    	if ((field_mask & 8) != 0) { 
+	    	if ((field_mask & 16) != 0) { 
 	    		filterProjList.add(Projections.property("accez"),"accez");
 	    	}//fi
-	    	if ((field_mask & 4) != 0) { //2 = 10
+	    	if ((field_mask & 8) != 0) { 
 	        	filterProjList.add(Projections.sqlProjection("gsminfo", new String[] {"gsminfo"}, new Type[] { new StringType() }));    		
 	    	}//fi
-	    	if ((field_mask & 2) != 0) { //1=1
+	    	if ((field_mask & 4) != 0) { 
 	        	filterProjList.add(Projections.sqlProjection("wifiinfo", new String[] {"wifiinfo"}, new Type[] { new StringType() }));    		
 	    	}//fi
 	    	
-	    	if ((field_mask & 1) != 0) { //1=1
+	    	if ((field_mask & 2) != 0) { //2 = 10
 	    		filterProjList.add(Projections.property("app"),"app");    		
+	    	}//fi    	
+	    	
+	    	if ((field_mask & 1) != 0) { //1=1
+	    		filterProjList.add(Projections.property("checkin"),"checkin");    		
 	    	}//fi
-	    	filterProjList.add(Projections.property("checkin"),"checkin");
-	    	filterProjList.add(Projections.property("id"),"id");
+	    	filterProjList.add(Projections.property("id"),"id"); 
 			return filterProjList;
 			
 		}//end method
