@@ -96,7 +96,23 @@ public class GetTripInfoComponent extends PLASHComponent {
 			
 			if ((tmpTrip_id = (String)map.remove("trip_id")) == null) {
 				//return all trip
-				List<Map> tmpList = getAllTripInfo(userid,field_mask);
+				int sort = 1;
+				if(map.containsKey("sort")){
+					String SortOrder = map.remove("sort").toString();
+					if(SortOrder.equals("trip_id"))
+						sort = 1;
+					if(SortOrder.equals("trip_name"))
+						sort = 2;
+					if(SortOrder.equals("trip_st"))
+						sort = 3;
+					if(SortOrder.equals("trip_et"))
+						sort = 4;
+					if(SortOrder.equals("trip_length"))
+						sort = 5;
+					if(SortOrder.equals("num_of_pts"))
+						sort = 6;
+				}
+				List<Map> tmpList = getAllTripInfo(userid,field_mask,sort);
 				if (tmpList == null) {//error here
 					tskSession.close();
 					return map;
@@ -189,14 +205,36 @@ public class GetTripInfoComponent extends PLASHComponent {
 	 * @return	A list of map that contains the individual trip info
 	 * 
 	 */
-	private List<Map> getAllTripInfo(int userid, int field_mask) {
+	private List<Map> getAllTripInfo(int userid, int field_mask, int sort_order) {
 		
 		//obtain the record
     	Criteria criteriaTripInfo = tskSession.createCriteria(T_TripInfo.class);
     	criteriaTripInfo.add(Restrictions.eq("userid", userid));
     	ProjectionList filterProjList = Projections.projectionList();     	
     	criteriaTripInfo.setProjection(addFilterList(filterProjList,field_mask));
-    	criteriaTripInfo.addOrder(Order.desc("trip_st"));
+    	switch(sort_order) {
+    		case 1:
+    			criteriaTripInfo.addOrder(Order.desc("trip_id"));
+    			break;
+    		case 2:
+    			criteriaTripInfo.addOrder(Order.desc("trip_name"));
+    			break;
+    		case 3:
+    			criteriaTripInfo.addOrder(Order.desc("trip_st"));
+    			break;
+    		case 4:
+    			criteriaTripInfo.addOrder(Order.desc("trip_et"));
+    			break;
+    		case 5:
+    			criteriaTripInfo.addOrder(Order.desc("trip_length"));
+    			break;
+    		case 6:
+    			criteriaTripInfo.addOrder(Order.desc("num_of_pts"));
+    			break;    			
+    		default:
+    			criteriaTripInfo.addOrder(Order.desc("trip_id"));
+    	}
+    	//criteriaTripInfo.addOrder(Order.desc("trip_id"));
     	criteriaTripInfo.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
 
 		try {
