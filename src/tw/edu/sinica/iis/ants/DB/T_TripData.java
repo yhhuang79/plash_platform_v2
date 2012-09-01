@@ -23,23 +23,16 @@ public class T_TripData {
 	private String gsminfo;
 	private String wifiinfo;
 	private Integer app;
+	private boolean checkin;
 	private Double latitude;
 	private Double longitude;
 	private Double azimuth;
 	private Double pitch;
 	private Double roll;
 	private String battery_info;
-	private Short mood;
+
 	
 	
-	public Short getMood() {
-		return mood;
-	}
-
-	public void setMood(Short mood) {
-		this.mood = mood;
-	}
-
 	public T_TripData(){
 	
 	}
@@ -183,6 +176,14 @@ public class T_TripData {
 		this.app = app;
 	}
 
+	public boolean getCheckin() {
+		return checkin;
+	}
+
+	public void setCheckin(boolean checkin) {
+		this.checkin = checkin;
+	}	
+
 	public Double getLatitude() {
 		return latitude;
 	}
@@ -230,6 +231,5 @@ public class T_TripData {
 	public void setBattery_info(String battery_info) {
 		this.battery_info = battery_info;
 	}
-	
 	
 }
