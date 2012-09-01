@@ -31,7 +31,8 @@
 		<property name="wifiinfo" column="wifiinfo" />
 		<property name="app" column="app" />		
 		<property name="checkin" column="checkin" />
-		
+		<property name="latitude" column="latitude" />
+		<property name="longitude" column="longitude" />
 	</class>
 
 </hibernate-mapping>
