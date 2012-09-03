@@ -174,6 +174,26 @@
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>		
 	
-
+	<!-- Yu-Hsiang add FacebookLogin -->
+        <spring:bean id="FacebookLoginComponent"
+                class="tw.edu.sinica.iis.ants.components.FacebookLoginComponent">
+                <spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+        </spring:bean>
+        <spring:bean id="FacebookRegisterComponent"
+                class="tw.edu.sinica.iis.ants.components.FacebookRegisterComponent">
+                <spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+        </spring:bean>
+        <spring:bean id="GetCheckinDataComponent"
+                class="tw.edu.sinica.iis.ants.components.GetCheckinDataComponent">
+                <spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+        </spring:bean>
+                <spring:bean id="UploadTripComponent"
+                class="tw.edu.sinica.iis.ants.components.UploadTripComponent">
+                <spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+        </spring:bean>
+        <spring:bean id="SignUpComponent"
+                class="tw.edu.sinica.iis.ants.components.SignUpComponent">
+                <spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+        </spring:bean>
 	
 </mule>
