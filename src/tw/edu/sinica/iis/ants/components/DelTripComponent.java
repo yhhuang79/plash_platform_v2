@@ -117,11 +117,10 @@ public class DelTripComponent extends PLASHComponent {
 		    criteria = tskSession.createCriteria(T_TripInfo.class);
 		    criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("userid").toString())));
 		    criteria.add(Restrictions.eq("trip_id", Integer.parseInt(map.get("trip_id").toString())));
-		    tskSession.delete((T_TripInfo)criteria.uniqueResult());
-		    /*
-		    for(Object obj : criteria.list()) {
+		    
+		    for(Object obj : criteria.list()) { //use for to avoid deleting with null entity
 		    	tskSession.delete(obj);
-		    }//rof */
+		    }//rof
 			
 			Transaction tx = tskSession.beginTransaction();	
 			tx.commit();
