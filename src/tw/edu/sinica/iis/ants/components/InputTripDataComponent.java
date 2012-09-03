@@ -201,7 +201,7 @@ public class InputTripDataComponent extends PLASHComponent {
 				pt.setPitch(pitch);
 				pt.setRoll(roll);
 				pt.setBattery_info(battery_info);   
-				pt.setMood(mood);
+
 				
 				Transaction tx = tskSession.beginTransaction();
 				tskSession.save(pt);

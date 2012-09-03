@@ -43,7 +43,7 @@ import com.vividsolutions.jts.io.WKTReader;
  * 	et_addr_prt3 <br>
  *  et_addr_prt4 <br>
  *  et_addr_prt5 <br>
- * Example: InputTripInfoComponent?userid=5&trip_id=3&update_status=4&st_addr_prt5="haha"
+ * Example: https://localhost:8080/InputTripInfoComponent?userid=5&trip_id=3&update_status=4&st_addr_prt5=%22haha%22
  *  
  * @author	Yi-Chun Teng 
  * @param	map A map object that contains userid, trip_id, update_status and any of the items listed above 
@@ -81,7 +81,9 @@ public class InputTripInfoComponent extends PLASHComponent {
         String et_addr_prt5 = "";        
         Short update_status = -1;
        
-    
+        if (map.containsKey("trip_name")) {
+        	trip_name = map.get("trip_name").toString();
+        }//fi             
         
         if (map.containsKey("userid")) {
         	userid = Integer.parseInt(map.get("userid").toString());
@@ -106,32 +108,32 @@ public class InputTripInfoComponent extends PLASHComponent {
         	st_addr_prt1 = map.get("st_addr_prt1").toString();
         }//fi        	
         if (map.containsKey("st_addr_prt2")){
-        	st_addr_prt1 = map.get("st_addr_prt2").toString();
+        	st_addr_prt2 = map.get("st_addr_prt2").toString();
         }//fi  
         if (map.containsKey("st_addr_prt3")){
-        	st_addr_prt1 = map.get("st_addr_prt3").toString();
+        	st_addr_prt3 = map.get("st_addr_prt3").toString();
         }//fi  
         if (map.containsKey("st_addr_prt4")){
-        	st_addr_prt1 = map.get("st_addr_prt4").toString();
+        	st_addr_prt4 = map.get("st_addr_prt4").toString();
         }//fi          
         if (map.containsKey("st_addr_prt5")){
-        	st_addr_prt1 = map.get("st_addr_prt5").toString();
+        	st_addr_prt5 = map.get("st_addr_prt5").toString();
         }//fi     
 
         if (map.containsKey("et_addr_prt1")){
-        	st_addr_prt1 = map.get("et_addr_prt1").toString();
+        	et_addr_prt1 = map.get("et_addr_prt1").toString();
         }//fi        	
         if (map.containsKey("et_addr_prt2")){
-        	st_addr_prt1 = map.get("et_addr_prt2").toString();
+        	et_addr_prt2 = map.get("et_addr_prt2").toString();
         }//fi  
         if (map.containsKey("et_addr_prt3")){
-        	st_addr_prt1 = map.get("et_addr_prt3").toString();
+        	et_addr_prt3 = map.get("et_addr_prt3").toString();
         }//fi  
         if (map.containsKey("et_addr_prt4")){
-        	st_addr_prt1 = map.get("et_addr_prt4").toString();
+        	et_addr_prt4 = map.get("et_addr_prt4").toString();
         }//fi          
         if (map.containsKey("et_addr_prt5")){
-        	st_addr_prt1 = map.get("et_addr_prt5").toString();
+        	et_addr_prt5 = map.get("et_addr_prt5").toString();
         }//fi    
         
         if (map.containsKey("update_status")) {
