@@ -80,16 +80,16 @@
 				<value>legacyhbmxml/T_UserTrip.xml</value>
 				<value>legacyhbmxml/T_TripInfo.hbm.xml</value>
 				<value>legacyhbmxml/T_CheckInInfo.hbm.xml</value>
-				
+
+				<value>legacyhbmxml/T_DepreciatedLocationData.hbm.xml</value>
+						
 				<value>hbmxml.common_data/PointBinaryData.hbm.xml</value>
 				<value>hbmxml.common_data/PointDeviceData.hbm.xml</value>
 				<value>hbmxml.common_data/TrajectoryPoints.hbm.xml</value>
 				<value>hbmxml.common_data/TrajectoryInfo.hbm.xml</value>				
 				<value>hbmxml.common_data/UserSpecified.hbm.xml</value>
 								
-				<!-- 
-				<value>T_DepreciatedLocationData.hbm.xml</value>
-				 -->					
+				
 			</list>
 		</property>
 		<property name="hibernateProperties">
