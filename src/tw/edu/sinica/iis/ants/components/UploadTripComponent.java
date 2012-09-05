@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
@@ -25,14 +26,16 @@ import com.vividsolutions.jts.io.WKTReader;
 
 public class UploadTripComponent extends PLASHComponent{
 
-	private Session session; //task session
-
+	private Session session1; //task session
+	private Session session2;
+	
 	@Override
 	public Object serviceMain(Map map) {
 		// TODO Auto-generated method stub
 		System.out.println("UploadTripComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
-		session = sessionFactory.openSession(); 
-
+		session1 = sessionFactory.openSession(); 
+		session2 = sessionFactory.openSession();
+		
 		JSONParser parser = new JSONParser();		
 		try {
 			//System.out.println(map.get("trip").toString());
@@ -159,11 +162,18 @@ public class UploadTripComponent extends PLASHComponent{
 		    	if(tpoint.containsKey("CheckIn")){
 		    		user.setCheckin(true);
 		    		
-					Transaction tx = session.beginTransaction();
-					session.save(user);
-					tx.commit();
-					
-					Criteria criteria = session.createCriteria(T_TripData.class);
+					Transaction tx = null;
+					try {
+						tx = session2.beginTransaction();
+						session2.save(user);
+						tx.commit();
+					} catch (HibernateException he) {
+		    			he.printStackTrace();
+		    			if(tx!=null){  
+		    				tx.rollback();  
+		    	        }  
+		    		}
+					Criteria criteria = session1.createCriteria(T_TripData.class);
 					criteria.add(Restrictions.eq("userid", userid));
 					criteria.add(Restrictions.eq("trip_id", trip_id));
 					criteria.addOrder(Order.desc("id"));
@@ -175,26 +185,41 @@ public class UploadTripComponent extends PLASHComponent{
 					
 		    	}else{
 		    		user.setCheckin(false);
-		    		
-					Transaction tx = session.beginTransaction();
-					session.save(user);
-					tx.commit();
+		    		Transaction tx = null;		    			
+		    		try {	
+		    			tx = session2.beginTransaction();
+		    			session2.save(user);
+		    			tx.commit();
+		    		} catch (HibernateException he) {
+		    			he.printStackTrace();
+		    			if(tx!=null){  
+		    				tx.rollback();  
+		    	        }  
+		    		}
 		    	}
 			
 				if(tpoint.containsKey("CheckIn")) {
 					JSONObject checkindata = (JSONObject) tpoint.get("CheckIn");
 					T_CheckInInfo CData = new T_CheckInInfo();
 					CData.setId(tid);
-					if(checkindata.containsKey("message"))
+					if((checkindata.containsKey("message")) && (checkindata.get("message") != null))
 						CData.setMessage(checkindata.get("message").toString());
-					if(checkindata.containsKey("emotion"))
+					if((checkindata.containsKey("emotion")) && (checkindata.get("emotion") != null))
 						CData.setEmotion(Integer.parseInt(checkindata.get("emotion").toString()));
-					if(checkindata.containsKey("picture_uri"))
+					if((checkindata.containsKey("picture_uri")) && (checkindata.get("picture_uri") != null))
 						CData.setPicture_uri(checkindata.get("picture_uri").toString());
 					
-					Transaction tx2 = session.beginTransaction();
-					session.save(CData);
-					tx2.commit();										
+					Transaction tx2 = null;
+					try {
+						tx2 = session1.beginTransaction();
+						session1.save(CData);
+						tx2.commit();
+					} catch (HibernateException he) {
+		    			he.printStackTrace();
+		    			if(tx2!=null){  
+		    				tx2.rollback();  
+		    	        }  
+		    		}
 				}
 			}
 			
@@ -204,9 +229,9 @@ public class UploadTripComponent extends PLASHComponent{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	    
 		
-		
+		session1.close();
+		session2.close();
 	    System.out.println("UploadTripComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
 	    	    
 	    return map;
