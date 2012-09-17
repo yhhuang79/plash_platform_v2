@@ -23,7 +23,7 @@ public class T_UserPointLocationTime {
 	private String gsminfo;
 	private String wifiinfo;
 	private Integer app;
-	private boolean checkin;
+	private Boolean checkin;
 	private Double latitude;
 	private Double longitude;
 	private Double azimuth;
@@ -176,11 +176,11 @@ public class T_UserPointLocationTime {
 		this.app = app;
 	}
 
-	public boolean getCheckin() {
+	public Boolean getCheckin() {
 		return checkin;
 	}
 
-	public void setCheckin(boolean checkin) {
+	public void setCheckin(Boolean checkin) {
 		this.checkin = checkin;
 	}	
 

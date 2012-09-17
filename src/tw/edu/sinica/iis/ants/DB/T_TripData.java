@@ -176,7 +176,7 @@ public class T_TripData {
 		this.app = app;
 	}
 
-	public boolean getCheckin() {
+	public Boolean getCheckin() {
 		return checkin;
 	}
 
