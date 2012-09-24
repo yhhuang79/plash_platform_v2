@@ -96,7 +96,7 @@ public class GetTripInfoComponent extends PLASHComponent {
 			
 			if ((tmpTrip_id = (String)map.remove("trip_id")) == null) {
 				//return all trip
-				int sort = 1;
+				int sort = 1, FirstResult = 0, MaxResult = 0;
 				if(map.containsKey("sort")){
 					String SortOrder = map.remove("sort").toString();
 					if(SortOrder.equals("trip_id"))
@@ -112,7 +112,14 @@ public class GetTripInfoComponent extends PLASHComponent {
 					if(SortOrder.equals("num_of_pts"))
 						sort = 6;
 				}
-				List<Map> tmpList = getAllTripInfo(userid,field_mask,sort);
+				if(map.containsKey("FirstResult")){
+				    FirstResult = Integer.parseInt(map.remove("FirstResult").toString());
+				}
+				if(map.containsKey("MaxResult")){
+					MaxResult = Integer.parseInt(map.remove("MaxResult").toString());
+				}
+
+				List<Map> tmpList = getAllTripInfo(userid,field_mask,sort,FirstResult,MaxResult);
 				if (tmpList == null) {//error here
 					tskSession.close();
 					return map;
@@ -205,11 +212,15 @@ public class GetTripInfoComponent extends PLASHComponent {
 	 * @return	A list of map that contains the individual trip info
 	 * 
 	 */
-	private List<Map> getAllTripInfo(int userid, int field_mask, int sort_order) {
+	private List<Map> getAllTripInfo(int userid, int field_mask, int sort_order, int firstResult, int maxResult) {
 		
 		//obtain the record
     	Criteria criteriaTripInfo = tskSession.createCriteria(T_TripInfo.class);
     	criteriaTripInfo.add(Restrictions.eq("userid", userid));
+    	if(firstResult != 0)
+    		criteriaTripInfo.setFirstResult(firstResult);
+    	if(maxResult != 0)
+    		criteriaTripInfo.setMaxResults(maxResult);
     	ProjectionList filterProjList = Projections.projectionList();     	
     	criteriaTripInfo.setProjection(addFilterList(filterProjList,field_mask));
     	switch(sort_order) {
