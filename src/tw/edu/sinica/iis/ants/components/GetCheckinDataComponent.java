@@ -235,20 +235,59 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	    	criteriaTripData.add(Restrictions.eq("trip_id", trip_id));
 	    	ProjectionList filterProjList = Projections.projectionList();     	
 	    	criteriaTripData.setProjection(addFilterList(filterProjList,field_mask));
-	    	criteriaTripData.addOrder(Order.desc("timestamp"));
+	    	criteriaTripData.addOrder(Order.asc("timestamp"));
 	    	criteriaTripData.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
 	    	
 			try {
 				List<Map> tripDataList = (List<Map>) criteriaTripData.list();
 		   		if ((field_mask & 16384) != 0) { 
-		    		Geometry tmpGPS;
+		    		Geometry tmpGPS, prevGPS = null;
 		    		String tmpCheckIn = null;
-		    		Integer tmpPointId;
+		    		Integer tmpPointId, pCounter = 0;
 		    		Map checkindata;
+		    		double sd = 0, avg = 0;
+		    		for (Map tmpMap:tripDataList) {
+		    			if(tmpMap.containsKey("accu")) {
+		    				if((Double.parseDouble(tmpMap.get("accu").toString()) != 0) && 
+		    						(Double.parseDouble(tmpMap.get("accu").toString()) < 500) &&
+		    						(Double.parseDouble(tmpMap.get("accu").toString()) != -999)) {
+		    					avg += Double.parseDouble(tmpMap.get("accu").toString());
+		    					pCounter++;
+		    				}
+		    			}
+		    		}
+		    		avg = avg / pCounter;
+		    		for (Map tmpMap:tripDataList) {
+		    			if(tmpMap.containsKey("accu")) {
+		    				if((Double.parseDouble(tmpMap.get("accu").toString()) != 0) && 
+		    						(Double.parseDouble(tmpMap.get("accu").toString()) < 500) &&
+		    						(Double.parseDouble(tmpMap.get("accu").toString()) != -999))
+		    					sd += Math.pow((Double.parseDouble(tmpMap.get("accu").toString()) - avg),2);
+		    			}
+		    		}
+		    		sd = Math.sqrt(sd / pCounter);
 		    		for (Map tmpMap:tripDataList) {
 		    			tmpGPS = (Geometry)tmpMap.remove("gps");
-		    			tmpMap.put("lng", tmpGPS.getCoordinate().x*1000000);
-		    			tmpMap.put("lat", tmpGPS.getCoordinate().y*1000000);
+		    			if(tmpMap.containsKey("accu")) {
+		    				if((Double.parseDouble(tmpMap.get("accu").toString()) != 0) && 
+		    						(Double.parseDouble(tmpMap.get("accu").toString()) != -999) &&
+		    						(Double.parseDouble(tmpMap.get("accu").toString()) <= avg + (sd * 2))) {
+				    			tmpMap.put("lng", tmpGPS.getCoordinate().x*1000000);
+				    			tmpMap.put("lat", tmpGPS.getCoordinate().y*1000000);
+				    			prevGPS = tmpGPS;
+		    				} else {
+		    					if(prevGPS == null) {
+		    						tmpMap.put("lng", -999*1000000);
+				    				tmpMap.put("lat", -999*1000000);
+		    					} else {
+					    			tmpMap.put("lng", prevGPS.getCoordinate().x*1000000);
+					    			tmpMap.put("lat", prevGPS.getCoordinate().y*1000000);		    						
+		    					}
+		    				} //fi
+		    			} else {
+			    			tmpMap.put("lng", tmpGPS.getCoordinate().x*1000000);
+			    			tmpMap.put("lat", tmpGPS.getCoordinate().y*1000000);		    				
+		    			} //fi
 		    			//System.out.println("GetCheckInDataComponent GPS:\t"	+ tmpGPS.getCoordinate().x*1000000 + " : " + tmpGPS.getCoordinate().y*1000000);
 		    			if (tmpMap.get("checkin") != null) tmpCheckIn = tmpMap.get("checkin").toString();		    			
 		    			tmpPointId = (Integer)tmpMap.remove("id");
@@ -265,7 +304,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 				   			tmpMap.put("CheckIn", checkindata);
 					   	}//fi
 				   		tmpMap.remove("checkin");
-				   		System.out.println("checkin:"+ tmpMap.toString());
+				   		//System.out.println("checkin:"+ tmpMap.toString());
 		    		}//rof
 		    	
 		    	}//fi */
