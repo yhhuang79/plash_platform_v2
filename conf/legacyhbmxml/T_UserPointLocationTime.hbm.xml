@@ -28,9 +28,11 @@
 		<property name="accey" column="accey" />
 		<property name="accez" column="accez" />	
 		<property name="gsminfo" column="gsminfo" />
-		<property name="wifiinfo" column="wifiinfo" />
+		<property name="wifiinfo" column="wifiinfo" />	
 		<property name="app" column="app" />		
 		<property name="checkin" column="checkin" />
+		<property name="latitude" column="latitude" />
+		<property name="longitude" column="longitude" />
 		
 	</class>
 
