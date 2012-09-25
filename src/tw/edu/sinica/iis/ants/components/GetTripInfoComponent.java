@@ -126,6 +126,7 @@ public class GetTripInfoComponent extends PLASHComponent {
 				} else {
 					System.out.println("list: " + tmpList.toString() );
 					map.put("tripInfoList", tmpList);
+					map.put("tripInfoNum", getAllTripNum(userid));
 				}
 				
 				System.out.println("GetTripInfoComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
@@ -259,6 +260,35 @@ public class GetTripInfoComponent extends PLASHComponent {
 		}//end try catch			//*/
 		
 	}//end method
+	
+	private Integer getAllTripNum(int userid) {
+		
+		//obtain the record
+    	Criteria criteriaTripNum = tskSession.createCriteria(T_TripInfo.class);
+    	criteriaTripNum.add(Restrictions.eq("userid", userid));
+    	ProjectionList filterProjList = Projections.projectionList();     	
+    	criteriaTripNum.setProjection(addFilterList(filterProjList,32768));
+    	criteriaTripNum.setProjection(Projections.rowCount());
+    	int tripInfoNum = 0;
+		try {
+			List tripInfoNums = criteriaTripNum.list();
+			Iterator it = tripInfoNums.iterator();
+			  if (!it.hasNext()){
+				  tripInfoNum = 0;
+			  } else {
+				  while(it.hasNext()){
+					  Object count = it.next();
+					  tripInfoNum = Integer.parseInt(count.toString());  
+				  }
+			  }
+			return tripInfoNum;
+											
+		} catch (HibernateException he) {
+			
+			return 0;
+		}//end try catch			//*/
+		
+	}//end method	
 	
 	/**
 	 * Add corresponding projection property according to field_mask
