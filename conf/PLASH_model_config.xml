@@ -157,6 +157,10 @@
 		connector-ref="jmsCon" />					
 	<jms:endpoint name="plashSignUpQueue" queue="plash.sign.up"
 		connector-ref="jmsCon" />
+	<jms:endpoint name="plashGetFriendRequestListQueue" queue="plash.get.friend.request.list"
+		connector-ref="jmsCon" />
+	<jms:endpoint name="plashGetAllUserListQueue" queue="plash.get.all.user.list"
+		connector-ref="jmsCon" />
 
 	<https:connector name="httpsConnector">
 		<https:tls-key-store path="file://../resources/tmpKey/keystore" keyPassword="password" storePassword="password"/>
@@ -304,7 +308,10 @@
 		port="8080" path="UploadTrip" synchronous="true" connector-ref="httpsConnector" />		
 	<https:endpoint name="plashSignUpHttpsInboundEndpoint" host="localhost"
 		port="8080" path="SignUp" synchronous="true" connector-ref="httpsConnector" />
-			
+	<https:endpoint name="plashGetFriendRequestListHttpsInboundEndpoint" host="localhost"
+		port="8080" path="GetFriendRequestList" synchronous="true" connector-ref="httpsConnector" />
+	<https:endpoint name="plashGetAllUserListHttpsInboundEndpoint" host="localhost"
+		port="8080" path="GetAllUserList" synchronous="true" connector-ref="httpsConnector" />			
 
 	<model name="PLASH">
 	
@@ -1934,6 +1941,63 @@
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>			
+		<!-- (Step 4) Yu-Hsiang: XXXXX = GetFriendRequestList -->
+		<service name="GetFriendRequestListService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashGetFriendRequestListHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="GetFriendRequestListComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashGetFriendRequestListQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashGetFriendRequestListQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="TestResponseTransformer" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		<!-- (Step 4) Yu-Hsiang: XXXXX = GetAllUserList -->
+		<service name="GetAllUserListService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashGetAllUserListHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="GetAllUserListComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashGetAllUserListQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashGetAllUserListQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="TestResponseTransformer" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+
 
 		<service name="NewTrajectoryInfoService">
 			<inbound>
