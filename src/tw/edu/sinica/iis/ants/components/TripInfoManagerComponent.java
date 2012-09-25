@@ -8,9 +8,6 @@ import java.math.*;
 import java.net.*;
 
 
-import javax.net.ssl.HttpsURLConnection;
-
-
 import org.hibernate.*;
 import org.hibernate.criterion.*;
 import org.hibernate.transform.*;
@@ -19,6 +16,7 @@ import org.json.*;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.*;
 
+import tw.edu.sinica.iis.ants.AbnormalResult;
 import tw.edu.sinica.iis.ants.DB.*;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
@@ -101,20 +99,22 @@ public class TripInfoManagerComponent extends PLASHComponent{
 				break;
 			}//end switch
 			
-			System.out.println("TripInfoManagerComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
 			tskSession.close();
 			return map;
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
-			map.put("TripInfoManagerComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
-	        System.out.println("TripInfoManagerComponent failure end1:\t"+ Calendar.getInstance().getTimeInMillis());
-	        tskSession.close();
-			return map;
+			tskSession.close();
+			getElapsed();
+	        AbnormalResult err = new AbnormalResult(this,'E');
+	        err.refCode = 003;
+	        err.explaination = "NullPointerException occured, probably due to invalid argument";
+			return returnUnsuccess(map,err);				
 		} catch (NumberFormatException e) { //invalid arguments 
-			map.put("TripInfoManagerComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file
-			//map.put("error detail" , e.toString()); //perhaps put error detail?
-	        System.out.println("TripInfoManagerComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
-	        tskSession.close();
-			return map;
+			tskSession.close();
+			getElapsed();
+	        AbnormalResult err = new AbnormalResult(this,'E');
+	        err.refCode = 003;
+	        err.explaination = "NumberFormatException occured, invalid arguments";
+			return returnUnsuccess(map,err);	
 		}//end try catch
 		
 
@@ -177,7 +177,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
 	 * @param level Indicates the level the trip info should be updated to
 	 * @param max_proc_time This value indicates the time allocated to process the database. 
 	 * 						Notice that the program does not force calculation termination immediately when the this limit is reached.
-	 * 						Rather, the program continues current calculations and finishes up the current trip.    
+	 * 						Rather, the program continues current calculations and finishes up the current trip.  
 	 */
 	private void scanDB(int userid, int level, int max_proc_time) {
 		
@@ -192,6 +192,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
  //   		criteriaUPLT.add(Restrictions.eq("userid", userid));
     	} else {        	
     	}//fi    	
+
     	ProjectionList uniqUIDTIDprojList = Projections.projectionList();    	
     	uniqUIDTIDprojList.add(Projections.property("userid"),"userid");
     	uniqUIDTIDprojList.add(Projections.property("trip_id"),"trip_id");
@@ -201,13 +202,13 @@ public class TripInfoManagerComponent extends PLASHComponent{
 
     	criteriaUPLT.setResultTransformer(Transformers.aliasToBean(T_TripIdent.class) );
     	@SuppressWarnings("unchecked")    	
-    	//Iterator<Map> tripListItr = (Iterator<Map>)criteriaUPLT.list().iterator();
+    	//Iterator<Map> tripListItr = (Iterator<Map>)criteriaUPLT.list().iterator();    	
     	Iterator<T_TripIdent> tripListItr = criteriaUPLT.list().iterator();
     	if (!tripListItr.hasNext()) { //empty list
     		return;
     	}//fi
     	
-      	
+
     	//A list of unique user id and trip id has been extracted, now scan through each entry and check for info status
     	Criteria criteriaTripInfo;//criteria for table Trip_Info
     	int tmpUserID, tmpTripID;
@@ -235,8 +236,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
 			}//end try catch			
 			//Check whether such trip record exists or not and is updated or not
 			if (currTripInfoRec == null || currTripInfoRec.getUpdate_status() < level) {
-				//if such trip did not exist or the update status does not meet specified level
-				//then generate it!
+				//if such trip did not exist or the update status does not meet specified level, then generate it!
 				generateLevelOneTripStatus(tmpUserID, tmpTripID,currTripInfoRec);
 			} else {
 				//this trip_info record is up-to-date
@@ -244,7 +244,8 @@ public class TripInfoManagerComponent extends PLASHComponent{
 				
 			}//fi
 				
-			currentTime = Calendar.getInstance().getTimeInMillis();			
+			currentTime = Calendar.getInstance().getTimeInMillis();		
+	
 		}while(currentTime-startTime < max_proc_time && tripListItr.hasNext() ); //*/
 	
 		
@@ -273,13 +274,13 @@ public class TripInfoManagerComponent extends PLASHComponent{
 		Criteria criteriaUPLT = tskSession.createCriteria(T_UserPointLocationTime.class); //criteria for table user_point_location_time
 		criteriaUPLT.add(Restrictions.eq("userid", userid));
 		criteriaUPLT.add(Restrictions.eq("trip_id", trip_id));
-		List<T_UserPointLocationTime> tripRecList = (List<T_UserPointLocationTime>)criteriaUPLT.list();		
+		List<T_UserPointLocationTime> tripRecList = (List<T_UserPointLocationTime>)criteriaUPLT.list();	
 		if(tripRecList.size()<2) {
 			//only 1 trip point
 			//what to do? delete this trip or merge this point to nearest trip or ?		
 		}//fi
 		tripInfoRec.setNum_of_pts(tripRecList.size());
-		//tripInfoRec.setTrip_st_address(getAddress(tripRecList.get(0).getGps().getCoordinate().y, tripRecList.get(0).getGps().getCoordinate().x));
+		
 		//use thread to get address
 		GetAddrThread stAddr = new GetAddrThread(tripRecList.get(0).getGps().getCoordinate().y, tripRecList.get(0).getGps().getCoordinate().x,tripInfoRec,(short) 0);
 		stAddr.run();
@@ -293,27 +294,39 @@ public class TripInfoManagerComponent extends PLASHComponent{
 		}//fi
 		tripInfoRec.setTrip_st(tripRecList.get(0).getTimestamp());
 		tripInfoRec.setTrip_et(tripRecList.get(tripRecList.size()-1).getTimestamp());
-
-
+		
 		//calculate trip length
 		Double tmpDist = new Double(0);
-		for (int i = 1; i < tripRecList.size(); i++) {
-			//do something here
+		Geometry firstGPS = null;
+		Geometry secondGPS = null;
+		boolean getFirst = true;
 			
+
+		for (int i = 0; i < tripRecList.size(); i++) {
+			
+			//check if the gps is out of bound
+			if (Math.abs(tripRecList.get(i).getLatitude()) <= 180 && Math.abs(tripRecList.get(i).getLongitude()) <= 180  ) {
+				if (getFirst) {
+					firstGPS = tripRecList.get(0).getGps();
+					getFirst = false;
+					continue;
+				}//fi
+				secondGPS = tripRecList.get(i).getGps();				
+			} else {
+				continue;
+			}//fi
 			tmpDist += ((BigDecimal)tskSession.createSQLQuery(
-			//java.math.BigDecimal test = (BigDecimal)tskSession.createSQLQuery(
-			//Iterator itr = tskSession.createSQLQuery(
-			
+		
 			
 					"SELECT round(CAST(ST_Distance_Sphere(ST_GeomFromText('" + 
-					tripRecList.get(i-1).getGps() +
+					firstGPS +
 					"',4326),ST_GeomFromText('" + 
-					tripRecList.get(i).getGps() +
+					secondGPS +
 					"',4326)) As numeric),2);"
 
 					).uniqueResult()).doubleValue(); //*/
-								
-			
+			firstGPS = secondGPS;
+			//System.out.println("");
 		}//end for
 
 		

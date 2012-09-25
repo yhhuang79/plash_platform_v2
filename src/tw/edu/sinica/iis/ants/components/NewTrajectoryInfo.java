@@ -105,12 +105,14 @@ public class NewTrajectoryInfo extends PLASHComponent {
 	        map.put("trajectory_id", ti.getTrajectoryId());
 	        return 	returnSuccess(map);
 		} catch (ConstraintViolationException e) {
+			tskSession.close();
 			getElapsed();
 	        AbnormalResult err = new AbnormalResult(this,'E');
 	        err.refCode = 004;
 	        err.explaination = "Insert or update on table violates foreign key constraint";
 			return returnUnsuccess(map,err);			
 		} catch (Exception e){
+			tskSession.close();
 			getElapsed();
 	        AbnormalResult err = new AbnormalResult(this,'E');
 	        err.refCode = 005;

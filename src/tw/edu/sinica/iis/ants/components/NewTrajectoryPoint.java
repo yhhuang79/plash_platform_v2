@@ -262,12 +262,14 @@ public class NewTrajectoryPoint extends PLASHComponent {
 			tx.commit();
 	        tskSession.close();
 		} catch (ConstraintViolationException e) {
+			tskSession.close();
 			getElapsed();
 	        AbnormalResult err = new AbnormalResult(this,'E');
 	        err.refCode = 004;
 	        err.explaination = "Insert or update on table violates foreign key constraint";
 			return returnUnsuccess(map,err);			
 		} catch (Exception e){
+			tskSession.close();
 			getElapsed();
 	        AbnormalResult err = new AbnormalResult(this,'E');
 	        err.refCode = 005;
@@ -298,12 +300,14 @@ public class NewTrajectoryPoint extends PLASHComponent {
 			tx.commit();
 	        tskSession.close();
 		} catch (ConstraintViolationException e) {
+			tskSession.close();
 			getElapsed();
 	        AbnormalResult err = new AbnormalResult(this,'E');
 	        err.refCode = 004;
 	        err.explaination = "Insert or update on table violates foreign key constraint";
 			return returnUnsuccess(map,err);			
 		} catch (Exception e){
+			tskSession.close();
 			getElapsed();
 	        AbnormalResult err = new AbnormalResult(this,'E');
 	        err.refCode = 005;

@@ -42,7 +42,7 @@ import com.vividsolutions.jts.io.WKTReader;
  * 	14. wifiinfo <br>
  *  15. app <br>
  *  15. mood <br> 
- * Example: InputComponent?userid=1&trip_id=500&timestamp=2011-11-11 11:11:11.111
+ * Example: InputTripDataComponent?userid=1&trip_id=500&timestamp=2011-11-11 11:11:11.111&lat=123.456&lng=23.456789
  *  
  * @author  Angus Fuming Huang, Yi-Chun Teng
  * @param	map A map object that contains userid, trip_id, update_status and any of the items listed above 
