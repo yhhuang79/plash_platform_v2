@@ -281,11 +281,8 @@ public class TripInfoManagerComponent extends PLASHComponent{
 		}//fi
 		tripInfoRec.setNum_of_pts(tripRecList.size());
 		
-		//use thread to get address
-		GetAddrThread stAddr = new GetAddrThread(tripRecList.get(0).getGps().getCoordinate().y, tripRecList.get(0).getGps().getCoordinate().x,tripInfoRec,(short) 0);
-		stAddr.run();
-		GetAddrThread etAddr = new GetAddrThread(tripRecList.get(0).getGps().getCoordinate().y, tripRecList.get(0).getGps().getCoordinate().x,tripInfoRec,(short) 1);
-		etAddr.run();
+
+
 		
 		
 		if (tripInfoRec.getTrip_name() == null) { 
@@ -300,22 +297,27 @@ public class TripInfoManagerComponent extends PLASHComponent{
 		Geometry firstGPS = null;
 		Geometry secondGPS = null;
 		boolean getFirst = true;
-			
+		GetAddrThread stAddr = null;
+		GetAddrThread etAddr = null;
 
 		for (int i = 0; i < tripRecList.size(); i++) {
 			
 			//check if the gps is out of bound
 			if (Math.abs(tripRecList.get(i).getLatitude()) <= 180 && Math.abs(tripRecList.get(i).getLongitude()) <= 180  ) {
 				if (getFirst) {
-					firstGPS = tripRecList.get(0).getGps();
+					firstGPS = tripRecList.get(i).getGps();					
 					getFirst = false;
+					//use thread to get address
+					stAddr = new GetAddrThread(firstGPS.getCoordinate().y, firstGPS.getCoordinate().x,tripInfoRec,(short) 0);
+					stAddr.run();					
 					continue;
 				}//fi
-				secondGPS = tripRecList.get(i).getGps();				
+					secondGPS = tripRecList.get(i).getGps();											
 			} else {
 				continue;
 			}//fi
-			tmpDist += ((BigDecimal)tskSession.createSQLQuery(
+			
+			double tmpSegDist = ((BigDecimal)tskSession.createSQLQuery(
 		
 			
 					"SELECT round(CAST(ST_Distance_Sphere(ST_GeomFromText('" + 
@@ -324,11 +326,16 @@ public class TripInfoManagerComponent extends PLASHComponent{
 					secondGPS +
 					"',4326)) As numeric),2);"
 
-					).uniqueResult()).doubleValue(); //*/
+					).uniqueResult()).doubleValue(); 
+			tmpDist += tmpSegDist;
 			firstGPS = secondGPS;
-			//System.out.println("");
+			System.out.println("Segment distance is " + tmpSegDist + ", GPS: " + firstGPS.toString() + " , " + secondGPS.toString());
 		}//end for
 
+		if (secondGPS != null) {
+			etAddr = new GetAddrThread(secondGPS.getCoordinate().y, secondGPS.getCoordinate().x,tripInfoRec,(short) 1);
+			etAddr.run();
+		}//fi
 		
 		tripInfoRec.setTrip_length(tmpDist.intValue());
 			
@@ -336,9 +343,10 @@ public class TripInfoManagerComponent extends PLASHComponent{
 			stAddr.join();
 			etAddr.join();
 			tripInfoRec.setUpdate_status((short) 1);
+		} catch (NullPointerException e) {
+			tripInfoRec.setUpdate_status((short) 0);
 		} catch (InterruptedException e) {
-			// trip address failed to be set
-			
+			// trip address failed to be set			
 			tripInfoRec.setUpdate_status((short) 0);			
 		} //waits for thread at to finish;
 		
