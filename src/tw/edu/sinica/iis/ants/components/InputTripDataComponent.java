@@ -41,18 +41,17 @@ import com.vividsolutions.jts.io.WKTReader;
  * 	13. gsminfo <br>
  * 	14. wifiinfo <br>
  *  15. app <br>
- *  15. mood <br> 
- * Example: InputTripDataComponent?userid=1&trip_id=500&timestamp=2011-11-11 11:11:11.111&lat=123.456&lng=23.456789
+ *  15. checkin <br> 
+ * 
  *  
  * @author  Angus Fuming Huang, Yi-Chun Teng
  * @param	map A map object that contains userid, trip_id, update_status and any of the items listed above 
  *
-
  * @version   1.2, 01/5/2012
  * @param     
  * @return    message 
  * @see       connpost.java
- * @example   http://localhost:8080/InputTripDataComponent?userid=1&trip_id=500&timestamp=2011-11-11 11:11:11.111&mood=5
+ * @example   http://localhost:8080/InputTripDataComponent?userid=1&trip_id=500&timestamp=2011-11-11 11:11:11.111&checkin=false
  * 
  */
 public class InputTripDataComponent extends PLASHComponent {
@@ -98,7 +97,7 @@ public class InputTripDataComponent extends PLASHComponent {
     	Double pitch = 0.0;
     	Double roll = 0.0;
     	String battery_info = "";        
-    	Short mood = 0;
+    	Boolean checkin = false;
         
         Timestamp timestamp = null;
         
@@ -143,8 +142,8 @@ public class InputTripDataComponent extends PLASHComponent {
         	battery_info = map.get("battery_info").toString();        	
         if (map.containsKey("timestamp")) 
         	timestamp = Timestamp.valueOf(map.get("timestamp").toString());
-        if (map.containsKey("mood")) 
-        	mood = Short.valueOf(map.get("mood").toString()).shortValue();
+        if (map.containsKey("checkin")) 
+        	checkin = Boolean.valueOf(map.get("checkin").toString());
         
         if (userid.equals("") || trip_id.equals("") || timestamp.equals("") || lat.equals("") || lng.equals("")) {  //簡化的判斷式
 			map.put("message", "required information is empty and can not input the GPS location");
@@ -201,7 +200,7 @@ public class InputTripDataComponent extends PLASHComponent {
 				pt.setPitch(pitch);
 				pt.setRoll(roll);
 				pt.setBattery_info(battery_info);   
-
+				pt.setCheckin(checkin);
 				
 				Transaction tx = tskSession.beginTransaction();
 				tskSession.save(pt);
