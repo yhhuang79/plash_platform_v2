@@ -94,6 +94,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
 				
 				break;
 			case 3:
+				testMethod();
 				break;
 			default:				
 				break;
@@ -189,7 +190,9 @@ public class TripInfoManagerComponent extends PLASHComponent{
     	T_TripIdent currUPLTrec; //current user poiknt location time record	    	
     	Criteria criteriaUPLT = tskSession.createCriteria(T_UserPointLocationTime.class); //criteria for table user_point_location_time
     	if (userid != -1) {
- //   		criteriaUPLT.add(Restrictions.eq("userid", userid));
+    		//This does not work as of hibernate 3.5 
+    		//It has a bug that criteria query does not work if both restriction and projection are both specified
+    		criteriaUPLT.add(Restrictions.eq("this.userid", userid));
     	} else {        	
     	}//fi    	
 
@@ -220,10 +223,8 @@ public class TripInfoManagerComponent extends PLASHComponent{
 			tmpUserID = currUPLTrec.getUserid();
 			tmpTripID = currUPLTrec.getTrip_id();
 			
-			if (userid != -1 && tmpUserID != userid) {
-				continue;
-			}//fi
-			
+
+			System.out.println("This trip is (user id : trip id) : " + tmpUserID  + " : " + tmpTripID);
 			criteriaTripInfo = tskSession.createCriteria(T_TripInfo.class);
 			criteriaTripInfo.add(Restrictions.eq("userid", tmpUserID));
 			criteriaTripInfo.add(Restrictions.eq("trip_id", tmpTripID));	
@@ -235,9 +236,10 @@ public class TripInfoManagerComponent extends PLASHComponent{
 				//handle hibernate exception here, to be implemented 
 			}//end try catch			
 			//Check whether such trip record exists or not and is updated or not
-			if (currTripInfoRec == null || currTripInfoRec.getUpdate_status() < level) {
+			if (currTripInfoRec == null || currTripInfoRec.getUpdate_status() == null || currTripInfoRec.getUpdate_status() < level) {
 				//if such trip did not exist or the update status does not meet specified level, then generate it!
-				generateLevelOneTripStatus(tmpUserID, tmpTripID,currTripInfoRec);
+				System.out.println("Now processing: " + tmpUserID  + " : " + tmpTripID);
+				generateLevelThreeTripStatus(tmpUserID, tmpTripID,currTripInfoRec);
 			} else {
 				//this trip_info record is up-to-date
 				continue;
@@ -252,7 +254,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
 	}//end method
 	
 	/**
-	 * This method populate trip information, level one means the status info adheres level one definition <br>
+	 * This method populate trip information, level three means the status info adheres level one definition <br>
 	 * If the specified trip info record is not found, then the operation simply stops without notifying the caller <br><br>
 	 * setTripName(1,2,"my trip");	  
 	 * 
@@ -263,7 +265,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
 	 * 			If null, then it means no such entry exists in the TripInfo table. 
 	 * 
 	 */
-	private void generateLevelOneTripStatus(int userid, int trip_id, T_TripInfo tripInfoRec){
+	private void generateLevelThreeTripStatus(int userid, int trip_id, T_TripInfo tripInfoRec){
 		if (tripInfoRec == null) { //no such entry in TripInfo table
 			tripInfoRec = new T_TripInfo();
 			tripInfoRec.setUserid(userid);
@@ -329,7 +331,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
 					).uniqueResult()).doubleValue(); 
 			tmpDist += tmpSegDist;
 			firstGPS = secondGPS;
-			System.out.println("Segment distance is " + tmpSegDist + ", GPS: " + firstGPS.toString() + " , " + secondGPS.toString());
+			//System.out.println("Segment distance is " + tmpSegDist + ", GPS: " + firstGPS.toString() + " , " + secondGPS.toString());
 		}//end for
 
 		if (secondGPS != null) {
@@ -342,7 +344,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
 		try {
 			stAddr.join();
 			etAddr.join();
-			tripInfoRec.setUpdate_status((short) 1);
+			tripInfoRec.setUpdate_status((short) 3);
 		} catch (NullPointerException e) {
 			tripInfoRec.setUpdate_status((short) 0);
 		} catch (InterruptedException e) {
@@ -446,5 +448,67 @@ public class TripInfoManagerComponent extends PLASHComponent{
 		}//end method
 		
 		
-	}//end class	
+	}//end class
+	
+	
+	/**
+	 * This is a test method for debugging <br>
+	 * 
+	 * @author Yi-Chun Teng
+	 */
+	private void testMethod() {
+		
+    	
+    	//First, get a list of unique userid, trip_id pairs
+    	T_TripIdent currUPLTrec; //current user poiknt location time record	    	
+    	Criteria criteriaUPLT = tskSession.createCriteria(T_UserPointLocationTime.class); //criteria for table user_point_location_time
+    	criteriaUPLT.add(Restrictions.eq("this.userid", 283));
+    	ProjectionList uniqUIDTIDprojList = Projections.projectionList();    	
+    	uniqUIDTIDprojList.add(Projections.property("userid"),"userid");
+    	uniqUIDTIDprojList.add(Projections.property("trip_id"),"trip_id");
+    	criteriaUPLT.setProjection(Projections.distinct(uniqUIDTIDprojList));
+    	//criteriaUPLT.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP );
+
+    	criteriaUPLT.setResultTransformer(Transformers.aliasToBean(T_TripIdent.class) );
+    	@SuppressWarnings("unchecked")    	
+    	//Iterator<Map> tripListItr = (Iterator<Map>)criteriaUPLT.list().iterator();    	
+    	Iterator<T_TripIdent> tripListItr = criteriaUPLT.list().iterator();
+    	if (!tripListItr.hasNext()) { //empty list
+    		System.out.println("empty!!!~~~");
+    		return;
+    	} else {
+    		System.out.println("Number of trips: " + criteriaUPLT.list().size());
+    	}//fi
+    	
+
+    	//A list of unique user id and trip id has been extracted, now scan through each entry and check for records
+    	int tmpUserID, tmpTripID;
+
+		do {
+			//get the ids
+			currUPLTrec = tripListItr.next();
+			System.out.println("still not able to transform?? : " + currUPLTrec.getTrip_id());
+			tmpUserID = currUPLTrec.getUserid().intValue();
+			tmpTripID = currUPLTrec.getTrip_id().intValue();
+			
+			if (tmpUserID != 283 || tmpTripID < 0 ) {
+	
+				continue;
+		    
+				
+			}//fi
+			
+
+			Criteria criteriaTripRecList = tskSession.createCriteria(T_UserPointLocationTime.class);
+			criteriaTripRecList.add(Restrictions.eq("userid", tmpUserID));
+			criteriaTripRecList.add(Restrictions.eq("trip_id", tmpTripID));
+			List<T_UserPointLocationTime> tripRecList = (List<T_UserPointLocationTime>)criteriaTripRecList.list();	
+	    	System.out.println("User and trip ids: " + tmpUserID + " : " + tmpTripID + " Size of trip: " + tripRecList.size() );			
+			//*/
+		
+	
+		}while(tripListItr.hasNext() ); //*/
+	
+		
+	}//end method	
 }//end class
