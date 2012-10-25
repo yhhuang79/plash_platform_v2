@@ -72,7 +72,7 @@ public class GetTripInfoComponent extends PLASHComponent {
 
 
 			int userid, trip_id, field_mask;				
-			String tmpUserid, tmpTrip_id, tmpField_mask;
+			String tmpUserid, tmpTrip_id, tmpField_mask, tmpName = "*";
 			if ((tmpUserid = (String)map.remove("userid")) == null) {
 				//user id must be specified
 				map.put("GetTripInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
@@ -118,8 +118,12 @@ public class GetTripInfoComponent extends PLASHComponent {
 				if(map.containsKey("MaxResult")){
 					MaxResult = Integer.parseInt(map.remove("MaxResult").toString());
 				}
+				
+				if(map.containsKey("name")){
+					tmpName = (String)map.remove("name");
+				}
 
-				List<Map> tmpList = getAllTripInfo(userid,field_mask,sort,FirstResult,MaxResult);
+				List<Map> tmpList = getAllTripInfo(userid,field_mask,sort,FirstResult,MaxResult,tmpName);
 				if (tmpList == null) {//error here
 					tskSession.close();
 					return map;
@@ -213,7 +217,7 @@ public class GetTripInfoComponent extends PLASHComponent {
 	 * @return	A list of map that contains the individual trip info
 	 * 
 	 */
-	private List<Map> getAllTripInfo(int userid, int field_mask, int sort_order, int firstResult, int maxResult) {
+	private List<Map> getAllTripInfo(int userid, int field_mask, int sort_order, int firstResult, int maxResult, String name) {
 		
 		//obtain the record
     	Criteria criteriaTripInfo = tskSession.createCriteria(T_TripInfo.class);
@@ -251,8 +255,22 @@ public class GetTripInfoComponent extends PLASHComponent {
 
 		try {
 			List<Map> tripInfoList = (List<Map>) criteriaTripInfo.list();
+			List<Map> resultList = new ArrayList<Map>();
 			
-			return tripInfoList;
+			if(name != "*"){
+				Iterator tls = tripInfoList.iterator();
+				//Map oneTrip;
+				while(tls.hasNext()) {
+					Map tl = (Map) tls.next();
+					if (tl.get("trip_name").toString().toLowerCase().startsWith(name.toLowerCase())) {
+						resultList.add(tl);
+					}//fi */
+				}//rof
+			} else {
+				resultList = tripInfoList;
+			}
+									
+			return resultList;
 											
 		} catch (HibernateException he) {
 			
