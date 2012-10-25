@@ -1031,8 +1031,6 @@
 			<async-reply>
 				<inbound-endpoint ref="plashSetAuthFriendQueue">
 					<transformers>
-						<transformer ref="TestResponseTransformer" />
-						<jms:jmsmessage-to-object-transformer />
 						
 					</transformers>
 				</inbound-endpoint>
