@@ -8,6 +8,7 @@ import java.util.Map;
 import org.hibernate.*;
 
 
+import tw.edu.sinica.iis.ants.DB.T_CheckInInfo;
 import tw.edu.sinica.iis.ants.DB.T_TripData;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
@@ -44,7 +45,7 @@ import com.vividsolutions.jts.io.WKTReader;
  *  15. checkin <br> 
  * 
  *  
- * @author  Angus Fuming Huang, Yi-Chun Teng
+ * @author  Angus Fuming Huang, Yi-Chun Teng, Yu-Hsiang Huang
  * @param	map A map object that contains userid, trip_id, update_status and any of the items listed above 
  *
  * @version   1.2, 01/5/2012
@@ -203,10 +204,29 @@ public class InputTripDataComponent extends PLASHComponent {
 				pt.setCheckin(checkin);
 				
 				Transaction tx = tskSession.beginTransaction();
-				tskSession.save(pt);
+				//tskSession.save(pt);
+				tskSession.persist(pt);
 				tx.commit();
 				
-				map.put("message", "Success in GPS location input"); 
+				
+				if(checkin){
+					Integer tid = pt.getId();
+					T_CheckInInfo CData = new T_CheckInInfo();
+					CData.setId(tid);
+					if((map.containsKey("message")) && (map.get("message") != null))
+						CData.setMessage(map.get("message").toString());
+					if((map.containsKey("emotion")) && (map.get("emotion") != null))
+						CData.setEmotion(Integer.parseInt(map.get("emotion").toString()));
+					if((map.containsKey("picture_uri")) && (map.get("picture_uri") != null))
+						CData.setPicture_uri(map.get("picture_uri").toString());
+					tx = tskSession.beginTransaction();
+					tskSession.save(CData);
+					tx.commit();
+					map.put("message", "Success in GPS location input with CheckIn Data"); 
+
+				} else {				
+					map.put("message", "Success in GPS location input"); 
+				}
 			}//fi
         
         tskSession.close();

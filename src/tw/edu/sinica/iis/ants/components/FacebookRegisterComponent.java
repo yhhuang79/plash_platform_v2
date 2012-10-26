@@ -41,7 +41,7 @@ public class FacebookRegisterComponent {
 		
 		String username = map.get("username").toString();
 		String email = map.get("email").toString();
-		Integer facebookid = Integer.parseInt(map.get("facebookid").toString());
+		String facebookid = map.get("facebookid").toString();
 		
 		T_Login user = new T_Login();
 		//T_Login user = (T_Login) users.next();

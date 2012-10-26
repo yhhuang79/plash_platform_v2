@@ -232,7 +232,7 @@ public class FriendRequestComponent extends PLASHComponent{
 				// create a Confirmation Link to confirm the friendship
 				//String host = "http://plash.iis.sinica.edu.tw/plash/";
 				//String action = "confirmfriendrequest.action";
-				String host = "https://plash.iis.sinica.edu.tw:8080/";
+				/*String host = "https://plash.iis.sinica.edu.tw:8080/";
 				String action = "ConfirmFriendRequest";
 				String temp1 = "?fid=" + fid;
 				// String temp2 = "&userid="+userid; //sid
@@ -248,7 +248,7 @@ public class FriendRequestComponent extends PLASHComponent{
 				String[] to = { friendEmail };
 				String personalmessage = null;
 				sendReq.sendFriendRequest(to, personalName, friendName,	personalmessage, confirmLink);
-				
+				*/
 				map.put("message", "Successful Friend Request");
 				//--------------------------------------------------------------//
 				
