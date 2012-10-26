@@ -149,10 +149,11 @@ public class ConfirmFriendRequestComponent {
     				useraemail = user.getEmail();
     			}
 				
-				String host = "http://plash.iis.sinica.edu.tw/plash/";
-				String action = "*.action";
-	            String link = host+action;
-	            
+				//String host = "http://plash.iis.sinica.edu.tw/plash/";
+				//String action = "*.action";
+	            //String link = host+action;
+    			String link = "http://plash2.iis.sinica.edu.tw/antrip/";
+    			
 	            //Sent email
 	            sendMail sendReq = new sendMail();
                 String[] to = {useraemail};
