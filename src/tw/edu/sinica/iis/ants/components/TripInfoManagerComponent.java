@@ -278,6 +278,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
 		criteriaUPLT.add(Restrictions.eq("trip_id", trip_id));
 		List<T_UserPointLocationTime> tripRecList = (List<T_UserPointLocationTime>)criteriaUPLT.list();	
 		if(tripRecList.size()<2) {
+			System.out.println("Trip: " +  userid  + " : " + trip_id + " contains insufficient points");
 			//only 1 trip point
 			//what to do? delete this trip or merge this point to nearest trip or ?		
 		}//fi
