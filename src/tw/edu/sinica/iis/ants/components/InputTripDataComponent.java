@@ -42,7 +42,7 @@ import com.vividsolutions.jts.io.WKTReader;
  * 	13. gsminfo <br>
  * 	14. wifiinfo <br>
  *  15. app <br>
- *  15. checkin <br> 
+ *  16. checkin <br> 
  * 
  *  
  * @author  Angus Fuming Huang, Yi-Chun Teng, Yu-Hsiang Huang
