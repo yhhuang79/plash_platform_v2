@@ -189,8 +189,8 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 			System.out.println("Gone here getLatestTripPt Obj ID: " + this + " request ID: " + requestCount);		
 			//obtain the record
 	    	Criteria criteriaTripData = tskSession.createCriteria(T_TripData.class);
-	    	criteriaTripData.add(Restrictions.eq("userid", userid));
-	    	criteriaTripData.add(Restrictions.eq("trip_id", trip_id));	    	
+	    	criteriaTripData.add(Restrictions.eq("this.userid", userid));
+	    	criteriaTripData.add(Restrictions.eq("this.trip_id", trip_id));	    	
 	    	ProjectionList filterProjList = Projections.projectionList();     	
 	    	criteriaTripData.setProjection(addFilterList(filterProjList,field_mask));
 	    	criteriaTripData.addOrder(Order.desc("timestamp"));
@@ -202,10 +202,11 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 				if (resultList.size()  == 0 ) {
 					return new HashMap();
 				} else {				
-			   		if ((field_mask & 16384) != 0) { 
-			    		Geometry tmpGPS = (Geometry)resultList.get(0).remove("gps");		    		
+			   		if ((field_mask & 16384) != 0) { 			   			
+			    		/*
+			   			Geometry tmpGPS = (Geometry)resultList.get(0).remove("gps");		    		
 			    		resultList.get(0).put("lng", tmpGPS.getCoordinate().x*1000000);
-			    		resultList.get(0).put("lat", tmpGPS.getCoordinate().y*1000000);		    	
+			    		resultList.get(0).put("lat", tmpGPS.getCoordinate().y*1000000);	//*/
 			    	}//fi 				
 					return resultList.get(0);
 				}//fi			//*/
@@ -232,22 +233,23 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 			System.out.println("Gone here getTripData Obj ID: " + this + " request ID: " + requestCount);
 			//obtain the record
 	    	Criteria criteriaTripData = tskSession.createCriteria(T_TripData.class);
-	    	criteriaTripData.add(Restrictions.eq("userid", userid));
-	    	criteriaTripData.add(Restrictions.eq("trip_id", trip_id));
+	    	criteriaTripData.add(Restrictions.eq("this.userid", userid));
+	    	criteriaTripData.add(Restrictions.eq("this.trip_id", trip_id));
 	    	ProjectionList filterProjList = Projections.projectionList();     	
 	    	criteriaTripData.setProjection(addFilterList(filterProjList,field_mask));
-	    	criteriaTripData.addOrder(Order.desc("timestamp"));
+	    	//criteriaTripData.addOrder(Order.desc("timestamp"));
 	    	criteriaTripData.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
 	    	
 			try {
 				List<Map> tripDataList = (List<Map>) criteriaTripData.list();
 		   		if ((field_mask & 16384) != 0) { 
 		    		Geometry tmpGPS;
+		    		/*
 		    		for (Map tmpMap:tripDataList) {
 		    			tmpGPS = (Geometry)tmpMap.remove("gps");
 		    			tmpMap.put("lng", tmpGPS.getCoordinate().x*1000000);
 		    			tmpMap.put("lat", tmpGPS.getCoordinate().y*1000000);
-		    		}//rof
+		    		}//rof */
 		    	
 		    	}//fi */
 				return tripDataList;
@@ -271,7 +273,9 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	        	filterProjList.add(Projections.sqlProjection("timestamp", new String[] {"timestamp"}, new Type[] { new StringType() }));
 	    	}//fi
 	    	if ((field_mask & 16384) != 0) { 
-	    		filterProjList.add(Projections.property("gps"),"gps");
+	    		//filterProjList.add(Projections.property("gps"),"gps");
+	    		filterProjList.add(Projections.property("latitude"),"latitude");
+	    		filterProjList.add(Projections.property("longitude"),"longitude");
 	    	}//fi
 	    	if ((field_mask & 8192) != 0) { 
 	        	filterProjList.add(Projections.property("server_timestamp"),"server_timestamp");  
