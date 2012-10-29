@@ -247,8 +247,10 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 		    		Map checkindata;
 		    		double sd = 0, avg = 0;
 		    		for (Map tmpMap:tripDataList) {
+		    			tmpGPS = (Geometry)tmpMap.get("gps");
 		    			if(tmpMap.containsKey("accu")) {
-		    				if((Double.parseDouble(tmpMap.get("accu").toString()) != 0) && 
+		    				if((tmpGPS.getCoordinate().x != -999) &&
+		    						(tmpGPS.getCoordinate().y != -999) &&
 		    						(Double.parseDouble(tmpMap.get("accu").toString()) < 500) &&
 		    						(Double.parseDouble(tmpMap.get("accu").toString()) != -999)) {
 		    					avg += Double.parseDouble(tmpMap.get("accu").toString());
@@ -258,8 +260,10 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 		    		}
 		    		avg = avg / pCounter;
 		    		for (Map tmpMap:tripDataList) {
+		    			tmpGPS = (Geometry)tmpMap.get("gps");
 		    			if(tmpMap.containsKey("accu")) {
-		    				if((Double.parseDouble(tmpMap.get("accu").toString()) != 0) && 
+		    				if((tmpGPS.getCoordinate().x != -999) &&
+		    						(tmpGPS.getCoordinate().y != -999) && 
 		    						(Double.parseDouble(tmpMap.get("accu").toString()) < 500) &&
 		    						(Double.parseDouble(tmpMap.get("accu").toString()) != -999))
 		    					sd += Math.pow((Double.parseDouble(tmpMap.get("accu").toString()) - avg),2);
@@ -269,9 +273,11 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 		    		for (Map tmpMap:tripDataList) {
 		    			tmpGPS = (Geometry)tmpMap.remove("gps");
 		    			if(tmpMap.containsKey("accu")) {
-		    				if((Double.parseDouble(tmpMap.get("accu").toString()) != 0) && 
+		    				if(((tmpGPS.getCoordinate().x != -999) &&
+		    						(tmpGPS.getCoordinate().y != -999) && 
 		    						(Double.parseDouble(tmpMap.get("accu").toString()) != -999) &&
-		    						(Double.parseDouble(tmpMap.get("accu").toString()) <= avg + (sd * 2))) {
+		    						(Double.parseDouble(tmpMap.get("accu").toString()) <= avg + (sd * 2))) ||
+		    						(tmpMap.get("checkin").toString() == "true")){
 				    			tmpMap.put("lng", tmpGPS.getCoordinate().x*1000000);
 				    			tmpMap.put("lat", tmpGPS.getCoordinate().y*1000000);
 				    			prevGPS = tmpGPS;
