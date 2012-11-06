@@ -294,7 +294,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 			    			tmpMap.put("lng", tmpGPS.getCoordinate().x*1000000);
 			    			tmpMap.put("lat", tmpGPS.getCoordinate().y*1000000);		    				
 		    			} //fi
-		    			System.out.println("GetCheckInDataComponent GPS:\t"	+ tmpGPS.getCoordinate().x*1000000 + " : " + tmpGPS.getCoordinate().y*1000000);
+		    			System.out.println("GetCheckInDataComponent GPS:\t"	+ tmpGPS.getCoordinate().x*1000000 + " : " + tmpGPS.getCoordinate().y*1000000 + " : " + tmpMap.get("accu").toString());
 		    			if (tmpMap.get("checkin") != null) tmpCheckIn = tmpMap.get("checkin").toString();		    			
 		    			tmpPointId = (Integer)tmpMap.remove("id");
 		    			System.out.println("GetCheckInDataComponent PointId:\t"	+ tmpPointId + " : " + tmpCheckIn);
