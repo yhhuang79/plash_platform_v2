@@ -35,6 +35,18 @@ public class PlashUtils {
 		return params;
 	}
 	
+	public static String ParamToHash(Integer userid, Integer trip_id, Session session){
+		Criteria criteria = session.createCriteria(T_TripHash.class);
+		criteria.add(Restrictions.eq("userid", userid));
+		criteria.add(Restrictions.eq("trip_id", trip_id));
+		Iterator paramItr = criteria.list().iterator();
+		if(paramItr.hasNext()) {
+			T_TripHash paramRec = (T_TripHash) paramItr.next();
+			return paramRec.getHash();
+		}
+		return null;
+	}
+	
 	private static String convertToHex(byte[] data) { 
         StringBuffer buf = new StringBuffer();
         for (int i = 0; i < data.length; i++) { 
