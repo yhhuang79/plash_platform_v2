@@ -3,24 +3,25 @@
 	import java.sql.Timestamp;
 	
 	import java.util.*;
-	import java.io.*;
-	import java.math.*;
-	import java.net.*;
+import java.io.*;
+import java.math.*;
+import java.net.*;
 	
 	
 	import javax.net.ssl.HttpsURLConnection;
 	
 	import org.apache.commons.httpclient.HttpClient;
-	import org.hibernate.*;
-	import org.hibernate.criterion.*;
-	import org.hibernate.transform.*;
-	import org.hibernate.type.*;
-	import org.json.*;
+import org.hibernate.*;
+import org.hibernate.criterion.*;
+import org.hibernate.transform.*;
+import org.hibernate.type.*;
+import org.json.*;
 	
 	import com.vividsolutions.jts.geom.Geometry;
-	import com.vividsolutions.jts.io.*;
+import com.vividsolutions.jts.io.*;
 	
-	import tw.edu.sinica.iis.ants.DB.*;
+import tw.edu.sinica.iis.ants.PlashUtils;
+import tw.edu.sinica.iis.ants.DB.*;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	
 	/**
@@ -92,7 +93,44 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	
 				int userid, trip_id, field_mask;
 				boolean latest_pt_only;
-				String tmpUserid, tmpTrip_id, tmpField_mask, tmpReturn_latest;
+				String tmpUserid, tmpTrip_id, tmpField_mask, tmpReturn_latest, tmphash;
+				
+				PlashUtils.tripinfoToHash(tskSession);
+				
+				if ((tmphash = (String)map.remove("hashcode")) == null) {
+				} else {
+					Map params = PlashUtils.HashToParam(tmphash, tskSession);
+					if(params != null){
+						if(params.containsKey("userid")){
+							userid = Integer.parseInt(params.get("userid").toString());
+						} else {
+							map.put("GetCheckInInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
+					        //tskSession.close();
+							return map;
+						}
+						if(params.containsKey("trip_id")){
+							trip_id = Integer.parseInt(params.get("trip_id").toString());
+						} else {
+							map.put("GetCheckInInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
+					        //tskSession.close();
+							return map;
+						}
+						if(params.containsKey("field_mask")){
+							field_mask = Integer.parseInt(params.get("field_mask").toString(),2);
+						} else {
+							field_mask = Integer.parseInt("1100011110000001",2);						
+						}
+						map.put("CheckInDataList", getTripData(userid, trip_id,field_mask));					
+						return map;
+					} else {
+						map.put("GetCheckInInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
+				        System.out.println("GetCheckInInfoComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
+				        tskSession.close();
+						return map;						
+					}
+				}//fi
+
+				
 				if ((tmpUserid = (String)map.remove("userid")) == null) {
 					//user id must be specified
 					map.put("GetCheckInInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
@@ -154,11 +192,11 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 				}//fi
 				
 	   			
-			} catch (NullPointerException e) { //Most likely due to invalid arguments 
-				map.put("GetTripDataComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
-		        System.out.println("GetTripDataComponent failure end1:\t" + e.toString() + " : requestID: " + requestCount);
-		        tskSession.close(); 	
-				return map; //*/
+			//} catch (NullPointerException e) { //Most likely due to invalid arguments 
+			//	map.put("GetTripDataComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
+		    //    System.out.println("GetTripDataComponent failure end1:\t" + e.toString() + " : requestID: " + requestCount);
+		    //    tskSession.close(); 	
+			//	return map; //*/
 				
 			} catch (NumberFormatException e) { //invalid arguments 
 				map.put("GetTripDataComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file

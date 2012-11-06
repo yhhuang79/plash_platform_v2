@@ -1,5 +1,7 @@
 package tw.edu.sinica.iis.ants.components;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,6 +11,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import tw.edu.sinica.iis.ants.PlashUtils;
+import tw.edu.sinica.iis.ants.DB.T_TripHash;
 import tw.edu.sinica.iis.ants.DB.T_TripInfo;
 import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
@@ -171,7 +175,28 @@ public class InputTripInfoComponent extends PLASHComponent {
 		        
 		        
 				Transaction tx = tskSession.beginTransaction();
-				tskSession.save(tmpTripInfo);
+				tskSession.persist(tmpTripInfo);
+				tx.commit();
+				
+				T_TripHash tth = new T_TripHash();
+				tth.setId(tmpTripInfo.getId());
+				tth.setTrip_id(tmpTripInfo.getTrip_id());
+				tth.setUserid(tmpTripInfo.getUserid());
+				try {
+					String tst = "";
+					if (tmpTripInfo.getTrip_st() != null)
+						tst = tmpTripInfo.getTrip_st().toString();
+					tth.setHash(PlashUtils.MD5(tmpTripInfo.getId().toString() + "#" + tst));
+				} catch (NoSuchAlgorithmException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				tx = tskSession.beginTransaction();
+				tskSession.save(tth);
 				tx.commit();
 				
 			}//fi

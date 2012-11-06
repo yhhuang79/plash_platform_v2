@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE hibernate-mapping 
+ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+ "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="tw.edu.sinica.iis.ants.DB.T_TripHash" table="user_location.trip_hash">
+
+		<id column="hash" name="hash" type="java.lang.String">
+		</id>
+		<property name="userid" column="userid" />
+		<property name="trip_id" column="trip_id" />
+		<property name="id" column="id" />				
+	</class>
+
+</hibernate-mapping>
