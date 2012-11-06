@@ -161,7 +161,9 @@
 		connector-ref="jmsCon" />
 	<jms:endpoint name="plashGetAllUserListQueue" queue="plash.get.all.user.list"
 		connector-ref="jmsCon" />
-
+	<jms:endpoint name="plashGetTripShareUserQueue" queue="plash.get.trip.share.user"
+		connector-ref="jmsCon" />
+		
 	<https:connector name="httpsConnector">
 		<https:tls-key-store path="file://../resources/tmpKey/keystore" keyPassword="password" storePassword="password"/>
 	</https:connector>
@@ -312,6 +314,8 @@
 		port="8080" path="GetFriendRequestList" synchronous="true" connector-ref="httpsConnector" />
 	<https:endpoint name="plashGetAllUserListHttpsInboundEndpoint" host="localhost"
 		port="8080" path="GetAllUserList" synchronous="true" connector-ref="httpsConnector" />			
+	<https:endpoint name="plashGetTripShareUserHttpsInboundEndpoint" host="localhost"
+		port="8080" path="GetTripShareUser" synchronous="true" connector-ref="httpsConnector" />			
 
 	<model name="PLASH">
 	
@@ -1987,6 +1991,34 @@
 			</outbound>
 			<async-reply>
 				<inbound-endpoint ref="plashGetAllUserListQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="TestResponseTransformer" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		<!-- (Step 4) Yu-Hsiang: XXXXX = GetAllUserList -->
+		<service name="GetTripShareUserService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashGetTripShareUserHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="GetTripShareUserComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashGetTripShareUserQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashGetTripShareUserQueue">
 					<transformers>
 						<jms:jmsmessage-to-object-transformer />
 						<transformer ref="TestResponseTransformer" />
