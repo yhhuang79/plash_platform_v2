@@ -8,7 +8,7 @@ public class T_Login {
 	private Boolean confirmed;
 	private String email;
 	private String phonenum;
-	private int facebookid;
+	private String facebookid;
 	
 	public T_Login(){
 	
@@ -56,10 +56,10 @@ public class T_Login {
 	public void setPhonenum(String phonenum) {
 		this.phonenum = phonenum;
 	}
-	public int getFacebookid() {
+	public String getFacebookid() {
 		return facebookid;
 	}
-	public void setFacebookid(int facebookid) {
+	public void setFacebookid(String facebookid) {
 		this.facebookid = facebookid;
 	}
 
