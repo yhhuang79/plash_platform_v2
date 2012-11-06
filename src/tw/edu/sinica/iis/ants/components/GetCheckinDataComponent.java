@@ -95,9 +95,9 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 				boolean latest_pt_only;
 				String tmpUserid, tmpTrip_id, tmpField_mask, tmpReturn_latest, tmphash;
 				
-				PlashUtils.tripinfoToHash(tskSession);
+				//PlashUtils.tripinfoToHash(tskSession);
 				
-				if ((tmphash = (String)map.remove("hashcode")) == null) {
+				if ((tmphash = (String)map.remove("hash")) == null) {
 				} else {
 					Map params = PlashUtils.HashToParam(tmphash, tskSession);
 					if(params != null){
