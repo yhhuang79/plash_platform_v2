@@ -42,7 +42,7 @@ import com.vividsolutions.jts.io.WKTReader;
  * 	13. gsminfo <br>
  * 	14. wifiinfo <br>
  *  15. app <br>
- *  16. checkin <br> 
+ *  15. checkin <br> 
  * 
  *  
  * @author  Angus Fuming Huang, Yi-Chun Teng, Yu-Hsiang Huang
@@ -222,7 +222,7 @@ public class InputTripDataComponent extends PLASHComponent {
 					tx = tskSession.beginTransaction();
 					tskSession.save(CData);
 					tx.commit();
-					map.put("message", "Success in GPS location input with CheckIn Data"); 
+					map.put("result", "Success in GPS location input with CheckIn Data"); 
 
 				} else {				
 					map.put("message", "Success in GPS location input"); 
