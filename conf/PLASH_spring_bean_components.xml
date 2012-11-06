@@ -204,5 +204,9 @@
                 class="tw.edu.sinica.iis.ants.components.GetAllUserListComponent">
                 <spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
         </spring:bean>
+        <spring:bean id="GetTripShareUserComponent"
+                class="tw.edu.sinica.iis.ants.components.GetTripShareUserComponent">
+                <spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+        </spring:bean>
         	
 </mule>
