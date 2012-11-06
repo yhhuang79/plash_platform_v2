@@ -80,7 +80,7 @@
 				<value>legacyhbmxml/T_UserTrip.xml</value>
 				<value>legacyhbmxml/T_TripInfo.hbm.xml</value>
 				<value>legacyhbmxml/T_CheckInInfo.hbm.xml</value>
-
+				<value>legacyhbmxml/T_TripHash.hbm.xml</value>
 				<value>legacyhbmxml/T_DepreciatedLocationData.hbm.xml</value>
 						
 				<value>hbmxml.common_data/PointBinaryData.hbm.xml</value>
