@@ -20,6 +20,7 @@ import org.json.*;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.*;
 
+import tw.edu.sinica.iis.ants.PlashUtils;
 import tw.edu.sinica.iis.ants.DB.*;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
@@ -263,11 +264,18 @@ public class GetTripInfoComponent extends PLASHComponent {
 				while(tls.hasNext()) {
 					Map tl = (Map) tls.next();
 					if (tl.get("trip_name").toString().toLowerCase().startsWith(name.toLowerCase())) {
+						tl.put("hash", PlashUtils.ParamToHash(userid, Integer.parseInt(tl.get("trip_id").toString()), tskSession));
 						resultList.add(tl);
 					}//fi */
 				}//rof
 			} else {
-				resultList = tripInfoList;
+				Iterator tls = tripInfoList.iterator();
+				//Map oneTrip;
+				while(tls.hasNext()) {
+					Map tl = (Map) tls.next();
+					tl.put("hash", PlashUtils.ParamToHash(userid, Integer.parseInt(tl.get("trip_id").toString()), tskSession));
+					resultList.add(tl);
+				}//rof
 			}
 									
 			return resultList;
