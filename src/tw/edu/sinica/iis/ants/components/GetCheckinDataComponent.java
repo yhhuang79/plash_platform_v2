@@ -120,7 +120,9 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 						} else {
 							field_mask = Integer.parseInt("1100011110000001",2);						
 						}
-						map.put("CheckInDataList", getTripData(userid, trip_id,field_mask));					
+						map.put("CheckInDataList", getTripData(userid, trip_id,field_mask));
+						map.put("userid", userid);
+						map.put("trip_id", trip_id);
 						return map;
 					} else {
 						map.put("GetCheckInInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
