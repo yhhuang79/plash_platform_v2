@@ -76,7 +76,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 		
 		
 		public Object serviceMain(Map map) {
-			
+			trackTimeBegin("service_main");
 			requestCount++;
 
 			try {
@@ -123,6 +123,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 						map.put("CheckInDataList", getTripData(userid, trip_id,field_mask));
 						map.put("userid", userid);
 						map.put("trip_id", trip_id);
+						trackTimeEnd("service_main");
 						return map;
 					} else {
 						map.put("GetCheckInInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
@@ -212,7 +213,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 				return map;
 			}//end try catch
 			
-	
+				
 		}//end method
 		
 		/**

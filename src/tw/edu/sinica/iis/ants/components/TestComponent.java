@@ -30,6 +30,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
  *   
  * @author	Yi-Chun Teng 
  * @param	map A map object that contains trip data
+ * @example https://localhost:8080/TestComponent
  */
 public class TestComponent extends PLASHComponent {
 
@@ -47,21 +48,14 @@ public class TestComponent extends PLASHComponent {
 
 
 
-        GeometryFactory gf = new GeometryFactory(new PrecisionModel(10));
-        Point p = gf.createPoint(new Coordinate(-9999,-999));
-        Coordinate[] list_c = {new Coordinate(180,180),new Coordinate(180,-180),
-        		new Coordinate(-180,-180),new Coordinate(-180,180)};
-        LinearRing lr = new LinearRing(list_c, new PrecisionModel(), 4326);
-        Polygon pol = gf.createPolygon(lr, null);
-        Point pp = gf.createPoint(new Coordinate(25,-125));
-		System.out.println("disjoint? " + pol.disjoint(p));
-		System.out.println("disjoint? " + pol.disjoint(pp));		
-		
-		    
+		trackTimeBegin("test");
+		trackTimeBegin("hahahaha");
+		trackTimeEnd("test");
+		trackTimeEnd("hahahaha");
 
 		
 
-		return map;
+		return returnSuccess(map);
    			
 	
 

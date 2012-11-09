@@ -49,14 +49,14 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 public class TripInfoManagerComponent extends PLASHComponent{
 
 
-	private Session tskSession; //task session
+	//private Session tskSession; //task session
 
 
 
 
 	public Object serviceMain(Map map) {
 		
-		System.out.println("TripInfoManagerComponent Start:\t"	+ Calendar.getInstance().getTimeInMillis());
+		trackTimeBegin("service_main");
 		
 		tskSession = sessionFactory.openSession();
 		
@@ -101,7 +101,8 @@ public class TripInfoManagerComponent extends PLASHComponent{
 			}//end switch
 			
 			tskSession.close();
-			return map;
+			trackTimeEnd("service_main");
+			return returnSuccess(map);
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
 			tskSession.close();
 			getElapsed();
@@ -312,7 +313,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
 					getFirst = false;
 					//use thread to get address
 					stAddr = new GetAddrThread(firstGPS.getCoordinate().y, firstGPS.getCoordinate().x,tripInfoRec,(short) 0);
-					stAddr.run();					
+					stAddr.start();					
 					continue;
 				}//fi
 					secondGPS = tripRecList.get(i).getGps();											
@@ -337,7 +338,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
 
 		if (secondGPS != null) {
 			etAddr = new GetAddrThread(secondGPS.getCoordinate().y, secondGPS.getCoordinate().x,tripInfoRec,(short) 1);
-			etAddr.run();
+			etAddr.start();
 		}//fi
 		
 		tripInfoRec.setTrip_length(tmpDist.intValue());
@@ -389,64 +390,65 @@ public class TripInfoManagerComponent extends PLASHComponent{
 		 */
 
 		public void run() {
-		       String addr = new String("" );
-				try {
-					URL addrRequestURL = new URL(
-							"http://maps.googleapis.com/maps/api/geocode/json?latlng=" +
-							lat +
-							"," +
-							lon +
-							"&sensor=true"
-							);
+			trackTimeBegin("GetAddrThread");
+		    String addr = new String("" );
+			try {
+				URL addrRequestURL = new URL(
+						"http://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+						lat +
+						"," +
+						lon +
+						"&sensor=true"
+						);
 
-					URLConnection addrConnect = addrRequestURL.openConnection(); 
-			        BufferedReader buffInReader = new BufferedReader( new InputStreamReader(addrConnect.getInputStream()));
+				URLConnection addrConnect = addrRequestURL.openConnection(); 
+		        BufferedReader buffInReader = new BufferedReader( new InputStreamReader(addrConnect.getInputStream()));
+      
+		        
 	      
-			        
-		      
-					//Make the reader be the JSONObject	      
-			        
-			        JSONObject jObj = new JSONObject(new JSONTokener(buffInReader));	        
-			        buffInReader.close();					     
-			        JSONArray jArray = ((JSONObject) (jObj.getJSONArray("results").get(0))).getJSONArray("address_components");
-					if (addrType == 0) {
-						tripInfoRec.setSt_addr_prt5((String)((JSONObject)jArray.get(0)).get("long_name"));
-						tripInfoRec.setSt_addr_prt4((String)((JSONObject)jArray.get(1)).get("long_name"));
-						tripInfoRec.setSt_addr_prt3((String)((JSONObject)jArray.get(2)).get("long_name"));
-						tripInfoRec.setSt_addr_prt2((String)((JSONObject)jArray.get(3)).get("long_name"));
-						tripInfoRec.setSt_addr_prt1((String)((JSONObject)jArray.get(4)).get("long_name"));						
-					} else if (addrType == 1) {
-						tripInfoRec.setEt_addr_prt5((String)((JSONObject)jArray.get(0)).get("long_name"));
-						tripInfoRec.setEt_addr_prt4((String)((JSONObject)jArray.get(1)).get("long_name"));
-						tripInfoRec.setEt_addr_prt3((String)((JSONObject)jArray.get(2)).get("long_name"));
-						tripInfoRec.setEt_addr_prt2((String)((JSONObject)jArray.get(3)).get("long_name"));
-						tripInfoRec.setEt_addr_prt1((String)((JSONObject)jArray.get(4)).get("long_name"));						
-					}//fi		
-			 			
-				} catch (MalformedURLException e) {
-					if (addrType == 0) {
-						tripInfoRec.setSt_addr_prt5("Invalid location data");
-					} else if (addrType == 1) {
-						tripInfoRec.setEt_addr_prt5("Invalid location data");
-					}//fi
-					
-				} catch (IOException e) {
-					if (addrType == 0) {
-						tripInfoRec.setSt_addr_prt5("Address not available");
-					} else if (addrType == 1) {
-						tripInfoRec.setEt_addr_prt5("Address not available");
-					}//fi					
-				} catch (JSONException e) {
-					if (addrType == 0) {
-						tripInfoRec.setSt_addr_prt5("Invalid data");
-					} else if (addrType == 1) {
-						tripInfoRec.setEt_addr_prt5("Invalid data");
-					}//fi		
-				}//try catch
+				//Make the reader be the JSONObject	      
+		        
+		        JSONObject jObj = new JSONObject(new JSONTokener(buffInReader));	        
+		        buffInReader.close();					     
+		        JSONArray jArray = ((JSONObject) (jObj.getJSONArray("results").get(0))).getJSONArray("address_components");
+				if (addrType == 0) {
+					tripInfoRec.setSt_addr_prt5((String)((JSONObject)jArray.get(0)).get("long_name"));
+					tripInfoRec.setSt_addr_prt4((String)((JSONObject)jArray.get(1)).get("long_name"));
+					tripInfoRec.setSt_addr_prt3((String)((JSONObject)jArray.get(2)).get("long_name"));
+					tripInfoRec.setSt_addr_prt2((String)((JSONObject)jArray.get(3)).get("long_name"));
+					tripInfoRec.setSt_addr_prt1((String)((JSONObject)jArray.get(4)).get("long_name"));						
+				} else if (addrType == 1) {
+					tripInfoRec.setEt_addr_prt5((String)((JSONObject)jArray.get(0)).get("long_name"));
+					tripInfoRec.setEt_addr_prt4((String)((JSONObject)jArray.get(1)).get("long_name"));
+					tripInfoRec.setEt_addr_prt3((String)((JSONObject)jArray.get(2)).get("long_name"));
+					tripInfoRec.setEt_addr_prt2((String)((JSONObject)jArray.get(3)).get("long_name"));
+					tripInfoRec.setEt_addr_prt1((String)((JSONObject)jArray.get(4)).get("long_name"));						
+				}//fi		
+		 			
+			} catch (MalformedURLException e) {
+				if (addrType == 0) {
+					tripInfoRec.setSt_addr_prt5("Invalid location data");
+				} else if (addrType == 1) {
+					tripInfoRec.setEt_addr_prt5("Invalid location data");
+				}//fi
 				
-	
+			} catch (IOException e) {
+				if (addrType == 0) {
+					tripInfoRec.setSt_addr_prt5("Address not available");
+				} else if (addrType == 1) {
+					tripInfoRec.setEt_addr_prt5("Address not available");
+				}//fi					
+			} catch (JSONException e) {
+				if (addrType == 0) {
+					tripInfoRec.setSt_addr_prt5("Invalid data");
+				} else if (addrType == 1) {
+					tripInfoRec.setEt_addr_prt5("Invalid data");
+				}//fi		
+			}//try catch
+			
+			trackTimeEnd("GetAddrThread");
 							 
-		}//end method
+		}//end method run
 		
 		
 	}//end class
