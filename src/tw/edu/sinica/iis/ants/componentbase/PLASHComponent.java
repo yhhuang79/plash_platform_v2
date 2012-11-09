@@ -1,12 +1,21 @@
 package tw.edu.sinica.iis.ants.componentbase;
 
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.*;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import tw.edu.sinica.iis.ants.*;
+import tw.edu.sinica.iis.ants.DB.T_TripInfo;
 
 /**
  * The general abstract class for PLASH component 
@@ -27,6 +36,10 @@ public abstract class PLASHComponent {
 	protected boolean debugMode;
 	protected long debugTimer;
 	protected long tmpTimer;
+	
+	//Execution time related variables
+	protected String className;
+	protected HashMap<String,Long> execTimerMap;
 
 	/**
 	 * This is a bean property getter that obtains associated session factory object
@@ -51,6 +64,14 @@ public abstract class PLASHComponent {
     	if (globalDebugMode) {
     		enableDebugLog();
     	}//fi
+    	className = this.getClass().getName();
+      	StringTokenizer st = new StringTokenizer(className,".", false);
+    	while (st.hasMoreTokens()) {
+    		className = st.nextToken();  
+    	}//end while
+    	execTimerMap = new HashMap<String,Long>();
+
+     	
     	
     }//end constructor
     
@@ -104,6 +125,38 @@ public abstract class PLASHComponent {
     protected void markTime() {
     	debugTimer = Calendar.getInstance().getTimeInMillis();    	
     }//end method
+    
+    /**
+     * Track time begin
+     * @param tag The label used to distinguish measurements 
+     */
+    protected void trackTimeBegin(String tag){
+    	if (execTimerMap.containsKey(tag)){
+    		//error, such key already exists
+    		return;
+    	} else {
+    		execTimerMap.put(tag, Calendar.getInstance().getTimeInMillis() );
+    	}//fi
+    	
+    }//end method
+    
+    /**
+     * Track time end
+     * @param tag The label used to distinguish measurements 
+     */
+    protected void trackTimeEnd(String tag){
+    	if (execTimerMap.containsKey(tag)){
+    		long elapsed_time = Calendar.getInstance().getTimeInMillis() - execTimerMap.remove(tag);
+    		DBAccessThread recThread = new DBAccessThread(className, tag, elapsed_time);
+    		recThread.setDaemon(true);
+    		recThread.start();
+    		
+    	} else {
+    		//error, such key is absent
+    		return;
+    	}//fi   	
+
+    }//end method    
 
     /**
      * This method measures current time and returns time elapsed since last measurement
@@ -177,5 +230,62 @@ public abstract class PLASHComponent {
      * 			This map contains results as well as parameters and data for next component 
      */
     public abstract Object serviceMain(Map map);
+
+
+	
+	/**
+	 * This class handles database recording in a separate thread	 * 
+	 * 
+	 */
+	private class DBAccessThread extends Thread {
+		private String className;
+		private String tag;
+		private long elapsed_time;
+		private Session tmpSession;
+
+		
+		/**
+		 * Constructor
+		 * @param className String value that indicates the class name
+		 * @param tag String value that indicates the label  
+		 * @param elapsed_time Long value that indicates elapsed time	
+		 */
+		private DBAccessThread(String className, String tag, long elapsed_time) {
+			this.className = className;
+			this.tag = tag;
+			this.elapsed_time = elapsed_time;
+		}//end method
+
+		/**
+		 * Run the threaded task!
+		 */
+
+		public void run() {
+
+				try {		    		    		
+					tmpSession = sessionFactory.openSession();
+					tmpSession.createSQLQuery(
+		    				"INSERT INTO plash.service_time_track (class_name, tag, elapsed_time, end_time) VALUES ('"
+		    				+ className + 
+		    				"','"
+		    				+ tag + 
+		    				"','"
+		    				+ elapsed_time +
+		    				"', localtimestamp);"
+		    				).executeUpdate();	
+					tmpSession.close();
+			 			
+
+				} catch (HibernateException e) {
+					//do something
+		
+				}//try catch
+				
+	
+							 
+		}//end method
+		
+		
+	}//end class    
     
 }//end class
