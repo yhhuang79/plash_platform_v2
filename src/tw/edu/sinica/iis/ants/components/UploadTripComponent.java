@@ -107,7 +107,7 @@ public class UploadTripComponent extends PLASHComponent{
 		        	et_addr_prt5 = jsonObject.get("et_addr_prt5").toString();
 		        }//fi
 		        
-		        Short update_status = Short.parseShort(map.get("update_status").toString());
+		        Short update_status = Short.parseShort(jsonObject.get("update_status").toString());
 		        T_TripInfo tmpTripInfo = new T_TripInfo();
 				tmpTripInfo.setUserid(userid);			
 				tmpTripInfo.setTrip_id(trip_id);
