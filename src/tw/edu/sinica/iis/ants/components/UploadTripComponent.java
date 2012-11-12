@@ -45,7 +45,7 @@ public class UploadTripComponent extends PLASHComponent{
 		
 		JSONParser parser = new JSONParser();		
 		try {
-			if(map.containsKey("tripinfo")){
+			if(map.containsKey("tripinfo")){				
 				obj = parser.parse(map.remove("tripinfo").toString());
 				jsonObject = (JSONObject) obj;
 				String trip_name = "Untitled";
@@ -127,8 +127,8 @@ public class UploadTripComponent extends PLASHComponent{
 				tmpTripInfo.setEt_addr_prt5(et_addr_prt5);				
 				tmpTripInfo.setUpdate_status(update_status);
 		        
-				Transaction tx = tskSession.beginTransaction();
-				tskSession.persist(tmpTripInfo);
+				Transaction tx = session.beginTransaction();
+				session.persist(tmpTripInfo);
 				tx.commit();
 				
 				T_TripHash tth = new T_TripHash();
@@ -148,8 +148,8 @@ public class UploadTripComponent extends PLASHComponent{
 					e.printStackTrace();
 				}
 				
-				tx = tskSession.beginTransaction();
-				tskSession.save(tth);
+				tx = session.beginTransaction();
+				session.save(tth);
 				tx.commit();
 			}
 			
