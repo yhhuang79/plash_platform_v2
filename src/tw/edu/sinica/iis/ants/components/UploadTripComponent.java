@@ -45,7 +45,8 @@ public class UploadTripComponent extends PLASHComponent{
 		
 		JSONParser parser = new JSONParser();		
 		try {
-			if(map.containsKey("tripinfo")){				
+			if(map.containsKey("tripinfo")){
+				System.out.println(map.get("tripinfo").toString());
 				obj = parser.parse(map.remove("tripinfo").toString());
 				jsonObject = (JSONObject) obj;
 				String trip_name = "Untitled";
