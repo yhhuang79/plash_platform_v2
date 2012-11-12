@@ -49,7 +49,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
  * 	14. et_addr_prt3 <br>
  *  15. et_addr_prt4 <br>
  *  16. et_addr_prt5 <br>
- * Example: GetTripInfoComponent?userid=5&trip_ic=3&field_mask=0111110000000000  
+ * Example: GetTripInfoComponent?userid=5&trip_id=3&field_mask=0111110000000000  
  *  
  * @author	Yi-Chun Teng 
  * @param	map A map object that contains userid, (optionally) trip_id and (optionally) field_mask 
@@ -182,11 +182,12 @@ public class GetTripInfoComponent extends PLASHComponent {
 	 */
 	private Map getSingleTripInfo(int userid, int trip_id, int field_mask){
 		//obtain the record
+		
     	Criteria criteriaTripInfo = tskSession.createCriteria(T_TripInfo.class);
     	criteriaTripInfo.add(Restrictions.eq("userid", userid));
     	criteriaTripInfo.add(Restrictions.eq("trip_id", trip_id));
     	ProjectionList filterProjList = Projections.projectionList();
-    	criteriaTripInfo.setProjection(addFilterList(filterProjList,field_mask));      	
+    	criteriaTripInfo.setProjection(addFilterList(filterProjList,field_mask & 32767));      	
    	
  
     	criteriaTripInfo.setProjection(filterProjList);    	
@@ -199,7 +200,8 @@ public class GetTripInfoComponent extends PLASHComponent {
 			if (tripInfoRec == null) {	
 				
 				return null;
-			}//fi					
+			}//fi	
+			tripInfoRec.put("hash", PlashUtils.ParamToHash(userid, trip_id, tskSession));
 			return tripInfoRec;
 											
 		} catch (HibernateException he) {
