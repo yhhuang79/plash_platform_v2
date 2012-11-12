@@ -16,8 +16,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
+import tw.edu.sinica.iis.ants.DB.T_FriendAuth;
+import tw.edu.sinica.iis.ants.DB.T_FriendList;
 import tw.edu.sinica.iis.ants.DB.T_TripHash;
 import tw.edu.sinica.iis.ants.DB.T_TripInfo;
+import tw.edu.sinica.iis.ants.DB.T_UserTrip;
 
 public class PlashUtils {
 
@@ -101,4 +104,48 @@ public class PlashUtils {
 	}
     
 
-}
+	public static Map isTripShared(int userid, int trip_id, Session session){
+		Map message = new HashMap();
+		List<Integer> users = new ArrayList<Integer>();
+		boolean isPublic = false;
+		Criteria criteria = session.createCriteria(T_FriendAuth.class);
+		criteria.add(Restrictions.eq("userAID", userid));
+		criteria.add(Restrictions.eq("tripID", trip_id));		
+		Iterator itr = criteria.list().iterator();
+		while(itr.hasNext()) {
+			T_FriendAuth rec = (T_FriendAuth) itr.next();
+			if(rec.getUserBID() == 0)
+				isPublic = true;
+			users.add(rec.getUserBID());
+		}
+		message.put("isPublic", isPublic);
+		message.put("users", users);
+		return message;
+	}
+	
+	public static int getNewTripId(int userid, Session session){
+		int newTripId = 0;
+		Criteria criteria = session.createCriteria(T_UserTrip.class); 
+		criteria.add(Restrictions.eq("userid", userid));
+		Iterator tripids = criteria.list().iterator();
+		if (tripids.hasNext()){
+			T_UserTrip tripid = (T_UserTrip) tripids.next();
+			newTripId = tripid.getTrip_count() + 1;
+			tripid.setTrip_count(newTripId);
+	        Transaction tx = session.beginTransaction();
+	        session.save(tripid);
+	        tx.commit();			
+		} else {
+			newTripId = 1;
+    		T_UserTrip tripid1 = new T_UserTrip();
+			tripid1.setUserid(userid);
+			tripid1.setTrip_count(newTripId);
+	        Transaction tx = session.beginTransaction();
+	        session.save(tripid1);
+	        tx.commit();
+		}
+		return newTripId;		
+	} // getNewTripId End
+	
+	
+} // PlashUtils End 
