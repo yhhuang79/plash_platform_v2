@@ -1,5 +1,7 @@
 package tw.edu.sinica.iis.ants.components;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,8 +19,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import tw.edu.sinica.iis.ants.PlashUtils;
 import tw.edu.sinica.iis.ants.DB.T_CheckInInfo;
 import tw.edu.sinica.iis.ants.DB.T_TripData;
+import tw.edu.sinica.iis.ants.DB.T_TripHash;
+import tw.edu.sinica.iis.ants.DB.T_TripInfo;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -26,24 +31,135 @@ import com.vividsolutions.jts.io.WKTReader;
 
 public class UploadTripComponent extends PLASHComponent{
 
-	private Session session1; //task session
-	private Session session2;
+	private Session session; //task session
 	
 	@Override
 	public Object serviceMain(Map map) {
 		// TODO Auto-generated method stub
 		System.out.println("UploadTripComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
-		session1 = sessionFactory.openSession(); 
-		session2 = sessionFactory.openSession();
+		session = sessionFactory.openSession(); 
+		Integer userid = 0;
+		Integer trip_id = 0;
+		Object obj;
+		JSONObject jsonObject;
 		
 		JSONParser parser = new JSONParser();		
 		try {
-			//System.out.println(map.get("trip").toString());
-			Object obj = parser.parse(map.remove("trip").toString());
-			JSONObject jsonObject = (JSONObject) obj;			
-			Integer userid = Integer.parseInt(jsonObject.get("userid").toString());
-			Integer trip_id = Integer.parseInt(jsonObject.get("trip_id").toString());
-			//System.out.println(userid);
+			if(map.containsKey("tripinfo")){
+				obj = parser.parse(map.remove("tripinfo").toString());
+				jsonObject = (JSONObject) obj;
+				String trip_name = "Untitled";
+			    String st_addr_prt1 = "";
+			    String st_addr_prt2 = ""; 
+			    String st_addr_prt3 = ""; 
+			    String st_addr_prt4 = ""; 
+			    String st_addr_prt5 = "";  
+			    String et_addr_prt1 = "";
+			    String et_addr_prt2 = ""; 
+			    String et_addr_prt3 = ""; 
+			    String et_addr_prt4 = ""; 
+			    String et_addr_prt5 = "";        
+				
+		        if (jsonObject.containsKey("trip_name")) {
+		        	trip_name = jsonObject.get("trip_name").toString();
+		        }//fi     
+				userid = Integer.parseInt(jsonObject.get("userid").toString());
+				if(jsonObject.containsKey("trip_id")) {
+					trip_id = Integer.parseInt(jsonObject.get("trip_id").toString());
+				} else {
+					trip_id = PlashUtils.getNewTripId(userid, session);				
+				}
+				Timestamp trip_st = Timestamp.valueOf(jsonObject.get("trip_st").toString());
+				Timestamp trip_et = Timestamp.valueOf(jsonObject.get("trip_et").toString());
+				Integer trip_length = Integer.parseInt(jsonObject.get("trip_length").toString());
+				Integer num_of_pts = Integer.parseInt(jsonObject.get("num_of_pts").toString());
+				
+		        if (jsonObject.containsKey("st_addr_prt1")){
+		        	st_addr_prt1 = jsonObject.get("st_addr_prt1").toString();
+		        }//fi        	
+		        if (jsonObject.containsKey("st_addr_prt2")){
+		        	st_addr_prt2 = jsonObject.get("st_addr_prt2").toString();
+		        }//fi  
+		        if (jsonObject.containsKey("st_addr_prt3")){
+		        	st_addr_prt3 = jsonObject.get("st_addr_prt3").toString();
+		        }//fi  
+		        if (jsonObject.containsKey("st_addr_prt4")){
+		        	st_addr_prt4 = jsonObject.get("st_addr_prt4").toString();
+		        }//fi          
+		        if (jsonObject.containsKey("st_addr_prt5")){
+		        	st_addr_prt5 = jsonObject.get("st_addr_prt5").toString();
+		        }//fi     
+	
+		        if (jsonObject.containsKey("et_addr_prt1")){
+		        	et_addr_prt1 = jsonObject.get("et_addr_prt1").toString();
+		        }//fi        	
+		        if (jsonObject.containsKey("et_addr_prt2")){
+		        	et_addr_prt2 = jsonObject.get("et_addr_prt2").toString();
+		        }//fi  
+		        if (jsonObject.containsKey("et_addr_prt3")){
+		        	et_addr_prt3 = jsonObject.get("et_addr_prt3").toString();
+		        }//fi  
+		        if (jsonObject.containsKey("et_addr_prt4")){
+		        	et_addr_prt4 = jsonObject.get("et_addr_prt4").toString();
+		        }//fi          
+		        if (jsonObject.containsKey("et_addr_prt5")){
+		        	et_addr_prt5 = jsonObject.get("et_addr_prt5").toString();
+		        }//fi
+		        
+		        Short update_status = Short.parseShort(map.get("update_status").toString());
+		        T_TripInfo tmpTripInfo = new T_TripInfo();
+				tmpTripInfo.setUserid(userid);			
+				tmpTripInfo.setTrip_id(trip_id);
+				tmpTripInfo.setTrip_name(trip_name);
+				tmpTripInfo.setTrip_st(trip_st);
+				tmpTripInfo.setTrip_et(trip_et);
+				tmpTripInfo.setTrip_length(trip_length);
+				tmpTripInfo.setNum_of_pts(num_of_pts);
+				tmpTripInfo.setSt_addr_prt1(st_addr_prt1);
+				tmpTripInfo.setSt_addr_prt2(st_addr_prt2);
+				tmpTripInfo.setSt_addr_prt3(st_addr_prt3);
+				tmpTripInfo.setSt_addr_prt4(st_addr_prt4);
+				tmpTripInfo.setSt_addr_prt5(st_addr_prt5);
+				tmpTripInfo.setEt_addr_prt1(et_addr_prt1);				
+				tmpTripInfo.setEt_addr_prt2(et_addr_prt2);
+				tmpTripInfo.setEt_addr_prt3(et_addr_prt3);
+				tmpTripInfo.setEt_addr_prt4(et_addr_prt4);
+				tmpTripInfo.setEt_addr_prt5(et_addr_prt5);				
+				tmpTripInfo.setUpdate_status(update_status);
+		        
+				Transaction tx = tskSession.beginTransaction();
+				tskSession.persist(tmpTripInfo);
+				tx.commit();
+				
+				T_TripHash tth = new T_TripHash();
+				tth.setId(tmpTripInfo.getId());
+				tth.setTrip_id(tmpTripInfo.getTrip_id());
+				tth.setUserid(tmpTripInfo.getUserid());
+				try {
+					String tst = "";
+					if (tmpTripInfo.getTrip_st() != null)
+						tst = tmpTripInfo.getTrip_st().toString();
+					tth.setHash(PlashUtils.MD5(tmpTripInfo.getId().toString() + "#" + tst));
+				} catch (NoSuchAlgorithmException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				tx = tskSession.beginTransaction();
+				tskSession.save(tth);
+				tx.commit();
+			}
+			
+			
+			obj = parser.parse(map.remove("trip").toString());
+			jsonObject = (JSONObject) obj;	
+			if (jsonObject.containsKey("userid"))
+				userid = Integer.parseInt(jsonObject.get("userid").toString());
+			if (jsonObject.containsKey("trip_id"))
+				trip_id = Integer.parseInt(jsonObject.get("trip_id").toString());
 			JSONArray checkin = (JSONArray) jsonObject.get("CheckInDataList");
 			System.out.println(checkin.toString());
 			Iterator<Object> iterator = checkin.iterator();
@@ -161,42 +277,22 @@ public class UploadTripComponent extends PLASHComponent{
 		    	Integer tid = 0;
 		    	if(tpoint.containsKey("CheckIn")){
 		    		user.setCheckin(true);
-		    		
-					Transaction tx = null;
-					try {
-						tx = session2.beginTransaction();
-						session2.save(user);
-						tx.commit();
-					} catch (HibernateException he) {
-		    			he.printStackTrace();
-		    			if(tx!=null){  
-		    				tx.rollback();  
-		    	        }  
-		    		}
-					Criteria criteria = session1.createCriteria(T_TripData.class);
-					criteria.add(Restrictions.eq("userid", userid));
-					criteria.add(Restrictions.eq("trip_id", trip_id));
-					criteria.addOrder(Order.desc("id"));
-					Iterator trip_point = criteria.list().iterator(); 
-					if(trip_point.hasNext()) {
-						T_TripData tp = (T_TripData) trip_point.next();
-						tid=tp.getId();
-					}	
-					
 		    	}else{
 		    		user.setCheckin(false);
-		    		Transaction tx = null;		    			
-		    		try {	
-		    			tx = session2.beginTransaction();
-		    			session2.save(user);
-		    			tx.commit();
-		    		} catch (HibernateException he) {
-		    			he.printStackTrace();
-		    			if(tx!=null){  
-		    				tx.rollback();  
-		    	        }  
-		    		}
 		    	}
+		    	
+				Transaction tx = null;
+				try {
+					tx = session.beginTransaction();
+					session.persist(user);
+					tx.commit();
+				} catch (HibernateException he) {
+		    		he.printStackTrace();
+		    		if(tx!=null){  
+		    			tx.rollback();  
+		    	    }  
+		    	}
+				tid = user.getId();					
 			
 				if(tpoint.containsKey("CheckIn")) {
 					JSONObject checkindata = (JSONObject) tpoint.get("CheckIn");
@@ -209,15 +305,14 @@ public class UploadTripComponent extends PLASHComponent{
 					if((checkindata.containsKey("picture_uri")) && (checkindata.get("picture_uri") != null))
 						CData.setPicture_uri(checkindata.get("picture_uri").toString());
 					
-					Transaction tx2 = null;
 					try {
-						tx2 = session1.beginTransaction();
-						session1.save(CData);
-						tx2.commit();
+						tx = session.beginTransaction();
+						session.save(CData);
+						tx.commit();
 					} catch (HibernateException he) {
 		    			he.printStackTrace();
-		    			if(tx2!=null){  
-		    				tx2.rollback();  
+		    			if(tx!=null){  
+		    				tx.rollback();  
 		    	        }  
 		    		}
 				}
@@ -230,8 +325,7 @@ public class UploadTripComponent extends PLASHComponent{
 			e.printStackTrace();
 		}
 		
-		session1.close();
-		session2.close();
+		session.close();
 	    System.out.println("UploadTripComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
 	    	    
 	    return map;
