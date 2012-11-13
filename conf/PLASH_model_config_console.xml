@@ -632,6 +632,7 @@
 				<pass-through-router>
 					<outbound-endpoint ref="plashInputQueue">
 						<transformers>
+							<transformer ref="TestResponseTransformer" />
 							<jms:object-to-jmsmessage-transformer />
 						</transformers>
 					</outbound-endpoint>
@@ -640,8 +641,6 @@
 			<async-reply>
 				<inbound-endpoint ref="plashInputQueue">
 					<transformers>
-						<jms:jmsmessage-to-object-transformer />
-						<transformer ref="TestResponseTransformer" />
 					</transformers>
 				</inbound-endpoint>
 				<single-async-reply-router/>				
@@ -1616,13 +1615,12 @@
 			<async-reply>
 				<inbound-endpoint ref="plashTripInfoManagerResponseQueue">
 					<transformers>
-
 					</transformers>
 				</inbound-endpoint>
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
-	
+
 		
 		<service name="DelTripService">
 			<inbound>
@@ -1650,7 +1648,7 @@
 				</inbound-endpoint>
 				<single-async-reply-router/>				
 			</async-reply>
-		</service>	
+		</service>
 
 		<service name="TestService">
 			<inbound>
@@ -2027,7 +2025,6 @@
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
-			
 
 		<service name="NewTrajectoryInfoService">
 			<inbound>

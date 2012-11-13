@@ -315,7 +315,7 @@
 	<https:endpoint name="plashGetAllUserListHttpsInboundEndpoint" host="localhost"
 		port="8080" path="GetAllUserList" synchronous="true" connector-ref="httpsConnector" />			
 	<https:endpoint name="plashGetTripShareUserHttpsInboundEndpoint" host="localhost"
-		port="8080" path="GetTripShareUser" synchronous="true" connector-ref="httpsConnector" />			
+		port="8080" path="GetTripShareUser" synchronous="true" connector-ref="httpsConnector" />						
 
 	<model name="PLASH">
 	
@@ -1614,15 +1614,14 @@
 			</outbound>
 			<async-reply>
 				<inbound-endpoint ref="plashTripInfoManagerResponseQueue">
-					<transformers>
-						
+					<transformers>	
 					</transformers>
 				</inbound-endpoint>
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
 		
-		<!-- chunfu add deltrip -->
+		
 		<service name="DelTripService">
 			<inbound>
 				<inbound-endpoint transformer-refs="HttpParams"
@@ -1649,7 +1648,7 @@
 				</inbound-endpoint>
 				<single-async-reply-router/>				
 			</async-reply>
-		</service>		
+		</service>
 
 		<service name="TestService">
 			<inbound>
@@ -2024,7 +2023,6 @@
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
-
 
 		<service name="NewTrajectoryInfoService">
 			<inbound>
