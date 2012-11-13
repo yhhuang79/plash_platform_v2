@@ -9,7 +9,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import tw.edu.sinica.iis.ants.AbnormalResult;
+import tw.edu.sinica.iis.ants.NormalResult;
 import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
@@ -19,65 +22,60 @@ import com.vividsolutions.jts.io.WKTReader;
  *
  * This component receives trip point data and stores it on the appropriate place of database. <br>
  * 
- * This component takes a Map object that contains the following keys: <br>
+  * This component takes a Map object that contains the following keys: <br>
  * userid : Required. This parameter indicates which user <br>
  * trip_id: Required. This parameter indicates which trip of the user <br>
- * update_status: Required. This parameter indicates which update status this record is currently in <br>
- * 					Warning: use this component carefully! Misuse will ruin the integrity of the database table <br> 
+ * lat: Required. This parameter indicates this point's latitude <br>
+ * lng: Required. This parameter indicates this point's longitude <br>
  * 				
  * Optional arguments: Available arguments are as follows: <br>
- * 	trip_name <br>
- * 	trip_st <br>
- * 	trip_et <br>
- * 	trip_length <br>
- * 	num_of_pts <br>
- * 	st_addr_prt1 <br>
- * 	st_addr_prt2 <br>
- * 	st_addr_prt3 <br>  
- * 	st_addr_prt4 <br>
- * 	st_addr_prt5 <br>
- * 	et_addr_prt1 <br>
- * 	et_addr_prt2 <br>
- * 	et_addr_prt3 <br>
- *  et_addr_prt4 <br>
- *  et_addr_prt5 <br>
- * Example: InputComponent?userid=1&trip_id=500&timestamp=2011-11-11 11:11:11.111
+ * 	1. timestamp <br>
+ * 	2. gps <br>
+ * 	3. server_timestamp <br>
+ * 	4. trip_id <br>
+ * 	5. label <br>
+ * 	6. alt <br>
+ * 	7. accu <br>
+ * 	8. spd <br>
+ * 	9. bear <br>
+ * 	10. accex <br>
+ * 	11. accey <br>
+ * 	12. accez <br>
+ * 	13. gsminfo <br>
+ * 	14. wifiinfo <br>
+ *  15. app <br>
+ *  16. checkin <br> 
+ * 
  *  
  * @author  Angus Fuming Huang, Yi-Chun Teng
- * @param	map A map object that contains userid, trip_id, update_status and any of the items listed above 
+ * @param	map A map object that contains userid, trip_id and any of the items listed above 
  *
 
- * @version   1.2, 01/5/2012
- * @param     
- * @return    message 
+ * @version   1.3, Nov 13/2012
+ * @return    execution status message 
  * @see       connpost.java
- * @example   http://localhost:1234/in?userid=1&trip_id=500&timestamp=2011-11-11 11:11:11.111
+ * @example   https://localhost:8080/InputComponent?userid=1&trip_id=500&lat=1.23&lng=4.56&timestamp=2011-11-11 11:11:11.111
  * 
  */
-public class InputComponent {
+public class InputComponent extends PLASHComponent {
 
-	private SessionFactory sessionFactory;
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
 
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+  
 
     public InputComponent() {
 
-    }
+    }//end constructor
 
 
-    public Object greet(Map map) {
+	@Override
+	public Object serviceMain(Map map) {
     	
-        System.out.println("inputGpsLocationComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
-        // Please Implement Your Programming Logic From Here
-
         
-        Session session = sessionFactory.openSession();
+        tskSession = sessionFactory.openSession();
+        
+        trackTimeBegin("service_main");
+
         Integer userid = null;
         Integer trip_id = null;
 
@@ -99,7 +97,9 @@ public class InputComponent {
     	Double azimuth = 0.0;
     	Double pitch = 0.0;
     	Double roll = 0.0;
-    	String battery_info = "";        
+    	String battery_info = "";      
+    	Boolean checkin = false;
+            	
         
         Timestamp timestamp = null;
         
@@ -147,7 +147,10 @@ public class InputComponent {
         	timestamp = Timestamp.valueOf(map.get("timestamp").toString());
         
         if (userid.equals("") || trip_id.equals("") || timestamp.equals("") || lat.equals("") || lng.equals("")) {  //簡化的判斷式
-			map.put("message", "required information is empty and can not input the GPS location");
+	        AbnormalResult err = new AbnormalResult(this,'E');
+	        err.refCode = 01;
+	        err.explaination = "required information is empty and can not input the GPS location";
+			return returnUnsuccess(map,err);        	
 		} else {   
 				label = 0; //let old version can work as well, 0 means no mentioned
 				if(map.get("label") != null)
@@ -202,17 +205,18 @@ public class InputComponent {
 		    	user.setRoll(roll);
 		    	user.setBattery_info(battery_info);   
 				
-				Transaction tx = session.beginTransaction();
-				session.save(user);
+				Transaction tx = tskSession.beginTransaction();
+				tskSession.save(user);
 				tx.commit();
-				
-				map.put("message", "Success in GPS location input"); 
-			}
+				trackTimeEnd("service_main");
+				tskSession.close();
+				return returnSuccess(map, new NormalResult(this,"Success in input"));
+			}//fi
         
-        session.close();
-        //End of Programming Logic Implementation
-        System.out.println("inputGpsLocationComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
-        return map;
-	} //close Object greet
+        
+        
+        
+        
+	} //end service main
     
-}  //close class inputGpsLocationComponent
+}  //end class inputComponent
