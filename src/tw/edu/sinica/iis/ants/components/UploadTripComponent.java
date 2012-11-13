@@ -319,7 +319,7 @@ public class UploadTripComponent extends PLASHComponent{
 				}
 			}
 			
-			map.put("message", "Ok");
+			map.put("message", "Ok:" + trip_id);
 			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
