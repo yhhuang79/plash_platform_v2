@@ -24,13 +24,16 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
  * This component manages the trip information. This component performs task according to the task_id fed to the component. <br>
  * This component does: <br>
  * task_id = 1 : Set trip name <br>
- * task_id = 2 : Populate trip info <br>
+ * task_id = 2 : Set is_completed flag <br>
+ * task_id = 10 : Populate trip info <br>
  * Map key descriptions: <br>
  * 			Map key-value pairs are served as additional parameters. <br> 
  * 			task_id specifies which task to perform. <br>
  * 			To perform task with task_id = 1, the caller must also specify userid and trip_id to indicate which trip record to access. <br> 
  * 			If the corresponding trip is found, the trip name is set to be the name specified by trip_name.  <br> 
- * 			To perform task with task_id = 2: <br>
+ * 			To perform task with task_id = 2, the caller must also specify userid and trip_id to indicate which trip record to access. <br>
+ * 			If the corresponding trip is found, the is_completed flag is set as specified by the input parameter. <br>
+ * 			To perform task with task_id = 10: <br>
  * 			The caller may optionally specify userid to indicate which person's trip to update. <br> 
  * 			The caller may optionally specify level value to indicate which level of information to generate <br>
  * 			If level is not specified, a default value(currently 1) will be used. <br>
@@ -39,7 +42,8 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
  * 			Rather, the program continues current calculations and finishes up the current trip. <br>    
  * 			Current default maximum processing time is 1 hour (3600) <br><br>
  * 
- * Example: TripInfoManagerComponent?task_id=1&trip_id=5&userid=123&trip_name="happy trip to Chun Fu's room"
+ * Example: TripInfoManagerComponent?task_id=2&trip_id=5&userid=123&trip_name="happy trip to Chun Fu's room" <br>
+ * Example: TripInfoManagerComponent?task_id=3&trip_id=5&userid=123&is_completed=false <br>
  *  
  * 
  * @author	Yi-Chun Teng 
@@ -72,6 +76,11 @@ public class TripInfoManagerComponent extends PLASHComponent{
 				setTripName(userid,trip_id,map.remove("trip_name").toString());
 				break;
 			case 2:
+				userid = Integer.parseInt(map.remove("userid").toString());
+				trip_id = Integer.parseInt(map.remove("trip_id").toString());				
+				setIsCompleted(userid,trip_id,Boolean.parseBoolean(map.remove("is_completed").toString()));
+				break;				
+			case 10:
 				String tmpUserid, tmpLevel, tmpProcTime;
 				int level, max_proc_time;
 				if ((tmpUserid = (String)map.remove("userid")) == null) {
@@ -170,7 +179,54 @@ public class TripInfoManagerComponent extends PLASHComponent{
 		}//end try catch			
 	
 	}//end method
+
 	
+	/**
+	 * This method sets the is_completed flag value<br>
+	 * If the specified trip info record is not found, then the operation simply stops without notifying the caller <br><br>
+	 * Example:	setTripName(1,2,"my trip");
+	 * 
+	 * @author	Yi-Chun Teng 
+	 * @param	userid Indicates user's id  
+	 * @param	trip_id Indicates trip id
+	 * @param	is_completed The boolean value to be set 	
+	 * 
+	 */
+	private void setIsCompleted(int userid, int trip_id, boolean is_completed){
+		//obtaint the record
+    	Criteria criteriaTripInfo = tskSession.createCriteria(T_TripInfo.class);
+    	criteriaTripInfo.add(Restrictions.eq("userid", userid));
+    	criteriaTripInfo.add(Restrictions.eq("trip_id", trip_id));
+		try {
+			T_TripInfo tripInfoRec = (T_TripInfo) criteriaTripInfo.uniqueResult();
+			//Check whether such trip record exists or not and is updated or not
+			if (tripInfoRec == null) {
+				//Do nothing for now
+				//should return some error?
+				return;
+			}//fi				
+				tripInfoRec.setIs_completed(is_completed);							
+				tskSession.save(tripInfoRec);
+				tskSession.beginTransaction().commit();			
+
+											
+		} catch (HibernateException he) {
+			return;
+			//most likely due to duplicate matching result
+			//handle hibernation exception here, to be implemented
+			
+			//DBValidityScan(postgistemplate.user_location_point_time, 3600);
+			
+			//Map argMap = new Map();			
+			//argMap.put("DB","postgistemplate");
+			//argMap.put("table","user_location_point_time");
+			//argMap.put("max_proc_time","3600");
+			//new DBValidityScanComponent().greet(argMap);
+			//DBValidityScanComponent pDVScanComponent = ComponentPool.get(DBValidityScanComponent.class);
+			//pDVScanComponent.greet(argMapd);
+		}//end try catch			
+	
+	}//end method
 	/**
 	 * This method tries to scan the DB <br>
 	 * 

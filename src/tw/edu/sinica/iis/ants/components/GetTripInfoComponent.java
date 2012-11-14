@@ -49,7 +49,8 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
  * 	14. et_addr_prt3 <br>
  *  15. et_addr_prt4 <br>
  *  16. et_addr_prt5 <br>
- * Example: GetTripInfoComponent?userid=5&trip_id=3&field_mask=0111110000000000  
+ *  17. is_completed <br>
+ * Example: GetTripInfoComponent?userid=5&trip_id=3&field_mask=01111100000000001  
  *  
  * @author	Yi-Chun Teng 
  * @param	map A map object that contains userid, (optionally) trip_id and (optionally) field_mask 
@@ -184,10 +185,10 @@ public class GetTripInfoComponent extends PLASHComponent {
 		//obtain the record
 		
     	Criteria criteriaTripInfo = tskSession.createCriteria(T_TripInfo.class);
-    	criteriaTripInfo.add(Restrictions.eq("userid", userid));
-    	criteriaTripInfo.add(Restrictions.eq("trip_id", trip_id));
+    	criteriaTripInfo.add(Restrictions.eq("this.userid", userid));
+    	criteriaTripInfo.add(Restrictions.eq("this.trip_id", trip_id));
     	ProjectionList filterProjList = Projections.projectionList();
-    	criteriaTripInfo.setProjection(addFilterList(filterProjList,field_mask & 32767));      	
+    	criteriaTripInfo.setProjection(addFilterList(filterProjList,field_mask));      	
    	
  
     	criteriaTripInfo.setProjection(filterProjList);    	
@@ -326,54 +327,57 @@ public class GetTripInfoComponent extends PLASHComponent {
 	 * @return
 	 */
 	private ProjectionList addFilterList(ProjectionList filterProjList, int field_mask) {
-    	if ((field_mask & 32768) != 0) { //32768 = 1000000000000000
+    	if ((field_mask & 65536) != 0) { 
     		filterProjList.add(Projections.property("trip_id"),"trip_id");
     	}//fi    	 
-    	if ((field_mask & 16384) != 0) { //16384 = 100000000000000
+    	if ((field_mask & 32768) != 0) { //32768 = 1000000000000000
     		filterProjList.add(Projections.property("trip_name"),"trip_name");
     	}//fi
-    	if ((field_mask & 8192) != 0) { 
+    	if ((field_mask & 16384) != 0) { //16384 = 100000000000000
         	filterProjList.add(Projections.sqlProjection("trip_st", new String[] {"trip_st"}, new Type[] { new StringType() }));
     	}//fi
-    	if ((field_mask & 4096) != 0) { //4096 = 1000000000000
+    	if ((field_mask & 8192) != 0) { 
         	filterProjList.add(Projections.sqlProjection("trip_et", new String[] {"trip_et"}, new Type[] { new StringType() }));    	
     	}//fi
-    	if ((field_mask & 2048) != 0) { 
+    	if ((field_mask & 4096) != 0) { //4096 = 1000000000000
         	filterProjList.add(Projections.property("trip_length"),"trip_length");  
     	}//fi
-    	if ((field_mask & 1024) != 0) { //1024 = 10000000000
+    	if ((field_mask & 2048) != 0) { //1024 = 10000000000
         	filterProjList.add(Projections.property("num_of_pts"),"num_of_pts");
     	}//fi
-    	if ((field_mask & 512) != 0) { 
+    	if ((field_mask & 1024) != 0) { 
     		filterProjList.add(Projections.property("st_addr_prt1"),"st_addr_prt1");
     	}//fi
-    	if ((field_mask & 256) != 0) { 
+    	if ((field_mask & 512) != 0) { 
     		filterProjList.add(Projections.property("st_addr_prt2"),"st_addr_prt2");
     	}//fi
-    	if ((field_mask & 128) != 0) { 
+    	if ((field_mask & 256) != 0) { 
     		filterProjList.add(Projections.property("st_addr_prt3"),"st_addr_prt3");
     	}//fi
-    	if ((field_mask & 64) != 0) { 
+    	if ((field_mask & 128) != 0) { 
     		filterProjList.add(Projections.property("st_addr_prt4"),"st_addr_prt4");
     	}//fi
-    	if ((field_mask & 32) != 0) { //32 = 100000
+    	if ((field_mask & 64) != 0) { 
     		filterProjList.add(Projections.property("st_addr_prt5"),"st_addr_prt5");
     	}//fi
-    	if ((field_mask & 16) != 0) { 
+    	if ((field_mask & 32) != 0) { //32 = 100000
     		filterProjList.add(Projections.property("et_addr_prt1"),"et_addr_prt1");
     	}//fi
-    	if ((field_mask & 8) != 0) { 
+    	if ((field_mask & 16) != 0) { 
     		filterProjList.add(Projections.property("et_addr_prt2"),"et_addr_prt2");
     	}//fi
-    	if ((field_mask & 4) != 0) { 
+    	if ((field_mask & 8) != 0) { 
     		filterProjList.add(Projections.property("et_addr_prt3"),"et_addr_prt3");
     	}//fi
-    	if ((field_mask & 2) != 0) { //2 = 10
+    	if ((field_mask & 4) != 0) { 
     		filterProjList.add(Projections.property("et_addr_prt4"),"et_addr_prt4");
     	}//fi
-    	if ((field_mask & 1) != 0) { //1=1
+    	if ((field_mask & 2) != 0) { //2 = 10
     		filterProjList.add(Projections.property("et_addr_prt5"),"et_addr_prt5");
     	}//fi
+    	if ((field_mask & 1) != 0) { //1=1
+    		filterProjList.add(Projections.property("is_completed"),"is_completed");
+    	}//fi    	
 		return filterProjList;
 		
 	}//end method

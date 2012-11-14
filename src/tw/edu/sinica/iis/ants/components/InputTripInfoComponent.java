@@ -47,6 +47,7 @@ import com.vividsolutions.jts.io.WKTReader;
  * 	et_addr_prt3 <br>
  *  et_addr_prt4 <br>
  *  et_addr_prt5 <br>
+ *  is_completed <br>
  * Example: https://localhost:8080/InputTripInfoComponent?userid=5&trip_id=3&update_status=4&st_addr_prt5=%22haha%22
  *  
  * @author	Yi-Chun Teng 
@@ -84,6 +85,7 @@ public class InputTripInfoComponent extends PLASHComponent {
         String et_addr_prt4 = ""; 
         String et_addr_prt5 = "";        
         Short update_status = -1;
+        Boolean is_completed = true;
        
         if (map.containsKey("trip_name")) {
         	trip_name = map.get("trip_name").toString();
@@ -144,6 +146,9 @@ public class InputTripInfoComponent extends PLASHComponent {
         	update_status = Short.parseShort(map.get("update_status").toString());
         }//fi      
 
+        if (map.containsKey("is_completed")) {
+        	is_completed = Boolean.parseBoolean(map.get("is_completed").toString());
+        }//fi      
 
         if (userid == null || trip_id == null || update_status == -1) { 
         	tskSession.close();

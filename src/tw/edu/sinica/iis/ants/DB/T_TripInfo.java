@@ -22,6 +22,13 @@ public class T_TripInfo {
 	private String et_addr_prt4;
 	private String et_addr_prt5;	
 	private Short update_status;
+	private Boolean is_completed;
+	public Boolean getIs_completed() {
+		return is_completed;
+	}
+	public void setIs_completed(Boolean is_completed) {
+		this.is_completed = is_completed;
+	}
 	private Integer id;
 	public Integer getUserid() {
 		return userid;
