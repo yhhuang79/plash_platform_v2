@@ -33,6 +33,7 @@
 		<property name="et_addr_prt4" column="et_addr_prt4" />
 		<property name="et_addr_prt5" column="et_addr_prt5" />								
 		<property name="update_status" column="update_status" />
+		<property name="is_completed" column="is_completed" />		
 									
 
 	</class>

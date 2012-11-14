@@ -1012,7 +1012,6 @@
 		</service>
 
 
-		<!-- (Step 4) Kenny: XXXXX =  SetAuthFriend-->
 		<service name="SetAuthFriendService">
 			<inbound>
 				<inbound-endpoint transformer-refs="HttpParams"
@@ -1549,6 +1548,7 @@
 				<pass-through-router>
 					<outbound-endpoint ref="plashGetTripInfoQueue">
 						<transformers>
+							<transformer ref="TestResponseTransformer" />
 							<jms:object-to-jmsmessage-transformer />
 						</transformers>
 					</outbound-endpoint>
@@ -1557,8 +1557,6 @@
 			<async-reply>
 				<inbound-endpoint ref="plashGetTripInfoQueue">
 					<transformers>
-						<jms:jmsmessage-to-object-transformer />
-						<transformer ref="TestResponseTransformer" />
 					</transformers>
 				</inbound-endpoint>
 				<single-async-reply-router/>				
@@ -1675,8 +1673,7 @@
 			<async-reply>
 				<inbound-endpoint ref="plashTestResponseQueue">
 					<transformers>
-						<jms:jmsmessage-to-object-transformer />
-						<transformer ref="TestResponseTransformer" />
+
 					</transformers>
 				</inbound-endpoint>
 				<single-async-reply-router/>				
@@ -1940,7 +1937,8 @@
 				</inbound-endpoint>
 				<single-async-reply-router/>				
 			</async-reply>
-		</service>		
+		</service>
+		
 		<!-- (Step 4) Yu-Hsiang: XXXXX = GetFriendRequestList -->
 		<service name="GetFriendRequestListService">
 			<inbound>
