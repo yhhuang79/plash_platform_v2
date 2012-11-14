@@ -317,6 +317,7 @@
 	<https:endpoint name="plashGetTripShareUserHttpsInboundEndpoint" host="localhost"
 		port="8080" path="GetTripShareUser" synchronous="true" connector-ref="httpsConnector" />						
 
+
 	<model name="PLASH">
 	
 		<!-- 
@@ -1012,7 +1013,6 @@
 		</service>
 
 
-		<!-- (Step 4) Kenny: XXXXX =  SetAuthFriend-->
 		<service name="SetAuthFriendService">
 			<inbound>
 				<inbound-endpoint transformer-refs="HttpParams"
@@ -1549,6 +1549,7 @@
 				<pass-through-router>
 					<outbound-endpoint ref="plashGetTripInfoQueue">
 						<transformers>
+							<transformer ref="TestResponseTransformer" />
 							<jms:object-to-jmsmessage-transformer />
 						</transformers>
 					</outbound-endpoint>
@@ -1556,9 +1557,7 @@
 			</outbound>
 			<async-reply>
 				<inbound-endpoint ref="plashGetTripInfoQueue">
-					<transformers>
-						<jms:jmsmessage-to-object-transformer />
-						<transformer ref="TestResponseTransformer" />
+					<transformers>										
 					</transformers>
 				</inbound-endpoint>
 				<single-async-reply-router/>				
@@ -1614,14 +1613,15 @@
 			</outbound>
 			<async-reply>
 				<inbound-endpoint ref="plashTripInfoManagerResponseQueue">
-					<transformers>	
+					<transformers>
+						
 					</transformers>
 				</inbound-endpoint>
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
 		
-		
+
 		<service name="DelTripService">
 			<inbound>
 				<inbound-endpoint transformer-refs="HttpParams"
@@ -1648,7 +1648,7 @@
 				</inbound-endpoint>
 				<single-async-reply-router/>				
 			</async-reply>
-		</service>
+		</service>		
 
 		<service name="TestService">
 			<inbound>
@@ -1675,6 +1675,7 @@
 			<async-reply>
 				<inbound-endpoint ref="plashTestResponseQueue">
 					<transformers>
+
 					</transformers>
 				</inbound-endpoint>
 				<single-async-reply-router/>				
@@ -1938,7 +1939,8 @@
 				</inbound-endpoint>
 				<single-async-reply-router/>				
 			</async-reply>
-		</service>			
+		</service>
+		
 		<!-- (Step 4) Yu-Hsiang: XXXXX = GetFriendRequestList -->
 		<service name="GetFriendRequestListService">
 			<inbound>
@@ -1995,6 +1997,7 @@
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
+
 		<!-- (Step 4) Yu-Hsiang: XXXXX = GetAllUserList -->
 		<service name="GetTripShareUserService">
 			<inbound>
