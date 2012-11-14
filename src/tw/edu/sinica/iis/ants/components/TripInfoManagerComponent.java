@@ -42,8 +42,8 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
  * 			Rather, the program continues current calculations and finishes up the current trip. <br>    
  * 			Current default maximum processing time is 1 hour (3600) <br><br>
  * 
- * Example: TripInfoManagerComponent?task_id=2&trip_id=5&userid=123&trip_name="happy trip to Chun Fu's room" <br>
- * Example: TripInfoManagerComponent?task_id=3&trip_id=5&userid=123&is_completed=false <br>
+ * Example: TripInfoManagerComponent?task_id=1&trip_id=5&userid=123&trip_name="happy trip to Chun Fu's room" <br>
+ * Example: TripInfoManagerComponent?task_id=2&trip_id=5&userid=123&is_completed=false <br>
  *  
  * 
  * @author	Yi-Chun Teng 
