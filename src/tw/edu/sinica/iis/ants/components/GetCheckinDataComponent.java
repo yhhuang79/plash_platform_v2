@@ -128,7 +128,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 							map.put("trip_id", trip_id);
 							map.put("tripName", PlashUtils.getTripName(userid, trip_id, tskSession));
 					    }else{
-					    	map.put("CheckInDataList","Trip not Public");
+					    	map.put("CheckInDataList",null);
 					    }
 						trackTimeEnd("service_main");
 						return map;
