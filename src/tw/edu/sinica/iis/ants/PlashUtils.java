@@ -103,7 +103,7 @@ public class PlashUtils {
 	public static Map isTripShared(int userid, int trip_id, Session session){
 		Map message = new HashMap();
 		List<Integer> users = new ArrayList<Integer>();
-		boolean isPublic = false;
+		boolean isPublic = true; // token OK , change to false
 		Criteria criteria = session.createCriteria(T_FriendAuth.class);
 		criteria.add(Restrictions.eq("userAID", userid));
 		criteria.add(Restrictions.eq("tripID", trip_id));		
