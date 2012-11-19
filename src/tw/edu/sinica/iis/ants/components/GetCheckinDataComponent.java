@@ -195,6 +195,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 				} else {
 					//return all trip
 					map.put("CheckInDataList", getTripData(userid, trip_id,field_mask));
+					map.put("tripName", PlashUtils.getTripName(userid, trip_id, tskSession));
 					System.out.println("GetCheckInDataComponent end:\t"	+ timeID + " Obj ID: " + this);
 					tskSession.close();
 					return map;				
