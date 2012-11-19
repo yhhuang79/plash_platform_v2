@@ -5,19 +5,24 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import tw.edu.sinica.iis.ants.DB.T_FriendAuth;
 import tw.edu.sinica.iis.ants.DB.T_FriendList;
+import tw.edu.sinica.iis.ants.DB.T_Login;
 import tw.edu.sinica.iis.ants.DB.T_TripHash;
 import tw.edu.sinica.iis.ants.DB.T_TripInfo;
 import tw.edu.sinica.iis.ants.DB.T_UserTrip;
@@ -75,7 +80,7 @@ public class PlashUtils {
         return convertToHex(md5hash);
     } 
     
-	public static void tripinfoToHash(Session session){
+	public static void tripinfoToHash(Session session) throws NoSuchAlgorithmException, UnsupportedEncodingException{
 		Criteria criteria = session.createCriteria(T_TripInfo.class);
 		Iterator tripinfoItr = criteria.list().iterator(); 
 		while(tripinfoItr.hasNext()) {
@@ -84,19 +89,10 @@ public class PlashUtils {
 			tth.setId(tti.getId());
 			tth.setTrip_id(tti.getTrip_id());
 			tth.setUserid(tti.getUserid());
-			try {
-				String tst = "";
-				if (tti.getTrip_st() != null)
-					tst = tti.getTrip_st().toString();
-				tth.setHash(MD5(tti.getId().toString() + "#" + tst));
-			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+			String tst = "";
+			if (tti.getTrip_st() != null)
+				tst = tti.getTrip_st().toString();
+			tth.setHash(MD5(tti.getId().toString() + "#" + tst));
 			Transaction tx = session.beginTransaction();
 			session.save(tth);
 			tx.commit();			
@@ -147,5 +143,46 @@ public class PlashUtils {
 		return newTripId;		
 	} // getNewTripId End
 	
+	public static Map login(String username, String password, Session session) throws NoSuchAlgorithmException, UnsupportedEncodingException{
+		Map message = new HashMap();
+		Criteria criteria = session.createCriteria(T_Login.class);
+		criteria.add(Restrictions.eq("username", username));
+		criteria.add(Restrictions.eq("password", password));
+		Iterator users = criteria.list().iterator(); 
+		if(users.hasNext()) {
+			T_Login user = (T_Login) users.next(); 
+			
+			if (user.isConfirmed()) {
+				message.put("sid", user.getSid());
+				Date date= new java.util.Date();
+				message.put("token", MD5(user.getUsername() + date.getTime()));
+				message.put("message", "Successful Login");				
+			} else { //account is not activate
+				//SHOUELD BE REQUESTED BY USER, DO NOT SEND AUTOMATICALLY
+				message.put("sid", "0");
+				message.put("message", "Inactivate");
+			}
+		} else {
+			message.put("sid", "0");
+			message.put("message", "Login Fail");
+		}
+		return message;		
+	} // login End	
+	
+	public static String getTripName(int userid, int trip_id, Session session) {
+    	Criteria criteria = session.createCriteria(T_TripInfo.class);
+    	criteria.add(Restrictions.eq("userid", userid));
+    	criteria.add(Restrictions.eq("trip_id", trip_id));
+    	ProjectionList filterProjList = Projections.projectionList();   
+    	filterProjList.add(Projections.property("trip_name"),"trip_name");
+    	criteria.setProjection(filterProjList);    	
+    	String tripName = null;
+    	Iterator trips = criteria.list().iterator();
+    	if(trips.hasNext()) {
+    		Object tripInfo = trips.next();
+    		tripName = tripInfo.toString();
+    	}
+    	return tripName;
+	}//end method	
 	
 } // PlashUtils End 

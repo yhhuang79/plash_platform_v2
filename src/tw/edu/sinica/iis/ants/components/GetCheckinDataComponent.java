@@ -120,9 +120,16 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 						} else {
 							field_mask = Integer.parseInt("1100011110000001",2);						
 						}
-						map.put("CheckInDataList", getTripData(userid, trip_id,field_mask));
-						map.put("userid", userid);
-						map.put("trip_id", trip_id);
+						
+						Map isPublic = PlashUtils.isTripShared(userid, trip_id, tskSession);
+					    if(isPublic.get("isPublic").toString() == "true"){
+					    	map.put("CheckInDataList", getTripData(userid, trip_id,field_mask));
+							map.put("userid", userid);
+							map.put("trip_id", trip_id);
+							map.put("tripName", PlashUtils.getTripName(userid, trip_id, tskSession));
+					    }else{
+					    	map.put("CheckInDataList","Trip not Public");
+					    }
 						trackTimeEnd("service_main");
 						return map;
 					} else {
@@ -195,12 +202,11 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 				}//fi
 				
 	   			
-			//} catch (NullPointerException e) { //Most likely due to invalid arguments 
-			//	map.put("GetTripDataComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
-		    //    System.out.println("GetTripDataComponent failure end1:\t" + e.toString() + " : requestID: " + requestCount);
-		    //    tskSession.close(); 	
-			//	return map; //*/
-				
+			} catch (NullPointerException e) { //Most likely due to invalid arguments 
+				map.put("GetTripDataComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
+		        System.out.println("GetTripDataComponent failure end1:\t" + e.toString() + " : requestID: " + requestCount);
+		        tskSession.close(); 	
+				return map;
 			} catch (NumberFormatException e) { //invalid arguments 
 				map.put("GetTripDataComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file
 				//map.put("error detail" , e.toString()); //perhaps put error detail?
