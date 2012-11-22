@@ -101,7 +101,7 @@ public class GetAuthTripInfoComponent extends PLASHComponent{
 		}//end while /*/
 		
         map.put("authTripInfoList", resultList);
-        session.close();
+        tskSession.close();
         System.out.println("GetAuthTripInfoComponent successful end:\t"+ Calendar.getInstance().getTimeInMillis());
         return map;
     }//end method
