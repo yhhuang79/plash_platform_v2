@@ -63,7 +63,7 @@ public class GetAuthTripComponent {
 		}//end try catch
 
 		map.put("getAuthTrip", criteria.list());
-		       
+		session.close();       
         System.out.println("getAuthTripComponent successful end:\t"+ Calendar.getInstance().getTimeInMillis());
         return map;
 
