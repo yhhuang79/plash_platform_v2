@@ -48,10 +48,10 @@ import tw.edu.sinica.iis.ants.db.common.*;
  *  extra <br>	 
  *  
  * @author  Yi-Chun Teng
- * @param	map A map object that contains userid, trip_id, update_status and any of the items listed above 
+ * @param	map A map object that contains trajectory_id, record_time, latitude, longitude and/or any of the items listed above 
  *
 
- * @version   1.2, 01/5/2012
+ * @version   1.3, Nov 15/2012
  * @param     
  * @return    return status 
  * @example   https://localhost:8080/NewTrajectoryPoint?trajectory_id=1&record_time=2011-11-11 11:11:11.111&latitude=1.123456&longitude=2.34567

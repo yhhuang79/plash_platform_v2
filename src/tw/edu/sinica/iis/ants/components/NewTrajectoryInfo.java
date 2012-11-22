@@ -16,23 +16,10 @@ import tw.edu.sinica.iis.ants.db.common.*;
  * This component receives trajectory info, creates a new record and stores them on the appropriate place of database. <br>
  * 
  * The following parameters are required: <br>
- * trajectory_id : Required. This parameter indicates the id of the trajectory <br>
+ *  <br>
  * 				
  * Optional arguments: Available arguments are as follows: <br>
  * 	trajectory_id <br>
- * 	record_time <br>
- * 	latitude <br>
- *	longitude <br>
- * 	altitude <br>
- * 	accuracy <br>
- * 	speed <br>
- * 	bearing <br>
- * 	accel_x <br>
- * 	accel_y <br>
- * 	accel_z <br>
- * 	azimuth <br>
- * 	pitch <br>
- * 	roll <br>
 	 
  *  
  * @author  Yi-Chun Teng
@@ -42,7 +29,7 @@ import tw.edu.sinica.iis.ants.db.common.*;
  * @version   1.2, 01/5/2012
  * @param     
  * @return    return status 
- * @example   https://localhost:8080/NewTrajectoryInfo?upload_status=1
+ * @example   https://localhost:8080/NewTrajectoryInfo
  * 
  */
 public class NewTrajectoryInfo extends PLASHComponent {

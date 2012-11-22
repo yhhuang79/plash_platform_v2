@@ -15,7 +15,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import tw.edu.sinica.iis.ants.*;
-import tw.edu.sinica.iis.ants.DB.T_TripInfo;
+
 
 /**
  * The general abstract class for PLASH component 
