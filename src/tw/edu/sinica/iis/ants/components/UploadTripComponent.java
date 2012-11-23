@@ -174,9 +174,9 @@ public class UploadTripComponent extends PLASHComponent{
 		        Double accu = 0.0; 	//Accuracy in meter
 		        Double spd = 0.0;	//Speed in m/s
 		        Double bear = 0.0;	//Bearing
-		        Double accex = 0.0;	//x-axis acceleration
-		        Double accey = 0.0;	//y-axis acceleration
-		        Double accez= 0.0; 	//z-axis acceleration
+		        String accex = null;	//x-axis acceleration
+		        String accey = null;	//y-axis acceleration
+		        String accez= null; 	//z-axis acceleration
 		        String gsminfo = null; //first 5 is phone information, last 3 is the nearest cell information, NULL if information is missing
 		        String wifiinfo = null; // set of AP info: MAC address, frequency (MHz), signal strength (dBM)
 		        Integer app = 0;
@@ -204,11 +204,11 @@ public class UploadTripComponent extends PLASHComponent{
 				if(tpoint.containsKey("bear"))
 					bear = Double.valueOf(tpoint.get("bear").toString()).doubleValue();
 				if(tpoint.containsKey("accex"))
-					accex = Double.valueOf(tpoint.get("accex").toString()).doubleValue();
+					accex = tpoint.get("accex").toString();
 				if(tpoint.containsKey("accey"))
-					accey = Double.valueOf(tpoint.get("accey").toString()).doubleValue();
+					accey = tpoint.get("accey").toString();
 				if(tpoint.containsKey("accez"))
-					accez = Double.valueOf(tpoint.get("accez").toString()).doubleValue();
+					accez = tpoint.get("accez").toString();
 				if(tpoint.containsKey("gsminfo"))
 					gsminfo = tpoint.get("gsminfo").toString();
 				if(tpoint.containsKey("wifiinfo"))

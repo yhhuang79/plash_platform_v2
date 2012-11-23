@@ -88,9 +88,9 @@ public class InputTripDataComponent extends PLASHComponent {
         Double accu = 0.0; 	//Accuracy in meter
         Double spd = 0.0;	//Speed in m/s
         Double bear = 0.0;	//Bearing
-        Double accex = 0.0;	//x-axis acceleration
-        Double accey = 0.0;	//y-axis acceleration
-        Double accez= 0.0; 	//z-axis acceleration
+        String accex = null;	//x-axis acceleration
+        String accey = null;	//y-axis acceleration
+        String accez= null; 	//z-axis acceleration
         String gsminfo = ""; //first 5 is phone information, last 3 is the nearest cell information, NULL if information is missing
         String wifiinfo = ""; // set of AP info: MAC address, frequency (MHz), signal strength (dBM)
         Integer app = 0;
@@ -122,11 +122,11 @@ public class InputTripDataComponent extends PLASHComponent {
         if (map.containsKey("bear"))
         	bear = Double.valueOf(map.get("bear").toString()).doubleValue();
         if (map.containsKey("accex"))
-        	accex = Double.valueOf(map.get("accex").toString()).doubleValue();
+        	accex = map.get("accex").toString();
         if (map.containsKey("accey"))
-        	accey = Double.valueOf(map.get("accey").toString()).doubleValue();
+        	accey = map.get("accey").toString();
         if (map.containsKey("accez"))
-        	accez = Double.valueOf(map.get("accez").toString()).doubleValue();
+        	accez = map.get("accez").toString();
         if (map.containsKey("gsminfo"))
         	gsminfo = map.get("gsminfo").toString();
         if (map.containsKey("wifiinfo"))

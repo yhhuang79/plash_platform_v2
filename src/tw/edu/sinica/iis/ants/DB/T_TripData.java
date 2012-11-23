@@ -17,9 +17,9 @@ public class T_TripData {
 	private Double accu;
 	private Double spd;
 	private Double bear;
-	private Double accex;
-	private Double accey;
-	private Double accez;
+	private String accex;
+	private String accey;
+	private String accez;
 	private String gsminfo;
 	private String wifiinfo;
 	private Integer app;
@@ -81,27 +81,27 @@ public class T_TripData {
 		this.bear = bear;
 	}
 
-	public Double getAccex() {
+	public String getAccex() {
 		return accex;
 	}
 
-	public void setAccex(Double accex) {
+	public void setAccex(String accex) {
 		this.accex = accex;
 	}
 
-	public Double getAccey() {
+	public String getAccey() {
 		return accey;
 	}
 
-	public void setAccey(Double accey) {
+	public void setAccey(String accey) {
 		this.accey = accey;
 	}
 
-	public Double getAccez() {
+	public String getAccez() {
 		return accez;
 	}
 
-	public void setAccez(Double accez) {
+	public void setAccez(String accez) {
 		this.accez = accez;
 	}
 
