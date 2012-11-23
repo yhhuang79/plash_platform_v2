@@ -43,11 +43,11 @@ public class GetAuthTripInfoComponent extends PLASHComponent{
 
     	int friendid;
         System.out.println("getAuthTripLatLngComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
-        Session session = sessionFactory.openSession(); 
+        //Session session = sessionFactory.openSession(); 
         
         
         Criteria criteriaFriendAuth;
-        criteriaFriendAuth = session.createCriteria(T_FriendAuth.class);
+        criteriaFriendAuth = tskSession.createCriteria(T_FriendAuth.class);
         
 		try {			
 			friendid = Integer.parseInt(map.get("friendid").toString());
