@@ -72,8 +72,8 @@ public class GetPublicTripInfoComponent extends PLASHComponent{
 		System.out.println("GetPublicTripInfoComponent tripIDList.size : "+ tripIDList.size());
 		
 		for(int i = tripIDList.size()-1;  i >= 0 ;i--) {
-			System.out.println("GetPublicTripInfoComponent UserBID : "+ tripIDList.get(i).getUserAID() + "    TripID : " + tripIDList.get(i).getTripID());
-			resultEntryMap = getSingleTripInfo(tripIDList.get(i).getUserBID(), tripIDList.get(i).getTripID());
+			System.out.println("GetPublicTripInfoComponent UserAID : "+ tripIDList.get(i).getUserAID() + "    TripID : " + tripIDList.get(i).getTripID());
+			resultEntryMap = getSingleTripInfo(tripIDList.get(i).getUserAID(), tripIDList.get(i).getTripID());
 			if (resultEntryMap != null) {
 				resultList.add(resultEntryMap);
 			}//fi			
