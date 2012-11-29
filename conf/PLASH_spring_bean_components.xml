@@ -194,8 +194,7 @@
         <spring:bean id="SignUpComponent"
                 class="tw.edu.sinica.iis.ants.components.SignUpComponent">
                 <spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-        </spring:bean>
-        
+        </spring:bean>       
         <spring:bean id="GetFriendRequestListComponent"
                 class="tw.edu.sinica.iis.ants.components.GetFriendRequestListComponent">
                 <spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
@@ -208,5 +207,8 @@
                 class="tw.edu.sinica.iis.ants.components.GetTripShareUserComponent">
                 <spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
         </spring:bean>
-        	
+        <spring:bean id="GetPublicTripInfoComponent"
+                class="tw.edu.sinica.iis.ants.components.GetPublicTripInfoComponent">
+                <spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+        </spring:bean>        	
 </mule>

@@ -162,6 +162,8 @@
 	<jms:endpoint name="plashGetAllUserListQueue" queue="plash.get.all.user.list"
 		connector-ref="jmsCon" />
 	<jms:endpoint name="plashGetTripShareUserQueue" queue="plash.get.trip.share.user"
+		connector-ref="jmsCon" />	
+	<jms:endpoint name="plashGetPublicTripInfoQueue" queue="plash.get.public.trip.info"
 		connector-ref="jmsCon" />
 		
 	<https:connector name="httpsConnector">
@@ -315,7 +317,10 @@
 	<https:endpoint name="plashGetAllUserListHttpsInboundEndpoint" host="localhost"
 		port="8080" path="GetAllUserList" synchronous="true" connector-ref="httpsConnector" />			
 	<https:endpoint name="plashGetTripShareUserHttpsInboundEndpoint" host="localhost"
-		port="8080" path="GetTripShareUser" synchronous="true" connector-ref="httpsConnector" />						
+		port="8080" path="GetTripShareUser" synchronous="true" connector-ref="httpsConnector" />
+	<https:endpoint name="plashGetPublicTripInfoHttpsInboundEndpoint" host="localhost"
+		port="8080" path="GetPublicTripInfo" synchronous="true" connector-ref="httpsConnector" />
+								
 
 
 	<model name="PLASH">
@@ -2026,6 +2031,35 @@
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
+		
+		<!-- (Step 4) Yu-Hsiang: XXXXX = GetPublicTripInfo -->
+		<service name="GetPublicTripInfoService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashGetPublicTripInfoHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="GetPublicTripInfoComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashGetPublicTripInfoQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashGetPublicTripInfoQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="TestResponseTransformer" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>		
 
 		<service name="NewTrajectoryInfoService">
 			<inbound>
