@@ -112,6 +112,7 @@ public class GetPublicTripInfoComponent extends PLASHComponent{
 			if (tripInfoRec == null) {				
 				return null;
 			}//fi
+			tripInfoRec.put("userid", userid);
 			tripInfoRec.put("hash", PlashUtils.ParamToHash(userid, trip_id, tskSession));
 			return tripInfoRec;
 											
