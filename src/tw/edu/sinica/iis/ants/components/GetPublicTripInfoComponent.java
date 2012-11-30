@@ -79,7 +79,8 @@ public class GetPublicTripInfoComponent extends PLASHComponent{
 			}//fi			
 		}//rof
 		
-        map.put("PublicTripInfoList", resultList);
+        map.put("tripInfoList", resultList);
+        map.put("tripInfoNum", tripIDList.size());
         tskSession.close();
         System.out.println("GetPublicTripInfoComponent successful end:\t"+ Calendar.getInstance().getTimeInMillis());
         return map;
