@@ -185,4 +185,20 @@ public class PlashUtils {
     	return tripName;
 	}//end method	
 	
+	public static String getUsername(int userid, Session session) {
+    	Criteria criteria = session.createCriteria(T_Login.class);
+    	criteria.add(Restrictions.eq("sid", userid));
+    	ProjectionList filterProjList = Projections.projectionList();   
+    	filterProjList.add(Projections.property("username"),"username");
+    	criteria.setProjection(filterProjList);    	
+    	String username = null;
+    	Iterator users = criteria.list().iterator();
+    	if(users.hasNext()) {
+    		Object userInfo = users.next();
+    		username = userInfo.toString();
+    	}
+    	return username;
+	}//end method	
+	
+	
 } // PlashUtils End 
