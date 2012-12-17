@@ -88,6 +88,8 @@
 				<value>hbmxml.common_data/TrajectoryPoints.hbm.xml</value>
 				<value>hbmxml.common_data/TrajectoryInfo.hbm.xml</value>				
 				<value>hbmxml.common_data/UserSpecified.hbm.xml</value>
+				
+				<value>hbmxml.antrip/TripSharing.hbm.xml</value>				
 								
 				
 			</list>

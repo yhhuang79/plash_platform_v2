@@ -110,3 +110,11 @@ CREATE TABLE antrip_data.point_checkins (
 	mood smallint,
 	UR_MD5 text
 );
+
+CREATE TABLE antrip_data.trip_sharing (
+	user_id integer NOT NULL REFERENCES antrip_users.user_accounts(user_id),
+	user_id_friend integer NOT NULL REFERENCES antrip_users.user_accounts(user_id),
+	trip_id integer NOT NULL,
+	PRIMARY KEY (user_id, user_id_friend, trip_id)	
+);
+CREATE INDEX antrip_data_trip_sharing_idx_user_trip_id ON antrip_data.trip_sharing(user_id, trip_id);

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 17, 2012 4:07:38 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="tw.edu.sinica.iis.ants.db.antrip.TripSharing" table="antrip_data.trip_sharing" >
+        <composite-id name="id" class="tw.edu.sinica.iis.ants.db.antrip.TripSharingId">
+            <key-property name="userId" type="int">
+                <column name="user_id" />
+            </key-property>
+            <key-property name="userIdFriend" type="int">
+                <column name="user_id_friend" />
+            </key-property>
+            <key-property name="tripId" type="int">
+                <column name="trip_id" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>
