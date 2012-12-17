@@ -8,8 +8,10 @@ import org.hibernate.criterion.Restrictions;
 
 import tw.edu.sinica.iis.ants.AbnormalResult;
 
-import tw.edu.sinica.iis.ants.DB.T_FriendAuth;
+
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
+import tw.edu.sinica.iis.ants.db.antrip.*;
+
 
 /**
  * set authorized friend
@@ -23,9 +25,7 @@ public class SetAuthFriendComponent extends PLASHComponent {
 
 
 
-
 	private Session tskSession; //task session
-
 	
 	public SetAuthFriendComponent() {
 		super();	
@@ -34,17 +34,15 @@ public class SetAuthFriendComponent extends PLASHComponent {
 
 	public Object serviceMain(Map map) {
 
-
-
         
-        int userid;
+        int user_id;
         int[] trip_id, friend_id;	
         int num_of_trip_ids, num_of_friend_ids; 
         StringTokenizer ids_st;        
 		String tmpUserid, tmpTrip_ids, tmpFriend_ids;
-		
+		boolean duplicateEntry = false;
 		try {
-			
+		
 
 			if ((tmpUserid = (String)map.remove("userid")) == null) {				
 				getElapsed();
@@ -54,7 +52,7 @@ public class SetAuthFriendComponent extends PLASHComponent {
 		        err.explaination = "User id must be specified";
 				return returnUnsuccess(map,err);
 			} else {
-				userid = Integer.parseInt(tmpUserid);
+				user_id = Integer.parseInt(tmpUserid);
 			}//fi
 			
 			if ((tmpTrip_ids = (String)map.remove("trip_id")) == null) {				
@@ -71,7 +69,6 @@ public class SetAuthFriendComponent extends PLASHComponent {
 				int i = 0;
 				while (ids_st.hasMoreTokens()) {
 					trip_id[i] = Integer.parseInt(ids_st.nextToken());
-					System.out.println(trip_id[i]);	
 					i++;
 				}//end while
 				
@@ -91,7 +88,6 @@ public class SetAuthFriendComponent extends PLASHComponent {
 				int i = 0;
 				while (ids_st.hasMoreTokens()) {
 					friend_id[i] = Integer.parseInt(ids_st.nextToken());
-					System.out.println(friend_id[i]);	
 					i++;
 				}//end while
 				
@@ -112,38 +108,35 @@ public class SetAuthFriendComponent extends PLASHComponent {
 		}//end try catch
 		
         tskSession = sessionFactory.openSession(); 
-        Criteria criteriaFriendAuth = tskSession.createCriteria(T_FriendAuth.class);
+        Criteria criteriaTripSharing = tskSession.createCriteria(TripSharing.class);
         
         for (int i = 0; i < num_of_trip_ids; i++) {
         	for (int f=0; f < num_of_friend_ids; f++) {
-            	
+        		
+        		TripSharingId entry = new TripSharingId(user_id,friend_id[f],trip_id[i]);
+        		
         		try {			
-        			criteriaFriendAuth.add(Restrictions.eq("userAID", userid));
-        			criteriaFriendAuth.add(Restrictions.eq("userBID", friend_id[f]));	
-        			criteriaFriendAuth.add(Restrictions.eq("tripID", trip_id[i]));			
-
-        			
-        			if (criteriaFriendAuth.uniqueResult() == null) { //element does not exist
+        			criteriaTripSharing.add(Restrictions.eq("id", entry));
+  			
+        			if (criteriaTripSharing.uniqueResult() == null) { //element does not exist
   
-        				T_FriendAuth entry = new T_FriendAuth();
         				
-        				entry.setUserAID(userid);
-        				entry.setUserBID(friend_id[f]);
-        				entry.setTripID(trip_id[i]);						
-        				tskSession.save(entry);
+        				TripSharing ts = new TripSharing(entry);
+        				tskSession.save(ts);
         				tskSession.beginTransaction().commit();
 
-        				//put code for sending e-mail here
-        				//Suggestion: the process of sending e-mail should be initiated by router rather than this component
         				
-        			}//end if        
+        			} else {
+        				duplicateEntry = true;    
+        			}//end if  
 
 
         		} catch (HibernateException he) {
         	        AbnormalResult err = new AbnormalResult(this,'E');
-        	        err.refCode = 002;
-        	        err.explaination = "HibernateException, please check the validity of input and database integrity";
+        	        err.refCode = 003;
+        	        err.explaination = "Warning, HibernateException occurred. Please check database integrity.";
         			return returnUnsuccess(map,err);
+        			
         		}//end try catch        	
             	
       		
@@ -154,7 +147,15 @@ public class SetAuthFriendComponent extends PLASHComponent {
         	
         }//rof
 		
-        return map;
+        if (duplicateEntry) {
+	        AbnormalResult war = new AbnormalResult(this,'W');
+	        war.refCode = 003;
+	        war.explaination = "Warning, there were duplicate trip sharing combinations assigned.";
+        	return returnUnsuccess(map,war);
+        } else  {
+        	return returnSuccess(map);
+        }//fi
+        
 	}//end method
     
 } //end class
