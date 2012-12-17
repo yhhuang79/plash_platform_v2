@@ -10,6 +10,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 
+import tw.edu.sinica.iis.ants.AbnormalResult;
 import tw.edu.sinica.iis.ants.DB.T_FriendAuth;
 import tw.edu.sinica.iis.ants.DB.T_TripInfo;
 import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
@@ -26,7 +27,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @return  a map containing a list of maps where each map contains
  * 			a trip ID, a latitude, a longitude and a timestamp. 
  * 			empty list if no matching entry found
- * @example	https://localhost:1234/in?userid=7&friendid=1       
+ * @example	https://localhost:8080/GetAuthTripInfoComponent?userid=7&friendid=1       
  * @note	
  */
 
@@ -42,8 +43,7 @@ public class GetAuthTripInfoComponent extends PLASHComponent{
 		tskSession = sessionFactory.openSession();    	
 
     	int friendid;
-        System.out.println("getAuthTripLatLngComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
-        //Session session = sessionFactory.openSession(); 
+ 
         
         
         Criteria criteriaFriendAuth;
@@ -57,15 +57,17 @@ public class GetAuthTripInfoComponent extends PLASHComponent{
 			criteriaFriendAuth.addOrder(Order.desc("tripID"));
    			
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
-			map.put("GetAuthTripInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file
-			//map.put("error detail" , e.toString()); //perhaps put error detail?
-	        System.out.println("getAuthTripLatLngComponent failure end1:\t"+ Calendar.getInstance().getTimeInMillis());
-			return map;
+			tskSession.close();
+	        AbnormalResult err = new AbnormalResult(this,'E');
+	        err.refCode = 001;
+	        err.explaination = "NullPointerException occured, probably due to invalid argument";
+			return returnUnsuccess(map,err);					
 		} catch (NumberFormatException e) { //invalid arguments 
-			map.put("GetAuthTripInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file
-			//map.put("error detail" , e.toString()); //perhaps put error detail?
-	        System.out.println("GetAuthTripInfoComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
-			return map;
+			tskSession.close();
+	        AbnormalResult err = new AbnormalResult(this,'E');
+	        err.refCode = 001;
+	        err.explaination = "NumberFormatException occured, probably due to invalid argument";
+			return returnUnsuccess(map,err);					
 		}//end try catch
 		
 		//Iterator<T_FriendAuth> tripIDList = criteriaFriendAuth.list().iterator();
