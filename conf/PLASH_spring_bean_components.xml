@@ -109,10 +109,7 @@
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</spring:bean>
 
-	<spring:bean id="DelAuthFriendComponent"
-		class="tw.edu.sinica.iis.ants.components.DelAuthFriendComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
+
 	<spring:bean id="GetAuthTripComponent"
 		class="tw.edu.sinica.iis.ants.components.GetAuthTripComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
@@ -168,11 +165,7 @@
 
 
 	
-	<!-- chunfu add deltrip -->
-	<spring:bean id="DelTripComponent"
-		class="tw.edu.sinica.iis.ants.components.DelTripComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>		
+
 	
 	<!-- Yu-Hsiang add FacebookLogin -->
         <spring:bean id="FacebookLoginComponent"

@@ -45,16 +45,17 @@
 		<spring:import resource="./legacycomponents/GetTripDataConfig.xml" />
 		<spring:import resource="./legacycomponents/GetNewTripIDConfig.xml" />
 		<spring:import resource="./legacycomponents/GetTripAuthDataConfig.xml"/>	
-		<spring:import resource="./legacycomponents/GetTripInfoConfig.xml"/>
-		<spring:import resource="./legacycomponents/GetAuthFriendConfig.xml"/>		
+		<spring:import resource="./legacycomponents/GetTripInfoConfig.xml"/>		
 		<spring:import resource="./legacycomponents/GetLatestTripConfig.xml"/>						
 		<spring:import resource="./legacycomponents/InputTripInfoConfig.xml"/>
 		<spring:import resource="./legacycomponents/InputTripDataConfig.xml"/>	
 		<spring:import resource="./legacycomponents/SetAuthFriendConfig.xml"/>
 		<spring:import resource="./legacycomponents/SetLoginConfig.xml"/>		
-		<spring:import resource="./legacycomponents/TripInfoManagerConfig.xml"/>		
+		<spring:import resource="./legacycomponents/TripInfoManagerConfig.xml"/>
+		<spring:import resource="./legacycomponents/DelAuthFriendConfig.xml" />
+		<spring:import resource="./legacycomponents/DelTripConfig.xml" />
 		<spring:import resource="./legacycomponents/TestConfig.xml" />
-		
+
 		<spring:import resource="./common_data_access_beanconfig/NewTrajectoryPointConfig.xml" />		
 		<spring:import resource="./common_data_access_beanconfig/NewTrajectoryInfoConfig.xml" />
 		<spring:import resource="./common_data_access_beanconfig/NewUserSpecifiedConfig.xml" />
@@ -106,10 +107,6 @@
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashDistanceBearingQueue" queue="plash.distance.bearing"
 		connector-ref="jmsCon" />	
-	<jms:endpoint name="plashDelAuthFriendQueue" queue="plash.del.auth.friend"
-		connector-ref="jmsCon" />	
-	<jms:endpoint name="plashGetAuthTripQueue" queue="plash.get.auth.trip"
-		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashGetAuthTripLatLngQueue" queue="plash.get.auth.trip.lat.lng"
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashRetrieveUserInfoQueue" queue="plash.retrieve.user.info"
@@ -136,11 +133,6 @@
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashGetUsersAttendActivityQueue" queue="plash.get.users.attend.activity"
 		connector-ref="jmsCon" />	
-
-	<!-- chunfu add deltrip -->
-	<jms:endpoint name="plashDelTripResponseQueue" queue="plash.response.Del.Trip"
-		connector-ref="jmsCon" />
-	
 			
 	<!-- Yu-Hsiang add  -->
 	<jms:endpoint name="plashGetNewTripId2Queue" queue="plash.get.new.trip.id2"
@@ -235,12 +227,6 @@
 	<https:endpoint name="plashGetAllFriendLocationHttpsInboundEndpoint" host="localhost"
 		port="8080" path="GetAllFriendLocation" synchronous="true" connector-ref="httpsConnector" />
 		
-	<https:endpoint name="plashDelAuthFriendHttpsInboundEndpoint" host="localhost"
-		port="8080" path="DelAuthFriend" synchronous="true" connector-ref="httpsConnector" />
-		
-	<https:endpoint name="plashGetAuthTripHttpsInboundEndpoint" host="localhost"
-		port="8080" path="GetAuthTrip" synchronous="true" connector-ref="httpsConnector" />
-		
 	<https:endpoint name="plashGetAuthTripLatLngHttpsInboundEndpoint" host="localhost"
 		port="8080" path="GetAuthTripLatLng" synchronous="true" connector-ref="httpsConnector" />
 		
@@ -290,9 +276,7 @@
 	<https:endpoint name="plashPlatformInboundEndpoint" host="localhost"
 		port="8080" path="plashPlatform" synchronous="true" connector-ref="httpsConnector" />
 
-	<!-- chunfu add deltrip -->
-	<https:endpoint name="plashDelTripHttpsInboundEndpoint" host="localhost"
-		port="8080" path="DelTrip" synchronous="true" connector-ref="httpsConnector" />
+
 		
 	<https:endpoint name="plashHttpsInboundEndpoint" host="localhost"
 		port="11111" path="in" synchronous="true" connector-ref="httpsConnector" />
@@ -320,7 +304,6 @@
 		port="8080" path="GetTripShareUser" synchronous="true" connector-ref="httpsConnector" />
 	<https:endpoint name="plashGetPublicTripInfoHttpsInboundEndpoint" host="localhost"
 		port="8080" path="GetPublicTripInfo" synchronous="true" connector-ref="httpsConnector" />
-								
 
 
 	<model name="PLASH">
@@ -961,38 +944,7 @@
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
-		
-		<!-- (Step 4) Kenny: XXXXX =  GetAuthFriend-->
-		<service name="GetAuthFriendService">
-			<inbound>
-				<inbound-endpoint transformer-refs="HttpParams"
-					responseTransformer-refs="byteArrayToString" ref="plashGetAuthFriendHttpsInboundEndpoint" />
-			</inbound>			
-			<component>
-				<spring-object bean="GetAuthFriendComponent"></spring-object>
-			</component>
-			<outbound>
-				<pass-through-router>
-					<outbound-endpoint ref="plashGetAuthFriendQueue">
-						<transformers>
-							<transformer ref="TestResponseTransformer" />	
-							<jms:object-to-jmsmessage-transformer />
-						
-						</transformers>
-					</outbound-endpoint>
-				</pass-through-router>
-			</outbound>
-			<async-reply>
-				<inbound-endpoint ref="plashGetAuthFriendQueue">
-					<transformers>
-						<transformer ref="TestResponseTransformer" />
-						<jms:jmsmessage-to-object-transformer />
 
-					</transformers>
-				</inbound-endpoint>
-				<single-async-reply-router/>				
-			</async-reply>
-		</service>
 		
 		<service name="GetTripAuthDataService">
 			<inbound>
@@ -1074,36 +1026,7 @@
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
-		
-		<!-- (Step 4) Kenny: XXXXX =  GetAuthTrip-->
-		<service name="GetAuthTripService">
-			<inbound>
-				<inbound-endpoint transformer-refs="HttpParams"
-					responseTransformer-refs="byteArrayToString" ref="plashGetAuthTripHttpsInboundEndpoint" />
-			</inbound>			
-			<component>
-				<spring-object bean="GetAuthTripComponent"></spring-object>
-			</component>
-			<outbound>
-				<pass-through-router>
-					<outbound-endpoint ref="plashGetAuthTripQueue">
-						<transformers>
-							<jms:object-to-jmsmessage-transformer />
-						</transformers>
-					</outbound-endpoint>
-				</pass-through-router>
-			</outbound>
-			<async-reply>
-				<inbound-endpoint ref="plashGetAuthTripQueue">
-					<transformers>
-						<jms:jmsmessage-to-object-transformer />
-						<transformer ref="TestResponseTransformer" />
-					</transformers>
-				</inbound-endpoint>
-				<single-async-reply-router/>				
-			</async-reply>
-		</service>
-		
+
 		<!-- (Step 4) Kenny: XXXXX =  GetAuthTripLatLng-->
 		<service name="GetAuthTripLatLngService">
 			<inbound>
@@ -1562,7 +1485,7 @@
 			</outbound>
 			<async-reply>
 				<inbound-endpoint ref="plashGetTripInfoQueue">
-					<transformers>										
+					<transformers>									
 					</transformers>
 				</inbound-endpoint>
 				<single-async-reply-router/>				
@@ -1653,7 +1576,7 @@
 				</inbound-endpoint>
 				<single-async-reply-router/>				
 			</async-reply>
-		</service>		
+		</service>
 
 		<service name="TestService">
 			<inbound>
@@ -2059,7 +1982,7 @@
 				</inbound-endpoint>
 				<single-async-reply-router/>				
 			</async-reply>
-		</service>		
+		</service>
 
 		<service name="NewTrajectoryInfoService">
 			<inbound>
@@ -2081,7 +2004,6 @@
 					</outbound-endpoint>
 				</pass-through-router>
 			</outbound>
-
 		
 				
 			<async-reply>
