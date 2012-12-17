@@ -110,10 +110,6 @@
 	</spring:bean>
 
 
-	<spring:bean id="GetAuthTripComponent"
-		class="tw.edu.sinica.iis.ants.components.GetAuthTripComponent">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-	</spring:bean>
 	<spring:bean id="GetAuthTripLatLngComponent"
 		class="tw.edu.sinica.iis.ants.components.GetAuthTripLatLngComponent">
 		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
