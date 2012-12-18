@@ -157,6 +157,9 @@
 		connector-ref="jmsCon" />	
 	<jms:endpoint name="plashGetPublicTripInfoQueue" queue="plash.get.public.trip.info"
 		connector-ref="jmsCon" />
+	<jms:endpoint name="plashGetAuthTripInfoQueue" queue="plash.get.auth.trip.info"
+		connector-ref="jmsCon" />
+		
 		
 	<https:connector name="httpsConnector">
 		<https:tls-key-store path="file://../resources/tmpKey/keystore" keyPassword="password" storePassword="password"/>
@@ -304,6 +307,8 @@
 		port="8080" path="GetTripShareUser" synchronous="true" connector-ref="httpsConnector" />
 	<https:endpoint name="plashGetPublicTripInfoHttpsInboundEndpoint" host="localhost"
 		port="8080" path="GetPublicTripInfo" synchronous="true" connector-ref="httpsConnector" />
+	<https:endpoint name="plashGetAuthTripInfoHttpsInboundEndpoint" host="localhost"
+		port="8080" path="GetAuthTripInfoComponent" synchronous="true" connector-ref="httpsConnector" />
 
 
 	<model name="PLASH">
@@ -1983,6 +1988,36 @@
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
+		<!-- (Step 4) Yu-Hsiang: XXXXX = GetAuthTripInfo -->
+		<service name="GetAuthTripInfoService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashGetAuthTripInfoHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="GetAuthTripInfoComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashGetAuthTripInfoQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashGetAuthTripInfoQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="TestResponseTransformer" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+
+
 
 		<service name="NewTrajectoryInfoService">
 			<inbound>
