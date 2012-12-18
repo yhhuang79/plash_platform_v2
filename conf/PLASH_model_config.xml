@@ -972,6 +972,13 @@
 					</outbound-endpoint>
 				</pass-through-router>
 			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashGetTripAuthDataQueue">
+					<transformers>
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>				
 		</service>
 
 
