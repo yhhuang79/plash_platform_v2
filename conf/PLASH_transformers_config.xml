@@ -36,6 +36,9 @@
 	<custom-transformer name="TestResponseTransformer"		 
 		class="tw.edu.sinica.iis.ants.TestResponseTransformer"/>
 
+	<custom-transformer name="ArrayListResponseTransformer"		 
+		class="tw.edu.sinica.iis.ants.ArrayListResponseTransformer"/>
+
 
 	<custom-transformer class="tw.edu.sinica.iis.ants.TestTransformer"
 		name="bt" />

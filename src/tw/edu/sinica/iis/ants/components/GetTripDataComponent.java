@@ -141,17 +141,15 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 				
 				if(latest_pt_only){
 					//return latest trip point
-					map.putAll(getLatestTripPt(userid,trip_id,field_mask));
-					//System.out.println("GetTripDataComponent End:\t"+ Calendar.getInstance().getTimeInMillis());					
+					map.putAll(getLatestTripPt(userid,trip_id,field_mask));					
 					tskSession.close();	
-					return map;				
+					return returnSuccess(map);				
 					
 				} else {
 					//return all trip
 					map.put("tripDataList", getTripData(userid, trip_id,field_mask));
-					System.out.println("GetTripDataComponent end:\t"	+ timeID + " Obj ID: " + this);
 					tskSession.close();
-					return map;				
+					return returnSuccess(map);				
 	
 				}//fi
 				

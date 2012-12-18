@@ -50,7 +50,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
  *  15. et_addr_prt4 <br>
  *  16. et_addr_prt5 <br>
  *  17. is_completed <br>
- * Example: GetTripInfoComponent?userid=5&trip_id=3&field_mask=01111100000000001  
+ * Example: Https://localhost:8080/GetTripInfoComponent?userid=1&trip_id=4&field_mask=01111100000000001  
  *  
  * @author	Yi-Chun Teng 
  * @param	map A map object that contains userid, (optionally) trip_id and (optionally) field_mask 

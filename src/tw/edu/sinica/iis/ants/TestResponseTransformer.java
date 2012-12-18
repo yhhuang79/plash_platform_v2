@@ -56,10 +56,22 @@ public class TestResponseTransformer extends AbstractTransformer {
     		
     	
     	}//fi
+    	
+    	JSONObject j = new JSONObject();
+    	Set<String> keyset = srcMap.keySet();
+    	for (String key:keyset){
+    		try {
+				j.put(key, srcMap.get(key));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}//end try catch
+    		
+    	}//fi
     			
 
     
-    	JSONObject j = new JSONObject(srcMap);				
+    	//JSONObject j = new JSONObject(srcMap);				
 		return j.toString(); //*/
 
 
