@@ -1,33 +1,20 @@
 package tw.edu.sinica.iis.ants.components;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
 
-import org.hibernate.Criteria;
+
+
+import org.hibernate.*;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
 
 import tw.edu.sinica.iis.ants.AbnormalResult;
 import tw.edu.sinica.iis.ants.DB.*;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
+import tw.edu.sinica.iis.ants.db.antrip.TripSharing;
 
 
 /**
@@ -113,6 +100,9 @@ public class DelTripComponent extends PLASHComponent {
 		    	tskSession.save(t);
 		    	tskSession.delete(obj); // delete data from original table
 		    }//rof
+		    
+		    tskSession.beginTransaction().commit();
+		    
 		    //delete the entry in trip_info table with the same userid and trip_id
 		    criteria = tskSession.createCriteria(T_TripInfo.class);
 		    criteria.add(Restrictions.eq("userid", userid));
@@ -120,11 +110,24 @@ public class DelTripComponent extends PLASHComponent {
 		    
 		    for(Object obj : criteria.list()) { //use for to avoid deleting with null entity
 		    	tskSession.delete(obj);
-		    }//rof
+		    }//rof		
 			
-			Transaction tx = tskSession.beginTransaction();	
-			tx.commit();
-	        tskSession.close();
+			//now delete entries in trip_sharing table
+		    criteria = tskSession.createCriteria(TripSharing.class);
+		    if (criteria == null  ){
+			    System.out.println("criterion is null la gan");
+		    }//fi
+		    criteria.add(Restrictions.eq("id.userId", userid));
+		    criteria.add(Restrictions.eq("id.tripId", trip_id));
+		    
+		    for(Object obj : criteria.list()) { //use for to avoid deleting with null entity
+			    if (obj == null  ){
+				    System.out.println("obj is null la gan");
+			    }//fi		    	
+		    	tskSession.delete(obj);
+		    }//rof
+		    			
+		    tskSession.beginTransaction().commit();
 	        
 	        map.put("code", 200);
 	        map.put("message", "OK");

@@ -30,7 +30,6 @@
 
 	<custom-transformer name="PlashPlatformTransformer"
 		class="tw.edu.sinica.iis.ants.PlashPlatformTransformer">
-		<spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
 	</custom-transformer>
 
 	<custom-transformer name="TestResponseTransformer"		 

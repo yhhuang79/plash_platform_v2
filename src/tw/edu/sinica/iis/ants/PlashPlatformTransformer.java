@@ -1,43 +1,58 @@
 package tw.edu.sinica.iis.ants;
 
-import java.util.Calendar;
-import java.util.Map;
+import java.util.*;
+
 
 
 import org.hibernate.SessionFactory;
+import org.json.JSONObject;
 import org.mule.api.MuleMessage;
 import org.mule.api.transformer.TransformerException;
-import org.mule.transport.http.transformers.HttpRequestBodyToParamMap;
+import org.mule.transformer.AbstractTransformer;
 
 
-public class PlashPlatformTransformer extends HttpRequestBodyToParamMap {
-    private SessionFactory sessionFactory;
 
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
+public class PlashPlatformTransformer extends AbstractTransformer {
 
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
+    
+    public PlashPlatformTransformer()   {
+        super();
+        
+        this.registerSourceType(Map.class);
+        this.setReturnClass(String.class);
+        //this.setReturnClass(java.util.Map.class);
+       // this.setReturnClass(MuleMessage.class);
+    }//end constructor
 
-	@Override
-	public Object transform(MuleMessage message, String encoding)
-			throws TransformerException {
+    public Object doTransform(Object src, String encoding) throws TransformerException   {
+    	System.out.println("This is TestResponseTransform transformer, encoding: " + encoding);
+    	Map srcMap = (Map)src;
+    	System.out.println("Before: " + srcMap.keySet().toString());     	
+    	if (srcMap.containsKey("resultstatus")) {
+    		//do something meaningful
+    		Stack<ExecutionResultStatus> statusStack = (Stack<ExecutionResultStatus>) srcMap.remove("resultstatus");
+    		for (Object status:statusStack) {
+    			
+        		if ( status instanceof AbnormalResult){        			        	   		
+        	   		srcMap.put("abnormal_result ", "true");
+        	   		srcMap.put("type", ((AbnormalResult)status).type);
+        	   		srcMap.put("ref_code", ((AbnormalResult)status).refCode);
+        	   		srcMap.put("explanation", ((AbnormalResult)status).explaination);        	   	
+        	   		
+        		} else {
 
-		System.out.println("PLASH Platform Transformer Start:\t"+ Calendar.getInstance().getTimeInMillis());
-		//System.out.println(message.getPayload().toString());		
-		String url = message.getPayload().toString() + "&timefrom1="+Calendar.getInstance().getTimeInMillis();
-		String asl_id = "";
-		if(url.indexOf("&", url.indexOf("asl_id=")) > 0){
-			//asl
-		}
-		/*Map map = (Map) message.getPayload();
-    	map.put("timefrom1", Calendar.getInstance().getTimeInMillis());    
-    	message.setPayload(map);*/
-		message.setPayload(url);
-		System.out.println("PLASH Platform Transformer End:\t"+ Calendar.getInstance().getTimeInMillis());
-		return super.transform(message, encoding);
-	}
+        		}//fi
+   			
+    		}//rof
 
-}
+    		
+    	
+    	}//fi
+    	
+    	JSONObject converter = new JSONObject(srcMap);	
+		return converter.toString(); //*/
+
+
+    }//end method
+    
+}//end class
