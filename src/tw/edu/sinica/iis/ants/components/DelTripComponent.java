@@ -71,7 +71,7 @@ public class DelTripComponent extends PLASHComponent {
 		try {
 	        
 	        if (map.containsKey("userid")) {
-	        	userid = Integer.parseInt(map.get("userid").toString());
+	        	userid = Integer.parseInt(map.remove("userid").toString());
 	        } else {
 				getElapsed();
 		        AbnormalResult err = new AbnormalResult(this,'E');
@@ -80,7 +80,7 @@ public class DelTripComponent extends PLASHComponent {
 				return returnUnsuccess(map,err);        	
 	        }//fi
 	        if (map.containsKey("trip_id"))  {
-	        	trip_id = Integer.parseInt(map.get("trip_id").toString());
+	        	trip_id = Integer.parseInt(map.remove("trip_id").toString());
 	        } else {
 				getElapsed();
 		        AbnormalResult err = new AbnormalResult(this,'E');
@@ -97,8 +97,8 @@ public class DelTripComponent extends PLASHComponent {
 
 			
 		    Criteria criteria = tskSession.createCriteria(T_TripData.class); 
-		    criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("userid").toString())));
-		    criteria.add(Restrictions.eq("trip_id", Integer.parseInt(map.get("trip_id").toString())));
+		    criteria.add(Restrictions.eq("userid", userid));
+		    criteria.add(Restrictions.eq("trip_id", trip_id));
 		    //insert the data to depreciated_location_data table
 		    for(T_TripData obj : (List<T_TripData>)criteria.list()) {
 		    	T_TripData u = obj;
@@ -115,8 +115,8 @@ public class DelTripComponent extends PLASHComponent {
 		    }//rof
 		    //delete the entry in trip_info table with the same userid and trip_id
 		    criteria = tskSession.createCriteria(T_TripInfo.class);
-		    criteria.add(Restrictions.eq("userid", Integer.parseInt(map.get("userid").toString())));
-		    criteria.add(Restrictions.eq("trip_id", Integer.parseInt(map.get("trip_id").toString())));
+		    criteria.add(Restrictions.eq("userid", userid));
+		    criteria.add(Restrictions.eq("trip_id", trip_id));
 		    
 		    for(Object obj : criteria.list()) { //use for to avoid deleting with null entity
 		    	tskSession.delete(obj);
@@ -125,7 +125,9 @@ public class DelTripComponent extends PLASHComponent {
 			Transaction tx = tskSession.beginTransaction();	
 			tx.commit();
 	        tskSession.close();
-	      
+	        
+	        map.put("code", 200);
+	        map.put("message", "OK");
 	        return 	returnSuccess(map);
 	        
 		} catch (ConstraintViolationException e) {
