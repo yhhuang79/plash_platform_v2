@@ -57,11 +57,12 @@ public class TestResponseTransformer extends AbstractTransformer {
     	
     	}//fi
     	
-    	JSONObject j = new JSONObject();
+    	JSONObject converter = new JSONObject();
     	Set<String> keyset = srcMap.keySet();
     	for (String key:keyset){
     		try {
-				j.put(key, srcMap.get(key));
+    			converter.put(key, srcMap.get(key));
+    			converter.put("嗨", "幹");
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -71,8 +72,8 @@ public class TestResponseTransformer extends AbstractTransformer {
     			
 
     
-    	//JSONObject j = new JSONObject(srcMap);				
-		return j.toString(); //*/
+		
+		return converter.toString(); //*/
 
 
     }//end method
