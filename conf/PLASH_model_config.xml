@@ -1796,6 +1796,7 @@
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
+		
 		<!-- (Step 4) Yu-Hsiang: XXXXX = GetCheckInData -->
 		<service name="GetCheckInService">
 			<inbound>
@@ -1809,7 +1810,10 @@
 				<pass-through-router>
 					<outbound-endpoint ref="plashGetCheckInDataQueue">
 						<transformers>
+							
+
 							<jms:object-to-jmsmessage-transformer />
+							 
 						</transformers>
 					</outbound-endpoint>
 				</pass-through-router>
@@ -1817,13 +1821,16 @@
 			<async-reply>
 				<inbound-endpoint ref="plashGetCheckInDataQueue">
 					<transformers>
+		
 						<jms:jmsmessage-to-object-transformer />
 						<transformer ref="TestResponseTransformer" />
+						
 					</transformers>
 				</inbound-endpoint>
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
+		
 		<!-- (Step 4) Yu-Hsiang: XXXXX = UploadTrip -->
 		<service name="UploadTripService">
 			<inbound>
