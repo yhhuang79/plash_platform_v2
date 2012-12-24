@@ -16,6 +16,7 @@ import org.hibernate.transform.Transformers;
 import com.vividsolutions.jts.geom.Geometry;
 
 import tw.edu.sinica.iis.ants.AbnormalResult;
+import tw.edu.sinica.iis.ants.PlashUtils;
 import tw.edu.sinica.iis.ants.DB.T_FriendList;
 import tw.edu.sinica.iis.ants.DB.T_Login;
 import tw.edu.sinica.iis.ants.DB.T_TripData;
@@ -83,7 +84,7 @@ public class GetAllUserListComponent extends PLASHComponent {
 		    				
 		    	queryResult = (List<String>) criteriaNameData.list();
 		    	lastAccessTime = Calendar.getInstance().getTimeInMillis();
-				tskSession.close();				
+				//tskSession.close();				
 			} //fi
 			
 			List<Map> resultList = new ArrayList<Map>();
@@ -96,15 +97,18 @@ public class GetAllUserListComponent extends PLASHComponent {
 					T_Login ul = (T_Login) uls.next();
 					if (ul.getUsername().toLowerCase().startsWith(tmpName.toLowerCase())) {						
 						oneuser = new HashMap();
-						oneuser.put("id", ul.getSid());
+						//oneuser.put("id", ul.getSid());
 						oneuser.put("name", ul.getUsername());
-						oneuser.put("email", ul.getEmail());
+						//oneuser.put("email", ul.getEmail());
 						oneuser.put("image", "http://developer.android.com/assets/images/icon_download.jpg");
+						oneuser.put("isFriend", PlashUtils.getFriendStatus(userID, ul.getSid(), tskSession));
 						resultList.add(oneuser);
 					}//fi */
 				}//rof
+				map.put("code", 200);
+				map.put("message", "ok");
 				map.put("user_list", resultList);
-
+				tskSession.close();
 			}//fi		
 
 			
