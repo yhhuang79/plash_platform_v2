@@ -115,16 +115,17 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 					        //tskSession.close();
 							return map;
 						}
-						if(params.containsKey("field_mask")){
-							field_mask = Integer.parseInt(params.get("field_mask").toString(),2);
+						if((tmpField_mask = (String)map.remove("field_mask")) != null){
+							field_mask = Integer.parseInt(tmpField_mask, 2);
 						} else {
-							field_mask = Integer.parseInt("1100011110000001",2);						
+							field_mask = Integer.parseInt("1100011110000001", 2);						
 						}
 						
 						Map isPublic = PlashUtils.isTripShared(userid, trip_id, tskSession);
 					    if(isPublic.get("isPublic").toString() == "true"){
 					    	map.put("CheckInDataList", getTripData(userid, trip_id,field_mask));
 							map.put("userid", userid);
+							map.put("username", PlashUtils.getShareUsername(userid, tskSession));
 							map.put("trip_id", trip_id);
 							map.put("tripName", PlashUtils.getTripName(userid, trip_id, tskSession));
 					    }else{
