@@ -77,6 +77,7 @@ public class GetTripAuthDataComponent extends PLASHComponent {
 			if ((tmpFriend_id = (String)map.remove("friend_id")) != null) {				
 				friend_id = Integer.parseInt(tmpFriend_id);
 				map.put("tripList", getAuthTripID(userid, friend_id));
+				map.put("tripInfo", getAuthTripInfo(userid, friend_id));
 			} else {
 				friend_id = -1;
 			}//fi
@@ -198,7 +199,8 @@ public class GetTripAuthDataComponent extends PLASHComponent {
 	        Criteria criteriaTripSharing = tskSession.createCriteria(TripSharing.class);
 	        criteriaTripSharing.add(Restrictions.eq("id.userId", userid));
 	        criteriaTripSharing.add(Restrictions.eq("id.tripId", trip_id));
-	        criteriaTripSharing.setProjection(Projections.property("id.userIdFriend"));	        
+	        criteriaTripSharing.setProjection(Projections.property("id.userIdFriend"));
+	        
 	        return (ArrayList<Integer>)criteriaTripSharing.list(); //*/
 	        
 			/*
@@ -213,5 +215,49 @@ public class GetTripAuthDataComponent extends PLASHComponent {
 			return null;
 		}//end try
 	}//end method
+
+	/**
+	 * This method returns authorized trip infos
+	 * 
+	 * Example:	GetAuthTripInfo(123,456);
+	 * 
+	 * @author	Yu-Hsiang Huang 
+	 * @param	userid - This indicates which user you are referring to
+	 * @param	friend_id - friend's user id. 
+	 * @return  A list of trip_info that belongs to the user and this friend 
+	 * 
+	 */
+	private ArrayList<Map> getAuthTripInfo(int userid, int friend_id){	
+		
+		try {
+			
+	        Criteria criteriaTripInfo = tskSession.createCriteria(TripSharing.class);
+	        criteriaTripInfo.add(Restrictions.eq("id.userId", userid));
+	        criteriaTripInfo.add(Restrictions.eq("id.userIdFriend", friend_id));
+	        criteriaTripInfo.setProjection(Projections.property("id.tripId"));
+	        Iterator tripids = criteriaTripInfo.list().iterator();
+	        ArrayList<Map> TripInfoList = new ArrayList<Map>();
+	        while(tripids.hasNext()) {
+	        	int tripid = Integer.parseInt(tripids.next().toString());
+	        	//System.out.println("GetTripInfo end:\t"+ tripid);
+	        	Map SingleTripInfo = PlashUtils.getTripInfo(friend_id, tripid, tskSession);
+	        	//System.out.println("GetTripInfo end:\t"+ SingleTripInfo.toString());
+	        	TripInfoList.add(SingleTripInfo);
+	        }
+	        return TripInfoList; //*/
+			
+	        /*
+		    Criteria criteriaFriendAuth = tskSession.createCriteria(T_FriendAuth.class);
+		    criteriaFriendAuth.add(Restrictions.eq("userAID", userid));
+		    criteriaFriendAuth.add(Restrictions.eq("userBID", friend_id));        
+		    criteriaFriendAuth.setProjection(Projections.property("tripID"));
+			
+		    return (ArrayList<Integer>)criteriaFriendAuth.list(); //*/
+		} catch (HibernateException e) {
+			System.out.println("exception in getAuthTripID: " + e.toString());
+			return null;
+		}//end try
+	}//end method
+	
 	
 }//end class 
