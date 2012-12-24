@@ -26,6 +26,7 @@ import tw.edu.sinica.iis.ants.DB.T_Login;
 import tw.edu.sinica.iis.ants.DB.T_TripHash;
 import tw.edu.sinica.iis.ants.DB.T_TripInfo;
 import tw.edu.sinica.iis.ants.DB.T_UserTrip;
+import tw.edu.sinica.iis.ants.db.antrip.TripSharing;
 
 public class PlashUtils {
 
@@ -198,6 +199,45 @@ public class PlashUtils {
     		username = userInfo.toString();
     	}
     	return username;
+	}//end method	
+	
+	public static String getShareUsername(int userid, Session session) {
+    	Criteria criteria = session.createCriteria(T_Login.class);
+    	criteria.add(Restrictions.eq("sid", userid));
+    	ProjectionList filterProjList = Projections.projectionList();   
+    	filterProjList.add(Projections.property("username"),"username");
+    	criteria.setProjection(filterProjList);    	
+    	String username = null;
+    	Iterator users = criteria.list().iterator();
+    	if(users.hasNext()) {
+    		Object userInfo = users.next();
+    		username = userInfo.toString();
+    	}
+    	return username;
+	}//end method	
+	
+	public static int getShareTripNum (int userid, int friendid, Session session) {
+        Criteria criteriaTripSharing = session.createCriteria(TripSharing.class);
+        criteriaTripSharing.add(Restrictions.eq("id.userId", userid));
+        criteriaTripSharing.add(Restrictions.eq("id.userIdFriend", friendid));
+        criteriaTripSharing.setProjection(Projections.rowCount());
+
+        int shareTripNum = 0;
+		try {
+			List shareTripNums = criteriaTripSharing.list();
+			Iterator it = shareTripNums.iterator();
+			  if (!it.hasNext()){
+				  shareTripNum = 0;
+			  } else {
+				  while(it.hasNext()){
+					  Object count = it.next();
+					  shareTripNum = Integer.parseInt(count.toString());  
+				  }
+			  }
+			return shareTripNum;											
+		} catch (HibernateException he) {			
+			return 0;
+		}//end try catch		
 	}//end method	
 	
 	

@@ -19,6 +19,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 
+import tw.edu.sinica.iis.ants.PlashUtils;
 import tw.edu.sinica.iis.ants.DB.T_FriendList;
 import tw.edu.sinica.iis.ants.DB.T_Login;
 
@@ -60,12 +61,14 @@ public class GetFriendListComponent {
 				criteriaOfFriendName.add(Restrictions.eq("sid", fl.getUserbid()));
 				oneFriend.put("name", ((T_Login)criteriaOfFriendName.list().get(0)).getUsername());
 				oneFriend.put("image", "http://developer.android.com/assets/images/icon_download.jpg");
+				oneFriend.put("shareTripNum", PlashUtils.getShareTripNum(Integer.parseInt(map.get("sid").toString()), fl.getUserbid(), session)); 
 			}
 			else{
 				oneFriend.put("id", fl.getUseraid());	
 				criteriaOfFriendName.add(Restrictions.eq("sid", fl.getUseraid()));
 				oneFriend.put("name", ((T_Login)criteriaOfFriendName.list().get(0)).getUsername());
 				oneFriend.put("image", "http://developer.android.com/assets/images/icon_download.jpg");	
+				oneFriend.put("shareTripNum", PlashUtils.getShareTripNum(Integer.parseInt(map.get("sid").toString()), fl.getUseraid(), session)); 
 			}	
 			friend_list.add(oneFriend);
 		}
