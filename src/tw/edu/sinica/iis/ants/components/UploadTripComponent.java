@@ -59,7 +59,8 @@ public class UploadTripComponent extends PLASHComponent{
 			    String et_addr_prt2 = ""; 
 			    String et_addr_prt3 = ""; 
 			    String et_addr_prt4 = ""; 
-			    String et_addr_prt5 = "";        
+			    String et_addr_prt5 = "";    
+			    boolean is_completed = false; 
 				
 		        if (jsonObject.containsKey("trip_name")) {
 		        	trip_name = jsonObject.get("trip_name").toString();
@@ -106,6 +107,11 @@ public class UploadTripComponent extends PLASHComponent{
 		        if (jsonObject.containsKey("et_addr_prt5")){
 		        	et_addr_prt5 = jsonObject.get("et_addr_prt5").toString();
 		        }//fi
+		        if (jsonObject.containsKey("is_completed")){
+		        	is_completed = Boolean.parseBoolean(jsonObject.get("is_completed").toString());
+
+		        	
+		        }//fi		        
 		        
 		        Short update_status = Short.parseShort(jsonObject.get("update_status").toString());
 		        T_TripInfo tmpTripInfo = new T_TripInfo();
@@ -127,6 +133,7 @@ public class UploadTripComponent extends PLASHComponent{
 				tmpTripInfo.setEt_addr_prt4(et_addr_prt4);
 				tmpTripInfo.setEt_addr_prt5(et_addr_prt5);				
 				tmpTripInfo.setUpdate_status(update_status);
+				tmpTripInfo.setIs_completed(is_completed);				
 		        
 				Transaction tx = session.beginTransaction();
 				session.persist(tmpTripInfo);
