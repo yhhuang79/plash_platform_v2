@@ -25,6 +25,7 @@ import org.hibernate.type.Type;
 
 import tw.edu.sinica.iis.ants.DB.T_FriendAuth;
 import tw.edu.sinica.iis.ants.DB.T_FriendList;
+import tw.edu.sinica.iis.ants.DB.T_FriendRequest;
 import tw.edu.sinica.iis.ants.DB.T_Login;
 import tw.edu.sinica.iis.ants.DB.T_TripHash;
 import tw.edu.sinica.iis.ants.DB.T_TripInfo;
@@ -244,8 +245,7 @@ public class PlashUtils {
 	}//end method	
 
 	public static Map getTripInfo(int userid, int trip_id, Session session){
-		//obtain the record
-		
+		//obtain the record		
     	Criteria criteriaTripInfo = session.createCriteria(T_TripInfo.class);
     	criteriaTripInfo.add(Restrictions.eq("this.userid", userid));
     	criteriaTripInfo.add(Restrictions.eq("this.trip_id", trip_id));
@@ -256,27 +256,48 @@ public class PlashUtils {
     	filterProjList.add(Projections.sqlProjection("trip_st", new String[] {"trip_st"}, new Type[] { new StringType() }));
     	filterProjList.add(Projections.sqlProjection("trip_et", new String[] {"trip_et"}, new Type[] { new StringType() }));
     	filterProjList.add(Projections.property("trip_length"),"trip_length");
-    	filterProjList.add(Projections.property("num_of_pts"),"num_of_pts");
-    	
+    	filterProjList.add(Projections.property("num_of_pts"),"num_of_pts"); 	
     	criteriaTripInfo.setProjection(filterProjList);    	
     	criteriaTripInfo.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
     	
 		try {
 			Map tripInfoRec = (Map) criteriaTripInfo.uniqueResult();
-
 			//Check whether such trip record exists or not and is updated or not
-			if (tripInfoRec == null) {	
-				
+			if (tripInfoRec == null) {				
 				return null;
 			}//fi	
 			tripInfoRec.put("trip_id", trip_id);
 			tripInfoRec.put("hash", ParamToHash(userid, trip_id, session));
-			return tripInfoRec;
-											
+			return tripInfoRec;											
 		} catch (HibernateException he) {
-
 			return null;
 		}//end try catch			//*/
 	}//end method	
+	
+	public static String getFriendStatus(int userid, int friendid, Session session) {
+    	Criteria criteria = session.createCriteria(T_FriendList.class);
+    	criteria.add(Restrictions.eq("useraid", userid));
+    	criteria.add(Restrictions.eq("userbid", friendid));
+    	Iterator isfriend = criteria.list().iterator();
+    	if(isfriend.hasNext()) {
+    		return "true";
+    	}
+    	criteria = session.createCriteria(T_FriendList.class);
+    	criteria.add(Restrictions.eq("useraid", friendid));
+    	criteria.add(Restrictions.eq("userbid", userid));
+    	isfriend = criteria.list().iterator();
+    	if(isfriend.hasNext()) {
+    		return "true";
+    	}
+    	criteria = session.createCriteria(T_FriendRequest.class);
+    	criteria.add(Restrictions.eq("useraid", userid));
+    	criteria.add(Restrictions.eq("userbid", friendid));
+    	isfriend = criteria.list().iterator();
+    	if(isfriend.hasNext()) {
+    		return "pending";
+    	}    	
+    	return "false";
+	}//end method	
+	
 	
 } // PlashUtils End 
