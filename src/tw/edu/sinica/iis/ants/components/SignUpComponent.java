@@ -26,10 +26,10 @@ public class SignUpComponent extends PLASHComponent {
 		 */
 		session = sessionFactory.openSession(); 
 		try{
-			String username = map.get("username").toString();
+			String username = map.remove("username").toString();
 			System.out.println("Sign Up:\t"+ username);
-			String email = map.get("email").toString();
-			String password = map.get("password").toString();
+			String email = map.remove("email").toString();
+			String password = map.remove("password").toString();
 				
 			T_Login user = new T_Login();
 			
@@ -43,11 +43,14 @@ public class SignUpComponent extends PLASHComponent {
 			user.setConfirmed(true);
 			
 			Transaction tx = session.beginTransaction();
-			session.save(user);
+			session.persist(user);			
 			tx.commit();
 	        session.close();
+	        map.put("code", 200);
+	        map.put("userid", user.getSid());
 			map.put("message", "Login Success");			
 		} catch (NullPointerException ne) {
+			map.put("code",400);
 			map.put("message", "Login Fail");
 		}
 
