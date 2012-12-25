@@ -38,11 +38,22 @@ public class DelAuthFriendComponent extends PLASHComponent{
 		try {
 			criteria.add(Restrictions.eq("id.userId", Integer.parseInt(map.get("userid").toString())));
 			criteria.add(Restrictions.eq("id.tripId", Integer.parseInt(map.get("tripid").toString())));	
-			criteria.add(Restrictions.eq("id.userIdFriend", Integer.parseInt(map.get("friendid").toString())));		
+			if (map.containsKey("friendid")) {
+				criteria.add(Restrictions.eq("id.userIdFriend", Integer.parseInt(map.get("friendid").toString())));
+				TripSharing rec = (TripSharing) criteria.uniqueResult();
+				tskSession.delete(rec);
+				tskSession.beginTransaction().commit();       
 
-			TripSharing rec = (TripSharing) criteria.uniqueResult();
-			tskSession.delete(rec);
-			tskSession.beginTransaction().commit();       
+			} else {
+				ArrayList<TripSharing> tsl = (ArrayList<TripSharing>) criteria.list();
+				for (TripSharing rec:tsl) {
+					tskSession.delete(rec);
+				}//rof			
+				tskSession.beginTransaction().commit();       
+
+				
+			}//fi
+					
 			
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
 	        tskSession.close();
