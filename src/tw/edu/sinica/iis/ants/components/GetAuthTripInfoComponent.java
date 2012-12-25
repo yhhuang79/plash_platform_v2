@@ -15,6 +15,7 @@ import tw.edu.sinica.iis.ants.DB.T_FriendAuth;
 import tw.edu.sinica.iis.ants.DB.T_TripInfo;
 import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
+import tw.edu.sinica.iis.ants.db.antrip.TripSharing;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -47,14 +48,15 @@ public class GetAuthTripInfoComponent extends PLASHComponent{
         
         
         Criteria criteriaFriendAuth;
-        criteriaFriendAuth = tskSession.createCriteria(T_FriendAuth.class);
+        //criteriaFriendAuth = tskSession.createCriteria(T_FriendAuth.class);
+        criteriaFriendAuth = tskSession.createCriteria(TripSharing.class);
         
 		try {			
 			friendid = Integer.parseInt(map.get("friendid").toString());
 			
-			criteriaFriendAuth.add(Restrictions.eq("userAID", Integer.parseInt(map.get("friendid").toString())));
-			criteriaFriendAuth.add(Restrictions.eq("userBID", Integer.parseInt(map.get("userid").toString())));
-			criteriaFriendAuth.addOrder(Order.desc("tripID"));
+			criteriaFriendAuth.add(Restrictions.eq("id.userIdFriend", Integer.parseInt(map.get("friendid").toString())));
+			criteriaFriendAuth.add(Restrictions.eq("id.userId", Integer.parseInt(map.get("userid").toString())));
+			criteriaFriendAuth.addOrder(Order.desc("id.tripId"));
    			
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
 			tskSession.close();
@@ -73,7 +75,7 @@ public class GetAuthTripInfoComponent extends PLASHComponent{
 		//Iterator<T_FriendAuth> tripIDList = criteriaFriendAuth.list().iterator();
 		
 		
-		ArrayList<T_FriendAuth> tripIDList = (ArrayList<T_FriendAuth>) criteriaFriendAuth.list();
+		ArrayList<TripSharing> tripIDList = (ArrayList<TripSharing>) criteriaFriendAuth.list();
 		//Iterator<T_FriendAuth> tripIDListItr = tripIDList.iterator();		
 		List<Map> resultList = new ArrayList();
 		Map resultEntryMap;
@@ -82,7 +84,7 @@ public class GetAuthTripInfoComponent extends PLASHComponent{
 		for(int i = tripIDList.size()-1;  i >0 ;i--) {
 
 			
-			resultEntryMap = getSingleTripInfo(friendid,tripIDList.get(i).getTripID());
+			resultEntryMap = getSingleTripInfo(friendid,tripIDList.get(i).getId().getTripId());
 			if (resultEntryMap != null) {
 				resultList.add(resultEntryMap);
 			}//fi			
