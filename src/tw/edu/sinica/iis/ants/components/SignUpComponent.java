@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Map;
 import java.lang.Math;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -48,7 +49,10 @@ public class SignUpComponent extends PLASHComponent {
 	        session.close();
 	        map.put("code", 200);
 	        map.put("userid", user.getSid());
-			map.put("message", "Login Success");			
+			map.put("message", "Login Success");
+		} catch (HibernateException he) {
+			map.put("code",400);
+			map.put("message", "username already exists");			
 		} catch (NullPointerException ne) {
 			map.put("code",400);
 			map.put("message", "Login Fail");
