@@ -133,9 +133,6 @@ public class SetAuthFriendComponent extends PLASHComponent {
         				
         				TripSharing ts = new TripSharing(entry);
         				tskSession.save(ts);
-        				tskSession.beginTransaction().commit();
-        		        map.put("code", 200);
-        		        map.put("message", "ok");		        
         				
         			} else {
         				duplicateEntry = true;    
@@ -168,6 +165,9 @@ public class SetAuthFriendComponent extends PLASHComponent {
 	        war.explaination = "Warning, there were duplicate trip sharing combinations assigned.";
         	return returnUnsuccess(map,war);
         } else  {
+			tskSession.beginTransaction().commit();
+	        map.put("code", 200);
+	        map.put("message", "ok");		        
         	return returnSuccess(map);
         }//fi
         
