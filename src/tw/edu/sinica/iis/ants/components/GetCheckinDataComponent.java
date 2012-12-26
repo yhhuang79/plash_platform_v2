@@ -3,26 +3,26 @@
 	import java.sql.Timestamp;
 	
 	import java.util.*;
-import java.io.*;
-import java.math.*;
-import java.net.*;
+	import java.io.*;
+	import java.math.*;
+	import java.net.*;
 	
 	
 	import javax.net.ssl.HttpsURLConnection;
 	
 	import org.apache.commons.httpclient.HttpClient;
-import org.hibernate.*;
-import org.hibernate.criterion.*;
-import org.hibernate.transform.*;
-import org.hibernate.type.*;
-import org.json.*;
+	import org.hibernate.*;
+	import org.hibernate.criterion.*;
+	import org.hibernate.transform.*;
+	import org.hibernate.type.*;
+	import org.json.*;
 	
 	import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.*;
+	import com.vividsolutions.jts.io.*;
 	
-import tw.edu.sinica.iis.ants.PlashUtils;
-import tw.edu.sinica.iis.ants.DB.*;
-import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
+	import tw.edu.sinica.iis.ants.PlashUtils;
+	import tw.edu.sinica.iis.ants.DB.*;
+	import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	
 	/**
 	 * This component returns the trip data.  <br>
@@ -355,7 +355,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 			    			tmpMap.put("lat", tmpGPS.getCoordinate().y*1000000);		    				
 		    			} //fi
 		    			//System.out.println("GetCheckInDataComponent GPS:\t"	+ tmpGPS.getCoordinate().x*1000000 + " : " + tmpGPS.getCoordinate().y*1000000 + " : " + tmpMap.get("accu").toString());
-		    			if (tmpMap.get("checkin") != null) tmpCheckIn = tmpMap.get("checkin").toString();		    			
+		    			if (tmpMap.containsKey("checkin")) tmpCheckIn = tmpMap.get("checkin").toString();		    			
 		    			tmpPointId = (Integer)tmpMap.remove("id");
 		    			//System.out.println("GetCheckInDataComponent PointId:\t"	+ tmpPointId + " : " + tmpCheckIn);
 				   		if (tmpCheckIn == "true"){
