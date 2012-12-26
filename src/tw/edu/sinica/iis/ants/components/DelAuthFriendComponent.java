@@ -45,13 +45,19 @@ public class DelAuthFriendComponent extends PLASHComponent{
 				tskSession.beginTransaction().commit();       
 
 			} else {
+				/*
 				ArrayList<TripSharing> tsl = (ArrayList<TripSharing>) criteria.list();
 				for (TripSharing rec:tsl) {
 					tskSession.delete(rec);
 				}//rof			
 				tskSession.beginTransaction().commit();       
-
-				
+				*/
+				Query query = tskSession.createQuery("delete TripSharing where " +
+						"id.userId=" + Integer.parseInt(map.get("userid").toString()) +
+						" and id.tripId=" + Integer.parseInt(map.get("tripid").toString())
+						);
+				query.executeUpdate();
+				tskSession.beginTransaction().commit();
 			}//fi
 					
 			
@@ -75,9 +81,11 @@ public class DelAuthFriendComponent extends PLASHComponent{
 			return returnUnsuccess(map,war);		
 		}//end try catch              
 
-
-        return returnSuccess(map);
-		
+		map.clear();
+		map.put("code", 200);
+		map.put("message", "ok");
+        //return returnSuccess(map);
+		return map;
        
 
 
