@@ -16,7 +16,7 @@ import tw.edu.sinica.iis.ants.db.antrip.TripSharing;
  * @author	Yi-Chun Teng 
  * @param   a map that contains the following keys: userid,friendid,tripid
  * @return  operation result
- * @example	http://localhost:1234/DelAuthFriendComponent?userid=1&tripid=55555&friendid=55       
+ * @example	https://localhost:8080/DelAuthFriendComponent?userid=1&tripid=55555&friendid=55       
  * @note	Follow the algorithm implemented in the original server
  */
 
@@ -45,18 +45,18 @@ public class DelAuthFriendComponent extends PLASHComponent{
 				tskSession.beginTransaction().commit();       
 
 			} else {
-				/*
+				
 				ArrayList<TripSharing> tsl = (ArrayList<TripSharing>) criteria.list();
 				for (TripSharing rec:tsl) {
 					tskSession.delete(rec);
 				}//rof			
-				tskSession.beginTransaction().commit();       
-				*/
+     
+				/*
 				Query query = tskSession.createQuery("delete TripSharing where " +
 						"id.userId=" + Integer.parseInt(map.get("userid").toString()) +
 						" and id.tripId=" + Integer.parseInt(map.get("tripid").toString())
 						);
-				query.executeUpdate();
+				query.executeUpdate(); //*/
 				tskSession.beginTransaction().commit();
 			}//fi
 					
@@ -84,8 +84,8 @@ public class DelAuthFriendComponent extends PLASHComponent{
 		map.clear();
 		map.put("code", 200);
 		map.put("message", "ok");
-        //return returnSuccess(map);
-		return map;
+        return returnSuccess(map);
+		//return map;
        
 
 
