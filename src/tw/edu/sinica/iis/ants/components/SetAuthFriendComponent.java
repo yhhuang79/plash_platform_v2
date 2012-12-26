@@ -48,6 +48,8 @@ public class SetAuthFriendComponent extends PLASHComponent {
 				getElapsed();
 		        tskSession.close();
 		        AbnormalResult err = new AbnormalResult(this,'E');
+		        map.put("code", 400);
+		        map.put("message", "parameter error");		        
 		        err.refCode = 001;
 		        err.explaination = "User id must be specified";
 				return returnUnsuccess(map,err);
@@ -59,6 +61,8 @@ public class SetAuthFriendComponent extends PLASHComponent {
 				getElapsed();
 		        tskSession.close();
 		        AbnormalResult err = new AbnormalResult(this,'E');
+		        map.put("code", 400);
+		        map.put("message", "parameter error");		        		        
 		        err.refCode = 001;
 		        err.explaination = "friend's user id must be specified";
 				return returnUnsuccess(map,err);
@@ -78,6 +82,8 @@ public class SetAuthFriendComponent extends PLASHComponent {
 				getElapsed();
 		        tskSession.close();
 		        AbnormalResult err = new AbnormalResult(this,'E');
+		        map.put("code", 400);
+		        map.put("message", "parameter error");		        		        
 		        err.refCode = 001;
 		        err.explaination = "trip id must be specified";
 				return returnUnsuccess(map,err);
@@ -95,12 +101,16 @@ public class SetAuthFriendComponent extends PLASHComponent {
 			
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
 	        AbnormalResult err = new AbnormalResult(this,'E');
+	        map.put("code", 400);
+	        map.put("message", "parameter error");		        	        
 	        err.refCode = 002;
 	        err.explaination = "NullPointerException, most likely due to invalid parameters";
 			return returnUnsuccess(map,err);
 			
 		} catch (NumberFormatException e) { //invalid arguments 
 	        AbnormalResult err = new AbnormalResult(this,'E');
+	        map.put("code", 400);
+	        map.put("message", "parameter error");		        	        
 	        err.refCode = 002;
 	        err.explaination = "NumberFormatException, most likely due to invalid parameters";
 			return returnUnsuccess(map,err);
@@ -124,7 +134,8 @@ public class SetAuthFriendComponent extends PLASHComponent {
         				TripSharing ts = new TripSharing(entry);
         				tskSession.save(ts);
         				tskSession.beginTransaction().commit();
-
+        		        map.put("code", 200);
+        		        map.put("message", "ok");		        
         				
         			} else {
         				duplicateEntry = true;    
@@ -133,6 +144,8 @@ public class SetAuthFriendComponent extends PLASHComponent {
 
         		} catch (HibernateException he) {
         	        AbnormalResult err = new AbnormalResult(this,'E');
+    		        map.put("code", 500);
+    		        map.put("message", "internal server error");		        
         	        err.refCode = 003;
         	        err.explaination = "Warning, HibernateException occurred. Please check database integrity.";
         			return returnUnsuccess(map,err);
@@ -149,6 +162,8 @@ public class SetAuthFriendComponent extends PLASHComponent {
 		
         if (duplicateEntry) {
 	        AbnormalResult war = new AbnormalResult(this,'W');
+	        map.put("code", 400);
+	        map.put("message", "parameter error");		        	        
 	        war.refCode = 003;
 	        war.explaination = "Warning, there were duplicate trip sharing combinations assigned.";
         	return returnUnsuccess(map,war);
