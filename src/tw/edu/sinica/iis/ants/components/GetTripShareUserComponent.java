@@ -21,6 +21,7 @@ import tw.edu.sinica.iis.ants.DB.T_FriendList;
 import tw.edu.sinica.iis.ants.DB.T_Login;
 import tw.edu.sinica.iis.ants.DB.T_TripInfo;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
+import tw.edu.sinica.iis.ants.db.antrip.TripSharing;
 
 public class GetTripShareUserComponent extends PLASHComponent {
 
@@ -45,12 +46,13 @@ public class GetTripShareUserComponent extends PLASHComponent {
 			if(map.containsKey("friend_id")){
 				friend_id = Integer.parseInt(map.remove("friend_id").toString());
 			}
-			Criteria criteria = session.createCriteria(T_FriendAuth.class);
+			//Criteria criteria = session.createCriteria(T_FriendAuth.class);
+			Criteria criteria = session.createCriteria(TripSharing.class);
 			Criteria criteriaOfFriendName;
-			criteria.add(Restrictions.eq("userAID", userid));
-			criteria.add(Restrictions.eq("tripID", trip_id));
+			criteria.add(Restrictions.eq("id.userId", userid));
+			criteria.add(Restrictions.eq("id.tripId", trip_id));
 			if(friend_id != null){
-				criteria.add(Restrictions.eq("userBID", friend_id));
+				criteria.add(Restrictions.eq("id.userIdFriend", friend_id));
 			}						
 			List friend_list = new ArrayList<Map>();
 			Iterator itr = criteria.list().iterator(); 
@@ -58,14 +60,17 @@ public class GetTripShareUserComponent extends PLASHComponent {
 			boolean isShareTrip = false;
 			while(itr.hasNext()) {
 				if(friend_id == null){
-					T_FriendAuth fl = (T_FriendAuth) itr.next();
-					oneFriend = new HashMap();
-					criteriaOfFriendName = session.createCriteria(T_Login.class);
-					oneFriend.put("id", fl.getUserBID());
-					criteriaOfFriendName.add(Restrictions.eq("sid", fl.getUserBID()));
-					oneFriend.put("name", ((T_Login)criteriaOfFriendName.list().get(0)).getUsername());
-					oneFriend.put("image", "http://developer.android.com/assets/images/icon_download.jpg");
-					friend_list.add(oneFriend);
+					TripSharing fl = (TripSharing) itr.next();
+					if(fl.getId().getUserIdFriend() != 0) {
+						oneFriend = new HashMap();
+						criteriaOfFriendName = session.createCriteria(T_Login.class);
+						oneFriend.put("id", fl.getId().getUserIdFriend());
+						System.out.println("GetTripShareUser ID:\t"+ fl.getId().getUserIdFriend());
+						criteriaOfFriendName.add(Restrictions.eq("sid", fl.getId().getUserIdFriend()));
+						oneFriend.put("name", ((T_Login)criteriaOfFriendName.list().get(0)).getUsername());
+						oneFriend.put("image", "http://developer.android.com/assets/images/icon_download.jpg");
+						friend_list.add(oneFriend);
+					}
 				} else {
 					isShareTrip = true;
 					break;
@@ -97,9 +102,10 @@ public class GetTripShareUserComponent extends PLASHComponent {
 	private Integer getShareUserNum(int userid, int tripid) {
 		
 		//obtain the record
-    	Criteria criteriaShareUserNum = session.createCriteria(T_FriendAuth.class);
-		criteriaShareUserNum.add(Restrictions.eq("userAID", userid));
-		criteriaShareUserNum.add(Restrictions.eq("tripID", tripid));
+    	Criteria criteriaShareUserNum = session.createCriteria(TripSharing.class);
+		criteriaShareUserNum.add(Restrictions.eq("id.userId", userid));
+		criteriaShareUserNum.add(Restrictions.eq("id.tripId", tripid));
+		criteriaShareUserNum.add(Restrictions.ne("id.userIdFriend", 0));
     	ProjectionList filterProjList = Projections.projectionList();     	
     	criteriaShareUserNum.setProjection(Projections.rowCount());
     	int shareUserNum = 0;
