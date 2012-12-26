@@ -51,6 +51,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	 * 	13. gsminfo <br>
 	 * 	14. wifiinfo <br>
 	 *  15. app <br>
+	 *  16. checkin <br>
 	 * 	<br>
 	 * Example:  GetTripDataComponent?userid=1&latest_pt_only=true&field_mask=0100000000000000 <br>
 	 * 
