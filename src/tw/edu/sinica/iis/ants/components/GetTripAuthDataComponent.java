@@ -240,7 +240,7 @@ public class GetTripAuthDataComponent extends PLASHComponent {
 	        while(tripids.hasNext()) {
 	        	int tripid = Integer.parseInt(tripids.next().toString());
 	        	//System.out.println("GetTripInfo end:\t"+ tripid);
-	        	Map SingleTripInfo = PlashUtils.getTripInfo(friend_id, tripid, tskSession);
+	        	Map SingleTripInfo = PlashUtils.getTripInfo(userid, tripid, tskSession);
 	        	//System.out.println("GetTripInfo end:\t"+ SingleTripInfo.toString());
 	        	TripInfoList.add(SingleTripInfo);
 	        }
