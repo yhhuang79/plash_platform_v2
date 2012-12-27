@@ -72,6 +72,12 @@ public class GetFriendListComponent {
 			}	
 			friend_list.add(oneFriend);
 		}
+		oneFriend = new HashMap();
+		oneFriend.put("id", 0);
+		oneFriend.put("name", "Publish Trip");
+		oneFriend.put("image", "http://developer.android.com/assets/images/icon_download.jpg");	
+		oneFriend.put("shareTripNum", PlashUtils.getShareTripNum(0, Integer.parseInt(map.get("sid").toString()), session));
+		friend_list.add(oneFriend);
 		session.close();
 		map.put("friend_list", friend_list);
 
