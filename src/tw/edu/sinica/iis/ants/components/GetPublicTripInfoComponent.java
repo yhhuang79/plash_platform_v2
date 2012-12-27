@@ -17,6 +17,7 @@ import tw.edu.sinica.iis.ants.DB.T_FriendAuth;
 import tw.edu.sinica.iis.ants.DB.T_TripInfo;
 import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
+import tw.edu.sinica.iis.ants.db.antrip.TripSharing;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -47,12 +48,13 @@ public class GetPublicTripInfoComponent extends PLASHComponent{
         System.out.println("GetPublicTripInfoComponent Start:\t"+ Calendar.getInstance().getTimeInMillis());
         
         Criteria criteriaFriendAuth;
-        criteriaFriendAuth = tskSession.createCriteria(T_FriendAuth.class);
+        //criteriaFriendAuth = tskSession.createCriteria(T_FriendAuth.class);
+        criteriaFriendAuth = tskSession.createCriteria(TripSharing.class);
         
 		try {						
-			criteriaFriendAuth.add(Restrictions.eq("userBID", 0));
+			criteriaFriendAuth.add(Restrictions.eq("id.userIdFriend", 0));
 			//criteriaFriendAuth.add(Restrictions.eq("userBID", Integer.parseInt(map.get("userid").toString())));
-			criteriaFriendAuth.addOrder(Order.desc("tripID"));
+			criteriaFriendAuth.addOrder(Order.desc("id.tripId"));
    			
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
 			map.put("GetPublicTripInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file
@@ -66,14 +68,14 @@ public class GetPublicTripInfoComponent extends PLASHComponent{
 			return map;
 		}//end try catch
 		
-		ArrayList<T_FriendAuth> tripIDList = (ArrayList<T_FriendAuth>) criteriaFriendAuth.list();
+		ArrayList<TripSharing> tripIDList = (ArrayList<TripSharing>) criteriaFriendAuth.list();
 		List<Map> resultList = new ArrayList();
 		Map resultEntryMap;
 		System.out.println("GetPublicTripInfoComponent tripIDList.size : "+ tripIDList.size());
 		
 		for(int i = tripIDList.size()-1;  i >= 0 ;i--) {
-			System.out.println("GetPublicTripInfoComponent UserAID : "+ tripIDList.get(i).getUserAID() + "    TripID : " + tripIDList.get(i).getTripID());
-			resultEntryMap = getSingleTripInfo(tripIDList.get(i).getUserAID(), tripIDList.get(i).getTripID());
+			System.out.println("GetPublicTripInfoComponent UserAID : "+ tripIDList.get(i).getId().getUserId() + "    TripID : " + tripIDList.get(i).getId().getTripId());
+			resultEntryMap = getSingleTripInfo(tripIDList.get(i).getId().getUserId(), tripIDList.get(i).getId().getTripId());
 			if (resultEntryMap != null) {
 				resultList.add(resultEntryMap);
 			}//fi			
