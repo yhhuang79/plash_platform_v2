@@ -52,6 +52,12 @@ public class GetFriendListComponent {
 		List friend_list = new ArrayList<Map>();
 		Iterator fls = criteria.list().iterator(); 
 		Map oneFriend;
+		oneFriend = new HashMap();
+		oneFriend.put("id", 0);
+		oneFriend.put("name", "Publish Trip");
+		oneFriend.put("image", "http://developer.android.com/assets/images/icon_download.jpg");	
+		oneFriend.put("shareTripNum", PlashUtils.getShareTripNum(0, 0, session));
+		friend_list.add(oneFriend);
 		while(fls.hasNext()) {
 			T_FriendList fl = (T_FriendList) fls.next();
 			oneFriend = new HashMap();
@@ -72,12 +78,6 @@ public class GetFriendListComponent {
 			}	
 			friend_list.add(oneFriend);
 		}
-		oneFriend = new HashMap();
-		oneFriend.put("id", 0);
-		oneFriend.put("name", "Publish Trip");
-		oneFriend.put("image", "http://developer.android.com/assets/images/icon_download.jpg");	
-		oneFriend.put("shareTripNum", PlashUtils.getShareTripNum(0, 0, session));
-		friend_list.add(oneFriend);
 		session.close();
 		map.put("friend_list", friend_list);
 

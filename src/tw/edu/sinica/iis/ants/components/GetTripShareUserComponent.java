@@ -70,6 +70,12 @@ public class GetTripShareUserComponent extends PLASHComponent {
 						oneFriend.put("name", ((T_Login)criteriaOfFriendName.list().get(0)).getUsername());
 						oneFriend.put("image", "http://developer.android.com/assets/images/icon_download.jpg");
 						friend_list.add(oneFriend);
+					} else {
+						oneFriend = new HashMap();
+						oneFriend.put("id", 0);
+						oneFriend.put("name", "Publish Trip");
+						oneFriend.put("image", "http://developer.android.com/assets/images/icon_download.jpg");
+						friend_list.add(oneFriend);						
 					}
 				} else {
 					isShareTrip = true;
