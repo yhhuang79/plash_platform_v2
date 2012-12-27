@@ -135,6 +135,7 @@ public class ConfirmFriendRequestComponent {
 				session.save(friendlist1);
 				tx1.commit();
         		
+				map.put("code", 200);
 				map.put("message", "Friendship Confirmed");
 				
 				//--------------------------------------------------------------//
@@ -163,12 +164,14 @@ public class ConfirmFriendRequestComponent {
 			
 			//passcode is not matching
 			else {
+				map.put("code", 400);
 				map.put("message","Invalid friend request or passcode");
 			}
 			
 			
 		} //End if (friendrequest.hasNext())
 		else{
+			map.put("code", 400);
 			map.put("message", "No Friend Request Found.");
 		}
 		
