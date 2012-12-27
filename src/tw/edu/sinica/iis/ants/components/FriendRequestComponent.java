@@ -156,10 +156,13 @@ public class FriendRequestComponent extends PLASHComponent{
 		
 		// Check user input begin
 		if (friendEmail.equals("")) {
+			map.put("code", 400);
 			map.put("message", "Friend email is empty");
 		} else if (friendName.equals("")) {
+			map.put("code", 400);			
 			map.put("message", "Friend name is empty");
 		} else if (!isValidEmailAddress(friendEmail)) {		// Validate e-mail format
+			map.put("code", 400);
 			map.put("message", "E-mail invalid");
 		} else {
 
@@ -172,6 +175,7 @@ public class FriendRequestComponent extends PLASHComponent{
 	
 			// if friendship is existed
 			if (friendship.hasNext()) {
+				map.put("code", 400);
 				map.put("message", "Friendship Already Existed!");
 			} else {				// if friendship is not existed
 
@@ -221,7 +225,7 @@ public class FriendRequestComponent extends PLASHComponent{
 					tskSession.save(friendlist);
 					tx.commit();
 					
-					fid = friendlist.getFid();
+					//fid = friendlist.getFid();
 					map.put("fid", fid);
 					//--------------------------------------------------------------//
 					
@@ -249,6 +253,7 @@ public class FriendRequestComponent extends PLASHComponent{
 				String personalmessage = null;
 				sendReq.sendFriendRequest(to, personalName, friendName,	personalmessage, confirmLink);
 				*/
+				map.put("code", 200);
 				map.put("message", "Successful Friend Request");
 				//--------------------------------------------------------------//
 				
