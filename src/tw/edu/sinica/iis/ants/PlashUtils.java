@@ -222,7 +222,8 @@ public class PlashUtils {
 	
 	public static int getShareTripNum (int userid, int friendid, Session session) {
         Criteria criteriaTripSharing = session.createCriteria(TripSharing.class);
-        criteriaTripSharing.add(Restrictions.eq("id.userId", userid));
+        if(userid != 0)
+        	criteriaTripSharing.add(Restrictions.eq("id.userId", userid));
         criteriaTripSharing.add(Restrictions.eq("id.userIdFriend", friendid));
         criteriaTripSharing.setProjection(Projections.rowCount());
 
