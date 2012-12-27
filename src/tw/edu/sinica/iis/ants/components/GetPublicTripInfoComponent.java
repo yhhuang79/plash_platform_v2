@@ -54,7 +54,7 @@ public class GetPublicTripInfoComponent extends PLASHComponent{
 		try {						
 			criteriaFriendAuth.add(Restrictions.eq("id.userIdFriend", 0));
 			//criteriaFriendAuth.add(Restrictions.eq("userBID", Integer.parseInt(map.get("userid").toString())));
-			criteriaFriendAuth.addOrder(Order.desc("id.tripId"));
+			//criteriaFriendAuth.addOrder(Order.desc("id.tripId"));
    			
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
 			map.put("GetPublicTripInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file
