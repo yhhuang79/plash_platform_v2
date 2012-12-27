@@ -86,7 +86,7 @@ public class GetTripInfoComponent extends PLASHComponent {
 			}//fi
 			
 			if ((tmpField_mask = (String)map.remove("field_mask")) == null) {
-				field_mask = Integer.parseInt("1111111111111111",2);				
+				field_mask = Integer.parseInt("11111101110011100",2);				
 			} else {
 				field_mask = Integer.parseInt(tmpField_mask,2);
 				if (field_mask == 0) { //return nothing
@@ -187,6 +187,7 @@ public class GetTripInfoComponent extends PLASHComponent {
     	Criteria criteriaTripInfo = tskSession.createCriteria(T_TripInfo.class);
     	criteriaTripInfo.add(Restrictions.eq("this.userid", userid));
     	criteriaTripInfo.add(Restrictions.eq("this.trip_id", trip_id));
+    	criteriaTripInfo.add(Restrictions.eq("is_completed", true));
     	ProjectionList filterProjList = Projections.projectionList();
     	criteriaTripInfo.setProjection(addFilterList(filterProjList,field_mask));      	
    	
@@ -226,6 +227,7 @@ public class GetTripInfoComponent extends PLASHComponent {
 		//obtain the record
     	Criteria criteriaTripInfo = tskSession.createCriteria(T_TripInfo.class);
     	criteriaTripInfo.add(Restrictions.eq("userid", userid));
+    	criteriaTripInfo.add(Restrictions.eq("is_completed", true));
     	if(firstResult != 0)
     		criteriaTripInfo.setFirstResult(firstResult);
     	if(maxResult != 0)
@@ -295,6 +297,7 @@ public class GetTripInfoComponent extends PLASHComponent {
 		//obtain the record
     	Criteria criteriaTripNum = tskSession.createCriteria(T_TripInfo.class);
     	criteriaTripNum.add(Restrictions.eq("userid", userid));
+    	criteriaTripNum.add(Restrictions.eq("is_completed", true));
     	ProjectionList filterProjList = Projections.projectionList();     	
     	criteriaTripNum.setProjection(addFilterList(filterProjList,32768));
     	criteriaTripNum.setProjection(Projections.rowCount());
