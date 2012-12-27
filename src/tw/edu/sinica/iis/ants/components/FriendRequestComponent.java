@@ -195,7 +195,7 @@ public class FriendRequestComponent extends PLASHComponent{
 					T_FriendRequest friendlist = (T_FriendRequest) friendrequest.next();
 					fid = friendlist.getFid();
 					passcode = friendlist.getPasscode();
-					map.put("fid", fid);
+					//map.put("fid", fid);
 					
 				}	else {// if friend request is not existed
 					
@@ -226,7 +226,7 @@ public class FriendRequestComponent extends PLASHComponent{
 					tx.commit();
 					
 					//fid = friendlist.getFid();
-					map.put("fid", fid);
+					//map.put("fid", fid);
 					//--------------------------------------------------------------//
 					
 					
@@ -253,8 +253,14 @@ public class FriendRequestComponent extends PLASHComponent{
 				String personalmessage = null;
 				sendReq.sendFriendRequest(to, personalName, friendName,	personalmessage, confirmLink);
 				*/
-				map.put("code", 200);
-				map.put("message", "Successful Friend Request");
+				if(fid != 0){
+					map.put("code", 200);
+					map.put("fid", fid);
+					map.put("message", "Successful Friend Request");
+				} else {
+					map.put("code", 400);
+					map.put("message", "Friend Request Error");					
+				}
 				//--------------------------------------------------------------//
 				
 				
