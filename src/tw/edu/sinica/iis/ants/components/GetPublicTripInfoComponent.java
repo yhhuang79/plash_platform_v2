@@ -57,11 +57,15 @@ public class GetPublicTripInfoComponent extends PLASHComponent{
 			//criteriaFriendAuth.addOrder(Order.desc("id.tripId"));
    			
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
+			map.put("code", 400);
+			map.put("message", e.toString());
 			map.put("GetPublicTripInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file
 			//map.put("error detail" , e.toString()); //perhaps put error detail?
 	        System.out.println("GetPublicTripInfoComponent failure end1:\t"+ Calendar.getInstance().getTimeInMillis());
 			return map;
 		} catch (NumberFormatException e) { //invalid arguments 
+			map.put("code", 400);
+			map.put("message", e.toString());
 			map.put("GetPublicTripInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file
 			//map.put("error detail" , e.toString()); //perhaps put error detail?
 	        System.out.println("GetPublicTripInfoComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
@@ -80,9 +84,10 @@ public class GetPublicTripInfoComponent extends PLASHComponent{
 				resultList.add(resultEntryMap);
 			}//fi			
 		}//rof
-		
+		map.put("code", 200);
+		map.put("message", "ok");
         map.put("tripInfoList", resultList);
-        map.put("tripInfoNum", tripIDList.size());
+        map.put("tripInfoNum", tripIDList.size()-1);
         tskSession.close();
         System.out.println("GetPublicTripInfoComponent successful end:\t"+ Calendar.getInstance().getTimeInMillis());
         return map;

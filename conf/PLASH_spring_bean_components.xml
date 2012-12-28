@@ -207,6 +207,10 @@
         <spring:bean id="UploadTripComplete"
                 class="tw.edu.sinica.iis.ants.components.UploadTripComplete">
                 <spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-        </spring:bean>        	
+        </spring:bean>
+                <spring:bean id="CheckServerStatus"
+                class="tw.edu.sinica.iis.ants.components.CheckServerStatus">
+                <spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+        </spring:bean>         	
                 	
 </mule>

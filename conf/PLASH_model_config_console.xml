@@ -161,6 +161,8 @@
 		connector-ref="jmsCon" />
 	<jms:endpoint name="plashUploadTripCompleteQueue" queue="plash.upload.trip.complete"
 		connector-ref="jmsCon" />		
+	<jms:endpoint name="plashCheckServerStatusQueue" queue="plash.check.server.status"
+		connector-ref="jmsCon" />		
 
 	<https:connector name="httpsConnector">
 		<https:tls-key-store path="file:///home/ants/workspace/PLASH_Platform_Test_Combine/resources/tmpKey/keystore" keyPassword="password" storePassword="password"/>
@@ -311,7 +313,8 @@
 		port="8080" path="GetAuthTripInfoComponent" synchronous="true" connector-ref="httpsConnector" />
 	<https:endpoint name="plashUploadTripCompleteHttpsInboundEndpoint" host="localhost"
 		port="8080" path="UploadTripComplete" synchronous="true" connector-ref="httpsConnector" />
-		
+	<https:endpoint name="plashCheckServerStatusHttpsInboundEndpoint" host="localhost"
+		port="8080" path="CheckServerStatus" synchronous="true" connector-ref="httpsConnector" />		
 
 	<model name="PLASH">
 	
@@ -2052,6 +2055,35 @@
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
+		<!-- (Step 4) Yu-Hsiang: XXXXX = CheckServerStatus -->
+		<service name="CheckServerStatusService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashCheckServerStatusHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="CheckServerStatus"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashCheckServerStatusQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashCheckServerStatusQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="TestResponseTransformer" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		
 		
 		
 
