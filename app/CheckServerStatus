@@ -1,0 +1,17 @@
+#!/bin/bash
+# Program:
+# 	Using CheckServerStatus to detect Mule Server services.
+# History:
+# 2012/12/28	Yu-Hsiang Huang	First release
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
+export PATH
+
+testing=$(curl -1 -m 5 --write-out %{http_code} --silent --output /deull https://localhost:8080/CheckServerStatus)
+if [ "$testing" != "000" ]; then
+	/etc/init.d/plash restart
+	FILEDATE=`date +%s`
+	LOGFILE=/opt/plash/logs/Restart.$FILEDATE.log
+	touch $LOGFILE
+	RestartTIME=`date`
+	echo "Plash Mule ESB is restart at $RestartTIME."  >> $LOGFILE
+fi
