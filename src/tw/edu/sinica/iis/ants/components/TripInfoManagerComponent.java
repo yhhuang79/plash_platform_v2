@@ -398,7 +398,8 @@ public class TripInfoManagerComponent extends PLASHComponent{
 		}//fi
 		
 		tripInfoRec.setTrip_length(tmpDist.intValue());
-			
+		tripInfoRec.setIs_completed(false);
+		
 		try {
 			stAddr.join();
 			etAddr.join();
