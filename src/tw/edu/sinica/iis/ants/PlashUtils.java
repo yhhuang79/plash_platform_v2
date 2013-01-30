@@ -174,6 +174,44 @@ public class PlashUtils {
 		return message;		
 	} // login End	
 	
+	public static Map getFriendList(int userid, Session session) throws NoSuchAlgorithmException, UnsupportedEncodingException{
+		Map FriendList = new HashMap();
+		Criteria criteria = session.createCriteria(T_FriendList.class);
+		Criteria criteriaOfFriendName;		
+		criteria.add(Restrictions.or(Restrictions.eq("useraid", userid), Restrictions.eq("userbid", userid)));
+		List friend_list = new ArrayList<Map>();
+		Iterator fls = criteria.list().iterator(); 
+		Map oneFriend;
+		oneFriend = new HashMap();
+		oneFriend.put("id", 0);
+		oneFriend.put("name", "Publish Trip");
+		oneFriend.put("image", "http://developer.android.com/assets/images/icon_download.jpg");	
+		oneFriend.put("shareTripNum", PlashUtils.getShareTripNum(0, 0, session));
+		friend_list.add(oneFriend);
+		while(fls.hasNext()) {
+			T_FriendList fl = (T_FriendList) fls.next();
+			oneFriend = new HashMap();
+			criteriaOfFriendName = session.createCriteria(T_Login.class);
+			if(fl.getUseraid() == userid){
+				oneFriend.put("id", fl.getUserbid());
+				criteriaOfFriendName.add(Restrictions.eq("sid", fl.getUserbid()));
+				oneFriend.put("name", ((T_Login)criteriaOfFriendName.list().get(0)).getUsername());
+				oneFriend.put("image", "http://developer.android.com/assets/images/icon_download.jpg");
+				oneFriend.put("shareTripNum", PlashUtils.getShareTripNum(fl.getUserbid(), userid, session)); 
+			}
+			else{
+				oneFriend.put("id", fl.getUseraid());	
+				criteriaOfFriendName.add(Restrictions.eq("sid", fl.getUseraid()));
+				oneFriend.put("name", ((T_Login)criteriaOfFriendName.list().get(0)).getUsername());
+				oneFriend.put("image", "http://developer.android.com/assets/images/icon_download.jpg");	
+				oneFriend.put("shareTripNum", PlashUtils.getShareTripNum(fl.getUseraid(), userid, session)); 
+			}	
+			friend_list.add(oneFriend);
+		}
+		FriendList.put("friend_list", friend_list);
+		return FriendList;
+	} // getFriendList End		
+	
 	public static String getTripName(int userid, int trip_id, Session session) {
     	Criteria criteria = session.createCriteria(T_TripInfo.class);
     	criteria.add(Restrictions.eq("userid", userid));
