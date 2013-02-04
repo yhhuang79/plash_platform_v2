@@ -25,7 +25,7 @@ public class PlashPlatformTransformer extends AbstractTransformer {
     }//end constructor
 
     public Object doTransform(Object src, String encoding) throws TransformerException   {
-    	System.out.println("This is TestResponseTransform transformer, encoding: " + encoding);
+    	System.out.println("This is PLASH(R) transformer specifically designed for geospatial data, encoding: " + encoding);
     	Map srcMap = (Map)src;
     	System.out.println("Before: " + srcMap.keySet().toString());     	
     	if (srcMap.containsKey("resultstatus")) {

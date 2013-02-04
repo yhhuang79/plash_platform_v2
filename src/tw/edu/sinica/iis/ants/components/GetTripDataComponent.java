@@ -64,8 +64,8 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	
 	
 		private Session tskSession; //task session
-		private long timeID;
 		private int requestCount;
+		private boolean requestCheckinInfo;
 	
 		
 		public GetTripDataComponent() {
@@ -95,12 +95,13 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 				int userid, trip_id, field_mask;
 				boolean latest_pt_only;
 				String tmpUserid, tmpTrip_id, tmpField_mask, tmpReturn_latest;
-				if ((tmpUserid = (String)map.remove("userid")) == null) {
-					//user id must be specified
-					map.put("GetTripInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
-			        System.out.println("GetTripInfoComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
+				if ((tmpUserid = (String)map.remove("userid")) == null) {					
 			        tskSession.close();
-					return map;
+			        AbnormalResult err = new AbnormalResult(this,'E');
+			        err.refCode = 001;
+			        err.explaination = "user id must be specified";
+					return returnUnsuccess(map,err);			        
+
 				} else {
 					userid = Integer.parseInt(tmpUserid);
 					map.put("userid", userid);
@@ -120,7 +121,10 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 						
 					if (tmpIntTrip_id == null) {
 						tskSession.close();	
-						return map;
+				        AbnormalResult err = new AbnormalResult(this,'E');
+				        err.refCode = 004;
+				        err.explaination = "Error, This user does not have any recorded trip";
+						return returnUnsuccess(map,err);	
 					} else {
 						trip_id = tmpIntTrip_id;
 					}//fi
@@ -148,28 +152,32 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 				} else {
 					//return all trip
 					map.put("tripDataList", getTripData(userid, trip_id,field_mask));
+					
 					tskSession.close();
 					return returnSuccess(map);				
-	
+					
 				}//fi
 				
 	   			
-			} catch (NullPointerException e) { //Most likely due to invalid arguments 
-				map.put("GetTripDataComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
-		        System.out.println("GetTripDataComponent failure end1:\t" + e.toString() + " : requestID: " + requestCount);
+			} catch (NullPointerException e) {  
 		        tskSession.close(); 	
-				return map; //*/
+		        AbnormalResult err = new AbnormalResult(this,'E');
+		        err.refCode = 002;
+		        err.explaination = "Error occurred, perhaps invalid arguments";
+				return returnUnsuccess(map,err);	
 				
 			} catch (NumberFormatException e) { //invalid arguments 
-				map.put("GetTripDataComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file
-				//map.put("error detail" , e.toString()); //perhaps put error detail?
-		        System.out.println("GetTripDataComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
 		        tskSession.close(); 	
-				return map;
+		        AbnormalResult err = new AbnormalResult(this,'E');
+		        err.refCode = 003;
+		        err.explaination = "Invalid arguments";
+				return returnUnsuccess(map,err);
 			} catch (HibernateException he) { //bad db validity
-		        System.out.println("GetTripDataComponent failure end3:\t"+ Calendar.getInstance().getTimeInMillis());
 		        tskSession.close(); 	
-				return map;
+		        AbnormalResult err = new AbnormalResult(this,'E');
+		        err.refCode = 010;
+		        err.explaination = "Bad database validity";
+				return returnUnsuccess(map,err);
 			}//end try catch
 			
 	
@@ -317,8 +325,11 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	    	}//fi    	
 	    	
 	    	if ((field_mask & 1) != 0) { //1=1
-	    		filterProjList.add(Projections.property("checkin"),"checkin");    		
-	    	}//fi    		    	
+	    		filterProjList.add(Projections.property("checkin"),"checkin");    
+	    		requestCheckinInfo = true;
+	    	} else {
+	    		requestCheckinInfo = false;
+	    	}//fi
 			return filterProjList;
 			
 		}//end method
