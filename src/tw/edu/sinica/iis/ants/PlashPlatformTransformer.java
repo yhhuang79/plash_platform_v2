@@ -38,8 +38,11 @@ public class PlashPlatformTransformer extends AbstractTransformer {
         	   		srcMap.put("type", ((AbnormalResult)status).type);
         	   		srcMap.put("ref_code", ((AbnormalResult)status).refCode);
         	   		srcMap.put("explanation", ((AbnormalResult)status).explaination);        	   	
-        	   		
-        		} else {
+        	   		srcMap.put("code", 400);
+        	   		srcMap.put("message", ((AbnormalResult)status).msg);
+        		} else if ( status instanceof NormalResult){
+        	   		srcMap.put("code", 200);
+        	   		srcMap.put("message", ((NormalResult)status).msg);    			
 
         		}//fi
    			

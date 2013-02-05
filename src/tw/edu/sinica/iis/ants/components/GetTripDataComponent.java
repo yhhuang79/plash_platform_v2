@@ -248,13 +248,20 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	    	
 			try {
 				List<Map> tripDataList = (List<Map>) criteriaTripData.list();
-		   		if ((field_mask & 16384) != 0) { 
-		    		Geometry tmpGPS;
-		    		/*
+		   		if (requestCheckinInfo) { 
+		   					   			
 		    		for (Map tmpMap:tripDataList) {
-		    			tmpGPS = (Geometry)tmpMap.remove("gps");
-		    			tmpMap.put("lng", tmpGPS.getCoordinate().x*1000000);
-		    			tmpMap.put("lat", tmpGPS.getCoordinate().y*1000000);
+			   			Criteria criteriaCheckInInfo = tskSession.createCriteria(T_CheckInInfo.class);
+			   			criteriaCheckInInfo.add(Restrictions.eq("id", tmpMap.remove("id")));
+				    	ProjectionList filterCheckInInfoProjList = Projections.projectionList(); 
+				    	filterCheckInInfoProjList.add(Projections.property("message"),"message");
+				    	filterCheckInInfoProjList.add(Projections.property("picture_uri"),"picture_uri"); 
+				    	criteriaCheckInInfo.setProjection(filterCheckInInfoProjList);
+				    	criteriaCheckInInfo.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+				    	Map resultMap = (Map) criteriaCheckInInfo.uniqueResult();
+				    	if (resultMap != null) {
+				    		tmpMap.putAll(resultMap);		   			
+				    	}//fi
 		    		}//rof */
 		    	
 		    	}//fi */
@@ -325,6 +332,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	    	}//fi    	
 	    	
 	    	if ((field_mask & 1) != 0) { //1=1
+	    		filterProjList.add(Projections.property("id"),"id"); //id is needed to access check in info 
 	    		filterProjList.add(Projections.property("checkin"),"checkin");    
 	    		requestCheckinInfo = true;
 	    	} else {
