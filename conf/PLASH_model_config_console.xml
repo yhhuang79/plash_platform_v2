@@ -513,7 +513,7 @@
 				<pass-through-router>
 					<outbound-endpoint ref="plashSetLoginQueue">
 						<transformers>
-							<transformer ref="TestResponseTransformer" />
+							<transformer ref="PlashPlatformTransformer" />
 							<jms:object-to-jmsmessage-transformer />
 						</transformers>
 					</outbound-endpoint>
@@ -522,7 +522,7 @@
 			<async-reply>
 				<inbound-endpoint ref="plashSetLoginQueue">
 					<transformers>
-						<transformer ref="TestResponseTransformer" />
+						<transformer ref="PlashPlatformTransformer" />
 						<jms:jmsmessage-to-object-transformer />
 
 					</transformers>
@@ -667,7 +667,7 @@
 				<inbound-endpoint ref="plashInputTripDataQueue">
 					<transformers>
 						<jms:jmsmessage-to-object-transformer />
-						<transformer ref="TestResponseTransformer" />
+						<transformer ref="PlashPlatformTransformer" />
 					</transformers>
 				</inbound-endpoint>
 				<single-async-reply-router/>				
@@ -773,7 +773,7 @@
 				<pass-through-router>
 					<outbound-endpoint ref="plashGetTripIdQueue">
 						<transformers>
-							<transformer ref="TestResponseTransformer" />	
+							<transformer ref="PlashPlatformTransformer" />	
 							<jms:object-to-jmsmessage-transformer />
 						</transformers>
 					</outbound-endpoint>
@@ -969,7 +969,7 @@
 					<outbound-endpoint ref="plashGetTripAuthDataQueue">
 						<transformers>
 						
-							<transformer ref="TestResponseTransformer" />						
+							<transformer ref="PlashPlatformTransformer" />						
 							<jms:object-to-jmsmessage-transformer />
 							
 
@@ -999,7 +999,7 @@
 				<pass-through-router>
 					<outbound-endpoint ref="plashSetAuthFriendQueue">
 						<transformers>
-							<transformer ref="TestResponseTransformer" />
+							<transformer ref="PlashPlatformTransformer" />
 							<jms:object-to-jmsmessage-transformer />
 						</transformers>
 					</outbound-endpoint>
@@ -1494,7 +1494,7 @@
 				<pass-through-router>
 					<outbound-endpoint ref="plashGetTripInfoQueue">
 						<transformers>
-							<transformer ref="TestResponseTransformer" />
+							<transformer ref="PlashPlatformTransformer" />
 							<jms:object-to-jmsmessage-transformer />
 						</transformers>
 					</outbound-endpoint>
@@ -1550,7 +1550,7 @@
 				<pass-through-router>
 					<outbound-endpoint ref="plashTripInfoManagerResponseQueue">
 						<transformers>
-							<transformer ref="TestResponseTransformer" />						
+							<transformer ref="PlashPlatformTransformer" />						
 							<jms:object-to-jmsmessage-transformer />
 						</transformers>
 					</outbound-endpoint>
@@ -1578,7 +1578,7 @@
 				<pass-through-router>
 					<outbound-endpoint ref="plashDelTripResponseQueue">
 						<transformers>
-							<transformer ref="TestResponseTransformer" />						
+							<transformer ref="PlashPlatformTransformer" />						
 							<jms:object-to-jmsmessage-transformer />
 						</transformers>
 					</outbound-endpoint>
@@ -1724,7 +1724,7 @@
 					<outbound-endpoint ref="plashNewTrajectoryPointQueue">
 						<transformers>
 				
-							<transformer ref="TestResponseTransformer" />						
+							<transformer ref="PlashPlatformTransformer" />						
 							<jms:object-to-jmsmessage-transformer />
 	
 						</transformers>
@@ -2100,7 +2100,7 @@
 					<outbound-endpoint ref="plashNewTrajectoryInfoQueue">
 						<transformers>
 				
-							<transformer ref="TestResponseTransformer" />						
+							<transformer ref="PlashPlatformTransformer" />						
 							<jms:object-to-jmsmessage-transformer />
 	
 						</transformers>
@@ -2133,7 +2133,7 @@
 					<outbound-endpoint ref="plashNewUserSpecifiedQueue">
 						<transformers>
 				
-							<transformer ref="TestResponseTransformer" />						
+							<transformer ref="PlashPlatformTransformer" />						
 							<jms:object-to-jmsmessage-transformer />
 	
 						</transformers>
