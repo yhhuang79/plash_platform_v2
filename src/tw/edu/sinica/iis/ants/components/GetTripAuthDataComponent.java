@@ -18,8 +18,12 @@ import tw.edu.sinica.iis.ants.db.antrip.TripSharing;
 import tw.edu.sinica.iis.ants.db.antrip.TripSharingId;
 
 /**
- * Get trip authorization data component <br>
- * This service enables users to query various trip authorization information
+ * Get trip authorization information <br>
+ * This service component enables users to query various trip authorization information. <br>
+ * Specifically, one can query: <br>
+ * 1. Who shared what trips and to which friends.<br>
+ * 2. Which friends a particular trip is shared to. <br>
+ * 3. Which trips are shared to a particular friend. <br>
  * 
  * @author	Yi-Chun Teng 
  * @version 1.3

@@ -14,7 +14,15 @@ import tw.edu.sinica.iis.ants.db.antrip.*;
 
 
 /**
- * set authorized friend
+ * Set authorized friend component. This component sets which friends are allowed to see a particular trip. <br>
+ * 
+ * This component takes a Map object that contains the following keys: <br>
+ * 
+ * userid : Required. An int value that indicates whose trip this entry belongs to <br>
+ * trip_id: Required. An int value that indicates the trip id <br>
+ * friend_id: Required. An int value that indicates friend's id <br>
+ *          Warning: This component does not check whether the supplied friend (id) is indeed the user's friend or not. <br>
+ *          		 It is recommended that this component is used in conjunction with a component that check friendship validity. <br>
  * 
  * @author	Yi-Chun Teng 
  * @param   a map that contains the following keys: userid,friend_id, trip_id

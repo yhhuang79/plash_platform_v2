@@ -21,10 +21,13 @@ import org.xml.sax.helpers.DefaultHandler;
 
 
 import tw.edu.sinica.iis.ants.DB.*;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 
 /**
- * Send out e-mails. E-mail contents are predefined
+ * Send out e-mails. <br> 
+ * This service component prepare mail letter according to supplied parameters. <br>
+ * E-mail templates are predefined in XML files. <br>
  * 
  * @author	Yi-Chun Teng 
  * @version 
@@ -35,7 +38,7 @@ import tw.edu.sinica.iis.ants.DB.*;
  * @example	      
  * @note	
  */
-public class SendMailComponent {
+public class SendMailComponent extends PLASHComponent {
 	
 	String userName = "plash.iis.sinica.edu.tw@gmail.com";
 	String passWord = "plash@sinica";
@@ -62,7 +65,7 @@ public class SendMailComponent {
 
     }//end method
 
-    public Object greet(Map argMap) {
+    public Object serviceMain(Map argMap) {
     	
        	
 
@@ -89,7 +92,7 @@ public class SendMailComponent {
 		
 
 
-	} //close Object greet
+	} //close method
 
 	
 	/** 

@@ -15,17 +15,19 @@ import tw.edu.sinica.iis.ants.AbnormalResult;
 import tw.edu.sinica.iis.ants.sendMail;
 
 /**
- * Set login infomation component
+ * Set login information.<br>
+ * This service component provides mechanism to alter login entry. <br>
  * 
  * @author	Yi-Chun Teng 
  * @version 
  * @param   a map that contains the following keys: <br>
- * 			userid - required. This indicates which user you are referring to <br>
- * 			friend_id - optional. When provided, this component returns a list of trip_ids that belongs to the user and this friend <br>
- * 			trip_id - optional. When provided, this component returns a list of friends that the user has shared this trip with <br> 
- *			If neigher friend_id nor trip_id is provided, then the component will return a list of trip ids where the key of trip id indicate friend id.
- * @return  map containing a list of IDs. empty list if no ID found
- * @example	http://localhost:1234/GetAuthFriend?userid=1&tripid=555       
+ * 			username - required. A string value indicating original user name. <br>
+ * 			password - required. When provided, this component returns a list of trip_ids that belongs to the user and this friend <br>
+ * 			new_username - optional. When provided, this service component will set new username to be this value. <br> 
+ * 			new_password - optional. When provided, this service component will set new password to be this value. <br>  
+ * 
+ * @return  map containing execution result
+ * @example	https://localhost:8080/SetLoginComponent?username=demo01&password=password&new_username=demo02       
  * @note	Follow the algorithm implemented in the original server
  */
 public class SetLoginComponent extends PLASHComponent {

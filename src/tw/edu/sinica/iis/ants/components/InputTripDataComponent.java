@@ -18,13 +18,13 @@ import com.vividsolutions.jts.io.WKTReader;
 
 /**
  *
- * This component receives trip point data and stores it on the appropriate place of database. <br>
+ * This service component receives information associated with a trip point and stores it on the appropriate place of database. <br>
  * 
  * This component takes a Map object that contains the following keys: <br>
- * userid : Required. This parameter indicates which user <br>
- * trip_id: Required. This parameter indicates which trip of the user <br>
- * lat: Required. This parameter indicates this point's latitude <br>
- * lng: Required. This parameter indicates this point's longitude <br>
+ * userid : Required. An int value that indicates which user this point belongs to <br>
+ * trip_id: Required. An int value that indicates the trip id <br>
+ * lat: Required. A double value that indicates this point's latitude <br>
+ * lng: Required. A double value indicating this point's longitude <br>
  * 				
  * Optional arguments: Available arguments are as follows: <br>
  * 	1. timestamp <br>
@@ -48,12 +48,6 @@ import com.vividsolutions.jts.io.WKTReader;
  * @author  Angus Fuming Huang, Yi-Chun Teng, Yu-Hsiang Huang
  * @param	map A map object that contains userid, trip_id, update_status and any of the items listed above 
  *
- * @version   1.2, 01/5/2012
- * @param     
- * @return    message 
- * @see       connpost.java
- * @example   http://localhost:8080/InputTripDataComponent?userid=1&trip_id=500&timestamp=2011-11-11 11:11:11.111&checkin=false
- * 
  */
 public class InputTripDataComponent extends PLASHComponent {
 	

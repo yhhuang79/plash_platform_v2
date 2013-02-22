@@ -24,7 +24,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	
 	/**
 	 * 
-	 * This component returns the trip data.  <br>
+	 * This service component returns the trip data.  <br>
 	 * 
 	 * This component takes a Map object that contains the following keys: <br>
 	 * userid : Required. This parameter indicates which user's trip to return <br>
@@ -52,6 +52,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	 *  15. app <br>
 	 *  16. checkin <br>
 	 * 	<br>
+	 * 
 	 * Example:  https://localhost:8080/GetTripDataComponent?userid=1&latest_pt_only=true&field_mask=01000000000000010 <br>
 	 * 
 	 *   

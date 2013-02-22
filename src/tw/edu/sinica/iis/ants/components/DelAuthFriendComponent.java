@@ -11,7 +11,10 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 import tw.edu.sinica.iis.ants.db.antrip.TripSharing;
 
 /**
- * Delete an authorized friend
+ * Delete an authorized friend. <br>
+ * This service component receives a user id, friend id, trip id tuple and searches  antrip.TripSharing database. <br>
+ * If such entry is found, then remove that entry as requested. <br>
+ * If such entry is absent, then issue an abnormal result and then set error level to be warning. <br>
  * 
  * @author	Yi-Chun Teng 
  * @param   a map that contains the following keys: userid,friendid,tripid

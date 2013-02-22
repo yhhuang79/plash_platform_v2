@@ -21,10 +21,11 @@ import tw.edu.sinica.iis.ants.DB.T_TripData;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 /**
- * This service component tries to parse input argument and find all matching user names
- * The component receives following arguments:
- * name - the name string to be matched
- * userID - the user id to be excluded
+ * This service component tries to parse input argument and find all matching user names. <br>
+ * 
+ * The component receives following arguments: <br>
+ * name - the name string to be matched <br>
+ * userID - the user id to be excluded <br>
  * 
  * @author Yi-Chun Teng
  *

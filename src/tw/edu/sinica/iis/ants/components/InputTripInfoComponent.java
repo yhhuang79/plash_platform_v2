@@ -23,14 +23,14 @@ import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * 
- * This component lets user Input trip info manually.  <br>
+ * This service component lets user create new trip info manually.  <br>
  * 
- * This component takes a Map object that contains the following keys: <br>
- * userid : Required. This parameter indicates which user <br>
- * trip_id: Required. This parameter indicates which trip of the user <br>
+ * This service component takes a Map object that contains the following keys: <br>
+ * userid :An int value that indicates which user this trip point belongs to <br>
+ * trip_id: Required. An int value that indicates the trip id <br>
  * update_status: Required. This parameter indicates which update status this record is currently in <br>
- * 					Warning: use this component carefully! Misuse will ruin the integrity of the database table <br> 
- * 				
+ * 				  Warning: use this component carefully! Misuse will ruin the integrity of the database table <br> 
+ * 				<br>
  * Optional arguments: Available arguments are as follows: <br>
  * 	trip_name <br>
  * 	trip_st <br>
