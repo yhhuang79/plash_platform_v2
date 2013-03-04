@@ -62,7 +62,7 @@ public class TestResponseTransformer extends AbstractTransformer {
     	for (String key:keyset){
     		try {
     			converter.put(key, srcMap.get(key));
-    			converter.put("嗨", "幹");
+    			converter.put("Hi", "Request received successfully!");
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
