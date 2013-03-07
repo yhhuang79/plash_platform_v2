@@ -148,7 +148,9 @@ public class InputTripInfoComponent extends PLASHComponent {
 
         if (map.containsKey("is_completed")) {
         	is_completed = Boolean.parseBoolean(map.get("is_completed").toString());
-        }//fi      
+        } else {
+        	is_completed = false;      
+        }//fi
 
         if (userid == null || trip_id == null || update_status == -1) { 
         	tskSession.close();
@@ -174,7 +176,8 @@ public class InputTripInfoComponent extends PLASHComponent {
 				tmpTripInfo.setEt_addr_prt2(et_addr_prt2);
 				tmpTripInfo.setEt_addr_prt3(et_addr_prt3);
 				tmpTripInfo.setEt_addr_prt4(et_addr_prt4);
-				tmpTripInfo.setEt_addr_prt5(et_addr_prt5);				
+				tmpTripInfo.setEt_addr_prt5(et_addr_prt5);
+				tmpTripInfo.setIs_completed(is_completed);
 				tmpTripInfo.setUpdate_status(update_status);
 
 		        
