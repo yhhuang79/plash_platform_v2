@@ -85,7 +85,7 @@ public class InputTripInfoComponent extends PLASHComponent {
         String et_addr_prt4 = ""; 
         String et_addr_prt5 = "";        
         Short update_status = -1;
-        Boolean is_completed = true;
+        Boolean is_completed = false;
        
         if (map.containsKey("trip_name")) {
         	trip_name = map.get("trip_name").toString();
@@ -147,9 +147,7 @@ public class InputTripInfoComponent extends PLASHComponent {
         }//fi      
 
         if (map.containsKey("is_completed")) {
-        	is_completed = Boolean.parseBoolean(map.get("is_completed").toString());
-        } else {
-        	is_completed = false;      
+        	is_completed = Boolean.parseBoolean(map.get("is_completed").toString());  	   
         }//fi
 
         if (userid == null || trip_id == null || update_status == -1) { 
