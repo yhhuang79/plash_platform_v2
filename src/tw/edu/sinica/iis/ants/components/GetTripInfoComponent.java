@@ -20,6 +20,7 @@ import org.json.*;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.*;
 
+import tw.edu.sinica.iis.ants.AbnormalResult;
 import tw.edu.sinica.iis.ants.PlashUtils;
 import tw.edu.sinica.iis.ants.DB.*;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
@@ -77,10 +78,11 @@ public class GetTripInfoComponent extends PLASHComponent {
 			String tmpUserid, tmpTrip_id, tmpField_mask, tmpName = "*";
 			if ((tmpUserid = (String)map.remove("userid")) == null) {
 				//user id must be specified
-				map.put("GetTripInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
-		        System.out.println("GetTripInfoComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
 		        tskSession.close();
-				return map;
+		        AbnormalResult err = new AbnormalResult(this,'E');
+		        err.refCode = 005;
+		        err.explaination = "Bad parameter, no userid is provided.";
+				return returnUnsuccess(map,err);	
 			} else {
 				userid = Integer.parseInt(tmpUserid);
 			}//fi
@@ -91,13 +93,14 @@ public class GetTripInfoComponent extends PLASHComponent {
 				field_mask = Integer.parseInt(tmpField_mask,2);
 				if (field_mask == 0) { //return nothing
 			        tskSession.close();
-					return map;
+			        return returnSuccess(map);
 				}//fi 
 			}//fi
 			
 			
 			if ((tmpTrip_id = (String)map.remove("trip_id")) == null) {
 				//return all trip
+				trackTimeBegin("return_all_trips");
 				int sort = 1, FirstResult = 0, MaxResult = 0;
 				if(map.containsKey("sort")){
 					String SortOrder = map.remove("sort").toString();
@@ -128,7 +131,7 @@ public class GetTripInfoComponent extends PLASHComponent {
 				List<Map> tmpList = getAllTripInfo(userid,field_mask,sort,FirstResult,MaxResult,tmpName);
 				if (tmpList == null) {//error here
 					tskSession.close();
-					return map;
+					return returnSuccess(map);
 				} else {
 					System.out.println("list: " + tmpList.toString() );
 					map.put("tripInfoList", tmpList);
@@ -137,15 +140,16 @@ public class GetTripInfoComponent extends PLASHComponent {
 				
 				System.out.println("GetTripInfoComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
 		        tskSession.close();
-				return map;				
+		        trackTimeEnd("return_all_trips");
+		        return returnSuccess(map);			
 				
 			} else {
-
+				trackTimeBegin("return_single_trip");
 				trip_id = Integer.parseInt(tmpTrip_id);								
-				map.putAll(getSingleTripInfo(userid,trip_id,field_mask));
-				System.out.println("GetTripInfoComponent End:\t"+ Calendar.getInstance().getTimeInMillis());
+				map.putAll(getSingleTripInfo(userid,trip_id,field_mask));			
 				tskSession.close();
-				return map;
+				trackTimeEnd("return_single_trip");
+				return returnSuccess(map);
 				
 
 			}//fi			
@@ -153,17 +157,21 @@ public class GetTripInfoComponent extends PLASHComponent {
 			
    			
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
-			map.put("GetTripInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
-	        System.out.println("GetTripInfoComponent failure end1:\t"+ Calendar.getInstance().getTimeInMillis());
 	        tskSession.close();
-			return map; //*/
+	        AbnormalResult err = new AbnormalResult(this,'E');
+	        err.msg = e.toString();
+	        e.printStackTrace();
+	        err.refCode = 001;
+	        err.explaination = "invalid arguments.";
+			return returnUnsuccess(map,err);	
 			
 		} catch (NumberFormatException e) { //invalid arguments 
-			map.put("GetTripInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file
-			//map.put("error detail" , e.toString()); //perhaps put error detail?
-	        System.out.println("GetTripInfoComponent failure end2:\t"+ Calendar.getInstance().getTimeInMillis());
 	        tskSession.close();
-			return map;
+	        AbnormalResult err = new AbnormalResult(this,'E');
+	        err.msg = e.toString();
+	        err.refCode = 002;
+	        err.explaination = "invalid arguments.";
+			return returnUnsuccess(map,err);	
 		}//end try catch
 				
 
@@ -187,7 +195,7 @@ public class GetTripInfoComponent extends PLASHComponent {
     	Criteria criteriaTripInfo = tskSession.createCriteria(T_TripInfo.class);
     	criteriaTripInfo.add(Restrictions.eq("this.userid", userid));
     	criteriaTripInfo.add(Restrictions.eq("this.trip_id", trip_id));
-    	criteriaTripInfo.add(Restrictions.eq("is_completed", true));
+    	criteriaTripInfo.add(Restrictions.eq("this.is_completed", true));
     	ProjectionList filterProjList = Projections.projectionList();
     	criteriaTripInfo.setProjection(addFilterList(filterProjList,field_mask));      	
    	
@@ -296,8 +304,8 @@ public class GetTripInfoComponent extends PLASHComponent {
 		
 		//obtain the record
     	Criteria criteriaTripNum = tskSession.createCriteria(T_TripInfo.class);
-    	criteriaTripNum.add(Restrictions.eq("userid", userid));
-    	criteriaTripNum.add(Restrictions.eq("is_completed", true));
+    	criteriaTripNum.add(Restrictions.eq("this.userid", userid));
+    	criteriaTripNum.add(Restrictions.eq("this.is_completed", true));
     	ProjectionList filterProjList = Projections.projectionList();     	
     	criteriaTripNum.setProjection(addFilterList(filterProjList,32768));
     	criteriaTripNum.setProjection(Projections.rowCount());
@@ -316,7 +324,7 @@ public class GetTripInfoComponent extends PLASHComponent {
 			return tripInfoNum;
 											
 		} catch (HibernateException he) {
-			
+			he.printStackTrace();
 			return 0;
 		}//end try catch			//*/
 		

@@ -77,7 +77,7 @@
 		
 		
 		public Object serviceMain(Map map) {
-			trackTimeBegin("service_main");
+			//trackTimeBegin("service_main");
 			requestCount++;
 
 			try {
@@ -132,7 +132,7 @@
 					    }else{
 					    	map.put("CheckInDataList","null");
 					    }
-						trackTimeEnd("service_main");
+						//trackTimeEnd("service_main");
 						return map;
 					} else {
 						map.put("GetCheckInInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		

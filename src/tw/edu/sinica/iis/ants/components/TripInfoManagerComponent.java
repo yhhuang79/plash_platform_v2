@@ -60,7 +60,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
 
 	public Object serviceMain(Map map) {
 		
-		trackTimeBegin("service_main");
+		//trackTimeBegin("service_main");
 		
 		tskSession = sessionFactory.openSession();
 		
@@ -110,18 +110,16 @@ public class TripInfoManagerComponent extends PLASHComponent{
 			}//end switch
 			
 			tskSession.close();
-			trackTimeEnd("service_main");
+			//trackTimeEnd("service_main");
 			return returnSuccess(map);
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
 			tskSession.close();
-			getElapsed();
 	        AbnormalResult err = new AbnormalResult(this,'E');
 	        err.refCode = 003;
 	        err.explaination = "NullPointerException occured, probably due to invalid argument";
 			return returnUnsuccess(map,err);				
 		} catch (NumberFormatException e) { //invalid arguments 
 			tskSession.close();
-			getElapsed();
 	        AbnormalResult err = new AbnormalResult(this,'E');
 	        err.refCode = 003;
 	        err.explaination = "NumberFormatException occured, invalid arguments";
@@ -447,7 +445,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
 		 */
 
 		public void run() {
-			trackTimeBegin("GetAddrThread");
+			//trackTimeBegin("GetAddrThread");
 		    String addr = new String("" );
 			try {
 				URL addrRequestURL = new URL(
@@ -503,7 +501,7 @@ public class TripInfoManagerComponent extends PLASHComponent{
 				}//fi		
 			}//try catch
 			
-			trackTimeEnd("GetAddrThread");
+			//trackTimeEnd("GetAddrThread");
 							 
 		}//end method run
 		
