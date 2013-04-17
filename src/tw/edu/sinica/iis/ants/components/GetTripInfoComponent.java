@@ -234,13 +234,14 @@ public class GetTripInfoComponent extends PLASHComponent {
 		
 		//obtain the record
     	Criteria criteriaTripInfo = tskSession.createCriteria(T_TripInfo.class);
-    	criteriaTripInfo.add(Restrictions.eq("userid", userid));
-    	criteriaTripInfo.add(Restrictions.eq("is_completed", true));
+    	criteriaTripInfo.add(Restrictions.eq("this.userid", userid));
+    	criteriaTripInfo.add(Restrictions.eq("this.is_completed", true));
     	if(firstResult != 0)
     		criteriaTripInfo.setFirstResult(firstResult);
     	if(maxResult != 0)
     		criteriaTripInfo.setMaxResults(maxResult);
     	ProjectionList filterProjList = Projections.projectionList();     	
+    	filterProjList.add(Projections.property("trip_id"),"trip_id");
     	criteriaTripInfo.setProjection(addFilterList(filterProjList,field_mask));
     	switch(sort_order) {
     		case 1:
@@ -283,18 +284,22 @@ public class GetTripInfoComponent extends PLASHComponent {
 				}//rof
 			} else {
 				Iterator tls = tripInfoList.iterator();
+	
 				//Map oneTrip;
 				while(tls.hasNext()) {
 					Map tl = (Map) tls.next();
+					System.out.println(tl.toString());
 					tl.put("hash", PlashUtils.ParamToHash(userid, Integer.parseInt(tl.get("trip_id").toString()), tskSession));
 					resultList.add(tl);
 				}//rof
 			}
 									
 			return resultList;
-											
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			return null;
 		} catch (HibernateException he) {
-			
+			he.printStackTrace();
 			return null;
 		}//end try catch			//*/
 		
