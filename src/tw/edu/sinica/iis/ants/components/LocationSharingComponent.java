@@ -8,6 +8,7 @@ import java.util.Map;
 import org.hibernate.Session;
 import org.json.simple.JSONObject;
 
+import tw.edu.sinica.iis.ants.PlashUtils;
 import tw.edu.sinica.iis.ants.RealtimeSharing;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
@@ -25,7 +26,7 @@ public class LocationSharingComponent extends PLASHComponent{
 		
 		if(map.containsKey("action")){
 			String action = map.remove("action").toString();
-			if (action.contains("initial")){
+			if (action.contains("initialize")){
 				Integer userid = 0;
 				Integer duration_type = 0;
 				Integer duration_value = 0;
@@ -34,7 +35,12 @@ public class LocationSharingComponent extends PLASHComponent{
 				Timestamp timestamp = null;
 
 				if(map.containsKey("userid")){
-					userid = Integer.valueOf(map.remove("userid").toString());
+					String map_userid = map.remove("userid").toString();
+					try {
+						userid = Integer.valueOf(map_userid);
+					} catch (NumberFormatException e) {
+						userid = PlashUtils.getUserid(map_userid, session);
+					}
 				}
 				if(map.containsKey("sharing_method")){
 					sharing_method = map.remove("sharing_method").toString();
@@ -52,8 +58,12 @@ public class LocationSharingComponent extends PLASHComponent{
 		        	Date date= new java.util.Date();
 		        	timestamp = new Timestamp(date.getTime());
 		        }
-		        
-		       map.putAll(RealtimeSharing.initialSharing(userid, timestamp, session));
+		        if (userid != 0) {
+		        	map.putAll(RealtimeSharing.initialSharing(userid, timestamp, session));
+		        } else {
+					map.put("status_code", 400);
+					map.put("message", "Parameter Error");
+		        }		        	
 			}			
 			if (action.contains("start")){
 				String token = null;

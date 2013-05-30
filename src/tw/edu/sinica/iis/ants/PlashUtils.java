@@ -252,6 +252,21 @@ public class PlashUtils {
     	}
     	return username;
 	}//end method	
+
+	public static int getUserid(String username, Session session) {
+    	Criteria criteria = session.createCriteria(T_Login.class);
+    	criteria.add(Restrictions.eq("username", username));
+    	ProjectionList filterProjList = Projections.projectionList();   
+    	filterProjList.add(Projections.property("sid"),"sid");
+    	criteria.setProjection(filterProjList);    	
+    	int userid = 0;
+    	Iterator users = criteria.list().iterator();
+    	if(users.hasNext()) {
+    		Object userInfo = users.next();
+    		userid = Integer.parseInt(userInfo.toString());
+    	}
+    	return userid;
+	}//end method		
 	
 	public static String getShareUsername(int userid, Session session) {
     	Criteria criteria = session.createCriteria(T_Login.class);
