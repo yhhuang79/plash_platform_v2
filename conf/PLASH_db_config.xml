@@ -90,7 +90,8 @@
 				<value>hbmxml.common_data/UserSpecified.hbm.xml</value>
 				
 				<value>hbmxml.antrip/TripSharing.hbm.xml</value>				
-								
+				<value>hbmxml.antrip/RealtimeSharingPoints.hbm.xml</value>				
+				<value>hbmxml.antrip/RealtimeSharingSessions.hbm.xml</value>				
 				
 			</list>
 		</property>
