@@ -50,7 +50,7 @@ public class RealtimeSharing {
     	return false;
 	}//end method		
 
-	// 1. Input parameters : userid, sharing_method, duration_type, timestamp
+	// 1. Input parameters : userid(Integer), timestamp
 	public static Map initialSharing(Integer userid, Timestamp timestamp, Session session) {
 		Map message = new HashMap();
 		Date date= new java.util.Date();
@@ -88,6 +88,46 @@ public class RealtimeSharing {
 		}		
     	return message;
 	}//end method		
+
+	// 2. Input parameters : userid(String), timestamp
+	public static Map initialSharing(String userid, Timestamp timestamp, Session session) {
+		Map message = new HashMap();
+		Date date= new java.util.Date();
+		try {
+			String token = PlashUtils.MD5(userid.substring((int)(Math.random()*10), 16) + date.getTime());
+			String url = PlashUtils.getShortUrl("http://www.plash.tw/antrack/index.html?token=" + token);
+			RealtimeSharingSessions rsSession = new RealtimeSharingSessions();
+			rsSession.setHashid(userid);
+			rsSession.setToken(token);
+			rsSession.setUrl(url);
+			rsSession.setTimestamp(timestamp);
+			Transaction tx = session.beginTransaction();
+			session.save(rsSession);
+			tx.commit();
+			message.put("status_code", 200);
+			message.put("message", "ok");
+			message.put("url", url);
+			message.put("token", token);
+			
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			message.put("status_code", 400);
+			message.put("message", "Network Error");			
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			message.put("status_code", 400);
+			message.put("message", "IO Error");
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			message.put("status_code", 500);
+			message.put("message", "Internal Server Error");
+			e.printStackTrace();
+		}		
+    	return message;
+	}//end method		
+	
 	
 	public static Map startSharing(String token, String sharing_method, Timestamp timestamp, Session session) {
 		Map message = new HashMap();
