@@ -27,7 +27,8 @@ public class LocationSharingComponent extends PLASHComponent{
 		if(map.containsKey("action")){
 			String action = map.remove("action").toString();
 			if (action.contains("initialize")){
-				Integer userid = 0;
+				//Integer userid = 0;
+				String userid = null;
 				Integer duration_type = 0;
 				Integer duration_value = 0;
 				String sharing_method = null;
@@ -35,12 +36,16 @@ public class LocationSharingComponent extends PLASHComponent{
 				Timestamp timestamp = null;
 
 				if(map.containsKey("userid")){
-					String map_userid = map.remove("userid").toString();
+					userid = map.remove("userid").toString();
+					/*
+					 *  Plash account userid
+					 * 
 					try {
 						userid = Integer.valueOf(map_userid);
 					} catch (NumberFormatException e) {
 						userid = PlashUtils.getUserid(map_userid, session);
 					}
+					*/
 				}
 				if(map.containsKey("sharing_method")){
 					sharing_method = map.remove("sharing_method").toString();
@@ -52,13 +57,18 @@ public class LocationSharingComponent extends PLASHComponent{
 				}
 				if(map.containsKey("duration_value"))
 					duration_value = Integer.valueOf(map.remove("duration_value").toString());
-		        if (map.containsKey("timestamp")){ 
-		        	timestamp = Timestamp.valueOf(map.remove("timestamp").toString());
+		        if (map.containsKey("timestamp")){
+		        	try {
+		        		timestamp = Timestamp.valueOf(map.remove("timestamp").toString());
+		        	} catch (IllegalArgumentException e) {
+			        	Date date= new java.util.Date();
+			        	timestamp = new Timestamp(date.getTime());		        		
+		        	}
 		        }else{
 		        	Date date= new java.util.Date();
 		        	timestamp = new Timestamp(date.getTime());
 		        }
-		        if (userid != 0) {
+		        if (userid != null) {
 		        	map.putAll(RealtimeSharing.initialSharing(userid, timestamp, session));
 		        } else {
 					map.put("status_code", 400);

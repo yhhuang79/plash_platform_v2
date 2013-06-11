@@ -16,6 +16,7 @@ public class RealtimeSharingSessions {
 	private String friend_id;
 	private Integer status;
 	private String url;
+	private String hashid;
 	
 	public RealtimeSharingSessions(){
 	
@@ -99,6 +100,14 @@ public class RealtimeSharingSessions {
 
 	public void setSharing_method(String sharing_method) {
 		this.sharing_method = sharing_method;
+	}
+
+	public String getHashid() {
+		return hashid;
+	}
+
+	public void setHashid(String hashid) {
+		this.hashid = hashid;
 	}
 
 }
