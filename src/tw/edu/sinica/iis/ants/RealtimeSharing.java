@@ -124,7 +124,11 @@ public class RealtimeSharing {
 			message.put("status_code", 500);
 			message.put("message", "Internal Server Error");
 			e.printStackTrace();
-		}		
+		} catch (StringIndexOutOfBoundsException e){
+			message.put("status_code", 400);
+			message.put("message", "Parameter Error");
+			e.printStackTrace();			
+		}
     	return message;
 	}//end method		
 	
