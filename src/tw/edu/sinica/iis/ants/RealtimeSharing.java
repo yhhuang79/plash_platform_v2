@@ -94,21 +94,25 @@ public class RealtimeSharing {
 		Map message = new HashMap();
 		Date date= new java.util.Date();
 		try {
-			String token = PlashUtils.MD5(userid.substring((int)(Math.random()*10), 16) + date.getTime());
-			String url = PlashUtils.getShortUrl("http://www.plash.tw/antrack/index.html?token=" + token);
-			RealtimeSharingSessions rsSession = new RealtimeSharingSessions();
-			rsSession.setHashid(userid);
-			rsSession.setToken(token);
-			rsSession.setUrl(url);
-			rsSession.setTimestamp(timestamp);
-			Transaction tx = session.beginTransaction();
-			session.save(rsSession);
-			tx.commit();
-			message.put("status_code", 200);
-			message.put("message", "ok");
-			message.put("url", url);
-			message.put("token", token);
-			
+			if (userid.length() == 32) {
+				String token = PlashUtils.MD5(userid.substring((int)(Math.random()*10), 16) + date.getTime());
+				String url = PlashUtils.getShortUrl("http://www.plash.tw/antrack/index.html?token=" + token);
+				RealtimeSharingSessions rsSession = new RealtimeSharingSessions();
+				rsSession.setHashid(userid);
+				rsSession.setToken(token);
+				rsSession.setUrl(url);
+				rsSession.setTimestamp(timestamp);
+				Transaction tx = session.beginTransaction();
+				session.save(rsSession);
+				tx.commit();
+				message.put("status_code", 200);
+				message.put("message", "ok");
+				message.put("url", url);
+				message.put("token", token);
+			} else {
+				message.put("status_code", 400);
+				message.put("message", "Parameter Error");				
+			}
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			message.put("status_code", 400);
