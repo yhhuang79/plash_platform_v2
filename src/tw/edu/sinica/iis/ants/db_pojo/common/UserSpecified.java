@@ -1,4 +1,4 @@
-package tw.edu.sinica.iis.ants.db.common;
+package tw.edu.sinica.iis.ants.db_pojo.common;
 
 // Generated Jul 16, 2012 8:53:23 PM by Hibernate Tools 3.4.0.CR1
 

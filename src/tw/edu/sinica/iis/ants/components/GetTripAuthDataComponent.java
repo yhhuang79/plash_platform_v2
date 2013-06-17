@@ -14,8 +14,7 @@ import org.hibernate.criterion.Restrictions;
 import tw.edu.sinica.iis.ants.*;
 import tw.edu.sinica.iis.ants.DB.T_FriendAuth;
 import tw.edu.sinica.iis.ants.componentbase.*;
-import tw.edu.sinica.iis.ants.db.antrip.TripSharing;
-import tw.edu.sinica.iis.ants.db.antrip.TripSharingId;
+import tw.edu.sinica.iis.ants.db_pojo.antrip.TripSharing;
 
 /**
  * Get trip authorization information <br>

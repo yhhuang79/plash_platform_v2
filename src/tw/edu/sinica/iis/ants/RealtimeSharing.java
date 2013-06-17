@@ -22,8 +22,8 @@ import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 
 import tw.edu.sinica.iis.ants.DB.T_TripData;
-import tw.edu.sinica.iis.ants.db.antrip.RealtimeSharingPoints;
-import tw.edu.sinica.iis.ants.db.antrip.RealtimeSharingSessions;
+import tw.edu.sinica.iis.ants.db_pojo.antrip.RealtimeSharingPoints;
+import tw.edu.sinica.iis.ants.db_pojo.antrip.RealtimeSharingSessions;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKTReader;

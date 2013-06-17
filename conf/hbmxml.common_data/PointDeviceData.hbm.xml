@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Jul 16, 2012 8:52:19 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="tw.edu.sinica.iis.ants.db.common.PointDeviceData" table="common_data.point_device_data">
+    <class name="tw.edu.sinica.iis.ants.db_pojo.common.PointDeviceData" table="common_data.point_device_data">
         <id name="pointId" type="long">
             <column name="point_id" />
             <generator class="assigned" />

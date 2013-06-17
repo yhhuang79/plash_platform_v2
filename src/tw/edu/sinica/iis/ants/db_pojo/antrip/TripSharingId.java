@@ -1,4 +1,4 @@
-package tw.edu.sinica.iis.ants.db.antrip;
+package tw.edu.sinica.iis.ants.db_pojo.antrip;
 // Generated Dec 17, 2012 4:07:38 PM by Hibernate Tools 3.4.0.CR1
 
 /**

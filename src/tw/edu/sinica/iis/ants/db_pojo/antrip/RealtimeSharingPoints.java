@@ -1,4 +1,4 @@
-package tw.edu.sinica.iis.ants.db.antrip;
+package tw.edu.sinica.iis.ants.db_pojo.antrip;
 
 import java.sql.Timestamp;
 

@@ -6,7 +6,6 @@ import java.util.*;
 
 
 import org.hibernate.*;
-import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -14,7 +13,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import tw.edu.sinica.iis.ants.AbnormalResult;
 import tw.edu.sinica.iis.ants.DB.*;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
-import tw.edu.sinica.iis.ants.db.antrip.TripSharing;
+import tw.edu.sinica.iis.ants.db_pojo.antrip.TripSharing;
 
 
 /**

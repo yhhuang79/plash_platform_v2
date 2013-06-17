@@ -15,7 +15,7 @@ import tw.edu.sinica.iis.ants.DB.T_FriendAuth;
 import tw.edu.sinica.iis.ants.DB.T_TripInfo;
 import tw.edu.sinica.iis.ants.DB.T_UserPointLocationTime;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
-import tw.edu.sinica.iis.ants.db.antrip.TripSharing;
+import tw.edu.sinica.iis.ants.db_pojo.antrip.TripSharing;
 
 import com.vividsolutions.jts.geom.Geometry;
 

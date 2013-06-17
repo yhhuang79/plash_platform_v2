@@ -21,7 +21,7 @@ import tw.edu.sinica.iis.ants.DB.T_FriendList;
 import tw.edu.sinica.iis.ants.DB.T_Login;
 import tw.edu.sinica.iis.ants.DB.T_TripInfo;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
-import tw.edu.sinica.iis.ants.db.antrip.TripSharing;
+import tw.edu.sinica.iis.ants.db_pojo.antrip.TripSharing;
 
 public class GetTripShareUserComponent extends PLASHComponent {
 

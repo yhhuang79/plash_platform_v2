@@ -8,7 +8,7 @@ import org.hibernate.criterion.Restrictions;
 import tw.edu.sinica.iis.ants.AbnormalResult;
 import tw.edu.sinica.iis.ants.DB.T_FriendAuth;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
-import tw.edu.sinica.iis.ants.db.antrip.TripSharing;
+import tw.edu.sinica.iis.ants.db_pojo.antrip.TripSharing;
 
 /**
  * Delete an authorized friend. <br>

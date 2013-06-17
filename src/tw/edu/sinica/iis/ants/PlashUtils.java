@@ -39,8 +39,7 @@ import tw.edu.sinica.iis.ants.DB.T_Login;
 import tw.edu.sinica.iis.ants.DB.T_TripHash;
 import tw.edu.sinica.iis.ants.DB.T_TripInfo;
 import tw.edu.sinica.iis.ants.DB.T_UserTrip;
-import tw.edu.sinica.iis.ants.db.antrip.RealtimeSharingSessions;
-import tw.edu.sinica.iis.ants.db.antrip.TripSharing;
+import tw.edu.sinica.iis.ants.db_pojo.antrip.TripSharing;
 
 public class PlashUtils {
 

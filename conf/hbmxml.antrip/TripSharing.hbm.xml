@@ -3,8 +3,8 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Dec 17, 2012 4:07:38 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="tw.edu.sinica.iis.ants.db.antrip.TripSharing" table="antrip_data.trip_sharing" >
-        <composite-id name="id" class="tw.edu.sinica.iis.ants.db.antrip.TripSharingId">
+    <class name="tw.edu.sinica.iis.ants.db_pojo.antrip.TripSharing" table="antrip_data.trip_sharing" >
+        <composite-id name="id" class="tw.edu.sinica.iis.ants.db_pojo.antrip.TripSharingId">
             <key-property name="userId" type="int">
                 <column name="user_id" />
             </key-property>

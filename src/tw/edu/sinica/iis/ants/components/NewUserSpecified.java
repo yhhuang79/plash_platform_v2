@@ -6,7 +6,7 @@ import org.hibernate.*;
 import org.hibernate.exception.ConstraintViolationException;
 import tw.edu.sinica.iis.ants.*;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
-import tw.edu.sinica.iis.ants.db.common.*;
+import tw.edu.sinica.iis.ants.db_pojo.common.UserSpecified;
 
 
 /**

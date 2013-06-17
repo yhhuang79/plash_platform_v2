@@ -148,6 +148,7 @@ public class InputTripInfoComponent extends PLASHComponent {
 
         if (map.containsKey("is_completed")) {
         	is_completed = Boolean.parseBoolean(map.get("is_completed").toString());  	   
+        	System.out.println("parsed: " + is_completed);      
         }//fi
 
         if (userid == null || trip_id == null || update_status == -1) { 

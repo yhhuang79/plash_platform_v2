@@ -11,7 +11,9 @@ import com.vividsolutions.jts.io.WKTReader;
 
 import tw.edu.sinica.iis.ants.*;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
-import tw.edu.sinica.iis.ants.db.common.*;
+import tw.edu.sinica.iis.ants.db_pojo.common.PointBinaryData;
+import tw.edu.sinica.iis.ants.db_pojo.common.PointDeviceData;
+import tw.edu.sinica.iis.ants.db_pojo.common.TrajectoryPoints;
 
 
 /**
