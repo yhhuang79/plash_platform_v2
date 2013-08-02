@@ -166,8 +166,11 @@ public class UploadTripComponent extends PLASHComponent{
 			jsonObject = (JSONObject) obj;	
 			if (jsonObject.containsKey("userid"))
 				userid = Integer.parseInt(jsonObject.get("userid").toString());
-			if (jsonObject.containsKey("trip_id"))
+			if (jsonObject.containsKey("trip_id")) {
 				trip_id = Integer.parseInt(jsonObject.get("trip_id").toString());
+			} else {
+				if (trip_id == 0) trip_id = PlashUtils.getNewTripId(userid, session);	
+			}
 			JSONArray checkin = (JSONArray) jsonObject.get("CheckInDataList");
 			System.out.println(checkin.toString());
 			Iterator<Object> iterator = checkin.iterator();
