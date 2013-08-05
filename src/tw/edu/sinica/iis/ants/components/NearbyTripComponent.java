@@ -24,9 +24,9 @@ public class NearByTripComponent extends PLASHComponent {
 	 
 	 */
 	public Object serviceMain(Map map) {
-		String latitude="25.022073" , longitude="121.543501", QueryRadius="30"; 
+		String latitude, longitude, queryRadius; 
 		
-		/*// read in command
+		// read in command
 		if (map.containsKey("latitude")) {
 			latitude = map.get("latitude").toString();
 		} else { //invalid argument 
@@ -43,19 +43,19 @@ public class NearByTripComponent extends PLASHComponent {
 	        err.explaination = "longitude is not supplied";
 			return returnUnsuccess(map,err);    			
 		}//end try catch
-		if (map.containsKey(" QueryRadius")) {
-			 QueryRadius = map.get(" QueryRadius").toString();
+		if (map.containsKey("queryRadius")) {
+			 queryRadius = map.get("queryRadius").toString();
 		} else { //invalid argument 
         	AbnormalResult err = new AbnormalResult(this,'E');
 	        err.refCode = 001;
-	        err.explaination = "QueryRadius is not supplied";
+	        err.explaination = "queryRadius is not supplied";
 			return returnUnsuccess(map,err);    			
 		}//end try catch
 		
 		*/
 		try {
 			tskSession = HibernateUtil.configureSessionFactory().openSession();
-			String createSQLQuery = new String("SELECT NearBySearch('"+ latitude +"','"+longitude+"',' "+QueryRadius+"')");
+			String createSQLQuery = new String("SELECT nearby_trip('"+ latitude +"','"+longitude+"',' "+queryRadius+"')");
 			String resultString = (String)tskSession.createSQLQuery(createSQLQuery).uniqueResult();
 			//String input =new String("Select latitude from  user_location.user_point_location_time where userid=722");
 			//ArrayList<Double> test= (ArrayList<Double>)tskSession.createSQLQuery(input).list();
