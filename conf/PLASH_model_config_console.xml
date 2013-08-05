@@ -165,6 +165,8 @@
 		connector-ref="jmsCon" />
 	<jms:endpoint name="plashLocationSharingQueue" queue="plash.location.sharing"
 		connector-ref="jmsCon" />
+	<jms:endpoint name="plashNearbyTripQueue" queue="plash.nearby.trip"
+			connector-ref="jmsCon" />
 		
 	<https:connector name="httpsConnector">
 		<https:tls-key-store path="file:///home/ants/workspace/PLASH_Platform_Test_Combine/resources/tmpKey/keystore" keyPassword="password" storePassword="password"/>
@@ -320,6 +322,8 @@
 		port="8080" path="CheckServerStatus" synchronous="true" connector-ref="httpsConnector" />
 	<https:endpoint name="plashLocationSharingHttpsInboundEndpoint" host="localhost"
 		port="8080" path="LocationSharing" synchronous="true" connector-ref="httpsConnector" />
+	<https:endpoint name="plashNearbyTripHttpsInboundEndpoint" host="localhost"
+		port="8080" path="NearbyTrip" synchronous="true" connector-ref="httpsConnector" />
 
 	<model name="PLASH">
 	
@@ -2116,6 +2120,34 @@
 			</outbound>
 			<async-reply>
 				<inbound-endpoint ref="plashLocationSharingQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="TestResponseTransformer" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		<!-- (Step 4) Yu-Hsiang: XXXXX = NearbyTrip -->
+		<service name="NearbyTripService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashNearbyTripHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="NearbyTripComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashNearbyTripQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashNearbyTripQueue">
 					<transformers>
 						<jms:jmsmessage-to-object-transformer />
 						<transformer ref="TestResponseTransformer" />
