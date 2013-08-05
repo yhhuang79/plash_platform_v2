@@ -1,18 +1,22 @@
 package tw.edu.sinica.iis.ants.components;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.StringTokenizer;
 
-import Utilities.HibernateUtil;
-import Utilities.PLASHComponent;
-public class NearByTripComponent extends PLASHComponent {
+import tw.edu.sinica.iis.ants.*;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
+
+
+
+public class NearbyTripComponent extends PLASHComponent {
 
 	
 	/**
 	 * Constructor
 	 * 
 	 */
-	public NearBySearch() {		
-		super();
-	}//end constructor
+	public NearbyTripComponent() {		
+		}//end constructor
 	
 
 	
@@ -22,7 +26,8 @@ public class NearByTripComponent extends PLASHComponent {
 	*
 	 
 	 
-	 */
+	 */	
+	@Override 
 	public Object serviceMain(Map map) {
 		String latitude, longitude, queryRadius; 
 		
@@ -52,9 +57,9 @@ public class NearByTripComponent extends PLASHComponent {
 			return returnUnsuccess(map,err);    			
 		}//end try catch
 		
-		*/
+		
 		try {
-			tskSession = HibernateUtil.configureSessionFactory().openSession();
+		
 			String createSQLQuery = new String("SELECT nearby_trip('"+ latitude +"','"+longitude+"',' "+queryRadius+"')");
 			String resultString = (String)tskSession.createSQLQuery(createSQLQuery).uniqueResult();
 			//String input =new String("Select latitude from  user_location.user_point_location_time where userid=722");
@@ -102,6 +107,8 @@ public class NearByTripComponent extends PLASHComponent {
 		}
 		return map;
 		}
+
+
 
 
 }//end class
