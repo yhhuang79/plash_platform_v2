@@ -54,6 +54,7 @@
 		<spring:import resource="./legacycomponents/TripInfoManagerConfig.xml"/>
 		<spring:import resource="./legacycomponents/DelAuthFriendConfig.xml" />
 		<spring:import resource="./legacycomponents/DelTripConfig.xml" />
+		<spring:import resource="./legacycomponents/NearbyTripConfig.xml" />			
 		<spring:import resource="./legacycomponents/TestConfig.xml" />
 
 		<spring:import resource="./common_data_access_beanconfig/NewTrajectoryPointConfig.xml" />		
@@ -2120,6 +2121,35 @@
 			</outbound>
 			<async-reply>
 				<inbound-endpoint ref="plashLocationSharingQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="TestResponseTransformer" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+
+
+		<service name="NearbyTripService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashNearbyTripHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="NearbyTripComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashNearbyTripQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashNearbyTripQueue">
 					<transformers>
 						<jms:jmsmessage-to-object-transformer />
 						<transformer ref="TestResponseTransformer" />

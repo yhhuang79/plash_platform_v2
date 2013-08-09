@@ -324,6 +324,7 @@
 		port="8080" path="LocationSharing" synchronous="true" connector-ref="httpsConnector" />
 
 
+
 	<model name="PLASH">
 	
 		<!-- 
@@ -332,7 +333,7 @@
 			Please replace the "name" attribute in the "service" tag, which is XXXXXService in this example, to be the name of the service.
 			Please replace the "ref" attribute in the "spring-object", which is OOOOOOO in this example. This should be exactly the same with the "name" in "https:endpoint" you set in step 3.
 			Please replace the "bean" attribute in the "inbound-endpoint", which is XXXXXComponent in this example. This should be exactly the same with the "id" in "spring:bean" you set in step 1.
-			Please replace the "ref" attribute in the "outbound-endpoint", which is plashXXXXXResponseQueue in this example. This should be exactly the same with the "name" in "jms:endpoint" you set in step 2.
+			Please replace the "ref" attribute in the "outbound-endpointLocationSharing", which is plashXXXXXResponseQueue in this example. This should be exactly the same with the "name" in "jms:endpoint" you set in step 2.
 			Please replace the "ref" attribute in the "inbound-endpoint", which is plashXXXXXResponseQueue in this example. This should be exactly the same with the "name" in "jms:endpoint" you set in step 2.
 			
 			Finally, run the mule and you could start to test it!
@@ -2131,7 +2132,8 @@
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
-		<!-- (Step 4) Yu-Hsiang: XXXXX = NearbyTrip -->
+
+
 		<service name="NearbyTripService">
 			<inbound>
 				<inbound-endpoint transformer-refs="HttpParams"
