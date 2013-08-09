@@ -59,6 +59,8 @@ public class NearbyTripComponent extends PLASHComponent {
 		
 		
 		try {
+			
+	        tskSession = sessionFactory.openSession();
 		
 			String createSQLQuery = new String("SELECT nearby_trip('"+ latitude +"','"+longitude+"',' "+queryRadius+"')");
 			String resultString = (String)tskSession.createSQLQuery(createSQLQuery).uniqueResult();
