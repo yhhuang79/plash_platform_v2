@@ -54,6 +54,7 @@
 		<spring:import resource="./legacycomponents/TripInfoManagerConfig.xml"/>
 		<spring:import resource="./legacycomponents/DelAuthFriendConfig.xml" />
 		<spring:import resource="./legacycomponents/DelTripConfig.xml" />
+		<spring:import resource="./legacycomponents/NearbyTripConfig.xml" />		
 		<spring:import resource="./legacycomponents/TestConfig.xml" />
 
 		<spring:import resource="./common_data_access_beanconfig/NewTrajectoryPointConfig.xml" />		
@@ -165,8 +166,7 @@
 		connector-ref="jmsCon" />
 	<jms:endpoint name="plashLocationSharingQueue" queue="plash.location.sharing"
 		connector-ref="jmsCon" />
-	<jms:endpoint name="plashNearbyTripQueue" queue="plash.nearby.trip"
-			connector-ref="jmsCon" />
+
 		
 	<https:connector name="httpsConnector">
 		<https:tls-key-store path="file:///home/ants/workspace/PLASH_Platform_Test_Combine/resources/tmpKey/keystore" keyPassword="password" storePassword="password"/>
@@ -322,8 +322,7 @@
 		port="8080" path="CheckServerStatus" synchronous="true" connector-ref="httpsConnector" />
 	<https:endpoint name="plashLocationSharingHttpsInboundEndpoint" host="localhost"
 		port="8080" path="LocationSharing" synchronous="true" connector-ref="httpsConnector" />
-	<https:endpoint name="plashNearbyTripHttpsInboundEndpoint" host="localhost"
-		port="8080" path="NearbyTrip" synchronous="true" connector-ref="httpsConnector" />
+
 
 	<model name="PLASH">
 	
@@ -2102,10 +2101,14 @@
 		</service>
 		<!-- (Step 4) Yu-Hsiang: XXXXX = LocationSharing -->
 		<service name="LocationSharingService">
-			<inbound>
+			<!-- <inbound>
 				<inbound-endpoint transformer-refs="HttpParams"
 					responseTransformer-refs="byteArrayToString" ref="plashLocationSharingHttpsInboundEndpoint" />
-			</inbound>			
+			</inbound> -->
+			<inbound>
+				<http:inbound-endpoint transformer-refs="HttpPostParams"
+					responseTransformer-refs="byteArrayToString" ref="plashLocationSharingHttpsInboundEndpoint" />
+			</inbound>						
 			<component>
 				<spring-object bean="LocationSharingComponent"></spring-object>
 			</component>
