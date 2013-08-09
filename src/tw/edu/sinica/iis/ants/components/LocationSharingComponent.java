@@ -36,7 +36,7 @@ public class LocationSharingComponent extends PLASHComponent{
 				Timestamp timestamp = null;
 
 				if(map.containsKey("userid")){
-					userid = map.remove("userid").toString();
+					userid = map.get("userid").toString();
 					/*
 					 *  Plash account userid
 					 * 
@@ -73,6 +73,7 @@ public class LocationSharingComponent extends PLASHComponent{
 		        } else {
 					map.put("status_code", 400);
 					map.put("message", "Parameter Error");
+					//map.put("userid", userid);
 		        }		        	
 			}			
 			if (action.contains("start")){
@@ -115,9 +116,9 @@ public class LocationSharingComponent extends PLASHComponent{
 				}
 			}
 			if (action.toLowerCase() == "update"){
-				
+	
 			}
-			if (action.toLowerCase() == "get"){
+			if (action.contains("get")){
 				String token;
 				if(map.containsKey("token")){
 					token = map.remove("token").toString();
@@ -125,7 +126,7 @@ public class LocationSharingComponent extends PLASHComponent{
 					if(isTokenAlive){
 						map.putAll(RealtimeSharing.getLocation(token, session));
 						map.put("status_code", 200);
-						map.put("message", "stop sharing");
+						map.put("message", "Ok");
 					}else{
 						map.put("status_code", 400);
 						map.put("message", "Invalid Token");						
@@ -136,8 +137,28 @@ public class LocationSharingComponent extends PLASHComponent{
 					map.put("message", "Empty token");
 				}
 			}
-			if (action.toLowerCase() == "upload"){
-				
+			if (action.contains("upload")){
+				String token, location;
+				if(map.containsKey("token")){
+					token = map.remove("token").toString();
+					boolean isTokenAlive = RealtimeSharing.checkToken(token, session);
+					if(isTokenAlive){
+						if(map.containsKey("location")){
+							location = map.remove("location").toString();
+							map.putAll(RealtimeSharing.uploadSharing(token, location, session));
+						} else {
+							map.put("status_code", 400);
+							map.put("message", "parameter error");						
+						}
+					}else{
+						map.put("status_code", 400);
+						map.put("message", "Invalid Token");						
+					}					
+				}else{
+					map.clear();
+					map.put("status_code", 400);
+					map.put("message", "Empty token");
+				}				
 			}			
 		}
 		
