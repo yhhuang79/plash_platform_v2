@@ -2098,8 +2098,12 @@
 		</service>
 		<!-- (Step 4) Yu-Hsiang: XXXXX = LocationSharing -->
 		<service name="LocationSharingService">
-			<inbound>
+			<!-- <inbound>
 				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashLocationSharingHttpsInboundEndpoint" />
+			</inbound> -->
+			<inbound>
+				<http:inbound-endpoint transformer-refs="HttpPostParams"
 					responseTransformer-refs="byteArrayToString" ref="plashLocationSharingHttpsInboundEndpoint" />
 			</inbound>			
 			<component>
