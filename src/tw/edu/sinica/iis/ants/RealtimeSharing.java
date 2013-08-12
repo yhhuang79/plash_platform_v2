@@ -402,7 +402,7 @@ public class RealtimeSharing {
 			System.out.println(gps);			
 			//user.setGps(gps);	
 			// end
-			user.setGps((Geometry)gps);
+			//user.setGps((Geometry)gps);
 			
 			user.setAltitude(altitude);
 			user.setAccuracy(accuracy);
