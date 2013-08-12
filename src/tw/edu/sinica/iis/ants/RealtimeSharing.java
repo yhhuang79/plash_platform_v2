@@ -21,7 +21,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 
-import tw.edu.sinica.iis.ants.DB.T_TripData;
 import tw.edu.sinica.iis.ants.db_pojo.antrip.RealtimeSharingPoints;
 import tw.edu.sinica.iis.ants.db_pojo.antrip.RealtimeSharingSessions;
 
@@ -61,6 +60,9 @@ public class RealtimeSharing {
 			rsSession.setUserid(userid);
 			rsSession.setToken(token);
 			rsSession.setUrl(url);
+			rsSession.setStatus(1);
+			rsSession.setDuration_type(1);
+			rsSession.setDuration_value(0);
 			rsSession.setTimestamp(timestamp);
 			Transaction tx = session.beginTransaction();
 			session.save(rsSession);
@@ -101,6 +103,9 @@ public class RealtimeSharing {
 				rsSession.setHashid(userid);
 				rsSession.setToken(token);
 				rsSession.setUrl(url);
+				rsSession.setStatus(1);
+				rsSession.setDuration_type(1);
+				rsSession.setDuration_value(0);				
 				rsSession.setTimestamp(timestamp);
 				Transaction tx = session.beginTransaction();
 				session.save(rsSession);
@@ -370,10 +375,10 @@ public class RealtimeSharing {
 				timestamp = Timestamp.valueOf(tpoint.get("timestamp").toString());
 			
 			RealtimeSharingPoints user = new RealtimeSharingPoints();
-			Map tokenMap = new HashMap();
-			tokenMap.putAll(PlashUtils.HashToParam(token, session));
+			//Map tokenMap = new HashMap();
+			//tokenMap.putAll(PlashUtils.HashToParam(token, session));
 			
-			user.setUserid(Integer.parseInt(tokenMap.get("userid").toString()));
+			//user.setUserid(Integer.parseInt(tokenMap.get("userid").toString()));
 			
 			//store the <trip_id> into the database
 			user.setToken(token);
@@ -387,14 +392,15 @@ public class RealtimeSharing {
             Geometry gps = null;
 		
 				try {
-					gps = fromText.read("POINT("+longitude+" "+latitude+")");
+					gps = fromText.read("POINT ("+longitude+" "+latitude+")");
 				} catch (com.vividsolutions.jts.io.ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				gps.setSRID(4326);
 
-			user.setGps(gps);	
+			System.out.println(gps);			
+			//user.setGps(gps);	
 			// end
 			
 			user.setAltitude(altitude);
@@ -406,7 +412,7 @@ public class RealtimeSharing {
 			Transaction tx = null;
 			try {
 				tx = session.beginTransaction();
-				session.persist(user);
+				session.save(user);
 				tx.commit();
 				message.put("status_code", 200);
 				message.put("message", "ok");			
