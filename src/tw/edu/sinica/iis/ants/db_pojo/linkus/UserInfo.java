@@ -18,7 +18,6 @@ public class UserInfo implements java.io.Serializable {
 	private String workExp;
 	private String lon;
 	private String lat;
-	private geography coord;
 	private Timestamp time;
 	
 
@@ -87,10 +86,6 @@ public class UserInfo implements java.io.Serializable {
 	public String getlat() {
 		return this.lat;
 	}
-	public geography getcoord() {
-		return this.coord;
-	}
-
 	public Timestamp gettime() {
 		return this.time;
 	}
