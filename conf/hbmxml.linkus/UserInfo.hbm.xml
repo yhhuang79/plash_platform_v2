@@ -23,9 +23,7 @@
             <column name="lon"  />
             <property name="lat" type="String">
             <column name="lat"  />
-            <property name="coord" type="geography">
-            <column name="coord"  />
-        </property>
+           
         <property name="time" type="java.sql.Timestamp">
             <column name="time" length="35" />
         </property>
