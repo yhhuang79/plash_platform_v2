@@ -11,49 +11,42 @@ public class UserInfo implements java.io.Serializable {
 
 	private String fbId;
 	private String fbToken;
-	private String name;
 	private String education;
+	private String lon;
+	private String lat;
+	private Timestamp time;
+	private String name;
 	private String bday;
 	private String gender;
 	private String workExp;
-	private double lon;
-	private double lat;
-	private Timestamp time;
-	
-
 
 	
 	
 	public UserInfo() {
 	}
 
-	public UserInfo(int UserId, short updateStatus) {
-		this.UserId = UserId;
-		this.updateStatus = updateStatus;
+	public UserInfo(String fbId, String fbToken, String education, String lon, String lat, Timestamp time) {
+		this.fbId = fbId;
+		this.fbToken = fbToken;
+		this.education = education;
+		this.lon = lon;
+		this.lat = lat;
+		this.time = time;
 	}
 
-	public UserInfo(int UserId, Timestamp startTime,
-			Timestamp endTime, Integer tripLength, Integer numOfPts,
-			String stAddrPrt1, String stAddrPrt2, String stAddrPrt3,
-			String stAddrPrt4, String stAddrPrt5, String etAddrPrt1,
-			String etAddrPrt2, String etAddrPrt3, String etAddrPrt4,
-			String etAddrPrt5, short updateStatus) {
-		this.UserId = UserId;
-		this.startTime = startTime;
-		this.endTime = endTime;
-		this.tripLength = tripLength;
-		this.numOfPts = numOfPts;
-		this.stAddrPrt1 = stAddrPrt1;
-		this.stAddrPrt2 = stAddrPrt2;
-		this.stAddrPrt3 = stAddrPrt3;
-		this.stAddrPrt4 = stAddrPrt4;
-		this.stAddrPrt5 = stAddrPrt5;
-		this.etAddrPrt1 = etAddrPrt1;
-		this.etAddrPrt2 = etAddrPrt2;
-		this.etAddrPrt3 = etAddrPrt3;
-		this.etAddrPrt4 = etAddrPrt4;
-		this.etAddrPrt5 = etAddrPrt5;
-		this.updateStatus = updateStatus;
+	public UserInfo(String fbId, String fbToken, String education, String lon, String lat, Timestamp time,
+			        String name,String bday,String gender, String workExp ) {
+		this.fbId = fbId;
+		this.fbToken = fbToken;
+		this.education = education;
+		this.lon = lon;
+		this.lat = lat;
+		this.time = time;
+		this.name = name;
+		this.bday = bday;
+		this.gender = gender;
+		this.workExp = workExp;
+	
 	}
 
 
@@ -80,14 +73,14 @@ public class UserInfo implements java.io.Serializable {
 	public String getworkExp() {
 		return this.workExp;
 	}
-	public double getlon() {
+	public String getlon() {
 		return this.lon;
 	}
-	public double getlat() {
+	public String getlat() {
 		return this.lat;
 	}
 	public Timestamp gettime() {
 		return this.time;
 	}
 
-	
+}
