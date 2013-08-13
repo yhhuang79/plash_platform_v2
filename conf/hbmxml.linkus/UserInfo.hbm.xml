@@ -18,7 +18,7 @@
             <property name="gender" type="String">
             <column name="gender"  />
             <property name="workExp" type="String">
-            <column name="workExp"  />
+            <column name="work_exp"  />
             <property name="lon" type="String">
             <column name="lon"  />
             <property name="lat" type="String">
