@@ -14,7 +14,10 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.exception.GenericJDBCException;
 import org.hibernate.transform.Transformers;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -343,7 +346,7 @@ public class RealtimeSharing {
 		JSONParser parser = new JSONParser();
 		JSONArray locations = (JSONArray)obj;
 		Iterator<Object> iterator = locations.iterator();
-		
+		try{
 		while (iterator.hasNext()) {
 	        
 	        Double latitude = 0.0, longitude = 0.0;
@@ -392,17 +395,18 @@ public class RealtimeSharing {
             Geometry gps = null;
 		
 				try {
-					gps = fromText.read("POINT ("+longitude+" "+latitude+")");
+					gps = fromText.read("POINT ("+longitude+" "+latitude+");");
 				} catch (com.vividsolutions.jts.io.ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				gps.setSRID(4326);
 
-			System.out.println(gps);			
-			//user.setGps(gps);	
+			System.out.println(gps.toText());			
+			//user.setGps(gps);
+			user.setLatitude(latitude);
+			user.setLongitude(longitude);
 			// end
-			//user.setGps((Geometry)gps);
 			
 			user.setAltitude(altitude);
 			user.setAccuracy(accuracy);
@@ -425,6 +429,10 @@ public class RealtimeSharing {
 	    			tx.rollback();  
 	    	    }  
 	    	}
+		}
+		} catch (GenericJDBCException e){
+			
+			e.printStackTrace();
 		}
 		message.put("status_code", 500);
 		message.put("message", "Internal Server Error");
@@ -455,15 +463,20 @@ public class RealtimeSharing {
 	public static Map getLocation(String token, Session session) {
     	Criteria criteria = session.createCriteria(RealtimeSharingPoints.class);
     	criteria.add(Restrictions.eq("token", token));
+    	ProjectionList projectionList = Projections.projectionList();
+    	projectionList.add(Projections.property("longitude"), "longitude");
+    	projectionList.add(Projections.property("latitude"), "latitude");
+    	criteria.setProjection(projectionList);
     	criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
     	Geometry tmpGPS;
+    	Double lng, lat;
 		Map rsLocations = new HashMap();    	
 		try {
 			List<Map> tripDataList = (List<Map>) criteria.list();
     		for (Map tmpMap:tripDataList) {
-    			tmpGPS = (Geometry)tmpMap.remove("gps");
-	    		tmpMap.put("lng", tmpGPS.getCoordinate().x*1000000);
-	    		tmpMap.put("lat", tmpGPS.getCoordinate().y*1000000);		    				
+    			//tmpGPS = (Geometry)tmpMap.remove("gps");
+	    		tmpMap.put("lng", tmpMap.remove("longitude"));
+	    		tmpMap.put("lat", tmpMap.remove("latitude"));		    				
     		}//rof
     		rsLocations.put("trip", tripDataList);
 			return rsLocations;

@@ -8,7 +8,6 @@ import java.util.Map;
 import org.hibernate.Session;
 import org.json.simple.JSONObject;
 
-import tw.edu.sinica.iis.ants.PlashUtils;
 import tw.edu.sinica.iis.ants.RealtimeSharing;
 import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 

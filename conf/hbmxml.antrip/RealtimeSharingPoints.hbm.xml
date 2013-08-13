@@ -17,6 +17,10 @@
 		<property name="accuracy" column="accuracy" />
 		<property name="speed" column="speed" />
 		<property name="bearing" column="bearing" />
-		<property name="location_source" column="location_source" />		
+		<property name="location_source" column="location_source" />
+		<property name="hashid" column="hashid" />
+		<property name="latitude" column="latitude" />
+		<property name="longitude" column="longitude" />
+				
     </class>
 </hibernate-mapping>
