@@ -19,9 +19,9 @@
             <column name="gender"  />
             <property name="workExp" type="String">
             <column name="work_exp"  />
-            <property name="lon" type="String">
+            <property name="lon" type="double">
             <column name="lon"  />
-            <property name="lat" type="String">
+            <property name="lat" type="double">
             <column name="lat"  />
            
         <property name="time" type="java.sql.Timestamp">
