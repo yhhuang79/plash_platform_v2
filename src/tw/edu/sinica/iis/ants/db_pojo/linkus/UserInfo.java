@@ -16,8 +16,8 @@ public class UserInfo implements java.io.Serializable {
 	private String bday;
 	private String gender;
 	private String workExp;
-	private String lon;
-	private String lat;
+	private double lon;
+	private double lat;
 	private Timestamp time;
 	
 
@@ -80,10 +80,10 @@ public class UserInfo implements java.io.Serializable {
 	public String getworkExp() {
 		return this.workExp;
 	}
-	public String getlon() {
+	public double getlon() {
 		return this.lon;
 	}
-	public String getlat() {
+	public double getlat() {
 		return this.lat;
 	}
 	public Timestamp gettime() {
