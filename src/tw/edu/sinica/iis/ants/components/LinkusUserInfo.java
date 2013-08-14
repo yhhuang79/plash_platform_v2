@@ -173,29 +173,22 @@ public class LinkusUserInfo extends PLASHComponent {
 	        err.refCode = 003;
 	        err.explaination = "NumberFormatException occured, probably due to invalid argument";
 			return returnUnsuccess(map,err);			
-		} catch (ParseException e) {
-			getElapsed();
-	        AbnormalResult err = new AbnormalResult(this,'E');
-	        err.refCode = 005;
-	        err.explaination = "ParseException occured, probably due to invalid argument";
-			return returnUnsuccess(map,err);
-		} //end try
-        // end//end try catch
+		}
 	        	
 		
 		UserInfo pt = new UserInfo();
 
-		pt.setfbId(fbId);
-		pt.setfbToken(fbToken);
-		pt.seteducation(education);
-		pt.setlon(lon);		
+		pt.setFbId(fbId);
+		pt.setFbToken(fbToken);
+		pt.setEducation(education);
+		pt.setLon(lon);		
 		
-        pt.setlat(lat);
-		pt.settime(time);
-		pt.setname(name);
-		pt.setbday(bday);
-		pt.setgender(gender);
-		pt.setworkExp(workExp);
+        pt.setLat(lat);
+		pt.setTime(time);
+		pt.setName(name);
+		pt.setBday(bday);
+		pt.setGender(gender);
+		pt.setWorkExp(workExp);
 
 		
 		try {
