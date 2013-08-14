@@ -8,14 +8,14 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 
 
 
-public class NearbyTripComponent extends PLASHComponent {
+public class LinkusNearbyUserComponent extends PLASHComponent {
 
 	
 	/**
 	 * Constructor
 	 * 
 	 */
-	public NearbyTripComponent() {		
+	public LinkusNearbyUserComponent() {		
 		}//end constructor
 	
 
@@ -29,31 +29,31 @@ public class NearbyTripComponent extends PLASHComponent {
 	 */	
 	@Override 
 	public Object serviceMain(Map map) {
-		String latitude, longitude, queryRadius; 
+		String lat,lon, fb_id; 
 		
 		// read in command
-		if (map.containsKey("latitude")) {
-			latitude = map.get("latitude").toString();
+		if (map.containsKey("lat")) {
+			lat = map.get("lat").toString();
 		} else { //invalid argument 
         	AbnormalResult err = new AbnormalResult(this,'E');
 	        err.refCode = 001;
-	        err.explaination = "latitude is not supplied";
+	        err.explaination = "lat is not supplied";
 			return returnUnsuccess(map,err);    			
 		}//end try catch
-		if (map.containsKey("longitude")) {
-			longitude = map.get("longitude").toString();
+		if (map.containsKey("lon")) {
+			lon = map.get("lon").toString();
 		} else { //invalid argument 
         	AbnormalResult err = new AbnormalResult(this,'E');
 	        err.refCode = 001;
-	        err.explaination = "longitude is not supplied";
+	        err.explaination = "lon is not supplied";
 			return returnUnsuccess(map,err);    			
 		}//end try catch
-		if (map.containsKey("queryRadius")) {
-			 queryRadius = map.get("queryRadius").toString();
+		if (map.containsKey("fb_id")) {
+			 fb_id = map.get("fb_id").toString();
 		} else { //invalid argument 
         	AbnormalResult err = new AbnormalResult(this,'E');
 	        err.refCode = 001;
-	        err.explaination = "queryRadius is not supplied";
+	        err.explaination = "fb_id is not supplied";
 			return returnUnsuccess(map,err);    			
 		}//end try catch
 		
@@ -62,9 +62,9 @@ public class NearbyTripComponent extends PLASHComponent {
 			
 	        tskSession = sessionFactory.openSession();
 		
-			String createSQLQuery = new String("SELECT nearby_trip('"+ latitude +"','"+longitude+"',' "+queryRadius+"')");
+			String createSQLQuery = new String("SELECT nearby_trip('"+ lat +"','"+lon+"',' "+fb_id+"')");
 			String resultString = (String)tskSession.createSQLQuery(createSQLQuery).uniqueResult();
-			//String input =new String("Select latitude from  user_location.user_point_location_time where userid=722");
+			//String input =new String("Select lat from  user_location.user_point_location_time where userid=722");
 			//ArrayList<Double> test= (ArrayList<Double>)tskSession.createSQLQuery(input).list();
 			//System.out.println("ejwfojewf " + Arrays.toString(test.toArray()));
 			int StringSize= resultString.length();
@@ -99,10 +99,9 @@ public class NearbyTripComponent extends PLASHComponent {
 		        i++;
 				}
 			}
-		    map.put("distance",List1);
-		    map.put("userid",List2);
-		    map.put("tripid",List3);
-			System.out.println("here " + map.toString());
+		    map.put("fb_id",List2.toString());
+		    map.put("education",List3.toString());
+			System.out.println(map.toString());
 			
 		} catch (Exception e) {
 			e.printStackTrace();
