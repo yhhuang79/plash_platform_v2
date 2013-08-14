@@ -1,0 +1,8 @@
+#!/bin/bash
+
+## Check Out or Update 
+cd /opt/src
+sudo svn co http://plash2.iis.sinica.edu.tw/svn/plash_platform_test/PLASH_Platform_Test
+cd PLASH_Platform_Test
+ant
+sudo /etc/init.d/plash restart
