@@ -403,7 +403,7 @@ public class RealtimeSharing {
 				gps.setSRID(4326);
 
 			System.out.println(gps.toText());			
-			//user.setGps(gps);
+			user.setGps(gps);
 			user.setLatitude(latitude);
 			user.setLongitude(longitude);
 			// end

@@ -11,7 +11,9 @@
 		</id>
 		<property name="userid" column="userid" />
 		<property name="token" column="token" />
-		<property name="gps" column="gps" />
+		<property name="gps" type="org.hibernatespatial.GeometryUserType">
+			<column name="gps" />
+		</property>
 		<property name="timestamp" column="timestamp" />
 		<property name="altitude" column="altitude" />
 		<property name="accuracy" column="accuracy" />
