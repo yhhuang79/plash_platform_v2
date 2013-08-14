@@ -188,7 +188,7 @@
         <pathelement location="bin"/>
         <path refid="Mule Libraries [mule-standalone-2.2.1].libraryclasspath"/>
         <pathelement location="postgresql-9.2-1003.jdbc4.jar"/>
-        <pathelement location="../../activemq/activemq-all-5.8.0.jar"/>
+        <pathelement location="../../apache-activemq-5.8.0/activemq-all-5.8.0.jar"/>
         <pathelement location="antlr-2.7.6.jar"/>
         <pathelement location="commons-collections-3.1.jar"/>
         <pathelement location="dom4j-1.6.1.jar"/>
