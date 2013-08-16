@@ -466,11 +466,11 @@ public class RealtimeSharing {
 	
 	public static Map startWatch(String token, String hashid, String socialid, Timestamp timestamp, Session session) {
 		Map message = new HashMap();
+		Criteria criteria = session.createCriteria(RealtimeSharingWatcher.class);
+    	criteria.add(Restrictions.eq("token", token));
+    	criteria.add(Restrictions.eq("hashid", hashid));
+    	
 		try {
-			Criteria criteria = session.createCriteria(RealtimeSharingWatcher.class);
-	    	criteria.add(Restrictions.eq("token", token));
-	    	criteria.add(Restrictions.eq("hashid", hashid));
-	    	
 	    	Iterator itr = criteria.list().iterator();
 	    	if(itr.hasNext()) {
 	    		RealtimeSharingWatcher rsWatchers = (RealtimeSharingWatcher)itr.next();
@@ -492,8 +492,6 @@ public class RealtimeSharing {
 				session.save(rsWatcher);
 				tx.commit();	    		
 	    	}
-		} catch (NullPointerException ne) {
-			ne.printStackTrace();
 		} catch (NoSuchElementException nsee){
 			RealtimeSharingWatcher rsWatcher = new RealtimeSharingWatcher();
 			rsWatcher.setHashid(hashid);
