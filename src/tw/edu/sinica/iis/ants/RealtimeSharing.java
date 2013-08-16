@@ -471,25 +471,29 @@ public class RealtimeSharing {
 	    	criteria.add(Restrictions.eq("token", token));
 	    	criteria.add(Restrictions.eq("hashid", hashid));
 	    	
-	    	RealtimeSharingWatcher rsWatchers = (RealtimeSharingWatcher) criteria.list().iterator().next();
-	    	
-			Transaction tx = session.beginTransaction();
-			RealtimeSharingWatcher rsWatcher = (RealtimeSharingWatcher) session.get(RealtimeSharingWatcher.class, rsWatchers.getId());
-			rsWatcher.setHashid(hashid);
-			rsWatcher.setToken(token);
-			rsWatcher.setSocialid(socialid);
-			rsWatcher.setTimestamp(timestamp);
-			session.update(rsWatcher);
-			tx.commit();
+	    	Iterator itr = criteria.list().iterator();
+	    	if(itr.hasNext()) {
+	    		RealtimeSharingWatcher rsWatchers = (RealtimeSharingWatcher)itr.next();
+				Transaction tx = session.beginTransaction();
+				RealtimeSharingWatcher rsWatcher = (RealtimeSharingWatcher) session.get(RealtimeSharingWatcher.class, rsWatchers.getId());
+				rsWatcher.setHashid(hashid);
+				rsWatcher.setToken(token);
+				rsWatcher.setSocialid(socialid);
+				rsWatcher.setTimestamp(timestamp);
+				session.update(rsWatcher);
+				tx.commit();
+	    	} else {
+				RealtimeSharingWatcher rsWatcher = new RealtimeSharingWatcher();
+				rsWatcher.setHashid(hashid);
+				rsWatcher.setToken(token);
+				rsWatcher.setSocialid(socialid);
+				rsWatcher.setTimestamp(timestamp);
+				Transaction tx = session.beginTransaction();
+				session.save(rsWatcher);
+				tx.commit();	    		
+	    	}
 		} catch (NullPointerException ne) {
-			RealtimeSharingWatcher rsWatcher = new RealtimeSharingWatcher();
-			rsWatcher.setHashid(hashid);
-			rsWatcher.setToken(token);
-			rsWatcher.setSocialid(socialid);
-			rsWatcher.setTimestamp(timestamp);
-			Transaction tx = session.beginTransaction();
-			session.save(rsWatcher);
-			tx.commit();
+			ne.printStackTrace();
 		}
 		message.put("status_code", 200);
 		message.put("message", "ok");
