@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 17, 2012 4:07:38 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="tw.edu.sinica.iis.ants.db_pojo.antrip.RealtimeSharingWatcher" table="antrip_data.realtime_sharing_watcher" >
+		<id column="id" name="id" type="java.lang.Integer">
+			<generator class="sequence">
+				<param name="sequence">antrip_data.realtimesharingwatcher_id_seq</param>
+			</generator>
+		</id>
+		<property name="token" column="token" />
+		<property name="timestamp" column="timestamp" />
+		<property name="socialid" column="socialid" />
+		<property name="hashid" column="hashid" />		
+    </class>
+</hibernate-mapping>

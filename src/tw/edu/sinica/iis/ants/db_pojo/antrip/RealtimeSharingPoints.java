@@ -35,14 +35,6 @@ public class RealtimeSharingPoints {
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
-
-	public String getHashid() {
-		return hashid;
-	}
-
-	public void setHashid(String hashid) {
-		this.hashid = hashid;
-	}
 	
 	public RealtimeSharingPoints(){
 	
@@ -126,6 +118,14 @@ public class RealtimeSharingPoints {
 
 	public void setLocation_source(String location_source) {
 		this.location_source = location_source;
+	}
+
+	public String getHashid() {
+		return hashid;
+	}
+
+	public void setHashid(String hashid) {
+		this.hashid = hashid;
 	}
 	
 }
