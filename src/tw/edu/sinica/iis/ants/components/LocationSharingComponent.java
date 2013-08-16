@@ -115,7 +115,7 @@ public class LocationSharingComponent extends PLASHComponent{
 				}
 			}
 			if (action.contains("sWatch")){
-				System.out.println("startWatch : " + map.get("token").toString());
+				System.out.println("startWatch : " + map.get("hashid").toString());
 				String token;
 				String hashid = null;
 				String socialid = null;
