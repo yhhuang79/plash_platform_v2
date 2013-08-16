@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.hibernate.Criteria;
@@ -465,7 +466,6 @@ public class RealtimeSharing {
 	
 	public static Map startWatch(String token, String hashid, String socialid, Timestamp timestamp, Session session) {
 		Map message = new HashMap();
-		Date date= new java.util.Date();
 		try {
 			Criteria criteria = session.createCriteria(RealtimeSharingWatcher.class);
 	    	criteria.add(Restrictions.eq("token", token));
@@ -494,6 +494,15 @@ public class RealtimeSharing {
 	    	}
 		} catch (NullPointerException ne) {
 			ne.printStackTrace();
+		} catch (NoSuchElementException nsee){
+			RealtimeSharingWatcher rsWatcher = new RealtimeSharingWatcher();
+			rsWatcher.setHashid(hashid);
+			rsWatcher.setToken(token);
+			rsWatcher.setSocialid(socialid);
+			rsWatcher.setTimestamp(timestamp);
+			Transaction tx = session.beginTransaction();
+			session.save(rsWatcher);
+			tx.commit();	
 		}
 		message.put("status_code", 200);
 		message.put("message", "ok");
