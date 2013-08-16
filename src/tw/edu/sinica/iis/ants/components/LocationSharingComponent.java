@@ -123,8 +123,8 @@ public class LocationSharingComponent extends PLASHComponent{
 				if(map.containsKey("token")){
 					token = map.remove("token").toString();
 					if(map.containsKey("hashid")) hashid = map.remove("hashid").toString();
-					if(map.containsKey("socialid")) hashid = map.remove("socialid").toString();
-					if(map.containsKey("timestamp")) hashid = map.remove("timestamp").toString();
+					if(map.containsKey("socialid")) socialid = map.remove("socialid").toString();
+					if(map.containsKey("timestamp")) timestamp = Timestamp.valueOf(map.remove("timestamp").toString());
 					
 					boolean isTokenAlive = RealtimeSharing.checkToken(token, session);
 					if(isTokenAlive){
