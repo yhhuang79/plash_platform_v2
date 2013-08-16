@@ -24,8 +24,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 
+import tw.edu.sinica.iis.ants.DB.T_TripInfo;
 import tw.edu.sinica.iis.ants.db_pojo.antrip.RealtimeSharingPoints;
 import tw.edu.sinica.iis.ants.db_pojo.antrip.RealtimeSharingSessions;
+import tw.edu.sinica.iis.ants.db_pojo.antrip.RealtimeSharingWatcher;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKTReader;
@@ -420,6 +422,7 @@ public class RealtimeSharing {
 				tx = session.beginTransaction();
 				session.save(user);
 				tx.commit();
+				
 				message.put("status_code", 200);
 				message.put("message", "ok");			
 				return message;
@@ -458,7 +461,61 @@ public class RealtimeSharing {
 		message.put("status_code", 500);
 		message.put("message", "Internal Server Error");
     	return message;
-	}//end method		
+	}//end method	
+	
+	public static Map startWatch(String token, String hashid, String socialid, Timestamp timestamp, Session session) {
+		Map message = new HashMap();
+		Date date= new java.util.Date();
+		try {
+			Criteria criteria = session.createCriteria(RealtimeSharingWatcher.class);
+	    	criteria.add(Restrictions.eq("token", token));
+	    	criteria.add(Restrictions.eq("hashid", hashid));
+	    	
+	    	RealtimeSharingWatcher rsWatchers = (RealtimeSharingWatcher) criteria.list().iterator().next();
+	    	
+			Transaction tx = session.beginTransaction();
+			RealtimeSharingWatcher rsWatcher = (RealtimeSharingWatcher) session.get(RealtimeSharingWatcher.class, rsWatchers.getId());
+			rsWatcher.setHashid(hashid);
+			rsWatcher.setToken(token);
+			rsWatcher.setSocialid(socialid);
+			rsWatcher.setTimestamp(timestamp);
+			session.update(rsWatcher);
+			tx.commit();
+		} catch (NullPointerException ne) {
+			RealtimeSharingWatcher rsWatcher = new RealtimeSharingWatcher();
+			rsWatcher.setHashid(hashid);
+			rsWatcher.setToken(token);
+			rsWatcher.setSocialid(socialid);
+			rsWatcher.setTimestamp(timestamp);
+			Transaction tx = session.beginTransaction();
+			session.save(rsWatcher);
+			tx.commit();
+		}
+		message.put("status_code", 200);
+		message.put("message", "ok");
+    	return message;
+	}//end method	
+
+	public static Map stopWatch(String token, String hashid, Session session) {
+		Map message = new HashMap();
+		Date date= new java.util.Date();
+		try {
+			Criteria criteria = session.createCriteria(RealtimeSharingWatcher.class);
+	    	criteria.add(Restrictions.eq("token", token));
+	    	criteria.add(Restrictions.eq("hashid", hashid));
+	    	
+	    	RealtimeSharingWatcher rsWatchers = (RealtimeSharingWatcher) criteria.list().iterator().next();
+	    	
+			Transaction tx = session.beginTransaction();
+			session.delete(rsWatchers);
+			tx.commit();
+		} catch (NullPointerException ne) {
+		}
+		message.put("status_code", 200);
+		message.put("message", "ok");
+    	return message;
+	}//end method	
+
 	
 	public static Map getLocation(String token, Session session) {
     	Criteria criteria = session.createCriteria(RealtimeSharingPoints.class);
@@ -476,7 +533,9 @@ public class RealtimeSharing {
     		for (Map tmpMap:tripDataList) {
     			//tmpGPS = (Geometry)tmpMap.remove("gps");
 	    		tmpMap.put("lng", tmpMap.remove("longitude"));
-	    		tmpMap.put("lat", tmpMap.remove("latitude"));		    				
+	    		tmpMap.put("lat", tmpMap.remove("latitude"));
+    			//tmpMap.put("longitude", tmpGPS.getCoordinate().x*1000000);
+    			//tmpMap.put("latitude", tmpGPS.getCoordinate().y*1000000);
     		}//rof
     		rsLocations.put("trip", tripDataList);
 			return rsLocations;
@@ -485,5 +544,27 @@ public class RealtimeSharing {
 			System.out.println(he.toString()); 	
 			return null;
 		}//end try catch			//*/
-	}//end method			
+	}//end method
+	
+	public static int getWatcherNum(String token, Session session) {
+    	Criteria criteria = session.createCriteria(RealtimeSharingWatcher.class);
+    	criteria.add(Restrictions.eq("token", token));
+    	criteria.setProjection(Projections.rowCount());
+    	int watcherNum = 0;
+		try {
+			List watcherNums = criteria.list();
+			Iterator it = watcherNums.iterator();
+			if (!it.hasNext()){
+				watcherNum = 0;
+			} else {
+				while(it.hasNext()){
+					Object count = it.next();
+					watcherNum = Integer.parseInt(count.toString());  
+				}
+			}
+			return watcherNum;		
+		} catch (HibernateException he) {
+			return 0;
+		}//end try catch			//*/
+	}//end method				
 } // PlashUtils End 

@@ -114,6 +114,45 @@ public class LocationSharingComponent extends PLASHComponent{
 					map.put("message", "Empty token");
 				}
 			}
+			if (action.contains("sWatch")){
+				System.out.println("startWatch : " + map.get("token").toString());
+				String token;
+				String hashid = null;
+				String socialid = null;
+				Timestamp timestamp = null;
+				if(map.containsKey("token")){
+					token = map.remove("token").toString();
+					if(map.containsKey("hashid")) hashid = map.remove("hashid").toString();
+					if(map.containsKey("socialid")) hashid = map.remove("socialid").toString();
+					if(map.containsKey("timestamp")) hashid = map.remove("timestamp").toString();
+					
+					boolean isTokenAlive = RealtimeSharing.checkToken(token, session);
+					if(isTokenAlive){
+						map.putAll(RealtimeSharing.startWatch(token, hashid, socialid, timestamp, session));
+					}else{
+						map.put("status_code", 400);
+						map.put("message", "Invalid Token");						
+					}					
+				}else{
+					map.clear();
+					map.put("status_code", 400);
+					map.put("message", "Empty token");
+				}
+			}
+			if (action.contains("eWatch")){
+				String token = null;
+				String hashid = null;
+				if(map.containsKey("token")){
+					token = map.remove("token").toString();
+					if(map.containsKey("hashid")) hashid = map.remove("hashid").toString();
+						map.putAll(RealtimeSharing.stopWatch(token, hashid, session));
+				}else{
+					map.clear();
+					map.put("status_code", 400);
+					map.put("message", "Empty token");
+				}
+			}
+			
 			if (action.toLowerCase() == "update"){
 	
 			}
@@ -145,6 +184,7 @@ public class LocationSharingComponent extends PLASHComponent{
 						if(map.containsKey("location")){
 							location = map.remove("location").toString();
 							map.putAll(RealtimeSharing.uploadSharing(token, location, session));
+							map.put("number_of_watcher", RealtimeSharing.getWatcherNum(token, session));
 						} else {
 							map.put("status_code", 400);
 							map.put("message", "parameter error");						
