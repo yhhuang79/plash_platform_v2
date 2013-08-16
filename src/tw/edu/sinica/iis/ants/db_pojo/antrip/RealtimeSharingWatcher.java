@@ -39,4 +39,6 @@ public class RealtimeSharingWatcher {
 	public void setHashid(String hashid) {
 		this.hashid = hashid;
 	}
+	
+
 }
