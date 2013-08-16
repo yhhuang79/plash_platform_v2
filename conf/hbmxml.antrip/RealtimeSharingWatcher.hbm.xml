@@ -9,7 +9,7 @@
 				<param name="sequence">antrip_data.realtimesharingwatcher_id_seq</param>
 			</generator>
 		</id>
-		<property name="token" column="token" />
+		<!-- <property name="token" column="token" /> -->
 		<property name="timestamp" column="timestamp" />
 		<property name="socialid" column="socialid" />
 		<property name="hashid" column="hashid" />		
