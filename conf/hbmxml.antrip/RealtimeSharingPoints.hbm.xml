@@ -23,6 +23,6 @@
 		<property name="hashid" column="hashid" />
 		<property name="latitude" column="latitude" />
 		<property name="longitude" column="longitude" />
-				
+		<property name="todisplay" column="todisplay" />		
     </class>
 </hibernate-mapping>

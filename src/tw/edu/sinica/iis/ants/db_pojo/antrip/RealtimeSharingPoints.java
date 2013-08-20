@@ -19,6 +19,7 @@ public class RealtimeSharingPoints {
 	private String hashid;
 	private Double latitude;
 	private Double longitude;
+	private Boolean todisplay;
 	
 	public Double getLatitude() {
 		return latitude;
@@ -126,6 +127,14 @@ public class RealtimeSharingPoints {
 
 	public void setHashid(String hashid) {
 		this.hashid = hashid;
+	}
+
+	public Boolean getTodisplay() {
+		return todisplay;
+	}
+
+	public void setTodisplay(Boolean todisplay) {
+		this.todisplay = todisplay;
 	}
 	
 }

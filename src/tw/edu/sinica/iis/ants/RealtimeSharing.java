@@ -360,6 +360,7 @@ public class RealtimeSharing {
 	        Double bearing = 0.0;	//Bearing
 	        String location_source = null;
 	        Timestamp timestamp = null;
+	        Boolean todisplay = true;
 	        
 			JSONObject tpoint = (JSONObject) iterator.next();
 			
@@ -379,7 +380,10 @@ public class RealtimeSharing {
 				location_source = tpoint.get("location_source").toString();
 			if(tpoint.containsKey("timestamp"))
 				timestamp = Timestamp.valueOf(tpoint.get("timestamp").toString());
-			
+			if(tpoint.containsKey("todisplay")) {
+				if(tpoint.get("todisplay").toString() == "0")
+				todisplay = false;
+			}
 			RealtimeSharingPoints user = new RealtimeSharingPoints();
 			//Map tokenMap = new HashMap();
 			//tokenMap.putAll(PlashUtils.HashToParam(token, session));
@@ -416,7 +420,7 @@ public class RealtimeSharing {
 			user.setSpeed(speed);
 			user.setBearing(bearing);
 			user.setLocation_source(location_source);
-
+			user.setTodisplay(todisplay);
 	    	
 			Transaction tx = null;
 			try {
@@ -531,6 +535,7 @@ public class RealtimeSharing {
 	public static Map getLocation(String token, Session session) {
     	Criteria criteria = session.createCriteria(RealtimeSharingPoints.class);
     	criteria.add(Restrictions.eq("token", token));
+    	criteria.add(Restrictions.eq("todisplay", true));
     	ProjectionList projectionList = Projections.projectionList();
     	projectionList.add(Projections.property("longitude"), "longitude");
     	projectionList.add(Projections.property("latitude"), "latitude");
