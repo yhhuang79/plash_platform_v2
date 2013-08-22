@@ -1,6 +1,9 @@
 package tw.edu.sinica.iis.ants;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -10,7 +13,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -24,6 +31,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import tw.edu.sinica.iis.ants.DB.T_TripInfo;
 import tw.edu.sinica.iis.ants.db_pojo.antrip.RealtimeSharingPoints;
@@ -582,5 +590,62 @@ public class RealtimeSharing {
 		} catch (HibernateException he) {
 			return 0;
 		}//end try catch			//*/
-	}//end method				
+	}//end method
+	
+	public static Map getWatcher(String token, Session session) {
+    	Criteria criteria = session.createCriteria(RealtimeSharingWatcher.class);
+    	criteria.add(Restrictions.eq("token", token));
+    	ProjectionList projectionList = Projections.projectionList();
+    	projectionList.add(Projections.property("socialid"), "socialid");     
+    	criteria.setProjection(projectionList);
+    	criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+		Map rsWatchers = new HashMap();    	
+		try {
+			List<Map> watcherList = (List<Map>) criteria.list();
+    		for (Map tmpMap:watcherList) {
+    			if (tmpMap.containsKey("socialid")) {
+    				String socialid = tmpMap.remove("socialid").toString();
+    				HttpClient client = new DefaultHttpClient();
+    				String shortUrlAPI = "http://graph.facebook.com/"+socialid;
+    				HttpGet request = new HttpGet(shortUrlAPI);
+    				HttpResponse response = client.execute(request);
+    				BufferedReader rd = new BufferedReader
+    						  (new InputStreamReader(response.getEntity().getContent()));
+    						    
+    				String line = rd.readLine();
+    				if(line != null) {
+    					Object obj;
+    					JSONObject jsonObject;
+    					JSONParser parser = new JSONParser();
+    					obj = parser.parse(line);
+    					jsonObject = (JSONObject) obj;
+    					tmpMap.put("name", jsonObject.get("first_name").toString());
+    					tmpMap.put("picture", "http://graph.facebook.com/"+socialid+"/picture");
+    				} else {
+        	    		tmpMap.put("name", "someone");
+        	    		tmpMap.put("picture", "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash4/c178.0.604.604/s160x160/252231_1002029915278_1941483569_n.jpg");    				    					
+    				}
+    			} else {
+    	    		tmpMap.put("name", "someone");
+    	    		tmpMap.put("picture", "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash4/c178.0.604.604/s160x160/252231_1002029915278_1941483569_n.jpg");    				
+    			}
+    		}//rof
+    		rsWatchers.put("watchers", watcherList);
+		} catch (HibernateException he) {
+			System.out.println(he.toString()); 	
+			return null;
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} //end try catch			//*/
+		return rsWatchers;
+	}//end method
+
+	
 } // PlashUtils End 

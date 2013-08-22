@@ -163,6 +163,8 @@ public class LocationSharingComponent extends PLASHComponent{
 					boolean isTokenAlive = RealtimeSharing.checkToken(token, session);
 					if(isTokenAlive){
 						map.putAll(RealtimeSharing.getLocation(token, session));
+						map.put("number_of_watcher", RealtimeSharing.getWatcherNum(token, session));
+						map.putAll(RealtimeSharing.getWatcher(token, session));						
 						map.put("status_code", 200);
 						map.put("message", "Ok");
 					}else{
