@@ -22,6 +22,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -548,6 +549,7 @@ public class RealtimeSharing {
     	projectionList.add(Projections.property("longitude"), "longitude");
     	projectionList.add(Projections.property("latitude"), "latitude");
     	criteria.setProjection(projectionList);
+    	criteria.addOrder(Order.desc("timestamp"));
     	criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
     	Geometry tmpGPS;
     	Double lng, lat;
