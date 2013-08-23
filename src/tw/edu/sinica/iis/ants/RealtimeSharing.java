@@ -605,7 +605,7 @@ public class RealtimeSharing {
 		try {
 			List<Map> watcherList = (List<Map>) criteria.list();
     		for (Map tmpMap:watcherList) {
-    			if (tmpMap.containsKey("socialid")) {
+    			if (tmpMap.get("socialid") != null) {
     				String socialid = tmpMap.remove("socialid").toString();
     				HttpClient client = new DefaultHttpClient();
     				String shortUrlAPI = "http://graph.facebook.com/"+socialid;
