@@ -3,26 +3,26 @@
 	import java.sql.Timestamp;
 	
 	import java.util.*;
-	import java.io.*;
-	import java.math.*;
-	import java.net.*;
+import java.io.*;
+import java.math.*;
+import java.net.*;
 	
 	
 	import javax.net.ssl.HttpsURLConnection;
 	
 	import org.apache.commons.httpclient.HttpClient;
-	import org.hibernate.*;
-	import org.hibernate.criterion.*;
-	import org.hibernate.transform.*;
-	import org.hibernate.type.*;
-	import org.json.*;
+import org.hibernate.*;
+import org.hibernate.criterion.*;
+import org.hibernate.transform.*;
+import org.hibernate.type.*;
+import org.json.*;
 	
 	import com.vividsolutions.jts.geom.Geometry;
-	import com.vividsolutions.jts.io.*;
+import com.vividsolutions.jts.io.*;
 	
 	import tw.edu.sinica.iis.ants.PlashUtils;
-	import tw.edu.sinica.iis.ants.DB.*;
-	import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
+import tw.edu.sinica.iis.ants.DB.*;
+import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	
 	/**
 	 * This component returns the trip data.  <br>
@@ -66,7 +66,7 @@
 		private Session tskSession; //task session
 		private long timeID;
 		private int requestCount;
-	
+		private boolean requestCheckinInfo;	
 		
 		public GetCheckinDataComponent() {
 			super();
@@ -101,6 +101,7 @@
 				if ((tmphash = (String)map.remove("hash")) == null) {
 				} else {
 					Map params = PlashUtils.HashToParam(tmphash, tskSession);
+					//System.out.println("GetCheckInInfoComponent hash to params:\t"+ params.toString());
 					if(params != null){
 						if(params.containsKey("userid")){
 							userid = Integer.parseInt(params.get("userid").toString());
@@ -123,6 +124,7 @@
 						}
 						
 						Map isPublic = PlashUtils.isTripShared(userid, trip_id, tskSession);
+						//System.out.println("GetCheckInInfoComponent isTripShared:\t"+ isPublic.toString());
 					    if(isPublic.get("isPublic").toString() == "true"){
 					    	map.put("CheckInDataList", getTripData(userid, trip_id,field_mask));
 							map.put("userid", userid);
@@ -212,6 +214,7 @@
 				
 	   			
 			} catch (NullPointerException e) { //Most likely due to invalid arguments 
+				e.printStackTrace();
 				map.put("GetTripDataComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
 		        System.out.println("GetTripDataComponent failure end1:\t" + e.toString() + " : requestID: " + requestCount);
 		        tskSession.close(); 	
@@ -289,6 +292,7 @@
 	    	Criteria criteriaTripData = tskSession.createCriteria(T_TripData.class);
 	    	criteriaTripData.add(Restrictions.eq("userid", userid));
 	    	criteriaTripData.add(Restrictions.eq("trip_id", trip_id));
+	    	//criteriaTripData.add(Restrictions.eq("visible", true));
 	    	ProjectionList filterProjList = Projections.projectionList();     	
 	    	criteriaTripData.setProjection(addFilterList(filterProjList,field_mask));
 	    	criteriaTripData.addOrder(Order.asc("timestamp"));
@@ -307,6 +311,7 @@
 		    		double sd = 0, avg = 0;
 		    		for (Map tmpMap:tripDataList) {
 		    			tmpGPS = (Geometry)tmpMap.get("gps");
+		    			System.out.println(tmpGPS.toText());
 		    			if(tmpMap.containsKey("accu")) {
 		    				if((tmpGPS.getCoordinate().x >= -999) &&
 		    						(tmpGPS.getCoordinate().y >= -999) &&
@@ -355,7 +360,9 @@
 			    			tmpMap.put("lat", tmpGPS.getCoordinate().y*1000000);		    				
 		    			} //fi
 		    			//System.out.println("GetCheckInDataComponent GPS:\t"	+ tmpGPS.getCoordinate().x*1000000 + " : " + tmpGPS.getCoordinate().y*1000000 + " : " + tmpMap.get("accu").toString());
-		    			if (tmpMap.containsKey("checkin")) tmpCheckIn = tmpMap.get("checkin").toString();		    			
+		    			if (tmpMap.containsKey("checkin")) 
+		    				if (tmpMap.get("checkin") != null)
+		    					tmpCheckIn = tmpMap.get("checkin").toString();		    			
 		    			tmpPointId = (Integer)tmpMap.remove("id");
 		    			//System.out.println("GetCheckInDataComponent PointId:\t"	+ tmpPointId + " : " + tmpCheckIn);
 				   		if (tmpCheckIn == "true"){
@@ -400,6 +407,8 @@
 	    	}//fi
 	    	if ((field_mask & 16384) != 0) { 
 	    		filterProjList.add(Projections.property("gps"),"gps");
+	    		//filterProjList.add(Projections.property("latitude"),"latitude");
+	    		//filterProjList.add(Projections.property("longitude"),"longitude");
 	    	}//fi
 	    	if ((field_mask & 8192) != 0) { 
 	        	filterProjList.add(Projections.property("server_timestamp"),"server_timestamp");  
@@ -443,9 +452,12 @@
 	    	}//fi    	
 	    	
 	    	if ((field_mask & 1) != 0) { //1=1
-	    		filterProjList.add(Projections.property("checkin"),"checkin");    		
+	    		filterProjList.add(Projections.property("id"),"id"); //id is needed to access check in info 
+	    		filterProjList.add(Projections.property("checkin"),"checkin");    
+	    		requestCheckinInfo = true;
+	    	} else {
+	    		requestCheckinInfo = false;
 	    	}//fi
-	    	filterProjList.add(Projections.property("id"),"id"); 
 			return filterProjList;
 			
 		}//end method
