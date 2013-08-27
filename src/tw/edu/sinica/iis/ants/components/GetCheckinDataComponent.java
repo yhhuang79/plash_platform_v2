@@ -341,7 +341,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 		    						(tmpGPS.getCoordinate().y >= -999) && 
 		    						(Double.parseDouble(tmpMap.get("accu").toString()) >= -999) &&
 		    						(Double.parseDouble(tmpMap.get("accu").toString()) <= avg + (sd * 2))) 
-		    						|| (tmpMap.get("checkin").toString() == "true")
+		    						//|| (tmpMap.get("checkin").toString() == "true")
 		    						) {
 				    			tmpMap.put("lng", tmpGPS.getCoordinate().x*1000000);
 				    			tmpMap.put("lat", tmpGPS.getCoordinate().y*1000000);
