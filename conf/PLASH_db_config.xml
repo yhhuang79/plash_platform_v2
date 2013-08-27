@@ -19,7 +19,7 @@
 	<bean id="GeoDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="driverClass" value="org.postgresql.Driver">
 		</property>
-		<property name="jdbcUrl" value="jdbc:postgresql://localhost/postgistemplate">
+		<property name="jdbcUrl" value="jdbc:postgresql://plash.iis.sinica.edu.tw/postgistemplate">
 		</property>
 		<property name="user" value="postgres"></property>
 		<property name="password" value="root"></property>
@@ -87,6 +87,8 @@
 				<value>hbmxml.common_data/TrajectoryPoints.hbm.xml</value>
 				<value>hbmxml.common_data/TrajectoryInfo.hbm.xml</value>				
 				<value>hbmxml.common_data/UserSpecified.hbm.xml</value>
+				
+				<value>hbmxml.linkus_data/LinkusUserInfo.hbm.xml</value>
 				
 				<value>hbmxml.antrip/TripSharing.hbm.xml</value>				
 				<value>hbmxml.antrip/RealtimeSharingPoints.hbm.xml</value> 				
