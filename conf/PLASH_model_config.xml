@@ -2166,27 +2166,29 @@
 					responseTransformer-refs="byteArrayToString" ref="plashNewLinkusUserInfoHttpsInboundEndpoint" />
 			</inbound>			
 			<component>
-				<spring-object bean="NewLinkusUserInfoComponent"></spring-object>
+				<spring-object bean="NewLinkusUserInfo"></spring-object>
 			</component>
 			<outbound>
 				<pass-through-router>
 					<outbound-endpoint ref="plashNewLinkusUserInfoQueue">
 						<transformers>
+							<transformer ref="PlashPlatformTransformer" />						
 							<jms:object-to-jmsmessage-transformer />
-						</transformers>
+					    </transformers>
 					</outbound-endpoint>
 				</pass-through-router>
 			</outbound>
 			<async-reply>
 				<inbound-endpoint ref="plashNewLinkusUserInfoQueue">
 					<transformers>
-						<jms:jmsmessage-to-object-transformer />
-						<transformer ref="TestResponseTransformer" />
+
 					</transformers>
 				</inbound-endpoint>
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
+	
+				
 
 		<service name="NewTrajectoryInfoService">
 			<inbound>
