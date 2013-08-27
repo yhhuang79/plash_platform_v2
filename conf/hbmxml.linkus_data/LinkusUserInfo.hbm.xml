@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 16, 2012 8:52:41 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="tw.edu.sinica.iis.ants.db_pojo.linkus.LinkusUserInfo" table="linkus.user_info">
+            <id name="fbId" type="java.lang.String">
+            <column name="fb_id"/>
+            </id>
+            <property name="fbToken" type="java.lang.String">
+            <column name="fb_token"  />
+            </property>
+            <property name="education" type="java.lang.String">
+            <column name="education" />
+            </property>
+            <property name="lng" type="java.lang.String">
+            <column name="lng"  />
+            </property>
+            <property name="lat" type="java.lang.String">
+            <column name="lat"  />
+            </property>
+            <property name="time" type="java.sql.Timestamp">
+            <column name="time" length="35" />
+            </property>
+            <property name="name" type="java.lang.String">
+            <column name="name"  />
+            </property>
+            <property name="bday" type="java.lang.String">
+            <column name="bday"  />
+            </property>
+            <property name="gender" type="java.lang.String">
+            <column name="gender"  />
+            </property>
+            <property name="workExp" type="java.lang.String">
+            <column name="work_exp"  />
+            </property>
+          
+          
+          </class>
+</hibernate-mapping>
+
+
+	
