@@ -15,7 +15,8 @@ import tw.edu.sinica.iis.ants.db_pojo.common.PointBinaryData;
 import tw.edu.sinica.iis.ants.db_pojo.common.PointDeviceData;
 import tw.edu.sinica.iis.ants.db_pojo.common.TrajectoryPoints;
 
-import tw.edu.sinica.iis.ants.db_pojo.linkus.UserInfo;
+import tw.edu.sinica.iis.ants.db_pojo.linkus.LinkusUserInfo;
+
 /**
  *
  * This component receives trajectory point data, creates a new record and stores them on the appropriate place of database. <br>
@@ -71,7 +72,7 @@ public class NewLinkusUserInfo extends PLASHComponent {
 	private String bday;
 	private String gender;
 	private String workExp;
-	private String lon;
+	private String lng;
 	private String lat;
 	private Timestamp time;
 
@@ -128,8 +129,8 @@ public class NewLinkusUserInfo extends PLASHComponent {
 			        err.explaination = "latitude must be specified";
 					return returnUnsuccess(map,err);     
 		        }//fi
-		     if (map.containsKey("lon")) {     
-		        	lon = map.get("lon").toString();
+		     if (map.containsKey("lng")) {     
+		        	lng = map.get("lng").toString();
 		        } else {
 					getElapsed();
 			        AbnormalResult err = new AbnormalResult(this,'E');
@@ -138,15 +139,16 @@ public class NewLinkusUserInfo extends PLASHComponent {
 					return returnUnsuccess(map,err);     
 		        }//fi
 		     if (map.containsKey("time"))  {
-	        	time = Timestamp.valueOf(map.get("time").toString());
-	        } else {
+	        	//time = Timestamp.valueOf(map.get("time").toString());
+		    	 time = Timestamp.valueOf("2012-5-6");
+	        } /*else {
 				getElapsed();
 		        AbnormalResult err = new AbnormalResult(this,'E');
 		        err.refCode = 001;
 		        err.explaination = "time must be specified";
 				return returnUnsuccess(map,err);     
 	        }//fi
-
+*/
 		     if (map.containsKey("name")) {
 				 name = map.get("name").toString();
 		       } //fi
@@ -176,12 +178,12 @@ public class NewLinkusUserInfo extends PLASHComponent {
 		}
 	        	
 		
-		UserInfo pt = new UserInfo();
+		LinkusUserInfo pt = new LinkusUserInfo();
 
 		pt.setFbId(fbId);
 		pt.setFbToken(fbToken);
 		pt.setEducation(education);
-		pt.setLon(lon);		
+		pt.setLng(lng);		
 		
         pt.setLat(lat);
 		pt.setTime(time);
@@ -205,6 +207,7 @@ public class NewLinkusUserInfo extends PLASHComponent {
 	        err.explaination = "Insert or update on table violates foreign key constraint";
 			return returnUnsuccess(map,err);			
 		} catch (Exception e){
+			e.printStackTrace();
 			tskSession.close();
 			getElapsed();
 	        AbnormalResult err = new AbnormalResult(this,'E');
