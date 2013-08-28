@@ -72,7 +72,6 @@ public class NewLinkusUserInfo extends PLASHComponent {
 	private String gender;
 	private String lng;
 	private String lat;
-	private Timestamp time;
 
 	private Session tskSession; //task session
 
