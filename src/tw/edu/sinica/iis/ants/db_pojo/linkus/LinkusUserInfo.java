@@ -12,10 +12,10 @@ public class LinkusUserInfo implements java.io.Serializable {
 		private String lng;
 		private String lat;
 		private Timestamp time;
-		private String name;
+		private String links;
 		private String bday;
 		private String gender;
-		private String workExp;
+
 		
 		public LinkusUserInfo() {
 		}
@@ -77,12 +77,12 @@ public class LinkusUserInfo implements java.io.Serializable {
 			this.time = time;
 		}
 
-		public String getName() {
-			return name;
+		public String getLinks() {
+			return links;
 		}
 
-		public void setName(String name) {
-			this.name = name;
+		public void setLinks(String links) {
+			this.links = links;
 		}
 
 		public String getBday() {
@@ -101,13 +101,7 @@ public class LinkusUserInfo implements java.io.Serializable {
 			this.gender = gender;
 		}
 
-		public String getWorkExp() {
-			return workExp;
-		}
-
-		public void setWorkExp(String workExp) {
-			this.workExp = workExp;
-		}
+	
 		
 		
 		
