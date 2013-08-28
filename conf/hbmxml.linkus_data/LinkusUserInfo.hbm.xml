@@ -22,8 +22,8 @@
             <property name="time" type="java.sql.Timestamp">
             <column name="time" length="35" />
             </property>
-            <property name="name" type="java.lang.String">
-            <column name="name"  />
+            <property name="links" type="java.lang.String">
+            <column name="links"  />
             </property>
             <property name="bday" type="java.lang.String">
             <column name="bday"  />
@@ -31,10 +31,7 @@
             <property name="gender" type="java.lang.String">
             <column name="gender"  />
             </property>
-            <property name="workExp" type="java.lang.String">
-            <column name="work_exp"  />
-            </property>
-          
+        
           
           </class>
 </hibernate-mapping>
