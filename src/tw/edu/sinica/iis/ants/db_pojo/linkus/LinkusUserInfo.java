@@ -28,7 +28,7 @@ public class LinkusUserInfo implements java.io.Serializable {
 			this.lat = lat;
 			this.education= education;
 		}
-		
+
 		public String getFbId() {
 			return fbId;
 		}
@@ -100,7 +100,8 @@ public class LinkusUserInfo implements java.io.Serializable {
 		public void setGender(String gender) {
 			this.gender = gender;
 		}
-
+		
+		
 	
 		
 		
