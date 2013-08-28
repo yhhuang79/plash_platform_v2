@@ -61,7 +61,8 @@ public class NearbyTripComponent extends PLASHComponent {
 		try {
 			
 	        tskSession = sessionFactory.openSession();
-		
+	        String GeogUpdate = new String("SELECT to_geog_update('"+"gogorock"+"')");
+			String resultString1 = (String)tskSession.createSQLQuery(GeogUpdate).uniqueResult();	
 			String createSQLQuery = new String("SELECT nearby_trip('"+ latitude +"','"+longitude+"',' "+queryRadius+"')");
 			String resultString = (String)tskSession.createSQLQuery(createSQLQuery).uniqueResult();
 			//String input =new String("Select latitude from  user_location.user_point_location_time where userid=722");

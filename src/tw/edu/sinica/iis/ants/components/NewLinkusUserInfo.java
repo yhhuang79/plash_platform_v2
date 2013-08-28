@@ -57,8 +57,7 @@ import tw.edu.sinica.iis.ants.db_pojo.linkus.LinkusUserInfo;
  * @version   1.3, Nov 15/2012
  * @param     
  * @return    return status 
- * @example   https://localhost:8080/NewLinkusUserInfo?trajectory_id=1&record_time=2011-11-11 11:11:11.111&latitude=1.123456&longitude=2.34567
- * 
+ * @example  https://localhost:8080/NewLinkusUserInfo?fbId=2798&fbToken=12891&education=30&lng=12&lat=12&name=mary&bday=1950-08-01&gender=female&workExp=freelancer&time=2011-3-4
  */
 public class NewLinkusUserInfo extends PLASHComponent {
 	
@@ -138,10 +137,10 @@ public class NewLinkusUserInfo extends PLASHComponent {
 			        err.explaination = "longitude must be specified";
 					return returnUnsuccess(map,err);     
 		        }//fi
-		     if (map.containsKey("time"))  {
-	        	//time = Timestamp.valueOf(map.get("time").toString());
-		    	 time = Timestamp.valueOf("2012-5-6");
-	        } /*else {
+		     /*e  if (map.containsKey("time"))  {
+	        	time = Timestamp.valueOf(map.get("time").toString());
+		    	// time = Timestamp.valueOf("2012-5-6");
+	        } else {
 				getElapsed();
 		        AbnormalResult err = new AbnormalResult(this,'E');
 		        err.refCode = 001;
@@ -186,7 +185,7 @@ public class NewLinkusUserInfo extends PLASHComponent {
 		pt.setLng(lng);		
 		
         pt.setLat(lat);
-		pt.setTime(time);
+		pt.setTime(new Timestamp(new java.util.Date().getTime()));
 		pt.setName(name);
 		pt.setBday(bday);
 		pt.setGender(gender);
@@ -198,7 +197,8 @@ public class NewLinkusUserInfo extends PLASHComponent {
 			Transaction tx = tskSession.beginTransaction();
 			tskSession.save(pt);
 			tx.commit();
-	        tskSession.close();
+            String resultString = (String)tskSession.createSQLQuery("SELECT to_geog_update('"+fbId+"')").uniqueResult();
+			tskSession.close();
 		} catch (ConstraintViolationException e) {
 			tskSession.close();
 			getElapsed();
