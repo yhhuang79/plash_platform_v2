@@ -57,7 +57,7 @@ import tw.edu.sinica.iis.ants.db_pojo.linkus.LinkusUserInfo;
  * @version   1.3, Nov 15/2012
  * @param     
  * @return    return status 
- * @example  https://localhost:8080/NewLinkusUserInfo?fbId=2798&fbToken=12891&education=30&lng=12&lat=12&name=mary&bday=1950-08-01&gender=female&workExp=freelancer&time=2011-3-4
+ * @example  https://localhost:8080/NewLinkusUserInfo?fbId=2798&fbToken=12891&education=30&lng=12&lat=12&links=mary&bday=1950-08-01&gender=female&workExp=freelancer&time=2011-3-4
  */
 public class NewLinkusUserInfo extends PLASHComponent {
 	
@@ -66,11 +66,10 @@ public class NewLinkusUserInfo extends PLASHComponent {
 	 */
 	private String fbId;
 	private String fbToken;
-	private String name;
+	private String links;
 	private String education;
 	private String bday;
 	private String gender;
-	private String workExp;
 	private String lng;
 	private String lat;
 	private Timestamp time;
@@ -137,19 +136,9 @@ public class NewLinkusUserInfo extends PLASHComponent {
 			        err.explaination = "longitude must be specified";
 					return returnUnsuccess(map,err);     
 		        }//fi
-		     /*e  if (map.containsKey("time"))  {
-	        	time = Timestamp.valueOf(map.get("time").toString());
-		    	// time = Timestamp.valueOf("2012-5-6");
-	        } else {
-				getElapsed();
-		        AbnormalResult err = new AbnormalResult(this,'E');
-		        err.refCode = 001;
-		        err.explaination = "time must be specified";
-				return returnUnsuccess(map,err);     
-	        }//fi
-*/
-		     if (map.containsKey("name")) {
-				 name = map.get("name").toString();
+
+		     if (map.containsKey("links")) {
+				 links = map.get("links").toString();
 		       } //fi
 		     if (map.containsKey("bday")) {
 				 bday = map.get("bday").toString();
@@ -157,9 +146,7 @@ public class NewLinkusUserInfo extends PLASHComponent {
 			 if (map.containsKey("gender")) {
 				 gender = map.get("gender").toString();
 		       } //fi
-			 if (map.containsKey("workExp")) {
-				 workExp = map.get("workExp").toString();
-		       } //fi  
+	
     
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
 			getElapsed();
@@ -186,10 +173,10 @@ public class NewLinkusUserInfo extends PLASHComponent {
 		
         pt.setLat(lat);
 		pt.setTime(new Timestamp(new java.util.Date().getTime()));
-		pt.setName(name);
+		pt.setLinks(links);
 		pt.setBday(bday);
 		pt.setGender(gender);
-		pt.setWorkExp(workExp);
+
 
 		
 		try {
