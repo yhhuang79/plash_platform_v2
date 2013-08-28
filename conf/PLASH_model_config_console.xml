@@ -56,6 +56,7 @@
 		<spring:import resource="./legacycomponents/DelTripConfig.xml" />
 		<spring:import resource="./legacycomponents/NearbyTripConfig.xml" />		
 		<spring:import resource="./legacycomponents/TestConfig.xml" />
+		<spring:import resource="./legacycomponents/NewLinkusUserInfoConfig.xml" />
 
 		<spring:import resource="./common_data_access_beanconfig/NewTrajectoryPointConfig.xml" />		
 		<spring:import resource="./common_data_access_beanconfig/NewTrajectoryInfoConfig.xml" />
@@ -2244,6 +2245,35 @@
 				</http:inbound-endpoint>
 			</inbound>
 		</service>
+		<!-- @mikelin -->
+		 <service name="NewLinkusUserInfoService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashNewLinkusUserInfoHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="NewLinkusUserInfo"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashNewLinkusUserInfoQueue">
+						<transformers>
+							<transformer ref="PlashPlatformTransformer" />						
+							<jms:object-to-jmsmessage-transformer />
+					    </transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashNewLinkusUserInfoQueue">
+					<transformers>
+
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+	
 	
 						
 	</model>
