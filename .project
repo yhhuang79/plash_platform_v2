@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>app/PLASH_Platform_Test_Combine</name>
-			<type>2</type>
-			<location>/home/kennywu/mule/apps/PLASH_Platform_Test_Combine</location>
-		</link>
-	</linkedResources>
 </projectDescription>
