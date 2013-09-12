@@ -33,7 +33,7 @@
 		</management:credentials>
 	</management:jmx-default-config>
 	<management:jmx-mx4j-adaptor
-		jmxAdaptorUrl="http://localhost:8088"
+		jmxAdaptorUrl="http://plash.iis.sinica.edu.tw:8088"
 		login="admin"
 		password="password" />		
 		
