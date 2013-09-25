@@ -107,14 +107,14 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 							userid = Integer.parseInt(params.get("userid").toString());
 						} else {
 							map.put("GetCheckInInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
-					        //tskSession.close();
+					        tskSession.close();
 							return map;
 						}
 						if(params.containsKey("trip_id")){
 							trip_id = Integer.parseInt(params.get("trip_id").toString());
 						} else {
 							map.put("GetCheckInInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
-					        //tskSession.close();
+					        tskSession.close();
 							return map;
 						}
 						if((tmpField_mask = (String)map.remove("field_mask")) != null){
@@ -135,6 +135,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 					    	map.put("CheckInDataList","null");
 					    }
 						//trackTimeEnd("service_main");
+					    tskSession.close();
 						return map;
 					} else {
 						map.put("GetCheckInInfoComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
@@ -212,7 +213,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 	
 				}//fi
 				
-	   			
+				
 			} catch (NullPointerException e) { //Most likely due to invalid arguments 
 				e.printStackTrace();
 				map.put("GetTripDataComponent",false); //result flag, flag name to be unified, para_failed as appeared in excel file		
@@ -230,8 +231,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 		        tskSession.close(); 	
 				return map;
 			}//end try catch
-			
-				
+
 		}//end method
 		
 		/**
