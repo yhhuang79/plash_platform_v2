@@ -311,7 +311,7 @@ import tw.edu.sinica.iis.ants.componentbase.PLASHComponent;
 		    		double sd = 0, avg = 0;
 		    		for (Map tmpMap:tripDataList) {
 		    			tmpGPS = (Geometry)tmpMap.get("gps");
-		    			System.out.println(tmpGPS.toText());
+		    			//System.out.println(tmpGPS.toText());
 		    			if(tmpMap.containsKey("accu")) {
 		    				if((tmpGPS.getCoordinate().x >= -999) &&
 		    						(tmpGPS.getCoordinate().y >= -999) &&
