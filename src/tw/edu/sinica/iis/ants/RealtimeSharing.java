@@ -6,6 +6,9 @@ import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -548,22 +551,44 @@ public class RealtimeSharing {
     	ProjectionList projectionList = Projections.projectionList();
     	projectionList.add(Projections.property("longitude"), "longitude");
     	projectionList.add(Projections.property("latitude"), "latitude");
+    	projectionList.add(Projections.property("timestamp"), "timestamp");
     	criteria.setProjection(projectionList);
     	criteria.addOrder(Order.desc("timestamp"));
     	criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
     	Geometry tmpGPS;
-    	Double lng, lat;
+    	Timestamp stimestamp = null, etimestamp = null;
+    	Double lng, lat, prv_lng = 0.0, prv_lat = 0.0, distance = 0.0;
 		Map rsLocations = new HashMap();    	
 		try {
 			List<Map> tripDataList = (List<Map>) criteria.list();
     		for (Map tmpMap:tripDataList) {
     			//tmpGPS = (Geometry)tmpMap.remove("gps");
+    			if ((prv_lng == 0.0)&&(prv_lat == 0.0)) etimestamp = Timestamp.valueOf(tmpMap.get("timestamp").toString());
+    			if (prv_lng == 0.0) prv_lng = ConvertDegreeToRadians(Double.valueOf(tmpMap.get("longitude").toString()).doubleValue());
+    			if (prv_lat == 0.0) prv_lat = ConvertDegreeToRadians(Double.valueOf(tmpMap.get("latitude").toString()).doubleValue());
+    			lng = ConvertDegreeToRadians(Double.valueOf(tmpMap.get("longitude").toString()).doubleValue());
+    			lat = ConvertDegreeToRadians(Double.valueOf(tmpMap.get("latitude").toString()).doubleValue());
+    			double R = 6371;
+    			double d = Math.acos(Math.sin(prv_lat)*Math.sin(lat)+
+    			            Math.cos(prv_lat)*Math.cos(lat)*
+    			            Math.cos(lng-prv_lng))*R;
+    			distance = distance + d;
+    			prv_lng = lng;
+    			prv_lat = lat;
+    			stimestamp = Timestamp.valueOf(tmpMap.remove("timestamp").toString());
 	    		tmpMap.put("lng", tmpMap.remove("longitude"));
 	    		tmpMap.put("lat", tmpMap.remove("latitude"));
+	    		//tmpMap.put("distance", d);
     			//tmpMap.put("longitude", tmpGPS.getCoordinate().x*1000000);
     			//tmpMap.put("latitude", tmpGPS.getCoordinate().y*1000000);
     		}//rof
+    		NumberFormat formatter = new DecimalFormat("#.#");
     		rsLocations.put("trip", tripDataList);
+    		rsLocations.put("distance", formatter.format(distance));
+    		rsLocations.put("start", new SimpleDateFormat("yyyy-MM-dd HH:mm").format(stimestamp));
+    		rsLocations.put("end", new SimpleDateFormat("yyyy-MM-dd HH:mm").format(etimestamp));
+    		rsLocations.put("eta", (etimestamp.getTime()-stimestamp.getTime())/1000/60);
+    		rsLocations.put("speed", formatter.format((distance/(etimestamp.getTime()-stimestamp.getTime()))*1000*60*60));
 			return rsLocations;
 											
 		} catch (HibernateException he) {
@@ -649,5 +674,8 @@ public class RealtimeSharing {
 		return rsWatchers;
 	}//end method
 
+    private static double ConvertDegreeToRadians(double degrees) {
+      return (Math.PI/180)*degrees;
+    }
 	
 } // PlashUtils End 
