@@ -30,7 +30,7 @@
 			<value>500</value>
 		</property>
 		<property name="maxIdleTime">
-			<value>60</value>
+			<value>600</value>
 		</property>
 		<property name="acquireIncrement">
 			<value>3</value>
@@ -42,7 +42,7 @@
 			<value>10</value>
 		</property>
 		<property name="idleConnectionTestPeriod">
-			<value>60</value>
+			<value>180</value>
 		</property>
 		<property name="acquireRetryAttempts">
 			<value>30</value>
