@@ -57,7 +57,7 @@ import tw.edu.sinica.iis.ants.db_pojo.linkus.LinkusUserInfo;
  * @version   1.3, Nov 15/2012
  * @param     
  * @return    return status 
- * @example  https://localhost:8080/NewLinkusUserInfo?fbId=2798&fbToken=12891&education=30&lng=12&lat=12&links=mary&bday=1950-08-01&gender=female&workExp=freelancer&time=2011-3-4
+ * @example  https://localhost:8080/NewLinkusUserInfo?fbId=2798&fbToken=12891&education=30&lng=12&lat=12&links=mary&bday=1950-08-01&gender=female
  */
 public class NewLinkusUserInfo extends PLASHComponent {
 	
@@ -90,51 +90,51 @@ public class NewLinkusUserInfo extends PLASHComponent {
 	        
 			 if (map.containsKey("fbId")) {
 				 fbId = map.get("fbId").toString();
-		       } else {
+		       } /*else {
 				getElapsed();
 		        AbnormalResult err = new AbnormalResult(this,'E');
 		        err.refCode = 001;
 		        err.explaination = "fbId must be specified";
 				return returnUnsuccess(map,err);        	
-	        }//fi
+	        }//fi */
 			 if (map.containsKey("fbToken")) {
 				 fbToken = map.get("fbToken").toString();
-		       } else {
+		       } /*else {
 				getElapsed();
 		        AbnormalResult err = new AbnormalResult(this,'E');
 		        err.refCode = 001;
 		        err.explaination = "fb must be specified";
 				return returnUnsuccess(map,err);        	
-	        }//fi
+	        }//fi*/
 			
 			 if (map.containsKey("education")) {
 				 education = map.get("education").toString();
-		       } else {
+		       } /*else {
 				getElapsed();
 		        AbnormalResult err = new AbnormalResult(this,'E');
 		        err.refCode = 001;
 		        err.explaination = "education must be specified";
 				return returnUnsuccess(map,err);        	
-	        }//fi
+	        }//fi */
 			
 		     if (map.containsKey("lat")) { 
 		        	lat = map.get("lat").toString();
-		        } else {
+		        } /*else {
 					getElapsed();
 			        AbnormalResult err = new AbnormalResult(this,'E');
 			        err.refCode = 001;
 			        err.explaination = "latitude must be specified";
 					return returnUnsuccess(map,err);     
-		        }//fi
+		        }//fi */
 		     if (map.containsKey("lng")) {     
 		        	lng = map.get("lng").toString();
-		        } else {
+		        } /*else {
 					getElapsed();
 			        AbnormalResult err = new AbnormalResult(this,'E');
 			        err.refCode = 001;
 			        err.explaination = "longitude must be specified";
 					return returnUnsuccess(map,err);     
-		        }//fi
+		        }//fi */
 
 		     if (map.containsKey("links")) {
 				 links = map.get("links").toString();
