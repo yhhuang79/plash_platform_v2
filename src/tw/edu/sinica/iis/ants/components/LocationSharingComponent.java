@@ -27,7 +27,7 @@ public class LocationSharingComponent extends PLASHComponent{
 			String action = map.remove("action").toString();
 			if (action.contains("initialize")){
 				//Integer userid = 0;
-				String userid = null;
+				String uuid = null;
 				Integer duration_type = 0;
 				Integer duration_value = 0;
 				String sharing_method = null;
@@ -35,7 +35,7 @@ public class LocationSharingComponent extends PLASHComponent{
 				Timestamp timestamp = null;
 
 				if(map.containsKey("uuid")){
-					userid = map.get("uuid").toString();
+					uuid = map.get("uuid").toString();
 					/*
 					 *  Plash account userid
 					 * 
@@ -67,8 +67,8 @@ public class LocationSharingComponent extends PLASHComponent{
 		        	Date date= new java.util.Date();
 		        	timestamp = new Timestamp(date.getTime());
 		        }
-		        if (userid != null) {
-		        	map.putAll(RealtimeSharing.initialSharing(userid, timestamp, session));
+		        if (uuid != null) {
+		        	map.putAll(RealtimeSharing.initialSharing(uuid, timestamp, session));
 		        } else {
 					map.put("status_code", 400);
 					map.put("message", "Parameter Error");
