@@ -34,8 +34,8 @@ public class LocationSharingComponent extends PLASHComponent{
 				String friend_id = null;
 				Timestamp timestamp = null;
 
-				if(map.containsKey("userid")){
-					userid = map.get("userid").toString();
+				if(map.containsKey("uuid")){
+					userid = map.get("uuid").toString();
 					/*
 					 *  Plash account userid
 					 * 
