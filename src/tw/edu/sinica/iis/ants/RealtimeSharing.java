@@ -75,7 +75,7 @@ public class RealtimeSharing {
 			String token = PlashUtils.MD5(userid + "sharing" + date.getTime());
 			String url = PlashUtils.getShortUrl("http://www.plash.tw/antrack/index.html?token=" + token);
 			RealtimeSharingSessions rsSession = new RealtimeSharingSessions();
-			rsSession.setUserid(userid);
+			rsSession.setUuid(userid.toString());
 			rsSession.setToken(token);
 			rsSession.setUrl(url);
 			rsSession.setStatus(1);
@@ -110,15 +110,15 @@ public class RealtimeSharing {
 	}//end method		
 
 	// 2. Input parameters : userid(String), timestamp
-	public static Map initialSharing(String userid, Timestamp timestamp, Session session) {
+	public static Map initialSharing(String uuid, Timestamp timestamp, Session session) {
 		Map message = new HashMap();
 		Date date= new java.util.Date();
 		try {
-			if (userid.length() == 32) {
-				String token = PlashUtils.MD5(userid.substring((int)(Math.random()*10), 16) + date.getTime());
+			if (uuid.length() == 36) {
+				String token = PlashUtils.MD5(uuid.substring((int)(Math.random()*10), 16) + date.getTime());
 				String url = PlashUtils.getShortUrl("http://www.plash.tw/antrack/index.html?token=" + token);
 				RealtimeSharingSessions rsSession = new RealtimeSharingSessions();
-				rsSession.setHashid(userid);
+				rsSession.setUuid(uuid);
 				rsSession.setToken(token);
 				rsSession.setUrl(url);
 				rsSession.setStatus(1);
@@ -191,7 +191,7 @@ public class RealtimeSharing {
 			String token = PlashUtils.MD5(userid + "sharing" + date.getTime());
 			String url = PlashUtils.getShortUrl("http://www.plash.tw/shareloc/index.html?token=" + token);
 			RealtimeSharingSessions rsSession = new RealtimeSharingSessions();
-			rsSession.setUserid(userid);
+			rsSession.setUuid(userid.toString());
 			rsSession.setToken(token);
 			rsSession.setUrl(url);
 			rsSession.setSharing_method(sharing_method);
@@ -232,7 +232,7 @@ public class RealtimeSharing {
 			String token = PlashUtils.MD5(userid + "sharing" + date.getTime());
 			String url = PlashUtils.getShortUrl("http://www.plash.tw/shareloc/index.html?token=" + token);
 			RealtimeSharingSessions rsSession = new RealtimeSharingSessions();
-			rsSession.setUserid(userid);
+			rsSession.setUuid(userid.toString());
 			rsSession.setToken(token);
 			rsSession.setUrl(url);
 			rsSession.setSharing_method(sharing_method);
@@ -274,7 +274,7 @@ public class RealtimeSharing {
 			String token = PlashUtils.MD5(userid + "sharing" + date.getTime());
 			String url = PlashUtils.getShortUrl("http://www.plash.tw/shareloc/index.html?token=" + token);
 			RealtimeSharingSessions rsSession = new RealtimeSharingSessions();
-			rsSession.setUserid(userid);
+			rsSession.setUuid(userid.toString());
 			rsSession.setToken(token);
 			rsSession.setUrl(url);
 			rsSession.setSharing_method(sharing_method);
@@ -316,7 +316,7 @@ public class RealtimeSharing {
 			String token = PlashUtils.MD5(userid + "sharing" + date.getTime());
 			String url = PlashUtils.getShortUrl("http://www.plash.tw/antrack/index.html?token=" + token);
 			RealtimeSharingSessions rsSession = new RealtimeSharingSessions();
-			rsSession.setUserid(userid);
+			rsSession.setUuid(userid.toString());
 			rsSession.setToken(token);
 			rsSession.setUrl(url);
 			rsSession.setSharing_method(sharing_method);

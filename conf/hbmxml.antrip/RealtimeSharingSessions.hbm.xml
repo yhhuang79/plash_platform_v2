@@ -9,7 +9,7 @@
 				<param name="sequence">antrip_data.realtimesharingsessions_id_seq</param>
 			</generator>
 		</id>
-		<property name="userid" column="userid" />
+		<property name="uuid" column="uuid" />
 		<property name="token" column="token" />
 		<property name="sharing_method" column="sharing_method" />
 		<property name="duration_type" column="duration_type" />

@@ -7,7 +7,7 @@ import com.vividsolutions.jts.geom.Geometry;
 
 public class RealtimeSharingSessions {
 	private int id;
-	private Integer userid;
+	private String uuid;
 	private String token;
 	private String sharing_method;
 	private Integer duration_type;
@@ -30,12 +30,12 @@ public class RealtimeSharingSessions {
 		this.id = id;
 	}
 
-	public Integer getUserid() {
-		return userid;
+	public String getUuid() {
+		return uuid;
 	}
 
-	public void setUserid(Integer userid) {
-		this.userid = userid;
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	public String getToken() {
