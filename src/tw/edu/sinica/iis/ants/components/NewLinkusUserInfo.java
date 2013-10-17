@@ -181,7 +181,7 @@ public class NewLinkusUserInfo extends PLASHComponent {
 		try {
 	        tskSession = sessionFactory.openSession();
 			Transaction tx = tskSession.beginTransaction();
-			tskSession.save(pt);
+			tskSession.saveOrUpdate(pt);
 			tx.commit();
             String resultString = (String)tskSession.createSQLQuery("SELECT to_geog_update('"+fbId+"')").uniqueResult();
 			tskSession.close();
