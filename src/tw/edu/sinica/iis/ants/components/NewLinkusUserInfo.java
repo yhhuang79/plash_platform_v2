@@ -183,7 +183,7 @@ public class NewLinkusUserInfo extends PLASHComponent {
 			Transaction tx = tskSession.beginTransaction();
 			tskSession.saveOrUpdate(pt);
 			tx.commit();
-            String resultString = (String)tskSession.createSQLQuery("SELECT to_geog_update('"+fbId+"')").uniqueResult();
+            //String resultString = (String)tskSession.createSQLQuery("SELECT to_geog_update('"+fbId+"')").uniqueResult();
 			tskSession.close();
 		} catch (ConstraintViolationException e) {
 			tskSession.close();
