@@ -205,7 +205,7 @@ public class LocationSharingComponent extends PLASHComponent{
 					map.put("message", "Empty token");
 				}				
 			}
-			if (action.trim().equals("uploadPicture")){
+			if (action.trim().equals("uploadpicture")){
 				String token = null, picUrl = null; 
 				Double latitude = null, longitude = null;
 				Timestamp timestamp = null;
