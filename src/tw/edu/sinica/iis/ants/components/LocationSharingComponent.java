@@ -214,6 +214,8 @@ public class LocationSharingComponent extends PLASHComponent{
 					if(isTokenAlive){
 						if(map.containsKey("timestamp")){
 							timestamp = Timestamp.valueOf(map.remove("timestamp").toString());
+						} else {
+							timestamp = new Timestamp(new Date().getTime());
 						}
 						if(map.containsKey("latitude")){
 							latitude = Double.valueOf(map.remove("latitude").toString());
