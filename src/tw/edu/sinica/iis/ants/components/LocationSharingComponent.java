@@ -218,6 +218,9 @@ public class LocationSharingComponent extends PLASHComponent{
 						if(map.containsKey("longitude")){
 							longitude = Double.valueOf(map.remove("longitude").toString());
 						}
+						if(map.containsKey("url")){
+							picUrl = map.remove("url").toString();
+						}
 						if(timestamp == null || latitude == null || longitude == null || picUrl == null){
 							map.put("status_code", 400);
 							map.put("message", "parameter error");						
