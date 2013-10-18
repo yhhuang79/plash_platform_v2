@@ -111,7 +111,7 @@ public class RealtimeSharing {
 	}//end method		
 
 	// 2. Input parameters : userid(String), timestamp
-	public static Map initialSharing(String uuid, Timestamp timestamp, Session session) {
+	public static Map initialSharing(String uuid, String username, Timestamp timestamp, Session session) {
 		Map message = new HashMap();
 		Date date= new java.util.Date();
 		try {
@@ -121,6 +121,7 @@ public class RealtimeSharing {
 				RealtimeSharingSessions rsSession = new RealtimeSharingSessions();
 				rsSession.setUuid(uuid);
 				rsSession.setToken(token);
+				rsSession.setUsername(username);
 				rsSession.setUrl(url);
 				rsSession.setStatus(1);
 				rsSession.setDuration_type(1);

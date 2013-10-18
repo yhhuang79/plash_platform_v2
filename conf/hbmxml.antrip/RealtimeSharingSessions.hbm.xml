@@ -18,6 +18,7 @@
 		<property name="friend_id" column="friend_id" />
 		<property name="status" column="status" />
 		<property name="url" column="url" />
-		<property name="hashid" column="hashid" />		
+		<property name="hashid" column="hashid" />
+		<property name="username" column="username" />		
     </class>
 </hibernate-mapping>

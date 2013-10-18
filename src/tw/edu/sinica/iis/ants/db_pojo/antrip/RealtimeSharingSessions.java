@@ -17,6 +17,7 @@ public class RealtimeSharingSessions {
 	private Integer status;
 	private String url;
 	private String hashid;
+	private String username;
 	
 	public RealtimeSharingSessions(){
 	
@@ -108,6 +109,14 @@ public class RealtimeSharingSessions {
 
 	public void setHashid(String hashid) {
 		this.hashid = hashid;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 }
