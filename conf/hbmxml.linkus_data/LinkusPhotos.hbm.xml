@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 16, 2012 8:52:41 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="tw.edu.sinica.iis.ants.db_pojo.linkus.LinkusPhotos" table="linkus.user_photos">
+            <id name="fbId" type="java.lang.String">
+            <column name="fb_id"/>
+            </id>
+            <property name="photoId" type="java.lang.String">
+            <column name="photo_id"  />
+            </property>
+            <property name="url" type="java.lang.String">
+            <column name="url" />
+            </property>
+           
+        
+          
+          </class>
+</hibernate-mapping>
+
+
+	
