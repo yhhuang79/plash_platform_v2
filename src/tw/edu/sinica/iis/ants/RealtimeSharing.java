@@ -37,6 +37,7 @@ import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import tw.edu.sinica.iis.ants.DB.T_Login;
 import tw.edu.sinica.iis.ants.DB.T_TripInfo;
 import tw.edu.sinica.iis.ants.db_pojo.antrip.RealtimeSharingCheckins;
 import tw.edu.sinica.iis.ants.db_pojo.antrip.RealtimeSharingPoints;
@@ -705,5 +706,50 @@ public class RealtimeSharing {
 			e.printStackTrace();
 		}		
     	return message;
-	}//end method    
+	}//end method
+	
+	public static String getSharer(String token, Session session) {
+    	Criteria criteria = session.createCriteria(RealtimeSharingSessions.class);
+    	criteria.add(Restrictions.eq("token", token));
+    	ProjectionList filterProjList = Projections.projectionList();   
+    	filterProjList.add(Projections.property("username"),"username");
+    	criteria.setProjection(filterProjList);    	
+    	String username = null;
+    	Iterator users = criteria.list().iterator();
+    	if(users.hasNext()) {
+    		Object userInfo = users.next();
+    		username = userInfo.toString();
+    		if(username == null) username = "Someone";
+    	}
+    	return username;
+	}//end method
+	
+	public static Map getCheckin(String token, Session session) {
+    	Criteria criteria = session.createCriteria(RealtimeSharingCheckins.class);
+    	criteria.add(Restrictions.eq("token", token));
+    	ProjectionList projectionList = Projections.projectionList();
+    	projectionList.add(Projections.property("url"), "url");    	
+    	projectionList.add(Projections.property("longitude"), "longitude");
+    	projectionList.add(Projections.property("latitude"), "latitude");
+    	//projectionList.add(Projections.property("timestamp"), "timestamp");
+    	criteria.setProjection(projectionList);
+    	//criteria.addOrder(Order.desc("timestamp"));
+    	criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+    	Double lng, lat;
+		Map rsCheckins = new HashMap();    	
+		try {
+			List<Map> tripDataList = (List<Map>) criteria.list();
+    		for (Map tmpMap:tripDataList) {
+	    		tmpMap.put("lng", tmpMap.remove("longitude"));
+	    		tmpMap.put("lat", tmpMap.remove("latitude"));
+	    		tmpMap.put("url", tmpMap.remove("url"));
+	    		//tmpMap.put("timestamp", tmpMap.remove("timestamp"));
+    		}//rof
+    		rsCheckins.put("checkin", tripDataList);
+			return rsCheckins;											
+		} catch (HibernateException he) {
+			System.out.println(he.toString()); 	
+			return null;
+		}//end try catch			//*/
+	}//end method
 } // PlashUtils End 
