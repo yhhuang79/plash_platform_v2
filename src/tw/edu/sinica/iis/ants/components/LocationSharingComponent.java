@@ -25,6 +25,7 @@ public class LocationSharingComponent extends PLASHComponent{
 		
 		if(map.containsKey("action")){
 			String action = map.remove("action").toString();
+			System.out.println("LocationSharingComponent Action:\t"+ action +"\t"+ Calendar.getInstance().getTimeInMillis());
 			if (action.contains("initialize")){
 				//Integer userid = 0;
 				String uuid = null, username = null;
