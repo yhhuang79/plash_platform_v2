@@ -94,7 +94,7 @@
 				<value>hbmxml.antrip/TripSharing.hbm.xml</value>				
 				<value>hbmxml.antrip/RealtimeSharingPoints.hbm.xml</value> 				
 				<value>hbmxml.antrip/RealtimeSharingSessions.hbm.xml</value>
-							
+				<value>hbmxml.antrip/RealtimeSharingCheckins.hbm.xml</value>			
 				<value>hbmxml.antrip/RealtimeSharingWatcher.hbm.xml</value>		
 				
 			</list>

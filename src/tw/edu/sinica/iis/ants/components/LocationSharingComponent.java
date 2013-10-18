@@ -177,7 +177,7 @@ public class LocationSharingComponent extends PLASHComponent{
 					map.put("message", "Empty token");
 				}
 			}
-			if (action.contains("upload")){
+			if (action.trim().equals("upload")){
 				String token, location;
 				if(map.containsKey("token")){
 					token = map.remove("token").toString();
@@ -200,7 +200,41 @@ public class LocationSharingComponent extends PLASHComponent{
 					map.put("status_code", 400);
 					map.put("message", "Empty token");
 				}				
+			}
+			if (action.trim().equals("uploadPicture")){
+				String token = null, picUrl = null; 
+				Double latitude = null, longitude = null;
+				Timestamp timestamp = null;
+				if(map.containsKey("token")){
+					token = map.remove("token").toString();
+					boolean isTokenAlive = RealtimeSharing.checkToken(token, session);
+					if(isTokenAlive){
+						if(map.containsKey("timestamp")){
+							timestamp = Timestamp.valueOf(map.remove("timestamp").toString());
+						}
+						if(map.containsKey("latitude")){
+							latitude = Double.valueOf(map.remove("latitude").toString());
+						}
+						if(map.containsKey("longitude")){
+							longitude = Double.valueOf(map.remove("longitude").toString());
+						}
+						if(timestamp == null || latitude == null || longitude == null || picUrl == null){
+							map.put("status_code", 400);
+							map.put("message", "parameter error");						
+						} else {
+							map.putAll(RealtimeSharing.uploadPicture(token, picUrl, latitude, longitude, timestamp, session));							
+						}
+					}else{
+						map.put("status_code", 400);
+						map.put("message", "Invalid Token");						
+					}					
+				}else{
+					map.clear();
+					map.put("status_code", 400);
+					map.put("message", "Empty token");
+				}				
 			}			
+
 		}
 		
 		session.close();

@@ -38,6 +38,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import tw.edu.sinica.iis.ants.DB.T_TripInfo;
+import tw.edu.sinica.iis.ants.db_pojo.antrip.RealtimeSharingCheckins;
 import tw.edu.sinica.iis.ants.db_pojo.antrip.RealtimeSharingPoints;
 import tw.edu.sinica.iis.ants.db_pojo.antrip.RealtimeSharingSessions;
 import tw.edu.sinica.iis.ants.db_pojo.antrip.RealtimeSharingWatcher;
@@ -674,8 +675,34 @@ public class RealtimeSharing {
 		return rsWatchers;
 	}//end method
 
+	
+	
     private static double ConvertDegreeToRadians(double degrees) {
       return (Math.PI/180)*degrees;
     }
 	
+
+	public static Map uploadPicture(String token, String picUrl, Double latitude, Double longitude, Timestamp timestamp, Session session) {
+		Map message = new HashMap();
+		Date date= new java.util.Date();
+		try {
+			RealtimeSharingCheckins rsSession = new RealtimeSharingCheckins();
+			rsSession.setToken(token);
+			rsSession.setUrl(picUrl);
+			rsSession.setLatitude(latitude);
+			rsSession.setLongitude(longitude);
+			rsSession.setTimestamp(timestamp);
+			Transaction tx = session.beginTransaction();
+			session.save(rsSession);
+			tx.commit();
+			message.put("status_code", 200);
+			message.put("message", "ok");			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			message.put("status_code", 500);
+			message.put("message", "Internal Server Error");
+			e.printStackTrace();
+		}		
+    	return message;
+	}//end method    
 } // PlashUtils End 
