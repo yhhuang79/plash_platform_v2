@@ -575,7 +575,9 @@ public class RealtimeSharing {
     			double d = Math.acos(Math.sin(prv_lat)*Math.sin(lat)+
     			            Math.cos(prv_lat)*Math.cos(lat)*
     			            Math.cos(lng-prv_lng))*R;
+    			if(Double.isNaN(d)) d = 0.0;
     			distance = distance + d;
+    			System.out.println("\nDistance :  " + distance);
     			prv_lng = lng;
     			prv_lat = lat;
     			stimestamp = Timestamp.valueOf(tmpMap.remove("timestamp").toString());
@@ -587,11 +589,11 @@ public class RealtimeSharing {
     		}//rof
     		NumberFormat formatter = new DecimalFormat("#.#");
     		rsLocations.put("trip", tripDataList);
-    		rsLocations.put("distance", formatter.format(distance));
+    		rsLocations.put("distance", formatter.format(Double.valueOf(distance)));
     		rsLocations.put("start", new SimpleDateFormat("yyyy-MM-dd HH:mm").format(stimestamp));
     		rsLocations.put("end", new SimpleDateFormat("yyyy-MM-dd HH:mm").format(etimestamp));
     		rsLocations.put("eta", (etimestamp.getTime()-stimestamp.getTime())/1000/60);
-    		rsLocations.put("speed", formatter.format((distance/(etimestamp.getTime()-stimestamp.getTime()))*1000*60*60));
+    		rsLocations.put("speed", formatter.format(Double.valueOf(distance/(etimestamp.getTime()-stimestamp.getTime()))*1000*60*60));
 			return rsLocations;
 											
 		} catch (HibernateException he) {
