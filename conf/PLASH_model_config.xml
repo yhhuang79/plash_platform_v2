@@ -56,7 +56,8 @@
 		<spring:import resource="./legacycomponents/DelTripConfig.xml" />
 		<spring:import resource="./legacycomponents/NearbyTripConfig.xml" />
 		<spring:import resource="./legacycomponents/NewLinkusUserInfoConfig.xml" />	
-		<spring:import resource="./legacycomponents/NewLinkusPhotosConfig.xml" />		
+		<spring:import resource="./legacycomponents/NewLinkusPhotosConfig.xml" />
+		<spring:import resource="./legacycomponents/NewLinkusLocationsConfig.xml" />		
 		<spring:import resource="./legacycomponents/TestConfig.xml" />
 
 		<spring:import resource="./common_data_access_beanconfig/NewTrajectoryPointConfig.xml" />		
@@ -2300,6 +2301,33 @@
 			</async-reply>
 		</service>
 	
+	<service name="NewLinkusLocationsService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashNewLinkusLocationsHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="NewLinkusLocations"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashNewLinkusLocationsQueue">
+						<transformers>
+							<transformer ref="PlashPlatformTransformer" />						
+							<jms:object-to-jmsmessage-transformer />
+					    </transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashNewLinkusLocationsQueue">
+					<transformers>
+
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
 	
 	
 						
