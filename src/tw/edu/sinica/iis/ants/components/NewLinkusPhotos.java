@@ -144,7 +144,7 @@ public class NewLinkusPhotos extends PLASHComponent {
 			Transaction tx = tskSession.beginTransaction();
 			tskSession.saveOrUpdate(pt);
 			tx.commit();
-			tskSession.close();
+			
 		} catch (ConstraintViolationException e) {
 			tskSession.close();
 			getElapsed();
@@ -160,6 +160,8 @@ public class NewLinkusPhotos extends PLASHComponent {
 	        err.refCode = 005;
 	        err.explaination = "Database session error";
 			return returnUnsuccess(map,err);			
+		}finally{
+			tskSession.close();
 		}//end try
 	
 	

@@ -2,6 +2,7 @@ package tw.edu.sinica.iis.ants.components;
 
 import java.sql.*;
 import java.util.*;
+
 import org.hibernate.*;
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -15,7 +16,7 @@ import tw.edu.sinica.iis.ants.db_pojo.common.PointBinaryData;
 import tw.edu.sinica.iis.ants.db_pojo.common.PointDeviceData;
 import tw.edu.sinica.iis.ants.db_pojo.common.TrajectoryPoints;
 
-import tw.edu.sinica.iis.ants.db_pojo.linkus.LinkusUserInfo;
+import tw.edu.sinica.iis.ants.db_pojo.linkus.LinkusUser;
 
 /**
  *
@@ -57,27 +58,27 @@ import tw.edu.sinica.iis.ants.db_pojo.linkus.LinkusUserInfo;
  * @version   1.3, Nov 15/2012
  * @param     
  * @return    return status 
- * @example  https://localhost:8080/NewLinkusUserInfo?fbId=2798&fbToken=12891&education=30&lng=12&lat=12&links=mary&bday=1950-08-01&gender=female
+ * @example  https://localhost:8080/GetLinkusUser?fbId=2798&lng=12&lat=12&preference=uni&radius=300
  */
-public class NewLinkusUserInfo extends PLASHComponent {
+public class GetLinkusUser extends PLASHComponent {
 	
 	/**
 	 * Fields
 	 */
 	private String fbId;
-	private String fbToken;
-	private String links;
-	private String education;
-	private String bday;
-	private String gender;
 	private String lng;
 	private String lat;
+    private Timestamp time;	
+	private String preference;
+	private String radius;
+
+    
 
 	private Session tskSession; //task session
 
 
 
-    public NewLinkusUserInfo() {
+    public GetLinkusUser() {
 
     }//end constructor
 
@@ -97,27 +98,7 @@ public class NewLinkusUserInfo extends PLASHComponent {
 		        err.explaination = "fbId must be specified";
 				return returnUnsuccess(map,err);        	
 	        }//fi */
-			 if (map.containsKey("fbToken")) {
-				 fbToken = map.get("fbToken").toString();
-		       } /*else {
-				getElapsed();
-		        AbnormalResult err = new AbnormalResult(this,'E');
-		        err.refCode = 001;
-		        err.explaination = "fb must be specified";
-				return returnUnsuccess(map,err);        	
-	        }//fi*/
-			
-			 if (map.containsKey("education")) {
-				 education = map.get("education").toString();
-		       } /*else {
-				getElapsed();
-		        AbnormalResult err = new AbnormalResult(this,'E');
-		        err.refCode = 001;
-		        err.explaination = "education must be specified";
-				return returnUnsuccess(map,err);        	
-	        }//fi */
-			
-		     if (map.containsKey("lat")) { 
+	        if (map.containsKey("lat")) { 
 		        	lat = map.get("lat").toString();
 		        } /*else {
 					getElapsed();
@@ -136,16 +117,13 @@ public class NewLinkusUserInfo extends PLASHComponent {
 					return returnUnsuccess(map,err);     
 		        }//fi */
 
-		     if (map.containsKey("links")) {
-				 links = map.get("links").toString();
+		     if (map.containsKey("preference")) {
+				 preference = map.get("preference").toString();
 		       } //fi
-		     if (map.containsKey("bday")) {
-				 bday = map.get("bday").toString();
+		     if (map.containsKey("radius")) {
+				 radius = map.get("radius").toString();
 		       }//fi
-			 if (map.containsKey("gender")) {
-				 gender = map.get("gender").toString();
-		       } //fi
-	
+			
     
 		} catch (NullPointerException e) { //Most likely due to invalid arguments 
 			getElapsed();
@@ -163,28 +141,67 @@ public class NewLinkusUserInfo extends PLASHComponent {
 		}
 	        	
 		
-		LinkusUserInfo pt = new LinkusUserInfo();
+		time = new Timestamp(new java.util.Date().getTime()) ;
+		LinkusUser pt = new LinkusUser();
 
 		pt.setFbId(fbId);
-		pt.setFbToken(fbToken);
-		pt.setEducation(education);
 		pt.setLng(lng);		
-		
-        pt.setLat(lat);
-		pt.setTime(new Timestamp(new java.util.Date().getTime()));
-		pt.setLinks(links);
-		pt.setBday(bday);
-		pt.setGender(gender);
+		pt.setLat(lat);
+		pt.setTime(time);
+		pt.setPreference(preference);
+		pt.setRadius(radius);
+		Map<String,Object>[] around = new Map[3];
+		for (int i= 0; i < around.length; i++){
+			   around[i]= new HashMap<String,Object>();
+		        }
 
 
 		
 		try {
 	        tskSession = sessionFactory.openSession();
 			Transaction tx = tskSession.beginTransaction();
-			tskSession.saveOrUpdate(pt);
+			tskSession.save(pt);
 			tx.commit();
-            //String resultString = (String)tskSession.createSQLQuery("SELECT to_geog_update('"+fbId+"')").uniqueResult();
-		
+			int dummyString = (Integer) tskSession.createSQLQuery("SELECT geog_update('"+fbId+"','"+time+"')").uniqueResult();
+			String createSQLQuery = new String("SELECT nearby_user('"+ fbId +"','"+time+"')");
+			String resultString = (String)tskSession.createSQLQuery(createSQLQuery).uniqueResult();
+			
+			
+			if(resultString==null){
+			around[0].put("nearby_id",-1);	
+			 }
+			else{
+			int StringSize= resultString.length();
+					
+			StringTokenizer st = new StringTokenizer(resultString.substring(1, StringSize-1),",");
+			int j=0;
+			while(st.hasMoreTokens())
+			{
+			int i=0;
+			
+			StringTokenizer st1 = new StringTokenizer(st.nextToken(),"~");
+			while(st1.hasMoreTokens()){
+				
+				switch(i){ 
+				case 0:
+                st1.nextToken();
+				
+				case 1:
+				String temp = st1.nextToken();
+				around[j].put("nearby_id",temp);
+				
+				case 2:
+				temp = st1.nextToken();
+				around[j].put("education",temp.substring(0,temp.length()-2));
+				
+				}
+		        i++;
+				}
+			   j++;
+			}
+		   
+			}
+			
 		} catch (ConstraintViolationException e) {
 			tskSession.close();
 			getElapsed();
@@ -199,15 +216,18 @@ public class NewLinkusUserInfo extends PLASHComponent {
 	        AbnormalResult err = new AbnormalResult(this,'E');
 	        err.refCode = 005;
 	        err.explaination = "Database session error";
-			return returnUnsuccess(map,err);			
-		}finally{
+	        System.out.println("ininink"+map.toString());
+			return returnUnsuccess(map,err);		
+		} finally{
+			if (tskSession.isOpen()) {
 			tskSession.close();
+			}
 		}//end try
 	
 	
 		
 
-		return 	returnSuccess(map);
+		return 	around;
 		
 	} //end serviceMain
     

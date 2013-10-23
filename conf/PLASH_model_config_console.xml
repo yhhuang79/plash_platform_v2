@@ -59,6 +59,8 @@
 		<spring:import resource="./legacycomponents/NewLinkusUserInfoConfig.xml" />
 		<spring:import resource="./legacycomponents/NewLinkusPhotosConfig.xml" />
 		<spring:import resource="./legacycomponents/NewLinkusLocationsConfig.xml" />
+		<spring:import resource="./legacycomponents/GetLinkusUserConfig.xml" />
+		
 
 		<spring:import resource="./common_data_access_beanconfig/NewTrajectoryPointConfig.xml" />		
 		<spring:import resource="./common_data_access_beanconfig/NewTrajectoryInfoConfig.xml" />
@@ -2324,6 +2326,33 @@
 			</outbound>
 			<async-reply>
 				<inbound-endpoint ref="plashNewLinkusLocationsQueue">
+					<transformers>
+
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+	<service name="GetLinkusUserService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashGetLinkusUserHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="GetLinkusUser"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashGetLinkusUserQueue">
+						<transformers>
+							<transformer ref="PlashPlatformTransformer" />						
+							<jms:object-to-jmsmessage-transformer />
+					    </transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashGetLinkusUserQueue">
 					<transformers>
 
 					</transformers>

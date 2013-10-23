@@ -198,6 +198,8 @@ public class NewLinkusLocations extends PLASHComponent {
 	        err.refCode = 005;
 	        err.explaination = "Database session error";
 			return returnUnsuccess(map,err);			
+		}finally{
+			tskSession.close();
 		}//end try
 	
 	

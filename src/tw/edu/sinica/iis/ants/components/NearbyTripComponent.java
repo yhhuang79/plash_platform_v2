@@ -107,6 +107,8 @@ public class NearbyTripComponent extends PLASHComponent {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally{
+			tskSession.close();
 		}
 		return map;
 		}

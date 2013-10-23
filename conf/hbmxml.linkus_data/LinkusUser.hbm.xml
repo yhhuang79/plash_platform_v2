@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 16, 2012 8:52:41 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="tw.edu.sinica.iis.ants.db_pojo.linkus.LinkusUser" table="linkus.user_location_history">
+            <id name="fbId" type="java.lang.String">
+            <column name="fb_id"/>
+            </id>
+            <property name="lng" type="java.lang.String">
+            <column name="lng"  />
+            </property>
+            <property name="lat" type="java.lang.String">
+            <column name="lat"  />
+            </property>
+            <property name="time" type="java.sql.Timestamp">
+            <column name="time" length="35" />
+            </property>
+            <property name="preference" type="java.lang.String">
+            <column name="preference"  />
+            </property>
+            <property name="radius" type="java.lang.String">
+            <column name="radius"  />
+            </property>
+            
+          
+          </class>
+</hibernate-mapping>
+
+
+	

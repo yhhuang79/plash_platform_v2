@@ -91,6 +91,7 @@
 				<value>hbmxml.linkus_data/LinkusUserInfo.hbm.xml</value>
 				<value>hbmxml.linkus_data/LinkusPhotos.hbm.xml</value>
 				<value>hbmxml.linkus_data/LinkusLocations.hbm.xml</value>
+				<value>hbmxml.linkus_data/LinkusUser.hbm.xml</value>
 				
 				<value>hbmxml.antrip/TripSharing.hbm.xml</value>				
 				<value>hbmxml.antrip/RealtimeSharingPoints.hbm.xml</value> 				
