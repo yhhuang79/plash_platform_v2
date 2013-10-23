@@ -398,7 +398,7 @@ public class RealtimeSharing {
 				timestamp = Timestamp.valueOf(tpoint.get("timestamp").toString());
 			if(tpoint.containsKey("todisplay")) {
 				System.out.println("todisplay :  "+tpoint.get("todisplay").toString().trim());
-				if(tpoint.get("todisplay").toString().trim() == "0")
+				if(Integer.parseInt(tpoint.get("todisplay").toString().trim()) == 0)
 				todisplay = false;
 			}
 			RealtimeSharingPoints user = new RealtimeSharingPoints();
