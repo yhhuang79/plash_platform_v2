@@ -357,6 +357,7 @@ public class RealtimeSharing {
 	
 	// 4. Input parameters : userid, sharing_method, duration_type, duration_value, friend_id, timestamp
 	public static Map uploadSharing(String token, String location, Session session) {
+		System.out.println("Input String :  "+location.toString());
 		Map message = new HashMap();
 		
 		JSONObject jsonObject;
