@@ -107,15 +107,13 @@ public class NewLinkusUserInfo extends PLASHComponent {
 				return returnUnsuccess(map,err);        	
 	        }//fi*/
 			
-			 if (map.containsKey("education")) {
-				 education = map.get("education").toString();
-		       } /*else {
-				getElapsed();
-		        AbnormalResult err = new AbnormalResult(this,'E');
-		        err.refCode = 001;
-		        err.explaination = "education must be specified";
-				return returnUnsuccess(map,err);        	
-	        }//fi */
+			 if (map.containsKey("education")){
+				 if (map.get("education").toString() != null){
+					   education = map.get("education").toString();}
+		         else {
+		    	 education = "Secret";}
+		       }
+			 //fi */
 			
 		     if (map.containsKey("lat")) { 
 		        	lat = map.get("lat").toString();

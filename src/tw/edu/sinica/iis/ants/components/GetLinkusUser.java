@@ -150,10 +150,7 @@ public class GetLinkusUser extends PLASHComponent {
 		pt.setTime(time);
 		pt.setPreference(preference);
 		pt.setRadius(radius);
-		Map<String,Object>[] around = new Map[3];
-		for (int i= 0; i < around.length; i++){
-			   around[i]= new HashMap<String,Object>();
-		        }
+		
 
 
 		
@@ -163,16 +160,20 @@ public class GetLinkusUser extends PLASHComponent {
 			tskSession.save(pt);
 			tx.commit();
 			int dummyString = (Integer) tskSession.createSQLQuery("SELECT geog_update('"+fbId+"','"+time+"')").uniqueResult();
-			String createSQLQuery = new String("SELECT nearby_user('"+ fbId +"','"+time+"')");
+			String createSQLQuery = new String("SELECT nearby_user('"+ fbId +"','"+preference+"','"+radius+"')");
 			String resultString = (String)tskSession.createSQLQuery(createSQLQuery).uniqueResult();
-			
-			
+			System.out.println(resultString);
+			Map<String,Object>[] around = new Map[3];
+			for (int i= 0; i < around.length; i++){
+				   around[i]= new HashMap<String,Object>();
+			        }	
 			if(resultString==null){
 			around[0].put("nearby_id",-1);	
 			 }
 			else{
+			
 			int StringSize= resultString.length();
-					
+			String temp;		
 			StringTokenizer st = new StringTokenizer(resultString.substring(1, StringSize-1),",");
 			int j=0;
 			while(st.hasMoreTokens())
@@ -187,7 +188,7 @@ public class GetLinkusUser extends PLASHComponent {
                 st1.nextToken();
 				
 				case 1:
-				String temp = st1.nextToken();
+				temp = st1.nextToken();
 				around[j].put("nearby_id",temp);
 				
 				case 2:
@@ -199,8 +200,8 @@ public class GetLinkusUser extends PLASHComponent {
 				}
 			   j++;
 			}
-		   
-			}
+		    map.put("data",around);
+		   }
 			
 		} catch (ConstraintViolationException e) {
 			tskSession.close();
@@ -227,7 +228,7 @@ public class GetLinkusUser extends PLASHComponent {
 	
 		
 
-		return 	around;
+		return 	returnSuccess(map);
 		
 	} //end serviceMain
     
