@@ -59,6 +59,7 @@
 		<spring:import resource="./legacycomponents/NewLinkusPhotosConfig.xml" />
 		<spring:import resource="./legacycomponents/NewLinkusLocationsConfig.xml" />
 		<spring:import resource="./legacycomponents/GetLinkusUserConfig.xml" />
+	    <spring:import resource="./legacycomponents/NewLinkusInteractionConfig.xml" />
 				
 		<spring:import resource="./legacycomponents/TestConfig.xml" />
 
@@ -2359,6 +2360,33 @@
 			</async-reply>
 		</service>
 	
+	<service name="NewLinkusInteractionService">
+			<inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashNewLinkusInteractionHttpsInboundEndpoint" />
+			</inbound>			
+			<component>
+				<spring-object bean="NewLinkusInteraction"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashNewLinkusInteractionQueue">
+						<transformers>
+							<transformer ref="PlashPlatformTransformer" />						
+							<jms:object-to-jmsmessage-transformer />
+					    </transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashNewLinkusInteractionQueue">
+					<transformers>
+
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
 						
 	</model>
 
