@@ -157,6 +157,7 @@ public class NewLinkusInteraction extends PLASHComponent {
 		
 		try {
 	        tskSession = sessionFactory.openSession();
+	        if(status == 1){//find record if exists
 	        Criteria interactionInfo = tskSession.createCriteria(LinkusInteraction.class);
 			interactionInfo.add(Restrictions.eq("candidateId", fbId));
 			interactionInfo.add(Restrictions.eq("fbId", candidateId));
@@ -167,6 +168,10 @@ public class NewLinkusInteraction extends PLASHComponent {
 	          map.put("matched_id1",candidateId);}
 	        else{
 	          map.put("matched_id0",-1);}
+	        }
+	        else{
+	          map.put("matched_id0",-1);	
+	        }
 			Transaction tx = tskSession.beginTransaction();
 			tskSession.save(pt);
 			tx.commit();
