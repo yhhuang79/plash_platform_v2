@@ -109,8 +109,7 @@ public class NewLinkusUserInfo extends PLASHComponent {
 			
 			 if (map.containsKey("education")){
 				  education = map.get("education").toString();
-				 if (education.length()==0){
-					    education = "Secret";}
+				 
 		       }
 			 //fi */
 			
