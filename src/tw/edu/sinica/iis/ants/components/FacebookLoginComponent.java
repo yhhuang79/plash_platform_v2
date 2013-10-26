@@ -33,7 +33,9 @@ public class FacebookLoginComponent {
 		System.out.println("FacebookLogin Start:\t"+ Calendar.getInstance().getTimeInMillis());
 
 		Session session = sessionFactory.openSession();
-		String username = map.get("username").toString();
+		String username = null;
+		if(map.containsKey("username"))
+			username = map.get("username").toString();
 		String email = map.get("email").toString();
 		String facebookid = map.get("facebookid").toString();
 		
