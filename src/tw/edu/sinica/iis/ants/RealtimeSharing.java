@@ -579,7 +579,7 @@ public class RealtimeSharing {
     			            Math.cos(lng-prv_lng))*R;
     			if(Double.isNaN(d)) d = 0.0;
     			distance = distance + d;
-    			System.out.println("\nDistance :  " + distance);
+    			//System.out.println("\nDistance :  " + distance);
     			prv_lng = lng;
     			prv_lat = lat;
     			stimestamp = Timestamp.valueOf(tmpMap.remove("timestamp").toString());
