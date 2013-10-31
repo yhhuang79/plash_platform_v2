@@ -200,8 +200,8 @@ public class GetLinkusUser extends PLASHComponent {
 				}
 			   j++;
 			}
-		    map.put("data",around);
 		   }
+			map.put("data",around);	
 			
 		} catch (ConstraintViolationException e) {
 			tskSession.close();
