@@ -1,5 +1,6 @@
 package tw.edu.sinica.iis.ants.components;
 
+import java.math.BigInteger;
 import java.sql.*;
 import java.util.*;
 
@@ -174,6 +175,10 @@ public class NewLinkusInteraction extends PLASHComponent {
 	        }
 			Transaction tx = tskSession.beginTransaction();
 			tskSession.save(pt);
+			
+			String query="SELECT count(*) FROM postgistemplate.linkus.user_interactions where  status=1 and candidate_id='"+fbId+"' and fb_id in (select candidate_id From postgistemplate.linkus.user_interactions where fb_id='"+fbId+"' and status=1)";
+			BigInteger resultString = (BigInteger) tskSession.createSQLQuery(query).uniqueResult();
+			map.put("matches",resultString);
 			tx.commit();
 						
 			
