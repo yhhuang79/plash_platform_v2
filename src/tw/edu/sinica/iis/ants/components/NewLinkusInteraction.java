@@ -165,8 +165,8 @@ public class NewLinkusInteraction extends PLASHComponent {
 			interactionInfo.add(Restrictions.eq("status",1));
 			LinkusInteraction interactionInfoRec = (LinkusInteraction) interactionInfo.uniqueResult();
 	        if(interactionInfoRec != null){
-	          map.put("matched_id0",fbId);
-	          map.put("matched_id1",candidateId);}
+	          map.put("matched_id0",candidateId);
+	          }
 	        else{
 	          map.put("matched_id0",-1);}
 	        }
