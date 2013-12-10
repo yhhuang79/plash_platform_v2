@@ -174,7 +174,7 @@
 		connector-ref="jmsCon" />
 		
 	<https:connector name="httpsConnector">
-		<https:tls-key-store path="file://../resources/tmpKey/keystore" keyPassword="password" storePassword="password"/>
+		<https:tls-key-store path="file://../resources/tmpKey/plash.keystore" keyPassword="password" storePassword="password"/>
 	</https:connector>
 
 	
