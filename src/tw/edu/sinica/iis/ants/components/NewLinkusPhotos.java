@@ -142,7 +142,7 @@ public class NewLinkusPhotos extends PLASHComponent {
 		try {
 	        tskSession = sessionFactory.openSession();
 			Transaction tx = tskSession.beginTransaction();
-			tskSession.saveOrUpdate(pt);
+			tskSession.save(pt);
 			tx.commit();
 			
 		} catch (ConstraintViolationException e) {
