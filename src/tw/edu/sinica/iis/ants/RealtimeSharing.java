@@ -737,7 +737,7 @@ public class RealtimeSharing {
     	projectionList.add(Projections.property("latitude"), "latitude");
     	//projectionList.add(Projections.property("timestamp"), "timestamp");
     	criteria.setProjection(projectionList);
-    	//criteria.addOrder(Order.desc("timestamp"));
+    	criteria.addOrder(Order.asc("timestamp"));
     	criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
     	Double lng, lat;
 		Map rsCheckins = new HashMap();    	
