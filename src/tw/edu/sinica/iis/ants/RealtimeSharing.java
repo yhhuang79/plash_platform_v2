@@ -747,7 +747,7 @@ public class RealtimeSharing {
 	    		tmpMap.put("lng", tmpMap.remove("longitude"));
 	    		tmpMap.put("lat", tmpMap.remove("latitude"));
 	    		String url = tmpMap.remove("url").toString();
-	    		String thumb = url.replace("/picture"+token, "/picture/"+token+"/thumb.s");
+	    		String thumb = url.replace("/picture/"+token, "/picture/"+token+"/thumb.s");
 	    		tmpMap.put("url", url);
 	    		tmpMap.put("thumb", thumb);
 	    		//tmpMap.put("timestamp", tmpMap.remove("timestamp"));
