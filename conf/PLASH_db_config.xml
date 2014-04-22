@@ -27,13 +27,13 @@
 			<value>10</value>
 		</property>
 		<property name="maxPoolSize">
-			<value>500</value>
+			<value>1024</value>
 		</property>
 		<property name="maxIdleTime">
 			<value>600</value>
 		</property>
 		<property name="acquireIncrement">
-			<value>3</value>
+			<value>15</value>
 		</property>
 		<property name="maxStatements">
 			<value>0</value>
