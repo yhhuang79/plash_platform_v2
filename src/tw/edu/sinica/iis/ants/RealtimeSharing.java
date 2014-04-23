@@ -52,7 +52,7 @@ public class RealtimeSharing {
 	public static boolean checkToken(String token, Session session) {
     	Criteria criteria = session.createCriteria(RealtimeSharingSessions.class);
     	criteria.add(Restrictions.eq("token", token));
-    	criteria.add(Restrictions.eq("status", 1));
+    	criteria.add(Restrictions.ne("status", 0));
     	Iterator rsSessionItr = criteria.list().iterator();
     	if(rsSessionItr.hasNext()) {
     		RealtimeSharingSessions rsSession = (RealtimeSharingSessions) rsSessionItr.next();
@@ -69,6 +69,18 @@ public class RealtimeSharing {
     	return false;
 	}//end method		
 
+	public static int getTokenStatus(String token, Session session) {
+    	Criteria criteria = session.createCriteria(RealtimeSharingSessions.class);
+    	criteria.add(Restrictions.eq("token", token));
+    	int tokenStatus = 0;
+    	Iterator rsSessionItr = criteria.list().iterator();
+    	if(rsSessionItr.hasNext()) {
+    		RealtimeSharingSessions rsSession = (RealtimeSharingSessions) rsSessionItr.next();
+			tokenStatus = Integer.parseInt(rsSession.getStatus().toString());  
+    	}
+    	return tokenStatus;
+	}//end method	
+	
 	// 1. Input parameters : userid(Integer), timestamp
 	public static Map initialSharing(Integer userid, Timestamp timestamp, Session session) {
 		Map message = new HashMap();
@@ -124,7 +136,7 @@ public class RealtimeSharing {
 				rsSession.setToken(token);
 				rsSession.setUsername(username);
 				rsSession.setUrl(url);
-				rsSession.setStatus(1);
+				rsSession.setStatus(100);
 				rsSession.setDuration_type(1);
 				rsSession.setDuration_value(0);				
 				rsSession.setTimestamp(timestamp);
@@ -327,7 +339,7 @@ public class RealtimeSharing {
 			rsSession.setDuration_value(duration_value);
 			rsSession.setFriend_id(friend_id);
 			rsSession.setTimestamp(timestamp);
-			rsSession.setStatus(1);
+			rsSession.setStatus(100);
 			Transaction tx = session.beginTransaction();
 			session.save(rsSession);
 			tx.commit();
@@ -473,7 +485,7 @@ public class RealtimeSharing {
     		Transaction tx = session.beginTransaction();
     		RealtimeSharingSessions rsSession = (RealtimeSharingSessions) rsSessionItr.next();
     		RealtimeSharingSessions rss = (RealtimeSharingSessions) session.get(RealtimeSharingSessions.class, rsSession.getId());
-    		rss.setStatus(0);
+    		rss.setStatus(1);
 			session.update(rss);
 			tx.commit();
 			message.put("status_code", 200);
@@ -560,6 +572,7 @@ public class RealtimeSharing {
     	criteria.setProjection(projectionList);
     	criteria.addOrder(Order.asc("timestamp"));
     	criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+    	boolean fristRun = true;
     	Geometry tmpGPS;
     	Timestamp stimestamp = null, etimestamp = null;
     	Double lng, lat, prv_lng = 0.0, prv_lat = 0.0, distance = 0.0;
@@ -582,7 +595,11 @@ public class RealtimeSharing {
     			//System.out.println("\nDistance :  " + distance);
     			prv_lng = lng;
     			prv_lat = lat;
-    			stimestamp = Timestamp.valueOf(tmpMap.remove("timestamp").toString());
+    			if (fristRun == true){
+    				stimestamp = Timestamp.valueOf(tmpMap.get("timestamp").toString());
+    				fristRun = false;
+    			}
+				etimestamp = Timestamp.valueOf(tmpMap.remove("timestamp").toString());
 	    		tmpMap.put("lng", tmpMap.remove("longitude"));
 	    		tmpMap.put("lat", tmpMap.remove("latitude"));
 	    		//tmpMap.put("distance", d);
