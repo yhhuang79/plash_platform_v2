@@ -80,6 +80,25 @@ public class RealtimeSharing {
     	}
     	return tokenStatus;
 	}//end method	
+
+	public static Timestamp getTokenLastTimestamp(String token, Session session) {
+    	Criteria criteria = session.createCriteria(RealtimeSharingPoints.class);
+    	criteria.add(Restrictions.eq("token", token));
+    	ProjectionList projectionList = Projections.projectionList();
+    	projectionList.add(Projections.property("timestamp"), "timestamp");
+    	criteria.setProjection(projectionList);
+    	criteria.addOrder(Order.desc("timestamp"));
+    	criteria.setMaxResults(1);
+    	criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+    	Timestamp timestamp = null;
+    	Iterator rsSessionItr = criteria.list().iterator();
+    	if(rsSessionItr.hasNext()) {
+    		RealtimeSharingSessions rsSession = (RealtimeSharingSessions) rsSessionItr.next();
+    		timestamp = rsSession.getTimestamp();  
+    	}
+    	return timestamp;
+	}//end method	
+	
 	
 	// 1. Input parameters : userid(Integer), timestamp
 	public static Map initialSharing(Integer userid, Timestamp timestamp, Session session) {
@@ -455,11 +474,7 @@ public class RealtimeSharing {
 			try {
 				tx = session.beginTransaction();
 				session.save(user);
-				tx.commit();
-				
-				message.put("status_code", 200);
-				message.put("message", "ok");			
-				return message;
+				tx.commit();				
 			} catch (HibernateException he) {
 	    		he.printStackTrace();
 	    		if(tx!=null){  
@@ -467,6 +482,9 @@ public class RealtimeSharing {
 	    	    }  
 	    	}
 		}
+		message.put("status_code", 200);
+		message.put("message", "ok");			
+		return message;
 		} catch (GenericJDBCException e){
 			
 			e.printStackTrace();
