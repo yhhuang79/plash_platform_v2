@@ -171,7 +171,9 @@
 		connector-ref="jmsCon" />
 	<jms:endpoint name="plashLocationSharingQueue" queue="plash.location.sharing"
 		connector-ref="jmsCon" />
-
+	<jms:endpoint name="plashAntHomeQueue" queue="plash.anthome"
+		connector-ref="jmsCon" />
+	
 		
 	<https:connector name="httpsConnector">
 		<https:tls-key-store path="file:///home/ants/workspace/PLASH_Platform_Test_Combine/resources/tmpKey/plash.keystore" keyPassword="password" storePassword="password"/>
@@ -327,8 +329,8 @@
 		port="8080" path="CheckServerStatus" synchronous="true" connector-ref="httpsConnector" />
 	<https:endpoint name="plashLocationSharingHttpsInboundEndpoint" host="localhost"
 		port="8080" path="LocationSharing" synchronous="true" connector-ref="httpsConnector" />
-
-
+	<https:endpoint name="plashAntHomeHttpsInboundEndpoint" host="localhost"
+		port="8080" path="AntHome" synchronous="true" connector-ref="httpsConnector" />
 
 	<model name="PLASH">
 	
@@ -2137,7 +2139,39 @@
 				<single-async-reply-router/>				
 			</async-reply>
 		</service>
-
+		<!-- (Step 4) Yu-Hsiang: XXXXX = AntHome -->
+		<service name="AntHomeService">
+			<!-- <inbound>
+				<inbound-endpoint transformer-refs="HttpParams"
+					responseTransformer-refs="byteArrayToString" ref="plashLocationSharingHttpsInboundEndpoint" />
+			</inbound> -->
+			<inbound>
+				<http:inbound-endpoint transformer-refs="HttpPostParams"
+					responseTransformer-refs="byteArrayToString" ref="plashAntHomeHttpsInboundEndpoint" />
+			</inbound>						
+			<component>
+				<spring-object bean="AntHomeComponent"></spring-object>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<outbound-endpoint ref="plashAntHomeQueue">
+						<transformers>
+							<jms:object-to-jmsmessage-transformer />
+						</transformers>
+					</outbound-endpoint>
+				</pass-through-router>
+			</outbound>
+			<async-reply>
+				<inbound-endpoint ref="plashAntHomeQueue">
+					<transformers>
+						<jms:jmsmessage-to-object-transformer />
+						<transformer ref="TestResponseTransformer" />
+					</transformers>
+				</inbound-endpoint>
+				<single-async-reply-router/>				
+			</async-reply>
+		</service>
+		
 
 		<service name="NearbyTripService">
 			<inbound>

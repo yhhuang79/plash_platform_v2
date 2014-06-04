@@ -215,7 +215,13 @@
         <spring:bean id="LocationSharingComponent"
                 class="tw.edu.sinica.iis.ants.components.LocationSharingComponent">
                 <spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
-        </spring:bean>         	
+        </spring:bean>
+        <spring:bean id="AntHomeComponent"
+                class="tw.edu.sinica.iis.ants.components.AntHomeComponent">
+                <spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
+        </spring:bean>
+        
+        	
         <spring:bean id="NearbyTripComponent"
                 class="tw.edu.sinica.iis.ants.components.NearbyTripComponent">
                 <spring:property name="sessionFactory" ref="GeoSessionFactory"></spring:property>
