@@ -79,6 +79,59 @@ public class LocationSharingComponent extends PLASHComponent{
 					//map.put("userid", userid);
 		        }		        	
 			}			
+			if (action.contains("anthomeInitialize")){
+				//Integer userid = 0;
+				String uuid = null, username = null;
+				Integer duration_type = 0;
+				Integer duration_value = 0;
+				String sharing_method = null;
+				String friend_id = null;
+				Timestamp timestamp = null;
+
+				if(map.containsKey("uuid")){
+					uuid = map.get("uuid").toString();
+					/*
+					 *  Plash account userid
+					 * 
+					try {
+						userid = Integer.valueOf(map_userid);
+					} catch (NumberFormatException e) {
+						userid = PlashUtils.getUserid(map_userid, session);
+					}
+					*/
+				}
+				if(map.containsKey("username")){
+					username = map.remove("username").toString();
+				}
+				if(map.containsKey("sharing_method")){
+					sharing_method = map.remove("sharing_method").toString();
+				}
+				if(map.containsKey("friend_id"))
+					friend_id = map.remove("friend_id").toString();
+				if(map.containsKey("duration_type")){
+					duration_type = Integer.valueOf(map.remove("duration_type").toString());
+				}
+				if(map.containsKey("duration_value"))
+					duration_value = Integer.valueOf(map.remove("duration_value").toString());
+		        if (map.containsKey("timestamp")){
+		        	try {
+		        		timestamp = Timestamp.valueOf(map.remove("timestamp").toString());
+		        	} catch (IllegalArgumentException e) {
+			        	Date date= new java.util.Date();
+			        	timestamp = new Timestamp(date.getTime());		        		
+		        	}
+		        }else{
+		        	Date date= new java.util.Date();
+		        	timestamp = new Timestamp(date.getTime());
+		        }
+		        if (uuid != null && username != null) {
+		        	map.putAll(RealtimeSharing.anthomeInitial(uuid, username, timestamp, session));
+		        } else {
+					map.put("status_code", 400);
+					map.put("message", "Parameter Error");
+					//map.put("userid", userid);
+		        }		        	
+			}			
 			if (action.contains("start")){
 				String token = null;
 				String sharing_method = null;
