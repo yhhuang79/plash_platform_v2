@@ -192,6 +192,55 @@ public class RealtimeSharing {
 		}
     	return message;
 	}//end method		
+	public static Map anthomeInitial(String uuid, String username, Timestamp timestamp, Session session) {
+		Map message = new HashMap();
+		Date date= new java.util.Date();
+		try {
+			if (uuid.length() == 16) {
+				String token = PlashUtils.MD5(uuid.substring((int)(Math.random()*10), 16) + date.getTime());
+				String url = PlashUtils.getShortUrl("http://www.plash.tw/antrack/index.html?token=" + token);
+				RealtimeSharingSessions rsSession = new RealtimeSharingSessions();
+				rsSession.setUuid(uuid);
+				rsSession.setToken(token);
+				rsSession.setUsername(username);
+				rsSession.setUrl(url);
+				rsSession.setStatus(100);
+				rsSession.setDuration_type(1);
+				rsSession.setDuration_value(0);				
+				rsSession.setTimestamp(timestamp);
+				Transaction tx = session.beginTransaction();
+				session.save(rsSession);
+				tx.commit();
+				message.put("status_code", 200);
+				message.put("message", "ok");
+				message.put("url", url);
+				message.put("token", token);
+			} else {
+				message.put("status_code", 400);
+				message.put("message", "Parameter Error");				
+			}
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			message.put("status_code", 400);
+			message.put("message", "Network Error");			
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			message.put("status_code", 400);
+			message.put("message", "IO Error");
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			message.put("status_code", 500);
+			message.put("message", "Internal Server Error");
+			e.printStackTrace();
+		} catch (StringIndexOutOfBoundsException e){
+			message.put("status_code", 400);
+			message.put("message", "Parameter Error");
+			e.printStackTrace();			
+		}
+    	return message;
+	}//end method		
 	
 	
 	public static Map startSharing(String token, String sharing_method, Timestamp timestamp, Session session) {

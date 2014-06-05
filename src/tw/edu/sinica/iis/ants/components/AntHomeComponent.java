@@ -57,7 +57,7 @@ public class AntHomeComponent extends PLASHComponent{
 		        	timestamp = new Timestamp(date.getTime());
 		        }
 		        if (uuid != null && sharer != null) {
-		        	map.putAll(RealtimeSharing.initialSharing(uuid, sharer, timestamp, session));
+		        	map.putAll(RealtimeSharing.anthomeInitial(uuid, sharer, timestamp, session));
 		        } else {
 					map.put("status_code", 400);
 					map.put("message", "Parameter Error");
